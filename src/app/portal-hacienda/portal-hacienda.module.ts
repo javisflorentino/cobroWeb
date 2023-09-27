@@ -7,13 +7,15 @@ import { CardsDependenciasComponent } from './pages/cards-dependencias/cards-dep
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
+import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
 
 
 @NgModule({
   declarations: [
     LayoutPortalPagosComponent,
     CardsDependenciasComponent,
-    MenuImagePipe
+    MenuImagePipe,
+    PagoRefrendoPageComponent
   ],
   imports: [
     CommonModule,

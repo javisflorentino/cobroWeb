@@ -11,6 +11,8 @@ export class LayoutPortalPagosComponent {
   /* Se enviara a shared-sidenav-conceptos*/
   public sendActionSidenav: number = 0;
 
+  public valCard: number = 0;
+
   /* Recibe valor del shared-toolbar*/
   get actionOnSidenav() {
     console.log('Layoyt Recibe valor');
@@ -19,5 +21,8 @@ export class LayoutPortalPagosComponent {
     return true;
   }
 
-
+  reciveValCard(val:number) {
+    console.log('Se recibe el valor de la tarjeta: ' + val);
+    this.sendActionSidenav = val;
+  }
 }

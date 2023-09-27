@@ -4,6 +4,7 @@ import { SidenavConceptosComponent } from './components/sidenav-conceptos/sidena
 import { Error404PageComponent } from './pages/error404-page/error404-page.component';
 import { MaterialModule } from '../material/material.module';
 import { SharedToolbarComponent } from './components/shared-toolbar/shared-toolbar.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,7 +16,8 @@ import { SharedToolbarComponent } from './components/shared-toolbar/shared-toolb
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule
   ],
   exports: [
     SidenavConceptosComponent,
