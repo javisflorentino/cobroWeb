@@ -1,0 +1,85 @@
+{
+  "menu":[
+     [
+        {
+           "id":1477,
+           "textoTitulo":"CINCO A\u00d1OS",
+           "idConcepto":838,
+           "consumoInterno":null,
+           "url":"-",
+           "textoMensaje":"-",
+           "muestraIndex":"-",
+           "urlIcono":"-",
+           "estatus":1,
+           "nivelUso":null,
+           "opcionFormulario":13,
+           "opcionPagoUnicoPoliza":0,
+           "opcionCantidadUnica":0,
+           "posicionLista":null,
+           "combo":null,
+           "nivelBd":null,
+           "menuHijo":[
+
+           ],
+           "error":null,
+           "padreId":1476,
+           "tipoMovimiento":100,
+           "gestora":22,
+           "pagoEnLinea":null
+        },
+        {
+           "id":1478,
+           "textoTitulo":"TRES A\u00d1OS",
+           "idConcepto":835,
+           "consumoInterno":null,
+           "url":"-",
+           "textoMensaje":"-",
+           "muestraIndex":"-",
+           "urlIcono":"-",
+           "estatus":1,
+           "nivelUso":null,
+           "opcionFormulario":13,
+           "opcionPagoUnicoPoliza":0,
+           "opcionCantidadUnica":0,
+           "posicionLista":null,
+           "combo":null,
+           "nivelBd":null,
+           "menuHijo":[
+
+           ],
+           "error":null,
+           "padreId":1476,
+           "tipoMovimiento":100,
+           "gestora":22,
+           "pagoEnLinea":null
+        },
+        {
+           "id":1479,
+           "textoTitulo":"UN A\u00d1O",
+           "idConcepto":830,
+           "consumoInterno":null,
+           "url":"-",
+           "textoMensaje":"-",
+           "muestraIndex":"-",
+           "urlIcono":"-",
+           "estatus":1,
+           "nivelUso":null,
+           "opcionFormulario":13,
+           "opcionPagoUnicoPoliza":0,
+           "opcionCantidadUnica":0,
+           "posicionLista":null,
+           "combo":null,
+           "nivelBd":null,
+           "menuHijo":[
+
+           ],
+           "error":null,
+           "padreId":1476,
+           "tipoMovimiento":100,
+           "gestora":22,
+           "pagoEnLinea":null
+        }
+     ]
+  ],
+  "error":null
+}

@@ -1,0 +1,82 @@
+[
+
+    {
+      "dependencia":"MovilidadTransporte",
+      "name": "Movilidad y Transporte",
+      "padreId": 1470,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"Hacienda",
+      "name": "Hcienda",
+      "padreId": 1,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"DesarrolloSustentable",
+      "name": "Desarrollo Sustentable",
+      "padreId": 554,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"Contraloria",
+      "name": "Contraloria",
+      "padreId": 1424,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"Gobierno",
+      "name": "Gobierno",
+      "padreId": 380,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"SeguridadPublica",
+      "name": "Seguridad Pública",
+      "padreId": 356,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"Educacion",
+      "name": "Educación",
+      "padreId": 920,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"TurismoCultura",
+      "name": "Turismo y Cultura",
+      "padreId": 2001,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"DesarrolloAgropecuario",
+      "name": "Desarrollo Agropecuario",
+      "padreId": 310,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"RegistralesCatastrales",
+      "name": "Registrales y Catastrales",
+      "padreId": 1810,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"ProteccionCivil",
+      "name": "Protección Civil",
+      "padreId": 1000005,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"Administracion",
+      "name": "Administración",
+      "padreId": 1000039,
+      "iconURL": "bookmark"
+    },
+    {
+      "dependencia":"ReservasTerritoriales",
+      "name": "Reservas Territoriales",
+      "padreId": 1000055,
+      "iconURL": "bookmark"
+    }
+]
+

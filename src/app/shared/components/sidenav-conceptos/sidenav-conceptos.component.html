@@ -1,0 +1,23 @@
+<mat-sidenav [ngStyle]="{width: '250px'}" #sidenav mode="push" >
+
+  <mat-toolbar color="primary" [class.mat-elevation-z5]="true">
+    <span>Menú</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-nav-list>
+    <mat-list-item>
+      <div matListItemTitle> Opcion Uno</div>
+      <mat-icon matListItemIcon></mat-icon>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <div matListItemTitle> Opcion Dos</div>
+      <mat-icon matListItemIcon></mat-icon>
+    </mat-list-item>
+  </mat-nav-list>
+
+</mat-sidenav>
