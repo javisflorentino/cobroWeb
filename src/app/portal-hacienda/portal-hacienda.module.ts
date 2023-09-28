@@ -8,6 +8,7 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
 import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-
     PortalHaciendaRoutingModule,
     SharedModule,
     MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class PortalHaciendaModule { }

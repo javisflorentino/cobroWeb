@@ -1,1 +1,49 @@
-<p>pago-refrendo-page works!</p>
+<ng-template #loading ngIf="oficinasArr">
+  <div class="alert alert-info">
+    Espere por favor !!
+  </div>
+</ng-template>
+
+<div class="col md:col-6 md:col-offset-3 md:mt-4">
+  <h3>Cálculo de Costos</h3>
+  <small>Refrendo Vehicular</small>
+
+  <mat-divider class="mb-2"></mat-divider>
+
+  <div class="col-12">
+    <mat-card>
+      <mat-card-content>
+        <div class="example-container">
+          <form action="" [formGroup]="refrendoForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="col-12 ">
+              <mat-label>Oficina del trámite</mat-label>
+              <mat-select formControlName="oficina" required>
+                <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="example-form-fields">
+              <mat-form-field class="">
+                <mat-label>No Placa</mat-label>
+                <input matInput formControlName="placa" required type="text" name="" id="">
+              </mat-form-field>
+
+              <mat-form-field class="" hintLabel="5 últimos caracteres de la serie">
+                <mat-label>Serie Vehicular</mat-label>
+                <input matInput formControlName="serie" required #serieV type="text" name="" maxlength="5" >
+                <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="flex justify-content-between">
+              <button mat-flat-button >Cancelar</button>
+              <button mat-flat-button color="primary" (click)="onSubmit()">
+                <mat-icon>calculate</mat-icon>
+                Calcular
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

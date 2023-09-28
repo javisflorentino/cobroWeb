@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 
+import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
+import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'smyt-pago-refrendo-page',
   templateUrl: './pago-refrendo-page.component.html',
@@ -8,4 +13,33 @@ import { Component } from '@angular/core';
 })
 export class PagoRefrendoPageComponent {
 
+  public oficinasArr: Oficinas[] = ListaOficinas;
+  public alertMesage: boolean = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  public refrendoForm = new FormGroup({
+    id: new FormControl(''),
+    oficina: new FormControl(),
+    placa: new FormControl(''),
+    serie: new FormControl('')
+  });
+
+  constructor(private _snackBar: MatSnackBar) {}
+
+  onSubmit(): void {
+    if (this.refrendoForm.invalid) {
+      this.alertMesage = true
+      this.openSnackBar('Verifique los campos requeridos');
+      return;
+    }
+    console.log(this.refrendoForm)
+  }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5000
+    });
+  }
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Oficinas de la Secretaría de Movilidad y Transporte"
+  },
+  {
+    "id": 2,
+    "nombre": "Delegación Yautepec"
+  },
+  {
+    "id": 3,
+    "nombre": "Delegación Cuautla"
+  },
+  {
+    "id": 4,
+    "nombre": "Delegación Jonacatepec"
+  },
+  {
+    "id": 5,
+    "nombre": "Delegación Xochitepec"
+  },
+  {
+    "id": 6,
+    "nombre": "Delegación Jojutla"
+  },
+  {
+    "id": 7,
+    "nombre": "Delegación Jiutepec"
+  },
+  {
+    "id": 8,
+    "nombre": "Delegación Puente de Ixtla"
+  },
+  {
+    "id": 9,
+    "nombre": "Macromódulo de Cuernavaca"
+  }
+]
