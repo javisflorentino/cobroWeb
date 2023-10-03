@@ -1,0 +1,55 @@
+<div class="grid flex">
+  <div class="col-12">
+    <h3>Cálculo de Costos</h3>
+  <small>Refrendo Vehicular</small>
+  </div>
+
+  <div class="col-12">
+    <mat-divider class="mb-2"></mat-divider>
+  </div>
+
+  <div class="col-8">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="myForm">
+          <form-alta-vehiculo ></form-alta-vehiculo>
+          <div class="flex justify-content-between">
+            <button
+              mat-flat-button color="warn"
+            >
+              Borrar
+            </button>
+            <span></span>
+            <button mat-flat-button color="primary" (click)="calcularPago()">
+                <mat-icon>save</mat-icon>
+                Calcular
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-4">
+    <mat-card class="">
+      <mat-card-content >
+        <mat-list>
+          <mat-list-item>1</mat-list-item>
+          <mat-list-item>2</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <span>Valid</span>
+    <pre>{{ myForm.value | json }}</pre>
+  </div>
+</div>
+
+
+
+
+
+

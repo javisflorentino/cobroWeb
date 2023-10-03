@@ -6,12 +6,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .spacer {
   flex: 1 1 auto;
 }
+.example-container mat-form-field {
+  width: 40%;
+}
 .example-container mat-form-field + mat-form-field {
   margin-left: 8px;
-}
-
-.example-container mat-form-field {
-  width: 100%;
 }
 
 .example-container form {

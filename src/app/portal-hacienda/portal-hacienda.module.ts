@@ -9,6 +9,8 @@ import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
 import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormAltaVehiculoComponent } from './components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
+import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo-page/alta-vehiculo-nuevo-page.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     LayoutPortalPagosComponent,
     CardsDependenciasComponent,
     MenuImagePipe,
-    PagoRefrendoPageComponent
+    PagoRefrendoPageComponent,
+    FormAltaVehiculoComponent,
+    AltaVehiculoNuevoPageComponent
   ],
   imports: [
     CommonModule,
