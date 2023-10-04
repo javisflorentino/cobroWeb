@@ -18,7 +18,10 @@ export class FormAltaVehiculoComponent implements OnInit {
     console.log('Se dispara FormAltaVhiculo');
     this.myFormShared = this.fb.group({
       oficina_tramite: ['',[Validators.required]],
-      //tipo_vehiculo: ['',[Validators.required]]
+      tipo_vehiculo: ['',[Validators.required]],
+      no_serie: ['',[Validators.required]],
+      no_serie2: ['',[Validators.required]],
+      fecha_factura: [new Date(),Validators.required]
     });
   }
 
