@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "descripcion": "Automóvil"
+  },
+  {
+    "id": 2,
+    "descripcion": "Camión"
+  },
+  {
+    "id": 4,
+    "descripcion": "Minusválidos"
+  },
+  {
+    "id": 5,
+    "descripcion": "Remolque"
+  },
+  {
+    "id": 6,
+    "descripcion": "Demostración"
+  },
+  {
+    "id": 7,
+    "descripcion": "Auto antiguo"
+  },
+  {
+    "id": 8,
+    "descripcion": "Motocicletas"
+  },
+  {
+    "id": 9,
+    "descripcion": "Patrulla"
+  },
+  {
+    "id": 13,
+    "descripcion": "Ambulancia"
+  },
+  {
+    "id": 23,
+    "descripcion": "Bomberos"
+  }
+]

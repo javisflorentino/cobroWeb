@@ -17,6 +17,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {  MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   exports: [
@@ -36,8 +38,14 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSnackBarModule,
     MatToolbarModule,
     MatDatepickerModule,
-    MatNativeDateModule
-  ]
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule
+  ],
+  providers: [{
+    provide: MAT_RADIO_DEFAULT_OPTIONS,
+    useValue: { color: 'primary' },
+}]
 })
 export class MaterialModule { }
 

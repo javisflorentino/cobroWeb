@@ -66,6 +66,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   actionList(item: string, concept: string) {
     this.nameConcept.emit(concept);
     this.changSidenav.toggle();
+    localStorage.setItem('concept',concept);
     this.router.navigate(['/pagos/'+item]);
   }
 

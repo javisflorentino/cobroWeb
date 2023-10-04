@@ -47,3 +47,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}

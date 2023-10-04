@@ -2,7 +2,7 @@
   Renderiza los componentes estaticos y compartidos Sidenav y Toolbar
   Renderiza los componentes definidos como rutas
 */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-layout-portal-pagos',

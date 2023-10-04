@@ -5,7 +5,7 @@ import { Messages } from 'src/app/portal-hacienda/interface/portal-message.inter
 import { SmytService } from 'src/app/portal-hacienda/services/smyt/smyt.service';
 
 @Component({
-  selector: 'app-alta-vehiculo-nuevo-page',
+  selector: 'smyt-alta-vehiculo-nuevo-page',
   templateUrl: './alta-vehiculo-nuevo-page.component.html',
   styles: [
   ]
@@ -16,6 +16,8 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
   public messages: Messages[] = [];
 
+  public conceptTitle: string = '';
+
   //Se obtiene una referencia a todo el componente que se renderizó en este componente
   @ViewChild(FormAltaVehiculoComponent)
   private childComponent!: FormAltaVehiculoComponent;
@@ -25,13 +27,14 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   // Se implementó para la carga del formulario FormAltaVehiculoComponent
   ngAfterViewInit(): void {
     setTimeout( () => {
-    this.myForm.addControl('oficina_tramite',this.childComponent.myFormShared);
-    this.childComponent.myFormShared.setParent(this.myForm);
+      this.myForm.addControl('oficina_tramite',this.childComponent.myFormShared);
+      this.childComponent.myFormShared.setParent(this.myForm);
     });
     //form.setParent(this.form);
   }
 
   ngOnInit(): void {
+    this.conceptTitle = localStorage.getItem('concept')!;
     this.smytService.getMessages()
       .subscribe( message => {
         this.messages = message;

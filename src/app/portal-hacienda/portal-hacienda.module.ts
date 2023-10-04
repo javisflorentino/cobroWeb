@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormAltaVehiculoComponent } from './components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo-page/alta-vehiculo-nuevo-page.component';
 import { MessagesComponent } from './components/smyt/messages/messages.component';
+import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado-page/alta-vehiculo-usado-page.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { MessagesComponent } from './components/smyt/messages/messages.component
     PagoRefrendoPageComponent,
     FormAltaVehiculoComponent,
     AltaVehiculoNuevoPageComponent,
-    MessagesComponent
+    MessagesComponent,
+    AltaVehiculoUsadoPageComponent
   ],
   imports: [
     CommonModule,
