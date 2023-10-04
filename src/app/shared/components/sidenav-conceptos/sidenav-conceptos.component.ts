@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { MenuService } from '../../services/menu.service';
 import { Conceptos } from '../../interfaces/shared-conceptos.interface';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,26 +18,53 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   @Input()
   public reciveActionSideNav!:number;
 
+  @Input()
+  public eraseLocalStor: boolean = false;
+
+
   @ViewChild('sidenav')
   public changSidenav!: MatSidenav;
 
   public itemsConceptos: Conceptos[] = [];
 
-  constructor( private menuService: MenuService ) {}
+  constructor( private menuService: MenuService, private router: Router ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('OnChange Sidenav')
     if(this.changSidenav) {
       this.changSidenav.toggle();
+      if (this.eraseLocalStor ) {
+        localStorage.clear();
+        this.itemsConceptos = [];
+        this.eraseLocalStor = false;
+        this.router.navigate(['/pagos']);
+        return;
+      }
       this.buildMenu();
     }
   }
   ngOnInit(): void {
-    console.log();
+    console.log('Sidenav OnInit');
   }
 
   buildMenu() {
+    if ( this.menuService.conceptoStorage.length > 0 ) {
+      console.log('Sidenav OnInit Concept: ' + this.menuService.conceptoStorage);
+      this.itemsConceptos = this.menuService.conceptoStorage;
+      return ;
+    }
     this.menuService.requestConceptos(this.reciveActionSideNav)
       .subscribe(conceptos => this.itemsConceptos = conceptos)
+  }
+
+  destroyLocalStorAndArray() {
+    localStorage.clear();
+    this.itemsConceptos=[];
+  }
+
+  actionList(item: string) {
+    this.changSidenav.toggle();
+    this.router.navigate(['/pagos/'+item]);
   }
 
 }

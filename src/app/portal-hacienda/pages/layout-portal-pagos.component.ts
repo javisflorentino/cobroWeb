@@ -10,6 +10,7 @@ export class LayoutPortalPagosComponent {
 
   /* Se enviara a shared-sidenav-conceptos*/
   public sendActionSidenav: number = 0;
+  public sendActEraseLocalStor: boolean = false;
 
   public valCard: number = 0;
 
@@ -24,5 +25,9 @@ export class LayoutPortalPagosComponent {
   reciveValCard(val:number) {
     console.log('Se recibe el valor de la tarjeta: ' + val);
     this.sendActionSidenav = val;
+  }
+
+  redirectHome(event: boolean): void {
+    this.sendActEraseLocalStor = true;
   }
 }

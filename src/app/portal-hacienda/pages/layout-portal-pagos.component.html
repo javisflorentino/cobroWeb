@@ -1,8 +1,8 @@
 <mat-sidenav-container fullscreen>
 
-  <shared-sidenav-conceptos  [reciveActionSideNav]="sendActionSidenav"></shared-sidenav-conceptos>
+  <shared-sidenav-conceptos  [reciveActionSideNav]="sendActionSidenav" [eraseLocalStor]="sendActEraseLocalStor"></shared-sidenav-conceptos>
 
-  <shared-toolbar (openOrCloseSidenav)="actionOnSidenav"></shared-toolbar>
+  <shared-toolbar (openOrCloseSidenav)="actionOnSidenav" (closeLocalStor)="redirectHome($event)"></shared-toolbar>
 
   <div class="container p-2">
     <router-outlet></router-outlet>
