@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -16,10 +16,15 @@ export class SharedToolbarComponent {
   @Output()
   private closeLocalStor = new EventEmitter<boolean>();
 
+  @Input()
+  public receiveNameDep: string = '';
+
+  @Input()
+  public nameConceptToolbar: string = '';
+
   constructor( private router: Router) {}
 
   sidenavAction(): void {
-    console.log('Action Shared Tooltip')
     this.openOrCloseSidenav.emit(true);
   }
 

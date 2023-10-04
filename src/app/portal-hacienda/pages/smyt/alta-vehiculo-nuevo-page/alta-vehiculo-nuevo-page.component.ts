@@ -16,11 +16,13 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
   public messages: Messages[] = [];
 
+  //Se obtiene una referencia a todo el componente que se renderizó en este componente
   @ViewChild(FormAltaVehiculoComponent)
   private childComponent!: FormAltaVehiculoComponent;
 
   constructor( private fb: FormBuilder, private smytService: SmytService ) {}
 
+  // Se implementó para la carga del formulario FormAltaVehiculoComponent
   ngAfterViewInit(): void {
     setTimeout( () => {
     this.myForm.addControl('oficina_tramite',this.childComponent.myFormShared);
@@ -28,6 +30,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     });
     //form.setParent(this.form);
   }
+
   ngOnInit(): void {
     this.smytService.getMessages()
       .subscribe( message => {

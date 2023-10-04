@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { MenuService } from '../../services/menu.service';
@@ -21,6 +21,10 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   @Input()
   public eraseLocalStor: boolean = false;
 
+  // Envia el valor al padre layout-portal-pagos
+  @Output()
+  private nameConcept = new EventEmitter<string>();
+
 
   @ViewChild('sidenav')
   public changSidenav!: MatSidenav;
@@ -30,10 +34,10 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   constructor( private menuService: MenuService, private router: Router ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('OnChange Sidenav')
+
     if(this.changSidenav) {
       this.changSidenav.toggle();
-      if (this.eraseLocalStor ) {
+      if ( this.eraseLocalStor ) {
         localStorage.clear();
         this.itemsConceptos = [];
         this.eraseLocalStor = false;
@@ -43,13 +47,10 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       this.buildMenu();
     }
   }
-  ngOnInit(): void {
-    console.log('Sidenav OnInit');
-  }
+  ngOnInit(): void { }
 
   buildMenu() {
     if ( this.menuService.conceptoStorage.length > 0 ) {
-      console.log('Sidenav OnInit Concept: ' + this.menuService.conceptoStorage);
       this.itemsConceptos = this.menuService.conceptoStorage;
       return ;
     }
@@ -62,7 +63,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     this.itemsConceptos=[];
   }
 
-  actionList(item: string) {
+  actionList(item: string, concept: string) {
+    this.nameConcept.emit(concept);
     this.changSidenav.toggle();
     this.router.navigate(['/pagos/'+item]);
   }

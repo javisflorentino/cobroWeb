@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { PortalMenu } from '../../interface/portal-menu.interface';
 
-import ListaDependencias from '../../../../../data/portal_pago_menu.json'
+import ListaDependencias from '../../../../../data/arreglos/portal_pago_menu.json'
 
 import { LayoutPortalPagosComponent } from '../layout-portal-pagos.component'
 
@@ -12,6 +12,7 @@ import { LayoutPortalPagosComponent } from '../layout-portal-pagos.component'
   ]
 })
 export class CardsDependenciasComponent {
+
   public cardsArr: PortalMenu[] = ListaDependencias;
 
   constructor( private father: LayoutPortalPagosComponent ){}
@@ -19,6 +20,13 @@ export class CardsDependenciasComponent {
 
   reciveValCard(id: number): void {
     console.log('Cards: ' + id);
-    this.father.reciveValCard(id);
+    let nameDep: string = '';
+    this.cardsArr.forEach(card => {
+      if (card.padreId === id) {
+        nameDep = card.name;
+        return;
+      }
+    })
+    this.father.reciveValCard(id,nameDep);
   }
 }
