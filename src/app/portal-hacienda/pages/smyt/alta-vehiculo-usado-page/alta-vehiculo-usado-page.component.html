@@ -39,26 +39,70 @@
               <input matInput formControlName="centimetros" type="number" >
             </mat-form-field>
           </div>
-          <div class="flex justify-content-between">
-            <button
-              mat-flat-button color="warn"
-            >
-              Borrar
-            </button>
-            <span></span>
-            <button mat-flat-button color="primary" (click)="calcularPago()">
-                <mat-icon>save</mat-icon>
-                Calcular
-            </button>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Pasajeros</mat-label>
+              <input matInput formControlName="pasajeros" type="number" name="" id="">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Valor de la factura</mat-label>
+              <input matInput formControlName="valor_factura" type="number" >
+            </mat-form-field>
           </div>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Placa foranea y/o placa anterior</mat-label>
+              <input matInput formControlName="placa_foranea" type="number" name="" id="">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Pago baja foranea ?</mat-label>
+              <input matInput formControlName="pago_baja_f" type="number" >
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-form-field #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
+              <mat-label>Pagos realizados</mat-label>
+              <input matInput style="display:none" required>
+              <mat-radio-group #group_p class="flex-wrap" *ngFor="let subtask of aniosPago; index as i" formArrayName="pagos">
+                <mat-checkbox [formControlName]="i" >{{subtask.name}}</mat-checkbox>
+
+
+              </mat-radio-group>
+              <mat-hint>Choose something</mat-hint>
+              <mat-error>ERROR °°</mat-error>
+            </mat-form-field>
+          </div>
+
         </form>
       </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions align="end">
+        <button
+          mat-button
+            mat-raised color="warn"
+          >
+          <mat-icon>delete</mat-icon>
+            Borrar
+          </button>
+
+
+          <button mat-button
+            mat-raised color="primary" (click)="calcularPago()">
+              <mat-icon>more_horiz</mat-icon>
+              Calcular
+          </button>
+
+      </mat-card-actions>
     </mat-card>
   </div>
   <div class="col-4">
     <smyt-messages [messageArr]="messages"></smyt-messages>
   </div>
 </div>
+
+Checkbox values: {{ myForm.controls['pagos'].value | json}}
+<br />
+Submitted values: {{ submittedValue | json}}
 
 <div class="row">
   <div class="col">
