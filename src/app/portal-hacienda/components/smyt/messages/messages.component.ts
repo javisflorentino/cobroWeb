@@ -10,4 +10,6 @@ import { Messages } from 'src/app/portal-hacienda/interface/portal-message.inter
 export class MessagesComponent {
   @Input()
   public messageArr: Messages[] = [];
+  @Input()
+  public messageArr_other: Messages[] = [];
 }

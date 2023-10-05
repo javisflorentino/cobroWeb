@@ -1,5 +1,10 @@
 <mat-card class="" *ngFor="let item of messageArr">
   <mat-card-content >
-    <div [ngClass]="{ 'alert': 'Prueba', 'alert-primary': 'error' }"><span [innerHTML]="item.message"></span></div>
+    <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }"><span [innerHTML]="item.message"></span></div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="" *ngFor="let message of messageArr_other">
+  <mat-card-content >
+    <div [ngClass]="{ 'alert': 'Prueba', 'alert-success': 'error' }"><span [innerHTML]="message.message"></span></div>
   </mat-card-content>
 </mat-card>

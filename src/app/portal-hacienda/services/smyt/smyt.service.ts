@@ -15,4 +15,7 @@ export class SmytService {
   getMessages(): Observable<Messages[]> {
     return this.http.get<Messages[]>(this.urlMessage);
   }
+  getMessages_vehicle(): Observable<Messages[]> {
+    return this.http.get<Messages[]>(`${this.urlMessage}_vehicle`);
+  }
 }

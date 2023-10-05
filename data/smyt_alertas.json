@@ -6,5 +6,10 @@
     {
       "message": "<b>Nota: </b> La información presentada es una aproximación del costo de los trámites, tomando como referencia la información capturada en el formulario; Esta puede variar según la validación del personal de la Secretaría de Movilidad y Transporte al momento de realizar su trámite."
     }
+  ],
+  "messages_vehicle": [
+    {
+      "message": "<b>Nota: </b> No hay placas de auto antiguo por el momento, si desea continuar con la póliza de pago no podrá obtener sus placas hasta que haya nuevamente en existencia."
+    }
   ]
 }

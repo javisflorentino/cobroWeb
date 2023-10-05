@@ -2,20 +2,24 @@
   <mat-form-field appearance="outline">
     <mat-label>Oficina del trámite</mat-label>
     <mat-select formControlName="oficina_tramite">
-      <mat-option value="1">PRIMER OFICINA</mat-option>
+      <mat-option value="">--- Seleccione oficina del trámite ---</mat-option>
+      <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
     </mat-select>
+    <mat-error *ngIf="isValidField('oficina_tramite')"> Campo requerido</mat-error>
   </mat-form-field>
   <div class="example-container">
     <mat-form-field appearance="outline">
       <mat-label>Tipo de vehículo</mat-label>
-      <mat-select formControlName="tipo_vehiculo">
-        <mat-option value="2"> PRMER TIPO</mat-option>
+      <mat-select formControlName="tipo_vehiculo" (valueChange)="changeFielVehicleType($event)">
+        <mat-option value="">--- Seleccione Tipo de Vehículo ---</mat-option>
+        <mat-option *ngFor="let tipo of tipoVehiculoArr" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
       </mat-select>
+      <mat-error *ngIf="isValidField('tipo_vehiculo')"> Campo requerido</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Fecha factura</mat-label>
+      <mat-label>Fecha factura (MM/DD/YYYY)</mat-label>
       <input matInput [matDatepicker]="dpff" formControlName="fecha_factura">
-      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-error *ngIf="isValidField('tipo_vehiculo')"> Campo requerido con formato MM/DD/YYYY</mat-error>
       <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
       <mat-datepicker #dpff disabled="false"></mat-datepicker>
     </mat-form-field>
@@ -24,11 +28,13 @@
     <mat-form-field appearance="outline">
       <mat-label>No de serie Vehicular</mat-label>
       <input matInput type="text" formControlName="no_serie">
+      <mat-error *ngIf="isValidField('no_serie')"> Campo requerido</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Confirmar No de serie Vehicular</mat-label>
       <input matInput type="text" formControlName="no_serie2">
+      <mat-error *ngIf="isValidField('no_serie2')"> Campo requerido e igual al No de serie</mat-error>
     </mat-form-field>
 </div>
 
