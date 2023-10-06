@@ -5,6 +5,7 @@ import { Error404PageComponent } from './pages/error404-page/error404-page.compo
 import { MaterialModule } from '../material/material.module';
 import { SharedToolbarComponent } from './components/shared-toolbar/shared-toolbar.component';
 import { RouterModule } from '@angular/router';
+import { TablaCalculoConceptosComponent } from './components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 
 
 
@@ -12,7 +13,8 @@ import { RouterModule } from '@angular/router';
   declarations: [
     SidenavConceptosComponent,
     Error404PageComponent,
-    SharedToolbarComponent
+    SharedToolbarComponent,
+    TablaCalculoConceptosComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     SidenavConceptosComponent,
-    SharedToolbarComponent
+    SharedToolbarComponent,
+    TablaCalculoConceptosComponent
   ]
 })
 export class SharedModule { }

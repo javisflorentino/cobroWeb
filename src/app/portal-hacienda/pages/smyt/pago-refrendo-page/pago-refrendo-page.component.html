@@ -19,6 +19,7 @@
               <mat-label>Oficina del trámite</mat-label>
               <mat-select formControlName="oficina" required>
                 <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
+
               </mat-select>
             </mat-form-field>
             <div class="example-form-fields">

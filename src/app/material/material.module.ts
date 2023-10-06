@@ -19,6 +19,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {  MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
+
 
 @NgModule({
   exports: [
@@ -40,7 +42,8 @@ import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/rad
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTableModule
   ],
   providers: [{
     provide: MAT_RADIO_DEFAULT_OPTIONS,

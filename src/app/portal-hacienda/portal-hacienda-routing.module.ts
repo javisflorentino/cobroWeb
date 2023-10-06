@@ -5,6 +5,7 @@ import { CardsDependenciasComponent } from './pages/cards-dependencias/cards-dep
 import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
 import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo-page/alta-vehiculo-nuevo-page.component';
 import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado-page/alta-vehiculo-usado-page.component';
+import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'smyt-altavehiculo-usado',
         component: AltaVehiculoUsadoPageComponent
+      },
+      {
+        path: 'tabla-conceptos',
+        component: TablaCalculoConceptosComponent
       },
       {
         path: '**',

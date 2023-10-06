@@ -4,6 +4,8 @@ import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite
 import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ValidatorsService } from '../../../../shared/services/validators.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'smyt-pago-refrendo-page',
@@ -25,7 +27,14 @@ export class PagoRefrendoPageComponent {
     serie: new FormControl('')
   });
 
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(
+    private _snackBar: MatSnackBar,
+    private validatorsService: ValidatorsService,
+    private router: Router ) {}
+
+  isValidField() {
+
+  }
 
   onSubmit(): void {
     if (this.refrendoForm.invalid) {
@@ -34,6 +43,7 @@ export class PagoRefrendoPageComponent {
       return;
     }
     console.log(this.refrendoForm)
+    this.router.navigate(['/pagos/tabla-conceptos']);
   }
   openSnackBar(message: string) {
     this._snackBar.open(message, '', {
