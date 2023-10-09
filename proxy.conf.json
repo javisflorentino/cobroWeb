@@ -1,0 +1,8 @@
+{
+  "/serviciosHacienda/*": {
+      "target": "https://app.hacienda.morelos.gob.mx",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  }
+}
