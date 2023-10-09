@@ -1,0 +1,6 @@
+{
+  "/posts": {
+      "target": "https://app.hacienda.morelos.gob.mx/serviciosHacienda",
+      "secure": false
+  }
+}

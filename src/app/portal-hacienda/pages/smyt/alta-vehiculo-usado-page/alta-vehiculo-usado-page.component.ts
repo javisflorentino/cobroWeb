@@ -4,7 +4,7 @@ import { ThemePalette } from '@angular/material/core';
 import { Subscribable, Subscription } from 'rxjs';
 import { FormAltaVehiculoComponent } from 'src/app/portal-hacienda/components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
-import { SmytService } from 'src/app/portal-hacienda/services/smyt/smyt.service';
+import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { TipoVehiculo } from '../../../interface/portal-tipovehiculo.interface';
 import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.interfacce';

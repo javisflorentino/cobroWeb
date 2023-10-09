@@ -29,7 +29,7 @@ const routes: Routes = [
         component: AltaVehiculoUsadoPageComponent
       },
       {
-        path: 'tabla-conceptos',
+        path: 'tabla-conceptos/:idConcepto',
         component: TablaCalculoConceptosComponent
       },
       {

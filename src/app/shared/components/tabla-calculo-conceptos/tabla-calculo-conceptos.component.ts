@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 
 
 export interface Transaction {
@@ -12,7 +13,7 @@ export interface Transaction {
   styles: [
   ]
 })
-export class TablaCalculoConceptosComponent {
+export class TablaCalculoConceptosComponent implements OnInit {
   displayedColumns = ['item', 'cost'];
 
   transactions: Transaction[] = [
@@ -38,6 +39,19 @@ WS_SH1 / Hdes22G*_106
 		TOTAL
 					CONTINUAR -> (DATOS DEL CONTRIBUYENTE Y GENERAR POLIZA) */
   /** Gets the total cost of all transactions. */
+
+  constructor(private smyPagosService: SmyCalculoPagosService) {}
+
+  ngOnInit(): void {
+
+    console.log('tabla-calculo-conceptos');
+    this.smyPagosService.getCalculoPagos({
+        "tramite": 1,
+        "placa":"PXN4997",
+        "numeroSerie":"07992",
+        "obtenerContribuyente":true
+    }).subscribe(result => console.log(result));
+  }
   getTotalCost() {
     return this.transactions.map(t => t.cost).reduce((acc, value) => acc + value, 0);
   }

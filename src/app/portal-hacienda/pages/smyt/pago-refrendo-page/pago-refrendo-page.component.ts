@@ -43,7 +43,7 @@ export class PagoRefrendoPageComponent {
       return;
     }
     console.log(this.refrendoForm)
-    this.router.navigate(['/pagos/tabla-conceptos']);
+    this.router.navigate(['/pagos/tabla-conceptos',1]);
   }
   openSnackBar(message: string) {
     this._snackBar.open(message, '', {

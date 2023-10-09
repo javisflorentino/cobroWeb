@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Messages } from '../../interface/portal-message.interface';
+import { Messages } from '../interface/portal-message.interface';
 
 @Injectable({
   providedIn: 'root'

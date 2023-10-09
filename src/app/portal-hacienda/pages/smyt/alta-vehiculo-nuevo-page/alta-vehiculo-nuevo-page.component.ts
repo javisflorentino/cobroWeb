@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, Output, ViewChild } from '@angular/co
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormAltaVehiculoComponent } from 'src/app/portal-hacienda/components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
-import { SmytService } from 'src/app/portal-hacienda/services/smyt/smyt.service';
+import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 
 @Component({
   selector: 'smyt-alta-vehiculo-nuevo-page',
