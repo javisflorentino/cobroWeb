@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, filter, of, tap } from 'rxjs';
 import { TopLevel } from '../interfaces/calculo-conceptos';
 import { DatosTramite } from '../interfaces/datos-tramite.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,38 +15,25 @@ export class SmyCalculoPagosService {
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
-  getCalculoPagos(datosTramite:DatosTramite): Observable<TopLevel[]> {
+  getCalculoPagos(datosTramite:DatosTramite): Observable<Data> {
 
-    const headers = new HttpHeaders();
+    let headers = new HttpHeaders();
 
-    //headers_object.append('Access-Control-Allow-Origin', 'Origin, X-Requested-With, Content-Type, Accept');
-    //headers_object.append("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
-    //headers_object.append('Access-Control-Allow-Methods',"POST");
-    headers.append('Content-Type', 'application/json; charset=utf-8');
-    //this.headers_object.append('Accept','application/json');
-    headers.set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
 
-
-
-    const httpOptions = {
-      headers: headers
-    };
-
-
-    const updateData = { tramite: 1, placa: 'PXN4997', numeroSerie: '07992', obtenerContribuyente:true };
-
-    const requestOptions = {
+    /*const requestOptions = {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(updateData),
       redirect: 'follow'
-    };
+    };*/
 
-    console.log("smyt_calculo-pago-service" + requestOptions.body);
-    return this.http.post<TopLevel[]>(`${this.urlSmytParticular}`,requestOptions)
+    return this.http.post<Data>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
       .pipe(
-        tap(arrTramite => console.log(arrTramite)),
-        catchError(error => of([]))
+
+        filter(({data,success}) => success?data:[]),
+        catchError(error => of([])),
       );
   }
 }

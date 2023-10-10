@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
+import { Data } from '../../interfaces/calculo-conceptos';
+import { map, switchMap, tap } from 'rxjs';
 
 
 export interface Transaction {
@@ -14,7 +16,7 @@ export interface Transaction {
   ]
 })
 export class TablaCalculoConceptosComponent implements OnInit {
-  displayedColumns = ['item', 'cost'];
+  displayedColumns = ['item','cost'];
 
   transactions: Transaction[] = [
     {item: 'Beach ball', cost: 4},
@@ -23,7 +25,7 @@ export class TablaCalculoConceptosComponent implements OnInit {
     {item: 'Sunscreen', cost: 4},
     {item: 'Cooler', cost: 25},
     {item: 'Swim suit', cost: 15},
-  ];
+  ]
 /*
 https://app.hacienda.morelos.gob.mx/serviciosHacienda/smyt/particular/
 WS_SH1 / Hdes22G*_106
@@ -44,15 +46,20 @@ WS_SH1 / Hdes22G*_106
 
   ngOnInit(): void {
 
-    console.log('tabla-calculo-conceptos');
     this.smyPagosService.getCalculoPagos({
         "tramite": 1,
         "placa":"PXN4997",
         "numeroSerie":"07992",
         "obtenerContribuyente":true
-    }).subscribe(result => console.log(result));
+    })
+      .pipe(
+        tap()
+      )
+      .subscribe(result => {
+
+      });
   }
   getTotalCost() {
-    return this.transactions.map(t => t.cost).reduce((acc, value) => acc + value, 0);
+    return ;//this.transactions.map(t => t.cost).reduce((acc, value) => acc + value, 0);
   }
 }
