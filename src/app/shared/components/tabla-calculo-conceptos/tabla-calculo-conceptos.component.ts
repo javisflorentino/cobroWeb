@@ -1,31 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
-import { Data } from '../../interfaces/calculo-conceptos';
-import { map, switchMap, tap } from 'rxjs';
+import { Concepto, Data, TopLevel } from '../../interfaces/calculo-conceptos';
+import { Router } from '@angular/router';
 
-
-export interface Transaction {
-  item: string;
-  cost: number;
-}
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
   templateUrl: './tabla-calculo-conceptos.component.html',
-  styles: [
-  ]
+  styleUrls: ['./tabla-calculo-conceptos.component.css']
 })
 export class TablaCalculoConceptosComponent implements OnInit {
-  displayedColumns = ['item','cost'];
+  public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
+  //displayedColumns = ['item', 'cost'];
 
-  transactions: Transaction[] = [
-    {item: 'Beach ball', cost: 4},
-    {item: 'Towel', cost: 5},
-    {item: 'Frisbee', cost: 2},
-    {item: 'Sunscreen', cost: 4},
-    {item: 'Cooler', cost: 25},
-    {item: 'Swim suit', cost: 15},
-  ]
+
+  public conceptos: Concepto[] = [];
+
+  public total: number = 0;
+
+  public selectedRowIndex = -1;
+
 /*
 https://app.hacienda.morelos.gob.mx/serviciosHacienda/smyt/particular/
 WS_SH1 / Hdes22G*_106
@@ -42,24 +36,47 @@ WS_SH1 / Hdes22G*_106
 					CONTINUAR -> (DATOS DEL CONTRIBUYENTE Y GENERAR POLIZA) */
   /** Gets the total cost of all transactions. */
 
-  constructor(private smyPagosService: SmyCalculoPagosService) {}
+  /*
+  {
+        "tramite": 1,
+        "placa":"RBK258A",
+        "numeroSerie":"82887",
+        "obtenerContribuyente":true
+    }
+  */
+  private conceptoPago!: TopLevel;
+  constructor(
+    private smyPagosService: SmyCalculoPagosService,
+    private router:Router
+    ) {}
 
   ngOnInit(): void {
 
     this.smyPagosService.getCalculoPagos({
-        "tramite": 1,
-        "placa":"PXN4997",
-        "numeroSerie":"07992",
-        "obtenerContribuyente":true
-    })
-      .pipe(
-        tap()
-      )
+      "tramite": 1,
+    "placa": "PXN4997",
+    "numeroSerie": "07992",
+    "obtenerContribuyente":true
+  })
       .subscribe(result => {
-
+        console.log(result.data.total);
+        this.conceptoPago = result;
+        if(result.success && result.data.conceptos.length>0) {
+          this.conceptos = result.data.conceptos;
+          console.log(this.conceptos)
+          this.total = result.data.total;
+          localStorage.setItem('contribuyente',JSON.stringify([result.data.contribuyente,result.data.domicilio]));
+        }
       });
   }
   getTotalCost() {
-    return ;//this.transactions.map(t => t.cost).reduce((acc, value) => acc + value, 0);
+    return this.conceptos.map(t => t.importe).reduce((acc, value) => acc + value, 0);;
+  }
+  selectRow(event:any) {
+    this.selectedRowIndex = event.id;
+    console.log(event)
+  }
+  datosContribuyente():void {
+    this.router.navigate(['pagos/datos-contribuyente']);
   }
 }

@@ -1,0 +1,135 @@
+<p>datos-contribuyente works!</p>
+
+<div class="grid flex">
+  <div class="col-12">
+    <mat-card>
+      <mat-card-header class="mb-3">
+        <mat-card-title></mat-card-title>
+        <mat-card-subtitle>Datos del Contribuyente</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="mt-3">
+        <form [formGroup]="myFormContribuyente" >
+          <div class="example-container">
+            <mat-form-field #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
+              <mat-label>Tipo de Persona</mat-label>
+              <input matInput style="display:none" required>
+              <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap" >
+                <mat-radio-button #buttons_c_tp value="F">
+                  <span class="wrap-label-text">Física</span>
+                </mat-radio-button>
+                <mat-radio-button #buttons_pf value="M">
+                  <span class="wrap-label-text">Moral</span>
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-form-field>
+            <ng-template #razonsocial>
+              <mat-form-field appearance="outline">
+                <mat-label>Razon Social</mat-label>
+                <input matInput type="text" formControlName="razonSocial">
+                <mat-error *ngIf="isValidField('razonSocial')"> Campo requerido</mat-error>
+              </mat-form-field>
+            </ng-template>
+
+          </div>
+
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput type="text" formControlName="nombre">
+              <mat-error *ngIf="isValidField('nombre')"> Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Apellido Paterno</mat-label>
+              <input matInput type="text" formControlName="primerApellido">
+              <mat-error *ngIf="isValidField('apellido_p')"> Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Apellido Materno</mat-label>
+              <input matInput type="text" formControlName="segundoApellido">
+              <mat-error *ngIf="isValidField('apellido_m')"> Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>RFC</mat-label>
+              <input matInput formControlName="rfc" type="text" name="" id="">
+              <mat-error *ngIf="isValidField('rfc')">Campo requerido y alfanumérico</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>CURP</mat-label>
+              <input matInput formControlName="curp" type="text" >
+              <mat-error *ngIf="isValidField('curp')">Campo requerido y alfanumérico</mat-error>
+            </mat-form-field>
+
+          </div>
+          <div formGroupName="domicilio">
+            <div class="example-container">
+              <mat-form-field appearance="outline" >
+                <mat-label>Calle</mat-label>
+                <input matInput form formControlName="calle" type="text" >
+                <mat-error *ngIf="isValidField('curp')">Campo requerido</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>No Exterior</mat-label>
+                <input matInput formControlName="numeroExterior" type="number">
+                <mat-error *ngIf="isValidField('no_ext')">Campo requerido y numérico</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>No Interior</mat-label>
+                <input matInput formControlName="numeroInterior" type="text">
+              </mat-form-field>
+
+            </div>
+            <div class="example-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Colonia</mat-label>
+                <input matInput formControlName="colonia" type="text" >
+                <mat-error *ngIf="isValidField('colonia')">Campo requerido </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Código Postal</mat-label>
+                <input matInput formControlName="codigoPostal" type="text">
+                <mat-error *ngIf="isValidField('codigoPostal')">Campo requerido y numérico</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Municipio</mat-label>
+                <mat-select formControlName="municipio">
+                  <mat-option value="">--- Seleccione estado ---</mat-option>
+                  <mat-option >Cuernavaca</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isValidField('municipio')"> Campo requerido</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+        </form>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions align="end">
+        <button mat-button mat-raised color="warn">
+          <mat-icon>delete</mat-icon>
+            Cancelar Trámite
+        </button>
+        <button mat-button mat-raised color="primary" (click)="generarPoliza()">
+          <mat-icon>more_horiz</mat-icon>
+            Generar Póliza
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<code>
+{{contribuyenteArr | json}}
+</code>

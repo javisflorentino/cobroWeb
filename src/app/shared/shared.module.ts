@@ -6,6 +6,8 @@ import { MaterialModule } from '../material/material.module';
 import { SharedToolbarComponent } from './components/shared-toolbar/shared-toolbar.component';
 import { RouterModule } from '@angular/router';
 import { TablaCalculoConceptosComponent } from './components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
+import { DatosContribuyenteComponent } from './components/datos-contribuyente/datos-contribuyente.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -14,12 +16,14 @@ import { TablaCalculoConceptosComponent } from './components/tabla-calculo-conce
     SidenavConceptosComponent,
     Error404PageComponent,
     SharedToolbarComponent,
-    TablaCalculoConceptosComponent
+    TablaCalculoConceptosComponent,
+    DatosContribuyenteComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
     SidenavConceptosComponent,

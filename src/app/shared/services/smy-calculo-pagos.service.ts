@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, filter, of, tap } from 'rxjs';
+import { Observable, catchError, filter, map, of, tap } from 'rxjs';
 import { TopLevel } from '../interfaces/calculo-conceptos';
 import { DatosTramite } from '../interfaces/datos-tramite.interface';
 import { ActivatedRoute, Data } from '@angular/router';
@@ -15,7 +15,7 @@ export class SmyCalculoPagosService {
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
-  getCalculoPagos(datosTramite:DatosTramite): Observable<Data> {
+  getCalculoPagos(datosTramite:DatosTramite): Observable<TopLevel> {
 
     let headers = new HttpHeaders();
 
@@ -29,11 +29,6 @@ export class SmyCalculoPagosService {
       redirect: 'follow'
     };*/
 
-    return this.http.post<Data>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
-      .pipe(
-
-        filter(({data,success}) => success?data:[]),
-        catchError(error => of([])),
-      );
+    return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers});
   }
 }

@@ -1,17 +1,77 @@
 <section class="example-container mat-elevation-z8" tabindex="0">
-  <table mat-table [dataSource]="transactions">
+  <table mat-table [dataSource]="conceptos">
     <!-- Item Column -->
-    <ng-container matColumnDef="item">
-      <th mat-header-cell *matHeaderCellDef> Item </th>
-      <td mat-cell *matCellDef="let transaction"> {{transaction.item}} </td>
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descricpion </th>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.descripcion}} </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <div class="example-button-row">
+          <button mat-stroked-button color="warn">Cancelar</button>
+          <button mat-stroked-button color="primary" (click)="datosContribuyente()">Continuar</button>
+        </div>
+      </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="ejercicioFiscal">
+      <th mat-header-cell *matHeaderCellDef> Ejercicio </th>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.ejercicioFiscal}} </td>
+      <td mat-footer-cell *matFooterCellDef>  </td>
+
+    </ng-container>
+    <ng-container matColumnDef="importe">
+      <th mat-header-cell *matHeaderCellDef> Costo Unitario </th>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.importe | currency:'MXN':'symbol-narrow':'1.2-2'}} </td>
+      <td mat-footer-cell *matFooterCellDef>  </td>
+
+    </ng-container>
+    <ng-container matColumnDef="cantidad">
+      <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.cantidad | number}} </td>
+      <td mat-footer-cell *matFooterCellDef> Total </td>
+
+    </ng-container>
+    <ng-container matColumnDef="subtotal">
+      <th mat-header-cell *matHeaderCellDef> Subtotal </th>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.importe | currency:'MXN':'symbol-narrow':'1.4-4'}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="selectRow(row)"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+  </table>
+</section>
+
+<!--
+
+  <section class="example-container mat-elevation-z8" tabindex="0">
+  <table mat-table [dataSource]="conceptos">
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let transaction"> MUAJAJAJA </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ejercicioFiscal">
+      <th mat-header-cell *matHeaderCellDef> Ejercicio </th>
+      <td mat-cell *matCellDef="let transaction"> {{conceptos.ejercicioFiscal| currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="importe">
+      <th mat-header-cell *matHeaderCellDef> Costo Unitario </th>
+      <td mat-cell *matCellDef="let transaction"> {{conceptos.importe| currency}} </td>
       <td mat-footer-cell *matFooterCellDef> Total </td>
     </ng-container>
 
-    <!-- Cost Column -->
-    <ng-container matColumnDef="cost">
-      <th mat-header-cell *matHeaderCellDef> Cost </th>
-      <td mat-cell *matCellDef="let transaction"> {{transaction.cost | currency}} </td>
-      <td mat-footer-cell *matFooterCellDef> {{1234567 | currency}} </td>
+    <ng-container matColumnDef="cantidad">
+      <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+      <td mat-cell *matCellDef="let transaction"> {{conceptos.cantidad| currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="importe">
+      <th mat-header-cell *matHeaderCellDef> Subtotal </th>
+      <td mat-cell *matCellDef="let transaction"> {{conceptos.importe| currency}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{total | currency}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -19,6 +79,7 @@
     <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
   </table>
 </section>
+-->
 
 
 <!--
