@@ -7,6 +7,7 @@ import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo
 import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado-page/alta-vehiculo-usado-page.component';
 import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
+import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
       {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent
+      },
+      {
+        path: 'generar_poliza',
+        component: SharedDatosPolizaComponent
       },
       {
         path: '**',

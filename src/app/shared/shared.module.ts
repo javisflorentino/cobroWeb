@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { TablaCalculoConceptosComponent } from './components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { DatosContribuyenteComponent } from './components/datos-contribuyente/datos-contribuyente.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/shared-datos-poliza.component';
+
 
 
 
@@ -17,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     Error404PageComponent,
     SharedToolbarComponent,
     TablaCalculoConceptosComponent,
-    DatosContribuyenteComponent
+    DatosContribuyenteComponent,
+    SharedDatosPolizaComponent,
   ],
   imports: [
     CommonModule,

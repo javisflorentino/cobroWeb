@@ -65,7 +65,8 @@ WS_SH1 / Hdes22G*_106
           this.conceptos = result.data.conceptos;
           console.log(this.conceptos)
           this.total = result.data.total;
-          localStorage.setItem('contribuyente',JSON.stringify([result.data.contribuyente,result.data.domicilio]));
+          localStorage.setItem('contribuyente',JSON.stringify([result.data.contribuyente,result.data.domicilio,
+            {"lineaDetalle":result.data.lineaDetalle}, {"totalConceptos":result.data.conceptos.length}]));
         }
       });
   }
