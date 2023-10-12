@@ -65,13 +65,15 @@ WS_SH1 / Hdes22G*_106
           this.conceptos = result.data.conceptos;
           console.log(this.conceptos)
           this.total = result.data.total;
-          localStorage.setItem('contribuyente',JSON.stringify([result.data.contribuyente,result.data.domicilio,
-            {"lineaDetalle":result.data.lineaDetalle}, {"totalConceptos":result.data.conceptos.length}]));
+          /*localStorage.setItem('contribuyente',JSON.stringify([result.data.contribuyente,result.data.domicilio,
+            {"lineaDetalle":result.data.lineaDetalle}, {"totalConceptos":result.data.conceptos.length}])
+          );*/
+          localStorage.setItem('contribuyente',JSON.stringify(result));
         }
       });
   }
   getTotalCost() {
-    return this.conceptos.map(t => t.importe).reduce((acc, value) => acc + value, 0);;
+    return this.conceptos.map(t => t.importe).reduce((acc, value) => acc + value, 0);
   }
   selectRow(event:any) {
     this.selectedRowIndex = event.id;

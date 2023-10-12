@@ -7,7 +7,7 @@ import { CardsDependenciasComponent } from './pages/cards-dependencias/cards-dep
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
-import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
+import { PagoRefrendoPageComponent } from './pages/smyt/pago-refrendo-page/pago-refrendo-page.component';//'./pages/smyt/pago-refrendo-page/pago-refrendo-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormAltaVehiculoComponent } from './components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo-page/alta-vehiculo-nuevo-page.component';

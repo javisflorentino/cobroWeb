@@ -1,9 +1,4 @@
-<ng-template #loading ngIf="oficinasArr">
-  <div class="alert alert-info">
-    Espere por favor !!
-  </div>
-</ng-template>
-
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="col md:col-6 md:col-offset-3 md:mt-4">
   <h3>Cálculo de Costos</h3>
   <small>Refrendo Vehicular</small>
@@ -25,18 +20,21 @@
             <div class="example-form-fields">
               <mat-form-field class="" appearance="outline">
                 <mat-label>No Placa</mat-label>
-                <input matInput formControlName="placa" required type="text" name="" id="">
+                <input matInput formControlName="placa" required type="text" maxlength="8">
               </mat-form-field>
 
               <mat-form-field class="" appearance="outline" hintLabel="5 últimos caracteres de la serie">
                 <mat-label>Serie Vehicular</mat-label>
-                <input matInput formControlName="serie" required #serieV type="text" name="" maxlength="5" >
+                <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5" (keyup)="onKeyPress(serie.value)">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
               </mat-form-field>
             </div>
             <div class="flex justify-content-between">
-              <button mat-flat-button >Cancelar</button>
-              <button mat-flat-button color="primary" (click)="onSubmit()">
+              <button mat-stroked-button color="warn">
+                <mat-icon>cancel</mat-icon>
+                Cancelar
+              </button>
+              <button mat-stroked-button color="primary" (click)="onSubmit()">
                 <mat-icon>calculate</mat-icon>
                 Calcular
               </button>

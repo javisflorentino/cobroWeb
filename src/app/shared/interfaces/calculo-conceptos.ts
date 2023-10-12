@@ -26,7 +26,7 @@ export interface Concepto {
 export interface Contribuyente {
   nombre:          string;
   tipoPersona:     string;
-  razonSocial:     null;
+  razonSocial?:     string;
   primerApellido:  string;
   segundoApellido: string;
   rfc:             string;
@@ -41,9 +41,9 @@ export interface Domicilio {
   colonia:        string;
   municipio:      string;
   estado:         string;
-  origen:         null;
+  origen?:         string;
   codigoPostal:   string;
-  tipoDomicilio:  null;
-  referencia:     null;
+  tipoDomicilio?:  string;
+  referencia?:     string;
   id:             number;
 }

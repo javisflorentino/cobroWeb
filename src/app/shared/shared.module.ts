@@ -9,6 +9,7 @@ import { TablaCalculoConceptosComponent } from './components/tabla-calculo-conce
 import { DatosContribuyenteComponent } from './components/datos-contribuyente/datos-contribuyente.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/shared-datos-poliza.component';
+import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
 
 
 
@@ -21,6 +22,7 @@ import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/sha
     TablaCalculoConceptosComponent,
     DatosContribuyenteComponent,
     SharedDatosPolizaComponent,
+    LoadSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/sha
   exports: [
     SidenavConceptosComponent,
     SharedToolbarComponent,
-    TablaCalculoConceptosComponent
+    TablaCalculoConceptosComponent,
+    LoadSpinnerComponent
   ]
 })
 export class SharedModule { }

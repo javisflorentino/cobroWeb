@@ -24,6 +24,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges {
   // Recibe el nombre del concepto de sidenav-conceptos y lo envia al shared-toolbar
   public receiveNameConcept: string = '';
 
+
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
