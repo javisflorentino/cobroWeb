@@ -6,8 +6,14 @@
       <td mat-cell *matCellDef="let concepto"> {{concepto.descripcion}} </td>
       <td mat-footer-cell *matFooterCellDef>
         <div class="example-button-row">
-          <button mat-stroked-button color="warn">Cancelar</button>
-          <button mat-stroked-button color="primary" (click)="datosContribuyente()">Continuar</button>
+          <button mat-stroked-button color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <button mat-stroked-button color="primary" (click)="datosContribuyente()">
+            <mat-icon>chevron_right</mat-icon>
+            Continuar
+          </button>
         </div>
       </td>
 

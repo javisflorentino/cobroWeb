@@ -26,7 +26,8 @@
           </ul>
         </li>
         <li class="list-group-item">
-          Pago en efectivo en Sucursal y a través de Transferencia Bancaria en CITIBANAMEX convenio GOB <strong>MORELOS WS 4579/01</strong>
+          Pago en efectivo en Sucursal y a través de Transferencia Bancaria en CITIBANAMEX convenio GOB <strong>MORELOS WS
+            4579/01</strong>
         </li>
         <li class="list-group-item">
           Pago referenciado usando <strong>SPEI</strong> desde cualquier <strong>BANCA EN LÍNEA</strong>
@@ -51,18 +52,56 @@
         </li>
       </ul>
       <p>
-Una vez confirmado el pago,podrás consultar tu comprobante y/o CFDI en <strong>www.hacienda.morelos.gob.mx</strong>, utilizando la línea de captura de tu póliza.
+Una vez confirmado el pago,podrás consultar tu comprobante y/o CFDI en <strong>www.hacienda.morelos.gob.mx</strong>, utilizando
+la línea de captura de tu póliza.
       </p>
       <p>
-Si realiza su pago, por medio del SPEI, es importante que en el rubro de Concepto o Referencia de pago,según su banca en línea, ingrese únicamente el número de Línea de Captura, de lo contrario la transferencia será denegada por el banco.
+Si realiza su pago, por medio del <strong>SPEI</strong>, es importante que en el rubro de Concepto o Referencia de pago,según su
+banca en línea, ingrese únicamente el número de Línea de Captura, de lo contrario la transferencia será denegada por el banco.
       </p>
-Si pagas por medio de SPEI o en sucursales HSBC, tu comprobante lo podrás consultar en 30 minutos en www.hacienda.morelos.gob.mx, utilizando la línea de captura de tu póliza.
+Si pagas por medio de <strong>SPEI</strong> o en sucursales <strong>HSBC</strong>, tu comprobante lo podrás consultar en 30
+minutos en <strong>www.hacienda.morelos.gob.mx</strong>, utilizando la línea de captura de tu póliza.
       <p>
-Si realiza su pago, por medio del SPEI o en ventanilla bancaria de los bancos de BBVA, Banamex y Santander los pagos se acreditaran de 1 a 2 días hábiles.
+Si realiza su pago, por medio del <strong>SPEI</strong> o en <strong>ventanilla bancaria</strong> de los bancos de <strong>BBVA</strong>,
+<strong>Banamex</strong> y <strong>Santander</strong> los pagos se acreditaran de 1 a 2 días hábiles.
       </p>
     </mat-tab-nav-panel>
-    <mat-tab-nav-panel #1 *ngIf="position[1]">
-      Cpntenido 2
+    <mat-tab-nav-panel #1 *ngIf="position[1]" class="mt-5">
+      <p>
+      Tu pago será confirmado al momento de terminar la transacción y obtendrás tu comprobante o podrás consultar tu comprobante de pago en www.hacienda.morelos.gob.mx, utilizando la línea de captura de tu póliza.
+      </p>
+      <p>
+      Al dar clic en el botón serás redireccionado a una página segura (HTTPS) de Gobierno del Estado de Morelos.
+      </p>
+      <ul class="mt-2 list-group">
+        <li class="list-group-item"><strong>No. de orden(Referencia):</strong> {{datosPoliza.lineaCaptura}}</li>
+        <li class="list-group-item"><strong>No. de póliza:</strong> {{datosPoliza.numeroPoliza}}</li>
+        <li class="list-group-item"><strong>Monto total:</strong> {{datosPoliza.total | currency:'MXN':'symbol-narrow':'1.2-2'}}</li>
+      </ul>
+
+      <div class="bm-8 pt-2">
+        <div style="display: flex;flex-flow: row wrap; justify-content: center;">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>Puedes pagar con las tarjetas</mat-card-subtitle>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div style="display: flex;flex-flow: row wrap; justify-content: center;" class="mt-3">
+                <mat-card>
+                  <img mat-card-image src="assets/metodo_pago/mastercard.png" alt="Mastercard" class="img-thumbnail" style="width: 100px;">
+                </mat-card>
+                <mat-card>
+                  <img mat-card-image src="assets/metodo_pago/visa_logo.png" alt="Visa" style="width: 100px; height: 100px;">
+                </mat-card>
+              </div>
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+      </div>
+
+
     </mat-tab-nav-panel>
     <mat-tab #tabPanel>
       <ng-template mat-tab-label>

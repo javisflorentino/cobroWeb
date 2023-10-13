@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Poliza } from 'src/app/portal-hacienda/interface/portal-datos-poliza.interface';
 
 @Component({
   selector: 'app-shared-datos-poliza',
@@ -12,10 +13,19 @@ export class SharedDatosPolizaComponent implements OnInit {
   public links_icons = ['account_balance','credit_card'];
   public position: boolean[] = [true,false];
 
+  private url = 'https://www.hacienda.morelos.gob.mx/polizasweb/admin/index.php?lineacaptura=';
+
+  public datosPoliza:Poliza = {
+    fechaVencimiento: '',
+    numeroPoliza:     '',
+    lineaCaptura:     '',
+    total:            0,
+  };
+
   constructor() {}
 
   ngOnInit(): void {
-
+    this.datosPoliza = JSON.parse(localStorage.getItem('datos_poliza')!);
   }
 
 
@@ -28,6 +38,8 @@ export class SharedDatosPolizaComponent implements OnInit {
     this.position[(link>0)?0:1] = false;
   }
 
-  getPoliza() {}
+  getPoliza() {
+    window.open(`${this.url}${this.datosPoliza.lineaCaptura}`);
+  }
 
 }

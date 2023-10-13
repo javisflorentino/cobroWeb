@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, Data, TopLevel } from '../../interfaces/calculo-conceptos';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -19,6 +20,9 @@ export class TablaCalculoConceptosComponent implements OnInit {
   public total: number = 0;
 
   public selectedRowIndex = -1;
+
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 /*
 https://app.hacienda.morelos.gob.mx/serviciosHacienda/smyt/particular/
@@ -47,17 +51,20 @@ WS_SH1 / Hdes22G*_106
   private conceptoPago!: TopLevel;
   constructor(
     private smyPagosService: SmyCalculoPagosService,
-    private router:Router
+    private router:Router,
+    private _snackBar: MatSnackBar,
     ) {}
 
   ngOnInit(): void {
-
-    this.smyPagosService.getCalculoPagos({
-      "tramite": 1,
-    "placa": "PXN4997",
-    "numeroSerie": "07992",
-    "obtenerContribuyente":true
-  })
+    const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
+    this.smyPagosService.getCalculoPagos(
+      {
+        "tramite": 1,
+        "placa": dataVehicleLs.placa,
+        "numeroSerie": dataVehicleLs.serie,
+        "obtenerContribuyente":true
+      }
+    )
       .subscribe(result => {
         console.log(result.data.total);
         this.conceptoPago = result;
@@ -69,9 +76,24 @@ WS_SH1 / Hdes22G*_106
             {"lineaDetalle":result.data.lineaDetalle}, {"totalConceptos":result.data.conceptos.length}])
           );*/
           localStorage.setItem('contribuyente',JSON.stringify(result));
+          return;
         }
+        this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
+        setTimeout(()=>{
+          this.router.navigate(['pagos']);
+        },2000)
+
       });
   }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500
+    });
+  }
+
   getTotalCost() {
     return this.conceptos.map(t => t.importe).reduce((acc, value) => acc + value, 0);
   }

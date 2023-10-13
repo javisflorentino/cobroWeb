@@ -9,20 +9,24 @@
       <mat-card-content class="mt-3">
         <form [formGroup]="myForm">
           <form-alta-vehiculo ></form-alta-vehiculo>
-          <div class="flex justify-content-between">
-            <button
-              mat-flat-button color="warn"
-            >
-              Borrar
-            </button>
-            <span></span>
-            <button mat-flat-button color="primary" (click)="calcularPago()">
-                <mat-icon>save</mat-icon>
-                Calcular
-            </button>
-          </div>
         </form>
       </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" (click)="calcularPago()">
+            <mat-icon>calculate</mat-icon>
+              Calcular
+          </button>
+        </div>
+      </mat-card-actions>
     </mat-card>
   </div>
   <div class="col-4">

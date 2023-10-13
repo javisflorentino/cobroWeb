@@ -14,34 +14,42 @@
               <mat-label>Oficina del trámite</mat-label>
               <mat-select formControlName="oficina" required>
                 <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
-
               </mat-select>
+              <mat-error *ngIf="isValidField('oficina')"> Campo requerido </mat-error>
             </mat-form-field>
             <div class="example-form-fields">
               <mat-form-field class="" appearance="outline">
                 <mat-label>No Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="8">
+                <mat-error *ngIf="isValidField('placa')"> Campo requerido </mat-error>
               </mat-form-field>
 
-              <mat-form-field class="" appearance="outline" hintLabel="5 últimos caracteres de la serie">
+              <mat-form-field class="" appearance="outline" hintLabel="">
                 <mat-label>Serie Vehicular</mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5" (keyup)="onKeyPress(serie.value)">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
+                <mat-error *ngIf="isValidField('serie')"> Campo requerido </mat-error>
               </mat-form-field>
-            </div>
-            <div class="flex justify-content-between">
-              <button mat-stroked-button color="warn">
-                <mat-icon>cancel</mat-icon>
-                Cancelar
-              </button>
-              <button mat-stroked-button color="primary" (click)="onSubmit()">
-                <mat-icon>calculate</mat-icon>
-                Calcular
-              </button>
             </div>
           </form>
         </div>
       </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="onSubmit()">
+            <mat-icon>calculate</mat-icon>
+            Calcular
+          </button>
+        </div>
+      </mat-card-actions>
     </mat-card>
   </div>
 

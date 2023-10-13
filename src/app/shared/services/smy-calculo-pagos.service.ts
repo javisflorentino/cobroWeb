@@ -16,18 +16,10 @@ export class SmyCalculoPagosService {
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
   getCalculoPagos(datosTramite:DatosTramite): Observable<TopLevel> {
-
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
-
-    /*const requestOptions = {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(updateData),
-      redirect: 'follow'
-    };*/
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers});
   }

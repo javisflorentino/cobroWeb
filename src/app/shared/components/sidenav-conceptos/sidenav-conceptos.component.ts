@@ -20,10 +20,11 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
   @Input()
   public eraseLocalStor: number = 0;
-
   // Envia el valor al padre layout-portal-pagos
   @Output()
   private nameConcept = new EventEmitter<string>();
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
 
 
 
@@ -60,26 +61,28 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   ngOnInit(): void { console.log(this.showMessage ) }
 
   buildMenu() {
-    console.log('Dep: ' + this.reciveActionSideNav);
+    this.isLoading = true;
+
     if ( this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav%1)>0) {
-      console.log('Lleno')
+      this.isLoading = false;
       this.showMessage = false;
       this.itemsConceptos = this.menuService.conceptoStorage;
       return ;
     }
-    console.log('No Lleno')
+
     this.menuService.requestConceptos(this.reciveActionSideNav)
       .subscribe(conceptos => {
         if ( conceptos.length > 0) {
-          console.log('No Lleno 1')
           this.showMessage = false;
           this.itemsConceptos = conceptos
+          this.isLoading = false;
           return;
         }
-        console.log('No Lleno 2')
+
         this.itemsConceptos = [];
         this.showMessage = true;
         console.log(this.showMessage )
+        this.isLoading = false;
         //this.itemsConceptos[0].textoTitulo='sin informacion';
       });
 

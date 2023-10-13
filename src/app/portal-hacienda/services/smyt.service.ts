@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, catchError, map, tap } from 'rxjs';
 import { Messages } from '../interface/portal-message.interface';
 import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
+import { PolizaRecive } from '../interface/portal-datos-poliza.interface';
+import { DatosPoliza } from '../../shared/interfaces/datos-poliza';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class SmytService {
 
   private urlMessage = 'http://localhost:3001/messages';
   private urlSOPA='tramitesSMyT/services/SMyT/validarVehiculo';
+  private urlSmytParticular = 'serviciosHacienda/poliza/generar';
 
   constructor( private http: HttpClient ) { }
 
@@ -28,6 +31,18 @@ export class SmytService {
       headers: { "Content-type": "text/xml; charset=utf-8" }
     })
 
+  }
+
+  generarPolizaServ(datosTramite:DatosPoliza): Observable<PolizaRecive> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+
+    return this.http.post<PolizaRecive>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
+      .pipe(
+        tap(res => console.log(res))
+      );
   }
 
 

@@ -19,7 +19,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges {
   public sendActEraseLocalStor: number = 0;
 
   /* se envia a shared-toolbar */
-  public senNameDep: string = 'SECRETARIA DE HACIENDA Y CREDITO PUBLICO';
+  public senNameDep: string = 'SECRETARÍA DE HACIENDA Y CRÉDITO PUBLICO';
 
   public valCard: number = 0;
 

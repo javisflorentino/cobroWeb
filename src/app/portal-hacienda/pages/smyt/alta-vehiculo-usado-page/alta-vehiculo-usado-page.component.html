@@ -86,12 +86,13 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions align="end">
-        <button mat-button mat-raised color="warn">
-          <mat-icon>delete</mat-icon>
-            Borrar
+        <button mat-stroked-button mat-raised color="warn">
+          <mat-icon>cancel</mat-icon>
+            Cancelar
         </button>
-        <button mat-button mat-raised color="primary" (click)="calcularPago()">
-          <mat-icon>more_horiz</mat-icon>
+        <span ></span>
+        <button mat-stroked-button mat-raised color="primary" (click)="calcularPago()">
+          <mat-icon>calculate</mat-icon>
             Calcular
         </button>
       </mat-card-actions>

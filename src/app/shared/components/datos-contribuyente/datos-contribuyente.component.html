@@ -1,4 +1,4 @@
-<p>datos-contribuyente works!</p>
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 
 <div class="grid flex">
   <div class="col-12">
@@ -118,12 +118,13 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions align="end">
-        <button mat-button mat-raised color="warn">
-          <mat-icon>delete</mat-icon>
+        <button mat-stroked-button mat-raised color="warn">
+          <mat-icon>cancel</mat-icon>
             Cancelar Trámite
         </button>
-        <button mat-button mat-raised color="primary" (click)="generarPoliza()">
-          <mat-icon>more_horiz</mat-icon>
+        <span class=""></span>
+        <button mat-stroked-button mat-raised color="primary" (click)="generarPoliza()">
+          <mat-icon>request_page</mat-icon>
             Generar Póliza
         </button>
       </mat-card-actions>
@@ -132,8 +133,4 @@
 
 </div>
 
-<div>
-  <code>
-    {{dataPoliza | json}}
-  </code>
-</div>
+

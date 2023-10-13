@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DatosPoliza } from '../../interfaces/datos-poliza';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { TopLevel } from '../../interfaces/calculo-conceptos';
+import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -12,6 +13,9 @@ import { TopLevel } from '../../interfaces/calculo-conceptos';
   styleUrls: ['./datos-contribuyente.component.css']
 })
 export class DatosContribuyenteComponent implements OnInit {
+
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
 
   public contribuyenteArr: TopLevel = {
     data:    {
@@ -102,6 +106,7 @@ export class DatosContribuyenteComponent implements OnInit {
     private fb:FormBuilder,
     private router: Router,
     private _snackBar: MatSnackBar,
+    private smytService: SmytService
   ) { }
   ngOnInit(): void {
     if(!localStorage.getItem('contribuyente')) {
@@ -118,6 +123,13 @@ export class DatosContribuyenteComponent implements OnInit {
   }
 
   generarPoliza(): void {
+
+    this.isLoading = true;
+
+    const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
+    const datosAdicionales = `PLACA: ${dataVehicleLs.placa},PLACA ANTERIOR: -,,,,,MODELO: ,,,,MOTOR: ,FECHA FACTURA: ,VALOR FACTURA: ,PROCEDENCIA:,,NO DE SERIE: ${dataVehicleLs.serie},VALOR VENTA: ,SERVICIO: ,T: 08.`;
+
+
    this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
@@ -135,8 +147,8 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.municipio = this.contribuyenteArr.data.domicilio.municipio;
    this.dataPoliza.estado = this.contribuyenteArr.data.domicilio.estado;
    this.dataPoliza.codigoPostal = this.contribuyenteArr.data.domicilio.codigoPostal;
-   this.dataPoliza.observaciones = this.myFormContribuyente.get('observaciones')?.value;
-   this.dataPoliza.datosAdicionales = this.contribuyenteArr.data.lineaDetalle;
+   this.dataPoliza.observaciones = (this.myFormContribuyente.get('observaciones')?.value)?this.myFormContribuyente.get('observaciones')?.value:"";
+   this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;  /*Object.entries(this.contribuyenteArr[3]).forEach(val => { this.dataPoliza.total = val[1]; })//this.dataPoliza.total = Object.entries(this.contribuyenteArr[3]).forEach((title,val:number) => val.toString );
    Object.entries(this.contribuyenteArr[0]).map(([key,val]) => {
     Object.entries(this.dataPoliza).map(([llave,valor])=> console.log(llave))
@@ -145,6 +157,15 @@ export class DatosContribuyenteComponent implements OnInit {
     console.log(this.dataPoliza)
    //Object.entries(this.contribuyenteArr[0]).forEach(r => console.log(r[1]))
     //this.router.navigate(['pagos/generar_poliza']);
+
+    this.smytService.generarPolizaServ(this.dataPoliza)
+      .subscribe(resp => {
+        if ( resp.success) {
+          this.isLoading = false;
+          localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
+          this.router.navigate(['pagos/generar_poliza']);
+        }
+      });
   }
 
   isValidField(field: string) {

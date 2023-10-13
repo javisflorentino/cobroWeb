@@ -23,23 +23,29 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   public oficinasArr: Oficinas[] = ListaOficinas;
   public alertMesage: boolean = false;
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   private debounce: Subject<string> = new Subject<string>();
   private debouncerSubscription?: Subscription;
 
   private asJson!:ValidateVehicle;
 
+  //Controla la visualización del Spinner
   public isLoading: boolean = false;
+
+  public buttBlock = false;
 
 
 
   public refrendoForm = this.fb.group({
     id:      [''],
     oficina: ['', [Validators.required]],
-    placa:   ['RBK258A', [Validators.required, Validators.minLength(4)]],
-    serie:   ['82887', [Validators.required, Validators.minLength(5)]]
+    placa:   ['', [Validators.required, Validators.minLength(4)]],
+    serie:   ['', [Validators.required, Validators.minLength(5)]]
+  },{
+    Validators: [this.validatorsService.existsSeries('serie','placa')]
   });
 
   subscription: Subscription;
@@ -61,27 +67,30 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     /* Crean un observable y escucha los cambios  */
-    this.debouncerSubscription = this.debounce
+    /*this.debouncerSubscription = this.debounce
     .pipe(
       debounceTime(500)
     )
     .subscribe( value => {
+      this.isLoading = true;
+
       const p = this.refrendoForm.get('placa')?.value;
       this.smytService.validateVehicle(p!,value)
       .then(response => response.text())
       .then(xml => {
+        console.log(xml);
         this.asJson = this.xmlStringToJson(xml.toString());
         this.isLoading = false;
         if(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] !== 'EXITO') {
           this.openSnackBar(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'])
+          //this.buttBlock = true;
           return
         }
 
       }).catch (err => console.log(err));
-    });
+    });*/
   }
   onKeyPress( searchTerm: string ) {
-    this.isLoading = true;
     this.debounce.next( searchTerm );
   }
 
@@ -90,21 +99,21 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     this.debouncerSubscription?.unsubscribe();
   }
 
-  isValidField() {
-
-  }
-
   onSubmit(): void {
     this.isLoading = true;
     if (this.refrendoForm.invalid) {
       this.alertMesage = true
-      this.openSnackBar('Verifique los campos requeridos');
+      //this.openSnackBar('Verifique los campos requeridos');
       this.refrendoForm.markAllAsTouched();
+      this.isLoading = false;
       return;
     }
 
     let p = this.refrendoForm.get('placa')!.value;
     let s = this.refrendoForm.get('serie')?.value;
+
+    //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
+    localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"serie":s}));
 
     this.smytService.validateVehicle(p!,s!)
       .then(response => response.text())
@@ -115,16 +124,28 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
           return
         }
         this.openSnackBar(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text']);
+        this.isLoading = false;
       }).catch (err => console.log(err));
 
   }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, '', {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
-      duration: 5000
+      duration: 3000
     });
   }
+
+  isValidField( field: string ) {
+    //TODO: Obtener validación desde un servicio
+    return this.validatorsService.isValidField( this.refrendoForm, field );
+  }
+
+
+
+
+
 
   xmlStringToJson(xml: string)
   {
