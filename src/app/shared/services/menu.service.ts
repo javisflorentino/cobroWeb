@@ -20,6 +20,9 @@ export class MenuService {
   saveToLocalStorage(): void {
     localStorage.setItem( 'cachestore', JSON.stringify(this.conceptoStorage));
   }
+  deleteLocalStorage(): void {
+    this.conceptoStorage = [];
+  }
 
   loadFromLocalStorage(): void {
     if ( !localStorage.getItem('cachestore') ) return ;
@@ -27,6 +30,7 @@ export class MenuService {
   }
 
   requestConceptos(id: number): Observable<Conceptos[]> {
+    this.deleteLocalStorage();
     return this.http.get<Conceptos[]>(`${this.urlConceptos}${id}`)
       .pipe(
         catchError(error => of([])),

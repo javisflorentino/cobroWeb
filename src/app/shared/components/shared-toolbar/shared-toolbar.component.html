@@ -1,10 +1,10 @@
-<mat-toolbar color="primary" [class.mat-elevation-z8]="true">
+<mat-toolbar class="my-toolbar" color="primary" [class.mat-elevation-z10]="true" >
   <button mat-icon-button (click)="redirectPagos()">
     <mat-icon>home</mat-icon>
   </button>
   <button mat-icon-button (click)="sidenavAction()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span style="margin: auto;">{{receiveNameDep}} - {{nameConceptToolbar}}</span>
+  <span style="margin: auto;">{{receiveNameDep}}{{nameConceptToolbar | titlecase}}</span>
   <span></span>
 </mat-toolbar>

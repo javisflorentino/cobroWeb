@@ -6,7 +6,7 @@ import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.inte
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 
@@ -42,12 +42,22 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     serie:   ['82887', [Validators.required, Validators.minLength(5)]]
   });
 
+  subscription: Subscription;
+
   constructor(
     private fb:FormBuilder,
     private _snackBar: MatSnackBar,
     private validatorsService: ValidatorsService,
     private smytService: SmytService,
-    private router: Router ) {}
+    private router: Router ) {
+      this.subscription = router.events.subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          console.log('refresco el navegador Refrendo')
+        }
+    });
+    }
+
+
 
   ngOnInit(): void {
     /* Crean un observable y escucha los cambios  */

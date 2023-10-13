@@ -3,6 +3,12 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.my-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
 .spacer {
   flex: 1 1 auto;
 }

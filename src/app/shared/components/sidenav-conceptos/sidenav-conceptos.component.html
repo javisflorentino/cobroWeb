@@ -10,6 +10,12 @@
 
   <mat-nav-list>
 
+      <mat-card class="" *ngIf="showMessage">
+        <mat-card-content >
+          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para mostrar las opciones </div>
+        </mat-card-content>
+      </mat-card>
+
     <mat-list-item *ngFor="let item of itemsConceptos">
       <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.textoTitulo)">
         {{item.textoTitulo}}

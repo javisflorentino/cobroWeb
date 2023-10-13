@@ -3,7 +3,7 @@
   <shared-sidenav-conceptos
     [reciveActionSideNav]="sendActionSidenav"
     [eraseLocalStor]="sendActEraseLocalStor"
-    (nameConcept)="receiveNameConcept"></shared-sidenav-conceptos>
+    (nameConcept)="reciveNameConcept($event)"></shared-sidenav-conceptos>
 
   <shared-toolbar
     (openOrCloseSidenav)="actionOnSidenav"

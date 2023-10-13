@@ -2,7 +2,9 @@
   Renderiza los componentes estaticos y compartidos Sidenav y Toolbar
   Renderiza los componentes definidos como rutas
 */
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-conceptos/sidenav-conceptos.component';
 
 @Component({
   selector: 'app-layout-portal-pagos',
@@ -12,28 +14,33 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 })
 export class LayoutPortalPagosComponent implements OnInit, OnChanges {
 
-  /* Se enviara a shared-sidenav-conceptos*/
+  /* las 2 variables se enviara a shared-sidenav-conceptos*/
   public sendActionSidenav: number = 0;
-  public sendActEraseLocalStor: boolean = false;
+  public sendActEraseLocalStor: number = 0;
 
   /* se envia a shared-toolbar */
-  public senNameDep: string = '';
+  public senNameDep: string = 'SECRETARIA DE HACIENDA Y CREDITO PUBLICO';
 
   public valCard: number = 0;
 
   // Recibe el nombre del concepto de sidenav-conceptos y lo envia al shared-toolbar
-  public receiveNameConcept: string = '';
+  public receiveNameConcept!: string;
+
+  productObservable!: Observable<number>;
+
+  /*private sideNav!:SidenavConceptosComponent;
+
+  @HostListener('click')
+  clickOutside() {
+      console.log(this.sideNav.changSidenav.toggle)
+  }*/
 
 
   constructor() {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('Nombre del concepto OnChange: ' + this.receiveNameConcept);
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
-  ngOnInit(): void {
-    console.log('Nombre del concepto' + this.receiveNameConcept);
-  }
+  ngOnInit(): void {}
 
   /* Recibe valor del shared-toolbar*/
   get actionOnSidenav() {
@@ -44,12 +51,16 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges {
   }
 
   reciveValCard(val:number, nameDep: string) {
-    console.log('Se recibe el valor de la tarjeta: ' + val);
     this.sendActionSidenav = val;
     this.senNameDep = nameDep;
   }
 
   redirectHome(event: boolean): void {
-    this.sendActEraseLocalStor = true;
+    this.senNameDep = 'SECRETARIA DE HACIENDA Y CREDITO PUBLICO';
+    this.receiveNameConcept = '';
+    this.sendActEraseLocalStor = Math.random();
+  }
+  reciveNameConcept(nameConcep:string){
+    this.receiveNameConcept = ' - [ ' + nameConcep + ' ]';
   }
 }

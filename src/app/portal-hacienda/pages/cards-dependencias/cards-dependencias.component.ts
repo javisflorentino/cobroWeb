@@ -19,7 +19,6 @@ export class CardsDependenciasComponent {
 
 
   reciveValCard(id: number): void {
-    console.log('Cards: ' + id);
     let nameDep: string = '';
     this.cardsArr.forEach(card => {
       if (card.padreId === id) {
