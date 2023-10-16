@@ -5,6 +5,7 @@
     "ng": "ng",
     "backend": "json-server --watch data/smyt_conceptos.json",
     "messages": "json-server --watch data/smyt_alertas.json --port 3001",
+    "tipo_licencia": "json-server --watch data/smyt_tipolicencia.json --port 3002",
     "start": "ng serve",
     "start:proxy": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",

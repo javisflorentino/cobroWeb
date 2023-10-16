@@ -8,6 +8,7 @@ import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado
 import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
+import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licencia-vehiculo.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'generar_poliza',
         component: SharedDatosPolizaComponent
+      },
+      {
+        path: 'smyt-licencia-vehiculo',
+        component: LicenciaVehiculoComponent
       },
       {
         path: '**',

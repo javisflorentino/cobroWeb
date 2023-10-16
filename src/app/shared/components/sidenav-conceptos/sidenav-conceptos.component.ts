@@ -26,6 +26,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
+  private subConceptos: Conceptos[] = [];
+
 
 
   @ViewChild('sidenav')
@@ -34,6 +36,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   public itemsConceptos: Conceptos[] = [];
 
   public showMessage: boolean = false;
+
+  public showBack: boolean = false;
 
 
   constructor( private menuService: MenuService, private router: Router ) {}
@@ -60,8 +64,9 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void { console.log(this.showMessage ) }
 
-  buildMenu() {
+  buildMenu(padreId?: number) {
     this.isLoading = true;
+    this.showBack = false;
 
     if ( this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav%1)>0) {
       this.isLoading = false;
@@ -95,11 +100,61 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     this.itemsConceptos=[];
   }
 
-  actionList(item: string, concept: string) {
+  backMenu() {}
+
+  /*subActionList(id: number) {
+    this.menuService.requestSubConceptos(id)
+        .subscribe( resp => {
+          this.showBack  =true;
+          this.isLoading = true;
+          this.showMessage = false;
+          this.itemsConceptos = this.menuService.conceptoStorage;
+        });
+  }*/
+
+  actionList(item: string, concept: string, id: number, idConcepto: string|number) {
+    idConcepto = idConcepto.toString();
+    if ( idConcepto === "0" ) {
+      this.reciveActionSideNav = id;
+      this.buildMenu();
+      this.showBack  = true;
+      //return;
+    }
+
+    this.isLoading = true;
+    //this.showMessage = false;
+    this.itemsConceptos = this.menuService.conceptoStorage;
+
+    const concep = (localStorage.getItem('concept'))?localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):localStorage.setItem('concept',concept);
+    (concept.length>0)? concept += ' - ' + concept:concept;
+
     this.nameConcept.emit(concept);
-    this.changSidenav.toggle();
-    localStorage.setItem('concept',concept);
+    if ( idConcepto !== "0" ) this.changSidenav.toggle();
+    //localStorage.setItem('concept',concept);
     this.router.navigate(['/pagos/'+item]);
+
+    /*this.menuService.requestSubConceptos(id)
+      .subscribe(resp => {
+        if ( idConcepto === "0" && resp.length > 0 ) {
+          this.showBack  =true;
+          this.isLoading = false;
+          this.showMessage = false;
+          this.itemsConceptos = this.menuService.conceptoStorage;
+
+          this.subConceptos = resp;
+          console.log(this.subConceptos)
+          return;
+        }
+        this.nameConcept.emit(concept);
+        this.changSidenav.toggle();
+        localStorage.setItem('concept',concept);
+        this.router.navigate(['/pagos/'+item]);
+      });*/
+
+
+    /*this.changSidenav.toggle();
+    localStorage.setItem('concept',concept);
+    this.router.navigate(['/pagos/'+item]);*/
   }
 
 }

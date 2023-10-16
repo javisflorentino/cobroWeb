@@ -1,6 +1,10 @@
 <mat-sidenav [ngStyle]="{width: '350px'}" #sidenav mode="push" style="z-index:101;">
   <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
   <mat-toolbar color="primary" [class.mat-elevation-z5]="true">
+    <button mat-icon-button *ngIf="showBack" (click)="backMenu()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="spacer"></span>
     <span>Menú</span>
     <span class="spacer"></span>
     <button mat-icon-button (click)="sidenav.toggle()">
@@ -17,7 +21,7 @@
       </mat-card>
 
     <mat-list-item *ngFor="let item of itemsConceptos">
-      <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.textoTitulo)">
+      <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.textoTitulo,item.id, item.idConcepto)">
         {{item.textoTitulo}}
       </div>
       <span>

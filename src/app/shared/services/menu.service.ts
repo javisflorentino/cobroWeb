@@ -15,7 +15,8 @@ export class MenuService {
    }
 
 
-  private urlConceptos: string = 'http://localhost:3000/menu?q=';
+  private urlConceptos: string = 'http://localhost:3000/menu?padreId=';
+  //private urlSubConceptos: string = 'http://localhost:3002/menu';
 
   saveToLocalStorage(): void {
     localStorage.setItem( 'cachestore', JSON.stringify(this.conceptoStorage));
@@ -33,9 +34,21 @@ export class MenuService {
     this.deleteLocalStorage();
     return this.http.get<Conceptos[]>(`${this.urlConceptos}${id}`)
       .pipe(
+        tap(res => console.log(res)),
         catchError(error => of([])),
         tap( conceptos => this.conceptoStorage = conceptos),
         tap( () => this.saveToLocalStorage())
       );
   }
+  /*requestSubConceptos(id:number): Observable<Conceptos[]> {
+    return this.http.get<Conceptos[]>(`${this.urlConceptos}${id}`)
+      .pipe(
+        catchError(error => of([])),
+        tap( conceptos => {
+          if ( conceptos.length > 0 ) {
+            this.conceptoStorage = conceptos
+          }
+        })
+      );
+  }*/
 }

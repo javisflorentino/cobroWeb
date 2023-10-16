@@ -1,0 +1,6 @@
+.example-container-expand mat-form-field {
+  width: 80%;
+}
+.example-container-expand mat-form-field + mat-form-field {
+  margin-left: 5px;
+}

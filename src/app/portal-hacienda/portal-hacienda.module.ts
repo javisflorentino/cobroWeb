@@ -13,6 +13,7 @@ import { FormAltaVehiculoComponent } from './components/smyt/form-alta-vehiculo/
 import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo-page/alta-vehiculo-nuevo-page.component';
 import { MessagesComponent } from './components/smyt/messages/messages.component';
 import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado-page/alta-vehiculo-usado-page.component';
+import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licencia-vehiculo.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado
     FormAltaVehiculoComponent,
     AltaVehiculoNuevoPageComponent,
     MessagesComponent,
-    AltaVehiculoUsadoPageComponent
+    AltaVehiculoUsadoPageComponent,
+    LicenciaVehiculoComponent
   ],
   imports: [
     CommonModule,
