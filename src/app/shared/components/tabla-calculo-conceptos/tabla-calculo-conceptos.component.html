@@ -1,4 +1,5 @@
 <section class="example-container mat-elevation-z8" tabindex="0">
+  <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
   <table mat-table [dataSource]="conceptos">
     <!-- Item Column -->
     <ng-container matColumnDef="descripcion">

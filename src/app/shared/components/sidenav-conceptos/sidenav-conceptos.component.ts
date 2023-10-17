@@ -113,6 +113,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   }*/
 
   actionList(item: string, concept: string, id: number, idConcepto: string|number) {
+
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {
       this.reciveActionSideNav = id;
@@ -127,6 +128,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
     const concep = (localStorage.getItem('concept'))?localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):localStorage.setItem('concept',concept);
     (concept.length>0)? concept += ' - ' + concept:concept;
+
+    localStorage.setItem('idConcepto',idConcepto);
 
     this.nameConcept.emit(concept);
     if ( idConcepto !== "0" ) this.changSidenav.toggle();

@@ -24,31 +24,11 @@ export class TablaCalculoConceptosComponent implements OnInit {
   private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-/*
-https://app.hacienda.morelos.gob.mx/serviciosHacienda/smyt/particular/
-WS_SH1 / Hdes22G*_106
-{
-    "tramite": "1",
-    "placa": "PXN4997",
-    "numeroSerie": "07992",
-    "obtenerContribuyente":true
-}
-*/
-
-/* cripcion - ejercicio - costo unitario - cantidad - subtotal
-		TOTAL
-					CONTINUAR -> (DATOS DEL CONTRIBUYENTE Y GENERAR POLIZA) */
-  /** Gets the total cost of all transactions. */
-
-  /*
-  {
-        "tramite": 1,
-        "placa":"RBK258A",
-        "numeroSerie":"82887",
-        "obtenerContribuyente":true
-    }
-  */
   private conceptoPago!: TopLevel;
+
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
+
   constructor(
     private smyPagosService: SmyCalculoPagosService,
     private router:Router,
@@ -56,6 +36,14 @@ WS_SH1 / Hdes22G*_106
     ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    if ( !localStorage.getItem('vehicle_data') ) {
+      const idConcepto = localStorage.getItem('idConcepto');
+      if ( idConcepto  && idConcepto !== "0" ) {
+        this.consultConceptoPago(idConcepto)
+      }
+      return;
+    }
     const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
     this.smyPagosService.getCalculoPagos(
       {
@@ -66,6 +54,7 @@ WS_SH1 / Hdes22G*_106
       }
     )
       .subscribe(result => {
+        this.isLoading = false;
         console.log(result.data.total);
         this.conceptoPago = result;
         if(result.success && result.data.conceptos.length>0) {
@@ -83,6 +72,29 @@ WS_SH1 / Hdes22G*_106
           this.router.navigate(['pagos']);
         },2000)
 
+      });
+  }
+
+  consultConceptoPago(idConcepto:string) {
+    const datos = {
+      "idConcepto": idConcepto,
+      "monto": null,
+      "cantidad": 1
+    };
+    this.smyPagosService.otherCalculoPagos(datos)
+      .subscribe(resp => {
+        this.isLoading = false
+        this.conceptoPago = resp;
+        if(resp.success && resp.data.conceptos.length>0) {
+          this.conceptos = resp.data.conceptos;
+          console.log(this.conceptos)
+          this.total = resp.data.total;
+          return;
+        }
+        this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
+        setTimeout(()=>{
+          this.router.navigate(['pagos']);
+        },2000)
       });
   }
 

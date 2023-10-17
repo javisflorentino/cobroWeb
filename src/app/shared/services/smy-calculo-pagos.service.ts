@@ -23,4 +23,12 @@ export class SmyCalculoPagosService {
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers});
   }
+  otherCalculoPagos(datosTramite:object): Observable<TopLevel> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+
+    return this.http.post<TopLevel>(`serviciosHacienda/concepto/obtenerConcepto`,JSON.stringify(datosTramite),{headers});
+  }
 }

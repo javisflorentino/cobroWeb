@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, AfterViewInit } from '@angular/core';
 import { PortalMenu } from '../../interface/portal-menu.interface';
 
 import ListaDependencias from '../../../../../data/arreglos/portal_pago_menu.json'
@@ -11,11 +11,19 @@ import { LayoutPortalPagosComponent } from '../layout-portal-pagos.component'
   styles: [
   ]
 })
-export class CardsDependenciasComponent {
+export class CardsDependenciasComponent implements AfterViewInit {
 
   public cardsArr: PortalMenu[] = ListaDependencias;
 
-  constructor( private father: LayoutPortalPagosComponent ){}
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
+
+  constructor( private father: LayoutPortalPagosComponent ){
+    this.isLoading = true;
+  }
+  ngAfterViewInit(): void {
+    this.isLoading = false;
+  }
 
 
   reciveValCard(id: number): void {

@@ -1,4 +1,4 @@
-<shared-load-spinner *ngIf="true"></shared-load-spinner>
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="col md:col-6 md:col-offset-3 md:mt-4">
   <div class="col-12">
     <mat-card>
@@ -8,16 +8,16 @@
       </mat-card-header>
       <mat-divider></mat-divider>
       <mat-card-content class="mt-3">
-        <form action="">
+        <form [formGroup]="formLicencias">
           <div class="example-container-expand">
-            <mat-form-field col="2" #field_lv  floatLabel="always" appearance="outline" class="full-width radio-container">
+            <mat-form-field #field_lv  floatLabel="always" appearance="outline" class="full-width radio-container">
               <mat-label>Cuenta con licencia de AUTOMOVILISTA emitida por <br><b>GOBIERNO DEL ESTADO DE MORELOS</b></mat-label>
               <input matInput style="display:none" required>
-              <mat-radio-group #group_lv class="flex-wrap" (change)="tieneLicencia($event.value)">
+              <mat-radio-group #group_lv class="flex-wrap" formControlName="tien_licencia" (change)="tieneLicencia($event.value)">
                 <mat-radio-button #buttons_lv value="1">
                   <span class="wrap-label-text">Si</span>
                 </mat-radio-button>
-                <mat-radio-button #buttons_lv value="0">
+                <mat-radio-button #buttons_lv value="0" >
                   <span class="wrap-label-text">No</span>
                 </mat-radio-button>
               </mat-radio-group>
@@ -26,17 +26,17 @@
           <div class="example-container">
             <mat-form-field appearance="outline">
               <mat-label>No de Licencia</mat-label>
-              <input matInput type="text" [disabled]="formBlock">
-              <mat-error></mat-error>
+              <input #no_licencia matInput type="text" formControlName="no_licencia" >
+              <mat-error *ngIf="isValidField('no_licencia')"> Campo requerido</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Fecha Vencimiento</mat-label>
-              <input matInput [matDatepicker]="dpfv" formControlName="fecha_factura" [disabled]="formBlock">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-error > Campo requerido con formato MM/DD/YYYY</mat-error>
-              <mat-datepicker-toggle matIconSuffix [for]="dpfv" [disabled]="formBlock"></mat-datepicker-toggle>
-              <mat-datepicker #dpfv disabled="false"></mat-datepicker>
+              <input matInput [matDatepicker]="dpfv" formControlName="fecha_vencimiento" >
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-error *ngIf="isValidField('fecha_vencimiento')"> Campo requerido </mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpfv"></mat-datepicker-toggle>
+              <mat-datepicker #dpfv></mat-datepicker>
             </mat-form-field>
           </div>
         </form>
