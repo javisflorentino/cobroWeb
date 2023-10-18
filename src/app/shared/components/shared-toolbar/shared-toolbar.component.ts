@@ -22,6 +22,9 @@ export class SharedToolbarComponent {
   @Input()
   public nameConceptToolbar: string = '';
 
+  @Input()
+  public viewResolution!: string;
+
   constructor( private router: Router) {}
 
   sidenavAction(): void {

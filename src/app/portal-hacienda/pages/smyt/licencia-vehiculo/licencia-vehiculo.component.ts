@@ -3,6 +3,10 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
+import { ValidatorsFormService } from 'src/app/shared/validators/validators-form.service';
+import { Moment } from 'moment';
+import moment from 'moment';
+
 
 
 @Component({
@@ -23,21 +27,37 @@ export class LicenciaVehiculoComponent implements OnInit {
   @ViewChild('no_licencia')
   private no_licencia!: ElementRef<HTMLInputElement>;
 
+  public minDate!: Moment;
+  public maxDate!: Moment;
+
   public formLicencias: FormGroup = this.fb.group({
     no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required] ],
-    fecha_vencimiento: [{value:'',disabled:this.formBlock}, [Validators.required] ],
+    fecha_vencimiento: [{value:'',disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
     tien_licencia:     ['', [Validators.required] ]
   });
+
+  get fecha_vencimiento() {
+    return this.formLicencias.get('fecha_vencimiento')?.value
+  }
 
   constructor(
       private fb: FormBuilder,
       private router: Router,
       private _snackBar: MatSnackBar,
-      private validatorsService: ValidatorsService
-  ) {}
+      private validatorsService: ValidatorsService,
+      private validatorFormService: ValidatorsFormService
+  ) {
+    const currentYear = moment().year();
+    const currentMonth = moment().month() + 1;
+    //moment().
+    console.log(currentMonth)
+  //this.minDate = moment([currentYear -1, 0, 1]);
+  this.maxDate = moment([currentYear , 10, 30])
+  }
+
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('idConcepto'));
+    console.log(this.formLicencias.get('fecha_vencimiento'))
   }
 
   onSubmit() {

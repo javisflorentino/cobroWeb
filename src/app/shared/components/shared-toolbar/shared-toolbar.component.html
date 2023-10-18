@@ -5,6 +5,7 @@
   <button mat-icon-button (click)="sidenavAction()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span style="margin: auto;">{{receiveNameDep}}{{nameConceptToolbar | titlecase}}</span>
+  <span
+    [ngStyle]="{'font-size': (viewResolution == 'XSmall' || viewResolution=='Small') ? '13px' : '20px'}" style="margin: auto; white-space: initial; text-align: center;">{{receiveNameDep}}{{nameConceptToolbar | titlecase}}</span>
   <span></span>
 </mat-toolbar>

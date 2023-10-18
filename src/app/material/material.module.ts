@@ -22,6 +22,11 @@ import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/rad
 import { MatTableModule } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
+
+
 
 @NgModule({
   exports: [
@@ -48,9 +53,12 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatTabsModule
   ],
   providers: [{
-    provide: MAT_RADIO_DEFAULT_OPTIONS,
-    useValue: { color: 'primary' },
-}]
+      provide: MAT_RADIO_DEFAULT_OPTIONS,
+      useValue: { color: 'primary' },
+    },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
 export class MaterialModule { }
 

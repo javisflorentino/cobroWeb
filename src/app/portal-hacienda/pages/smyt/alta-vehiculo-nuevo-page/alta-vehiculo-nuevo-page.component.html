@@ -8,7 +8,9 @@
       <mat-divider></mat-divider>
       <mat-card-content class="mt-3">
         <form [formGroup]="myForm">
-          <form-alta-vehiculo ></form-alta-vehiculo>
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <form-alta-vehiculo ></form-alta-vehiculo>
+          </div>
         </form>
       </mat-card-content>
 
@@ -34,12 +36,7 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <span>Valid</span>
-    <pre>{{ myForm.value | json }}</pre>
-  </div>
-</div>
+
 
 
 

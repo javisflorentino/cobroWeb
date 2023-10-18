@@ -2,8 +2,9 @@
   Renderiza los componentes estaticos y compartidos Sidenav y Toolbar
   Renderiza los componentes definidos como rutas
 */
-import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-conceptos/sidenav-conceptos.component';
 
 @Component({
@@ -12,7 +13,7 @@ import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-con
   styles: [
   ]
 })
-export class LayoutPortalPagosComponent implements OnInit, OnChanges {
+export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy  {
 
   /* las 2 variables se enviara a shared-sidenav-conceptos*/
   public sendActionSidenav: number = 0;
@@ -28,6 +29,18 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges {
 
   productObservable!: Observable<number>;
 
+  public sizeDisplay!: string;
+
+  destroyed = new Subject<void>();
+
+  private displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
   /*private sideNav!:SidenavConceptosComponent;
 
   @HostListener('click')
@@ -36,11 +49,40 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges {
   }*/
 
 
-  constructor() {}
+  constructor( private breakpointObserver: BreakpointObserver ) {
+    this.mediaQuery();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit(): void {}
+
+  ngOnDestroy() {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
+  public mediaQuery() {
+
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
+          }
+        }
+      });
+
+
+ }
 
   /* Recibe valor del shared-toolbar*/
   get actionOnSidenav() {

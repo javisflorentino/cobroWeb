@@ -1,5 +1,4 @@
 <mat-sidenav-container fullscreen>
-
   <shared-sidenav-conceptos
     [reciveActionSideNav]="sendActionSidenav"
     [eraseLocalStor]="sendActEraseLocalStor"
@@ -10,6 +9,7 @@
     (closeLocalStor)="redirectHome($event)"
     [nameConceptToolbar]="receiveNameConcept"
     [receiveNameDep]="senNameDep"
+    [viewResolution]="sizeDisplay"
     ></shared-toolbar>
 
   <div class="container p-2">

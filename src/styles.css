@@ -61,4 +61,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 60px;
 }
 
+mat-form-field{
+  display: block;
+}
+
 
