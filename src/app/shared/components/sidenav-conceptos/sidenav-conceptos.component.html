@@ -20,10 +20,11 @@
         </mat-card-content>
       </mat-card>
 
-    <mat-list-item *ngFor="let item of itemsConceptos">
+    <mat-list-item *ngFor="let item of itemsConceptos" [lines]="item.textoTitulo.length/35">
       <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.textoTitulo,item.id, item.idConcepto)">
-        {{item.textoTitulo}}
+        <span [innerHTML]="item.textoTitulo | segmentText"></span>
       </div>
+
       <span>
         <mat-divider></mat-divider>
       </span>

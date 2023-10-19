@@ -10,6 +10,7 @@ import { DatosContribuyenteComponent } from './components/datos-contribuyente/da
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/shared-datos-poliza.component';
 import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
+import { SegmentTextPipe } from './pipes/segment-text.pipe';
 
 
 
@@ -23,6 +24,7 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
     DatosContribuyenteComponent,
     SharedDatosPolizaComponent,
     LoadSpinnerComponent,
+    SegmentTextPipe,
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
     SidenavConceptosComponent,
     SharedToolbarComponent,
     TablaCalculoConceptosComponent,
-    LoadSpinnerComponent
+    LoadSpinnerComponent,
+    SegmentTextPipe
   ]
 })
 export class SharedModule { }
