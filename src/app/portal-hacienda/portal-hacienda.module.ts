@@ -27,6 +27,7 @@ import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licenc
     MessagesComponent,
     AltaVehiculoUsadoPageComponent,
     LicenciaVehiculoComponent
+
   ],
   imports: [
     CommonModule,

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, Data, TopLevel } from '../../interfaces/calculo-conceptos';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
   templateUrl: './tabla-calculo-conceptos.component.html',
   styleUrls: ['./tabla-calculo-conceptos.component.css']
 })
-export class TablaCalculoConceptosComponent implements OnInit {
+export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
   //displayedColumns = ['item', 'cost'];
 
@@ -29,11 +31,29 @@ export class TablaCalculoConceptosComponent implements OnInit {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
+  destroyed = new Subject<void>();
+  public sizeDisplay!: string;
+  private displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
   constructor(
     private smyPagosService: SmyCalculoPagosService,
     private router:Router,
     private _snackBar: MatSnackBar,
-    ) {}
+    private breakpointObserver: BreakpointObserver
+    ) {
+      this.mediaQuery();
+    }
+
+  ngOnDestroy() {
+      this.destroyed.next();
+      this.destroyed.complete();
+  }
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -116,4 +136,27 @@ export class TablaCalculoConceptosComponent implements OnInit {
   datosContribuyente():void {
     this.router.navigate(['pagos/datos-contribuyente']);
   }
+
+  public mediaQuery() {
+
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
+          }
+          console.log(this.sizeDisplay)
+        }
+      });
+
+
+ }
 }

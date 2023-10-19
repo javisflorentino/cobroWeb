@@ -24,7 +24,7 @@ import { SegmentTextPipe } from './pipes/segment-text.pipe';
     DatosContribuyenteComponent,
     SharedDatosPolizaComponent,
     LoadSpinnerComponent,
-    SegmentTextPipe,
+    SegmentTextPipe
   ],
   imports: [
     CommonModule,

@@ -22,7 +22,7 @@
 
     <mat-list-item *ngFor="let item of itemsConceptos" [lines]="item.textoTitulo.length/35">
       <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.textoTitulo,item.id, item.idConcepto)">
-        <span [innerHTML]="item.textoTitulo | segmentText"></span>
+        <span [innerHTML]="item.textoTitulo | segmentText:35"></span>
       </div>
 
       <span>

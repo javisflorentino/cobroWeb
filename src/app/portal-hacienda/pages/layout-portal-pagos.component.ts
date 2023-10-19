@@ -15,8 +15,9 @@ import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-con
 })
 export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy  {
 
-  /* las 2 variables se enviara a shared-sidenav-conceptos*/
+  /* Se enviara a shared-sidenav-conceptos y cuando se presiona el icono de menu del Toolbar se genera un aleatorio */
   public sendActionSidenav: number = 0;
+  // Envia un valor numerico aleatorio mayot a 0 para indicar que se quiere ir al home. Se envia al Sidenav que limpiara variables al recibir
   public sendActEraseLocalStor: number = 0;
 
   /* se envia a shared-toolbar */
@@ -27,7 +28,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy 
   // Recibe el nombre del concepto de sidenav-conceptos y lo envia al shared-toolbar
   public receiveNameConcept!: string;
 
-  productObservable!: Observable<number>;
+  public productObservable!: Observable<number>;
 
   public sizeDisplay!: string;
 

@@ -14,13 +14,13 @@ import { Observable, Subject, Subscription } from 'rxjs';
 })
 export class SidenavConceptosComponent implements OnInit, OnChanges {
 
-
+  //Recibe de Layout el valor del concepto seleccionado
   @Input()
   public reciveActionSideNav!:number;
 
   @Input()
   public eraseLocalStor: number = 0;
-  // Envia el valor al padre layout-portal-pagos
+  // Envia el valor al padre layout-portal-pagos "Nombre del Concepto"
   @Output()
   private nameConcept = new EventEmitter<string>();
   //Controla la visualización del Spinner
@@ -29,21 +29,21 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   private subConceptos: Conceptos[] = [];
 
 
-
+  //Controla las acciones sobre el icono de menu de SideNav
   @ViewChild('sidenav')
   public changSidenav!: MatSidenav;
 
   public itemsConceptos: Conceptos[] = [];
 
   public showMessage: boolean = false;
-
+  //Mostrar el icono de Back. Se usa en el caso de menus anidados
   public showBack: boolean = false;
 
 
   constructor( private menuService: MenuService, private router: Router ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    console.log('BORRARA - Change: ' + this.changSidenav)
     if(this.changSidenav) {
       this.changSidenav.toggle();
       if ( this.eraseLocalStor ) {
@@ -52,6 +52,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
         this.eraseLocalStor = 0;
         this.reciveActionSideNav = 0;
         this.showMessage = true;
+        this.showBack = false;
         this.menuService.deleteLocalStorage();
         this.router.navigate(['/pagos']);
         return;
@@ -65,6 +66,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   ngOnInit(): void { console.log(this.showMessage ) }
 
   buildMenu(padreId?: number) {
+    console.log('BORRARA - BuildMenu: ' + this.reciveActionSideNav)
     this.isLoading = true;
     this.showBack = false;
 
@@ -117,7 +119,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {
       this.reciveActionSideNav = id;
-      this.buildMenu();
+      this.buildMenu(Number.parseInt(idConcepto));
       this.showBack  = true;
       //return;
     }
