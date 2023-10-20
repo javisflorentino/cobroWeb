@@ -96,6 +96,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy 
   reciveValCard(val:number, nameDep: string) {
     this.sendActionSidenav = val;
     this.senNameDep = nameDep;
+    localStorage.removeItem('idParent');
   }
 
   redirectHome(event: boolean): void {

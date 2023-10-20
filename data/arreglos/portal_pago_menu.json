@@ -8,7 +8,7 @@
     },
     {
       "dependencia":"Hacienda",
-      "name": "Hcienda",
+      "name": "Hacienda",
       "padreId": 1,
       "iconURL": "bookmark"
     },

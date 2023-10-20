@@ -9,6 +9,7 @@ import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calcu
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licencia-vehiculo.component';
+import { ProteccionCivilComponent } from './pages/proteccion-civil/proteccion-civil/proteccion-civil.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'smyt-licencia-vehiculo',
         component: LicenciaVehiculoComponent
+      },
+      {
+        path: 'portalhacienda-proteccion-civil/:idConcepto',
+        component: ProteccionCivilComponent
       },
       {
         path: '**',

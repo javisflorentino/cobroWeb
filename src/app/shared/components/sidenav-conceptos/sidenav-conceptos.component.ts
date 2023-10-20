@@ -5,6 +5,10 @@ import { Conceptos } from '../../interfaces/shared-conceptos.interface';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 
+export interface IdPadre {
+  padreId: number
+}
+
 
 @Component({
   selector: 'shared-sidenav-conceptos',
@@ -68,14 +72,17 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   buildMenu(padreId?: number) {
     console.log('BORRARA - BuildMenu: ' + this.reciveActionSideNav)
     this.isLoading = true;
-    this.showBack = false;
+    if(!localStorage.getItem('idParent'))
+      this.showBack = false;
 
     if ( this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav%1)>0) {
+      console.log('ENTROOOOO')
       this.isLoading = false;
       this.showMessage = false;
       this.itemsConceptos = this.menuService.conceptoStorage;
       return ;
     }
+
 
     this.menuService.requestConceptos(this.reciveActionSideNav)
       .subscribe(conceptos => {
@@ -102,7 +109,21 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     this.itemsConceptos=[];
   }
 
-  backMenu() {}
+  backMenu() {
+     let idParent: IdPadre[]= JSON.parse(localStorage.getItem('idParent')!);
+     this.reciveActionSideNav = idParent[idParent.length -1].padreId;
+     idParent.pop();
+     if(idParent.length===0) {
+      localStorage.removeItem('idParent')
+      this.buildMenu();
+      return;
+     }
+     localStorage.setItem('idParent',JSON.stringify(idParent))
+     this.buildMenu();
+
+     //this.reciveActionSideNav = idParent.padreId;
+
+  }
 
   /*subActionList(id: number) {
     this.menuService.requestSubConceptos(id)
@@ -113,27 +134,48 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
           this.itemsConceptos = this.menuService.conceptoStorage;
         });
   }*/
+  buildTitle(concept: string) {
+    console.log('concept' + localStorage.getItem('concept'))
+    const concep = (localStorage.getItem('concept'))?
+      localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):
+      localStorage.setItem('concept',concept);
+    //(concept.length>0)? concept += ' - ' + concept:concept;
 
-  actionList(item: string, concept: string, id: number, idConcepto: string|number) {
+    //localStorage.setItem('idConcepto',idConcepto);
+
+    this.nameConcept.emit(concept);
+  }
+
+  actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number) {
 
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {
+      console.log(padreId)
+      let x: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
+      console.log( x)
+      if(x) {
+        x.forEach(() =>  x.push({'padreId':padreId}))
+        localStorage.setItem('idParent',JSON.stringify(x))
+      } else {
+        localStorage.removeItem('concept');
+        localStorage.setItem('idParent',JSON.stringify([{'padreId':padreId}]))
+      }
+      this.buildTitle(concept);
       this.reciveActionSideNav = id;
       this.buildMenu(Number.parseInt(idConcepto));
       this.showBack  = true;
-      //return;
+      return;
     }
 
     this.isLoading = true;
     //this.showMessage = false;
     this.itemsConceptos = this.menuService.conceptoStorage;
+    if(!localStorage.getItem('idParent')) {
+      localStorage.removeItem('concept');
 
-    const concep = (localStorage.getItem('concept'))?localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):localStorage.setItem('concept',concept);
-    (concept.length>0)? concept += ' - ' + concept:concept;
+    }
+    this.buildTitle(concept);
 
-    localStorage.setItem('idConcepto',idConcepto);
-
-    this.nameConcept.emit(concept);
     if ( idConcepto !== "0" ) this.changSidenav.toggle();
     //localStorage.setItem('concept',concept);
     this.router.navigate(['/pagos/'+item]);

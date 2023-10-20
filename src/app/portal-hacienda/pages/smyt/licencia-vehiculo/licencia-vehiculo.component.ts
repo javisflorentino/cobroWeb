@@ -30,6 +30,8 @@ export class LicenciaVehiculoComponent implements OnInit {
   public minDate!: Moment;
   public maxDate!: Moment;
 
+  public conceptTitle: string = '';
+
   public formLicencias: FormGroup = this.fb.group({
     no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required] ],
     fecha_vencimiento: [{value:'',disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
@@ -51,8 +53,10 @@ export class LicenciaVehiculoComponent implements OnInit {
     const currentMonth = moment().month() + 1;
     //moment().
     console.log(currentMonth)
-  //this.minDate = moment([currentYear -1, 0, 1]);
-  this.maxDate = moment([currentYear , 10, 30])
+    //this.minDate = moment([currentYear -1, 0, 1]);
+    this.maxDate = moment([currentYear , 10, 30]);
+
+    this.conceptTitle = localStorage.getItem('concept')!;
   }
 
 

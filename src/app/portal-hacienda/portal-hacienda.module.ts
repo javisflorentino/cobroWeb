@@ -14,6 +14,7 @@ import { AltaVehiculoNuevoPageComponent } from './pages/smyt/alta-vehiculo-nuevo
 import { MessagesComponent } from './components/smyt/messages/messages.component';
 import { AltaVehiculoUsadoPageComponent } from './pages/smyt/alta-vehiculo-usado-page/alta-vehiculo-usado-page.component';
 import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licencia-vehiculo.component';
+import { ProteccionCivilComponent } from './pages/proteccion-civil/proteccion-civil/proteccion-civil.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licenc
     AltaVehiculoNuevoPageComponent,
     MessagesComponent,
     AltaVehiculoUsadoPageComponent,
-    LicenciaVehiculoComponent
+    LicenciaVehiculoComponent,
+    ProteccionCivilComponent
 
   ],
   imports: [
