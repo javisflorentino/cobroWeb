@@ -33,6 +33,7 @@ export class SharedDatosPolizaComponent implements OnInit {
 
 
   activeLinkFunct(link:number):void {
+    console.log('entra = ' + link)
     this.activeLink = this.links[link];
     this.position[link] = true;
     this.position[(link>0)?0:1] = false;

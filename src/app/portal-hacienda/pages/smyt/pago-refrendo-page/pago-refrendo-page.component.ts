@@ -37,6 +37,8 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   public buttBlock = false;
 
+  public nameConcept: string = '';
+
 
 
   public refrendoForm = this.fb.group({
@@ -66,29 +68,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
 
   ngOnInit(): void {
-    /* Crean un observable y escucha los cambios  */
-    /*this.debouncerSubscription = this.debounce
-    .pipe(
-      debounceTime(500)
-    )
-    .subscribe( value => {
-      this.isLoading = true;
-
-      const p = this.refrendoForm.get('placa')?.value;
-      this.smytService.validateVehicle(p!,value)
-      .then(response => response.text())
-      .then(xml => {
-        console.log(xml);
-        this.asJson = this.xmlStringToJson(xml.toString());
-        this.isLoading = false;
-        if(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] !== 'EXITO') {
-          this.openSnackBar(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'])
-          //this.buttBlock = true;
-          return
-        }
-
-      }).catch (err => console.log(err));
-    });*/
+    this.nameConcept = localStorage.getItem('concept')!;
   }
   onKeyPress( searchTerm: string ) {
     this.debounce.next( searchTerm );

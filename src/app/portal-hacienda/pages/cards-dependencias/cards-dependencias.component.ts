@@ -28,6 +28,7 @@ export class CardsDependenciasComponent implements AfterViewInit {
 
   reciveValCard(id: number): void {
     let nameDep: string = '';
+    //console.log(this.cardsArr.filter((c => c.padreId == id)))
     this.cardsArr.forEach(card => {
       if (card.padreId === id) {
         nameDep = card.name;

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, Data, TopLevel } from '../../interfaces/calculo-conceptos';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -31,6 +32,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
+  public tipoform: number = 0;
+  public idConcepto: number = 0;
+
   destroyed = new Subject<void>();
   public sizeDisplay!: string;
   private displayNameMap = new Map([
@@ -41,11 +45,21 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
+  get cantidadPago() {
+    return this.formTableCal.get('cantidadPago')?.value
+  }
+
+  public formTableCal: FormGroup = this.fb.group({
+    cantidadPago: [1,[Validators.required]]
+  });
+
   constructor(
     private smyPagosService: SmyCalculoPagosService,
     private router:Router,
     private _snackBar: MatSnackBar,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
     ) {
       this.mediaQuery();
     }
@@ -56,13 +70,20 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.openSnackBar('La cantidad inicial es 1. Si desea pagar mas de un concepto cambie el valor en cantidad.');
+
     this.isLoading = true;
     if ( !localStorage.getItem('vehicle_data') ) {
-      const idConcepto = localStorage.getItem('idConcepto');
-      if ( idConcepto  && idConcepto !== "0" ) {
-        this.consultConceptoPago(idConcepto)
+      const idConcepto = Number.parseInt(localStorage.getItem('idConcepto')!);
+      if ( idConcepto  && idConcepto !== 0 ) {
+        this.consultConceptoPago(idConcepto,1)
+        return;
       }
-      return;
+      this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
+        this.tipoform = tipoForm;
+        this.idConcepto = idConcepto;
+        this.consultConceptoPago(idConcepto,1);
+      });
     }
     const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
     this.smyPagosService.getCalculoPagos(
@@ -95,11 +116,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       });
   }
 
-  consultConceptoPago(idConcepto:string) {
+  consultConceptoPago(idConcepto:number,cantidad:number) {
+    this.isLoading = true;
     const datos = {
       "idConcepto": idConcepto,
       "monto": null,
-      "cantidad": 1
+      "cantidad": cantidad
     };
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
@@ -107,7 +129,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         this.conceptoPago = resp;
         if(resp.success && resp.data.conceptos.length>0) {
           this.conceptos = resp.data.conceptos;
-          console.log(this.conceptos)
+          localStorage.setItem('contribuyente',JSON.stringify(this.conceptoPago));
           this.total = resp.data.total;
           return;
         }
@@ -122,7 +144,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     this._snackBar.open(message, '', {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
-      duration: 2500
+      duration: 3500
     });
   }
 
@@ -134,6 +156,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     console.log(event)
   }
   datosContribuyente():void {
+    //if(!localStorage.getItem('contribuyente')) {
+    //  localStorage.setItem('contribuyente',JSON.stringify(this.conceptoPago));
+    //}
     this.router.navigate(['pagos/datos-contribuyente']);
   }
 
@@ -159,4 +184,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
 
  }
+  sendCant(): void {
+    console.log(this.cantidadPago);
+    this.consultConceptoPago(this.idConcepto,this.cantidadPago);
+  }
 }

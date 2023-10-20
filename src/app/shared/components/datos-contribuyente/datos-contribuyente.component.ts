@@ -110,7 +110,7 @@ export class DatosContribuyenteComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     if(!localStorage.getItem('contribuyente')) {
-      this.openSnackBar('No se cuenta con informacion para continuar con el proceso')
+      this.openSnackBar('No se cuenta con información para continuar con el proceso')
       setTimeout(()=>{
         this.router.navigate(['pagos']);
       },2500)

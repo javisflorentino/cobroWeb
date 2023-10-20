@@ -17,6 +17,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy 
 
   /* Se enviara a shared-sidenav-conceptos y cuando se presiona el icono de menu del Toolbar se genera un aleatorio */
   public sendActionSidenav: number = 0;
+  public sendValCardSidenav: Subject<number> = new Subject<number>();
   // Envia un valor numerico aleatorio mayot a 0 para indicar que se quiere ir al home. Se envia al Sidenav que limpiara variables al recibir
   public sendActEraseLocalStor: number = 0;
 
@@ -87,14 +88,13 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy 
 
   /* Recibe valor del shared-toolbar*/
   get actionOnSidenav() {
-    console.log('Layoyt Recibe valor');
     this.sendActionSidenav = Math.random();
-    console.log('Layoyt valor: ' + this.sendActionSidenav);
     return true;
   }
 
   reciveValCard(val:number, nameDep: string) {
     this.sendActionSidenav = val;
+    this.sendValCardSidenav.next(val);
     this.senNameDep = nameDep;
     localStorage.removeItem('idParent');
   }

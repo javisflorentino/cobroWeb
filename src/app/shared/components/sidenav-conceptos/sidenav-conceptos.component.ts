@@ -21,6 +21,9 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   //Recibe de Layout el valor del concepto seleccionado
   @Input()
   public reciveActionSideNav!:number;
+  // Variable de tipo Observable que recible el valor de la dependencia por parte de Layout
+  @Input ()
+  public reciveValCard: Observable<number> = new Observable<number>();
 
   @Input()
   public eraseLocalStor: number = 0;
@@ -47,36 +50,44 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   constructor( private menuService: MenuService, private router: Router ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('BORRARA - Change: ' + this.changSidenav)
     if(this.changSidenav) {
-      this.changSidenav.toggle();
-      if ( this.eraseLocalStor ) {
-        localStorage.clear();
-        this.itemsConceptos = [];
-        this.eraseLocalStor = 0;
-        this.reciveActionSideNav = 0;
-        this.showMessage = true;
-        this.showBack = false;
-        this.menuService.deleteLocalStorage();
-        this.router.navigate(['/pagos']);
-        return;
-      }
-
-      this.buildMenu();
-
-
+      this.processChangeOnView();
     }
   }
-  ngOnInit(): void { console.log(this.showMessage ) }
+
+  ngOnInit(): void {
+    /* Obsevable que se queda en espera de cambios en lo recivido por parte de Layout  */
+    this.reciveValCard.subscribe(dep => {
+      this.reciveActionSideNav = dep;
+      this.processChangeOnView();
+    });
+    console.log(this.showMessage )
+  }
+
+  processChangeOnView() {
+    if(this.changSidenav.opened == false )
+      this.changSidenav.open();
+    //this.changSidenav.toggle();
+    if ( this.eraseLocalStor ) {
+      localStorage.clear();
+      this.itemsConceptos = [];
+      this.eraseLocalStor = 0;
+      this.reciveActionSideNav = 0;
+      this.showMessage = true;
+      this.showBack = false;
+      this.menuService.deleteLocalStorage();
+      this.router.navigate(['/pagos']);
+      return;
+    }
+    this.buildMenu();
+  }
 
   buildMenu(padreId?: number) {
-    console.log('BORRARA - BuildMenu: ' + this.reciveActionSideNav)
     this.isLoading = true;
     if(!localStorage.getItem('idParent'))
       this.showBack = false;
 
     if ( this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav%1)>0) {
-      console.log('ENTROOOOO')
       this.isLoading = false;
       this.showMessage = false;
       this.itemsConceptos = this.menuService.conceptoStorage;
@@ -125,17 +136,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
   }
 
-  /*subActionList(id: number) {
-    this.menuService.requestSubConceptos(id)
-        .subscribe( resp => {
-          this.showBack  =true;
-          this.isLoading = true;
-          this.showMessage = false;
-          this.itemsConceptos = this.menuService.conceptoStorage;
-        });
-  }*/
   buildTitle(concept: string) {
-    console.log('concept' + localStorage.getItem('concept'))
     const concep = (localStorage.getItem('concept'))?
       localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):
       localStorage.setItem('concept',concept);
@@ -176,32 +177,15 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     }
     this.buildTitle(concept);
 
+    const conceptSelect: Conceptos[] = this.itemsConceptos.filter(resp => resp.id == id )
+
     if ( idConcepto !== "0" ) this.changSidenav.toggle();
     //localStorage.setItem('concept',concept);
-    this.router.navigate(['/pagos/'+item]);
-
-    /*this.menuService.requestSubConceptos(id)
-      .subscribe(resp => {
-        if ( idConcepto === "0" && resp.length > 0 ) {
-          this.showBack  =true;
-          this.isLoading = false;
-          this.showMessage = false;
-          this.itemsConceptos = this.menuService.conceptoStorage;
-
-          this.subConceptos = resp;
-          console.log(this.subConceptos)
-          return;
-        }
-        this.nameConcept.emit(concept);
-        this.changSidenav.toggle();
-        localStorage.setItem('concept',concept);
-        this.router.navigate(['/pagos/'+item]);
-      });*/
-
-
-    /*this.changSidenav.toggle();
-    localStorage.setItem('concept',concept);
-    this.router.navigate(['/pagos/'+item]);*/
+    if (conceptSelect[0].opcionFormulario > 1) {
+      this.router.navigate(['/pagos/'+item]);
+      return;
+    }
+    this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
   }
 
 }

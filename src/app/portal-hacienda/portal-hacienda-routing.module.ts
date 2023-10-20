@@ -49,8 +49,8 @@ const routes: Routes = [
         component: LicenciaVehiculoComponent
       },
       {
-        path: 'portalhacienda-proteccion-civil/:idConcepto',
-        component: ProteccionCivilComponent
+        path: 'portalhacienda-proteccion-civil/:idConcepto/:tipoForm',
+        component: TablaCalculoConceptosComponent
       },
       {
         path: '**',
