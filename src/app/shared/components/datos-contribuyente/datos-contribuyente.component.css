@@ -24,3 +24,199 @@
 .example-container-expand mat-form-field + mat-form-field {
   margin-left: 8px;
 }
+
+
+
+/*BORRAR ESTOS*/
+.morelos-form {
+
+  border: 1px solid #e6e5e5;
+
+  background: #e6e5e5;
+
+  padding: 3px 10px;
+
+}
+
+
+
+input[type=text]:focus {
+
+  border: 1px solid #e6e5e5;
+
+  background: #e6e5e5;
+
+  padding: 3px 10px;
+
+}
+
+
+
+input.morelos-form,
+
+select.morelos-form {
+
+  height: 30px;
+
+  color: #686963;
+
+}
+
+
+
+select.morelos-form {
+
+  font-style: italic;
+
+}
+
+
+
+.morelos-label {
+
+  color: #4f524a;
+
+  font-weight: bold;
+
+  font-family: "Arial", Times, serif;
+
+}
+
+
+
+textarea {
+
+  font-family: "Arial", Times, serif;
+
+  color: #686963;
+
+}
+
+
+
+::-webkit-input-placeholder {
+
+  font-style: italic;
+
+}
+
+
+
+:-moz-placeholder {
+
+  font-style: italic;
+
+}
+
+
+
+::-moz-placeholder {
+
+  font-style: italic;
+
+}
+
+
+
+:-ms-input-placeholder {
+
+  font-style: italic;
+
+}
+
+
+
+::-webkit-input-placeholder {
+
+  /* Edge */
+
+  color: #686963;
+
+  font-size: italic;
+
+}
+
+
+
+:-ms-input-placeholder {
+
+  /* Internet Explorer 10-11 */
+
+  color: #686963;
+
+  font-size: italic;
+
+}
+
+
+
+::placeholder {
+
+  color: #686963;
+
+  font-size: italic;
+
+}
+
+
+
+.morelos-primary {
+
+  color: white;
+
+  font-weight: bold;
+
+  background-color: #4f0b77;
+
+  border: 1px solid #4f0b77;
+
+  padding: 10px 15px;
+
+}
+
+
+
+.morelos-secondary {
+
+  color: white;
+
+  font-weight: bold;
+
+  background-color: #c96faa;
+
+  border: 1px solid #c96faa;
+
+  padding: 10px 15px;
+
+}
+
+
+
+.morelos-info {
+
+  color: #72746e;
+
+  font-weight: bold;
+
+  background-color: #ffffff;
+
+  border: 1px solid #72746e;
+
+  padding: 10px 15px;
+
+}
+
+
+
+.morelos-cancel {
+
+  color: white;
+
+  font-weight: bold;
+
+  background-color: #ee0000;
+
+  border: 1px solid #ee0000;
+
+  padding: 10px 15px;
+}

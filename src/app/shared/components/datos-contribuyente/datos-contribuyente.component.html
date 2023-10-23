@@ -34,11 +34,43 @@
 
 
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+
+            <div class="formgrid  grid ">
+              <div class="field xl:col-6 sm:col-12 md:col-6">
+                <label for="" class="morelos-label" >Nombre</label>
+                <br>
+                <input matInput type="text" formControlName="nombre"
+                style="border: 1px solid #e6e5e5; background: #e6e5e5; padding: 3px 10px; margin-right:0.5em;"
+                class="xl:w-6 sm:w-full md:w-full"
+                >
+              </div>
+              <div class="field col">
+                <label for="" class="morelos-label" >Apellido Paterno</label>
+                <br>
+                <input matInput type="text" formControlName="primerApellido"
+                style="border: 1px solid #e6e5e5; background: #e6e5e5; padding: 3px 10px; margin-right:0.5em;"
+                class="xl:w-6 sm:w-full md:w-full"
+                >
+              </div>
+            </div>
+            <div class="formgrid  grid ">
+              <div class="field xl:col-12 sm:col-6">
+                <label for="" class="morelos-label" >Apellido Materno</label>
+                <br>
+                <input matInput type="text" formControlName="segundoApellido"
+                style="border: 1px solid #e6e5e5; background: #e6e5e5; padding: 3px 10px; margin-right:0.5em;"
+                class="w-full sm:w-11"
+                >
+              </div>
+              <div class="field col"></div>
+            </div>
+            <br>
+
+            <!--mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Nombre</mat-label>
               <input matInput type="text" formControlName="nombre">
               <mat-error *ngIf="isValidField('nombre')"> Campo requerido</mat-error>
-            </mat-form-field>
+            </!--mat-form-field>
 
             <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Apellido Paterno</mat-label>
@@ -46,19 +78,19 @@
               <mat-error *ngIf="isValidField('apellido_p')"> Campo requerido</mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field-- fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Apellido Materno</mat-label>
               <input matInput type="text" formControlName="segundoApellido">
               <mat-error *ngIf="isValidField('apellido_m')"> Campo requerido</mat-error>
-            </mat-form-field>
+            </mat-form-field-->
 
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" >
               <mat-label>RFC</mat-label>
               <input matInput formControlName="rfc" type="text" name="" id="">
               <mat-error *ngIf="isValidField('rfc')">Campo requerido y alfanumérico</mat-error>
             </mat-form-field>
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" >
               <mat-label>CURP</mat-label>
               <input matInput formControlName="curp" type="text" >
               <mat-error *ngIf="isValidField('curp')">Campo requerido y alfanumérico</mat-error>

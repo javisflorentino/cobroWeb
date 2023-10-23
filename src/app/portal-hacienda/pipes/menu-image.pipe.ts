@@ -6,12 +6,15 @@ import { PortalMenu } from '../interface/portal-menu.interface';
 })
 export class MenuImagePipe implements PipeTransform {
 
-  transform(item:PortalMenu): string {
+  transform(item:PortalMenu, resolution:string): string {
+    let path = 'assets/dependencias/';
+    if(resolution == 'Small' || resolution == 'XSmall')
+      path += '256x256/'
     if (!item.dependencia) {
-      return 'assets/dependencias/no-image.png';
+      return `${path}no-image.png`;
     }
 
-    return `assets/dependencias/${item.dependencia}.png`;
+    return `${path}${item.dependencia}.png`;
   }
 
 }

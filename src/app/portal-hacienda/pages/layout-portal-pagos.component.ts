@@ -3,7 +3,7 @@
   Renderiza los componentes definidos como rutas
 */
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, AfterViewInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-conceptos/sidenav-conceptos.component';
 
@@ -13,7 +13,7 @@ import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-con
   styles: [
   ]
 })
-export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy  {
+export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit  {
 
   /* Se enviara a shared-sidenav-conceptos y cuando se presiona el icono de menu del Toolbar se genera un aleatorio */
   public sendActionSidenav: number = 0;
@@ -50,9 +50,17 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy 
       console.log(this.sideNav.changSidenav.toggle)
   }*/
 
+  public flag:boolean = true;
+
 
   constructor( private breakpointObserver: BreakpointObserver ) {
     this.mediaQuery();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      this.flag = false;
+    },2000)
   }
 
   ngOnChanges(changes: SimpleChanges): void {}

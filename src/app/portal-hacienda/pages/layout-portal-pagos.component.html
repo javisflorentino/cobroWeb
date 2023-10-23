@@ -16,7 +16,16 @@
     ></shared-toolbar>
 
   <div class="container p-2">
-    <router-outlet></router-outlet>
+
+      <div *ngIf="flag" class="flex flex-wrap align-items-center justify-content-center card-container green-container">
+          <div class="scalein animation-duration-2000 animation-iteration-infinite flex align-items-center justify-content-center
+      font-bold bg-green-500 text-white border-round m-2 px-5 py-3">
+        <img  src="../../../assets/morelos_1.png" alt="" style="width: 30%; height: 30%;">
+    </div>
+      </div>
+
+
+    <router-outlet *ngIf="!flag" ></router-outlet>
   </div>
 
 </mat-sidenav-container>
