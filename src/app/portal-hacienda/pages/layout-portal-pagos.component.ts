@@ -60,7 +60,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy,
   ngAfterViewInit(): void {
     setTimeout(()=>{
       this.flag = false;
-    },2000)
+    },1000)
   }
 
   ngOnChanges(changes: SimpleChanges): void {}
