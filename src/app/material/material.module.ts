@@ -21,6 +21,7 @@ import {  MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -50,7 +51,8 @@ import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
     MatCheckboxModule,
     MatRadioModule,
     MatTableModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [{
       provide: MAT_RADIO_DEFAULT_OPTIONS,

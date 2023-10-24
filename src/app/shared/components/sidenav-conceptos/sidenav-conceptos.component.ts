@@ -72,6 +72,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       localStorage.clear();
       this.itemsConceptos = [];
       this.eraseLocalStor = 0;
+      this.changSidenav.toggle();
       this.reciveActionSideNav = 0;
       this.showMessage = true;
       this.showBack = false;
