@@ -23,7 +23,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 4.- Clonar el proyecto
 5.- Ejecutar ```npm install``` dentro de la carpeta del proyecto
 6.- Instalar de manera local json-server ```npm install --save-dev json-server```
-7.- Para levantar el servidor html de Angular ejecutar ```ng start:proxy``` 
+7.- Para levantar el servidor html de Angular ejecutar ```npm run start:proxy``` 
 8.- Levantamos el Servidor virtual de Banckend con ```npm run backend```
 9.- Levantamos el Servidor virtual de Mensajes ```npm run messages```
 
