@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { Router } from '@angular/router';
@@ -6,6 +6,11 @@ import { DatosPoliza } from '../../interfaces/datos-poliza';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { TopLevel } from '../../interfaces/calculo-conceptos';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
+import { Municipios } from 'src/app/portal-hacienda/interface/municipios';
+
+import ListaMunicipios from '../../../../../data/arreglos/municipios.json';
+import { SnackBarComponent } from '../snack-bar/snack-bar.component';
+import { ValidatorsService } from '../../services/validators.service';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -13,6 +18,9 @@ import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
   styleUrls: ['./datos-contribuyente.component.css']
 })
 export class DatosContribuyenteComponent implements OnInit {
+
+  public arrMunicipios: Municipios[] = ListaMunicipios;
+  private cadenaError: string = '';
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -85,29 +93,40 @@ export class DatosContribuyenteComponent implements OnInit {
 
   public myFormContribuyente: FormGroup = this.fb.group({
     tipoPersona: ['',[Validators.required]],
-    nombre: [],
-    primerApellido: [],
-    segundoApellido: [],
+    nombre: ['',[Validators.required]],
+    primerApellido: ['', [Validators.required]],
+    segundoApellido: ['', [Validators.required]],
     razonSocial: [],
     rfc: [],
     curp: [],
     domicilio: this.fb.group({
-      calle: [],
-      numeroExterior: [],
+      calle: ['', [Validators.required]],
+      numeroExterior: ['', [Validators.required]],
       numeroInterior: [],
-      colonia: [],
-      codigoPostal: [],
+      colonia: ['', [Validators.required]],
+      codigoPostal: ['', [Validators.required]],
       municipio: [],
       observaciones: []
     })
-  });
+  },
+  {
+    validators:[this.validatosService.validateDataInput('nombre'),this.validatosService.validateDataInput('primerApellido'),
+    this.validatosService.validateDataInput('segundoApellido'), this.validatosService.validateDataInput('calle')],
+  }
+  );
 
   constructor(
     private fb:FormBuilder,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private smytService: SmytService
+    private smytService: SmytService,
+    private validatosService: ValidatorsService
   ) { }
+
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
+
   ngOnInit(): void {
     if(!localStorage.getItem('contribuyente')) {
       this.openSnackBar('No se cuenta con información para continuar con el proceso')
@@ -120,6 +139,21 @@ export class DatosContribuyenteComponent implements OnInit {
     console.log(this.contribuyenteArr)
     this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
     this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
+
+    console.log('Datos Contribuyente: ' + this.contribuyenteArr.data.contribuyente)
+  }
+
+  customerValidate() {
+    if (this.contribuyenteArr.data.contribuyente.nombre !==  String(this.myFormContribuyente.get('nombre')?.value).trim()) {
+      this.cadenaError += 'Nombre';
+    }
+    if (this.contribuyenteArr.data.contribuyente.primerApellido !==  String(this.myFormContribuyente.get('primerApellido')?.value).trim()) {
+      this.cadenaError += 'Apellido Paterno';
+    }
+    if (this.contribuyenteArr.data.contribuyente.segundoApellido !==  String(this.myFormContribuyente.get('segundoApellido')?.value).trim()) {
+      this.cadenaError += 'Apellido Materno';
+    }
+      console.log(this.contribuyenteArr.data.contribuyente.nombre + "==" + this.myFormContribuyente.get('nombre')?.value)
   }
 
   generarPoliza(): void {
@@ -128,7 +162,9 @@ export class DatosContribuyenteComponent implements OnInit {
 
     const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
     const datosAdicionales = `PLACA: ${dataVehicleLs.placa},PLACA ANTERIOR: -,,,,,MODELO: ,,,,MOTOR: ,FECHA FACTURA: ,VALOR FACTURA: ,PROCEDENCIA:,,NO DE SERIE: ${dataVehicleLs.serie},VALOR VENTA: ,SERVICIO: ,T: 08.`;
-
+    /*if (this.contribuyenteArr.data.contribuyente !== undefined) {
+      this.customerValidate();
+    }*/
 
    this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
@@ -149,23 +185,19 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.codigoPostal = this.contribuyenteArr.data.domicilio.codigoPostal;
    this.dataPoliza.observaciones = (this.myFormContribuyente.get('observaciones')?.value)?this.myFormContribuyente.get('observaciones')?.value:"";
    this.dataPoliza.datosAdicionales = datosAdicionales;
-   this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;  /*Object.entries(this.contribuyenteArr[3]).forEach(val => { this.dataPoliza.total = val[1]; })//this.dataPoliza.total = Object.entries(this.contribuyenteArr[3]).forEach((title,val:number) => val.toString );
-   Object.entries(this.contribuyenteArr[0]).map(([key,val]) => {
-    Object.entries(this.dataPoliza).map(([llave,valor])=> console.log(llave))
-   })*/
-   //this.dataPoliza.
-    console.log(this.dataPoliza)
-   //Object.entries(this.contribuyenteArr[0]).forEach(r => console.log(r[1]))
-    //this.router.navigate(['pagos/generar_poliza']);
+   this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 
-    this.smytService.generarPolizaServ(this.dataPoliza)
+    //console.log(this.dataPoliza)
+
+
+    /*this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         if ( resp.success) {
           this.isLoading = false;
           localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
           this.router.navigate(['pagos/generar_poliza']);
         }
-      });
+      });*/
   }
 
   isValidField(field: string) {
@@ -173,10 +205,8 @@ export class DatosContribuyenteComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message, '', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 2000
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message,duration: 3500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
     });
   }
 

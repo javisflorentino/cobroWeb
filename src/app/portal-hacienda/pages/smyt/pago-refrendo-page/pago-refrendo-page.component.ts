@@ -1,16 +1,17 @@
 import { SmytService } from './../../../services/smyt.service';
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
 import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
 import { NavigationStart, Router } from '@angular/router';
 import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
-import { Subject, Subscription, debounceTime } from 'rxjs';
-
-import {LoadSpinnerComponent} from '../../../../shared/components/load-spinner/load-spinner.component'
+import { Subscription } from 'rxjs';
+import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
+import { formatCurrency } from '@angular/common';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 
 
 @Component({
@@ -21,72 +22,60 @@ import {LoadSpinnerComponent} from '../../../../shared/components/load-spinner/l
 })
 export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
+  /* Arreglo de oficinas de SMyT */
   public oficinasArr: Oficinas[] = ListaOficinas;
-  public alertMesage: boolean = false;
-
-  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-  private debounce: Subject<string> = new Subject<string>();
-  private debouncerSubscription?: Subscription;
-
+  /* Variable de tipo Interface-ValidateVehicle */
   private asJson!:ValidateVehicle;
-
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
-
+  /* Bloque el boton de Calcular para evitar acciones duplicadas  */
   public buttBlock = false;
-
+  /* Se usa para obtener el nombre del concepto seleccionado y mostrarlo en el HTML */
   public nameConcept: string = '';
-
-
-
+  /* Inicialización del formulario reactivo */
   public refrendoForm: FormGroup = this.fb.group({
     id:      [''],
     oficina: ['', [Validators.required]],
-    placa:   ['', [Validators.required, Validators.minLength(4)]],
-    serie:   ['', [Validators.required, Validators.minLength(5)]]
+    placa:   ['ABC123D', [Validators.required, Validators.minLength(4)]],
+    serie:   ['MARZ5', [Validators.required, Validators.minLength(5)]]
   },{
-    Validators: [this.validatorsService.existsSeries('serie','placa')]
+    validators: [this.validatorsService.existsSeries('serie','placa')]
   });
-
-  subscription: Subscription;
+  /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
+  public subscription: Subscription;
+  /* Recibe un arreglo de tipo  ConvertXmlString*/
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   constructor(
     private fb:FormBuilder,
     private _snackBar: MatSnackBar,
     private validatorsService: ValidatorsService,
     private smytService: SmytService,
-    private router: Router ) {
+    private router: Router
+  ) {
       this.subscription = router.events.subscribe((event) => {
         if (event instanceof NavigationStart) {
           console.log('refresco el navegador Refrendo')
         }
-    });
-    }
-
-
+      });
+  }
 
   ngOnInit(): void {
     this.nameConcept = localStorage.getItem('concept')!;
   }
-  onKeyPress( searchTerm: string ) {
-    this.debounce.next( searchTerm );
-  }
 
   ngOnDestroy(): void {
     console.log('Destruido');
-    this.debouncerSubscription?.unsubscribe();
     this.subscription.unsubscribe();
   }
 
   onSubmit(): void {
     this.isLoading = true;
+    this.buttBlock = true;
     if (this.refrendoForm.invalid) {
-      this.alertMesage = true
-      //this.openSnackBar('Verifique los campos requeridos');
       this.refrendoForm.markAllAsTouched();
       this.isLoading = false;
+      this.buttBlock = false;
       return;
     }
 
@@ -99,80 +88,26 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     this.smytService.validateVehicle(p!,s!)
       .then(response => response.text())
       .then(xml => {
-        this.asJson = this.xmlStringToJson(xml.toString());
+        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
         if(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] === 'EXITO') {
+          localStorage.setItem('route_origen','smyt-refrendo')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }
-        this.openSnackBar(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text']);
+
+        this._snackBar.openFromComponent(SnackBarComponent, {
+          data: this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'],
+          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+        });
+
         this.isLoading = false;
+        this.buttBlock = false;
       }).catch (err => console.log(err));
 
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message, '', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 3000
-    });
   }
 
   isValidField( field: string ) {
     //TODO: Obtener validación desde un servicio
     return this.validatorsService.isValidField( this.refrendoForm, field );
-  }
-
-
-
-
-
-
-  xmlStringToJson(xml: string)
-  {
-      const oParser = new DOMParser();
-      const xmlDoc = oParser.parseFromString(xml, "application/xml");
-      return this.xmlToJson(xmlDoc);
-  }
-
-  /**
-   * REF: https://davidwalsh.name/convert-xml-json
-   */
-  xmlToJson(xml:any)
-  {
-    // Create the return object
-    var obj:any = {}
-
-    if (xml.nodeType == 1) { // element
-      // do attributes
-      if (xml.attributes.length > 0) {
-      obj["@attributes"] = {};
-        for (var j = 0; j < xml.attributes.length; j++) {
-          var attribute = xml.attributes.item(j);
-          obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-        }
-      }
-    } else if (xml.nodeType == 3) { // text
-      obj = xml.nodeValue;
-    }
-
-    // do children
-    if (xml.hasChildNodes()) {
-      for(var i = 0; i < xml.childNodes.length; i++) {
-        var item = xml.childNodes.item(i);
-        var nodeName = item.nodeName;
-        if (typeof(obj[nodeName]) == "undefined") {
-          obj[nodeName] = this.xmlToJson(item);
-        } else {
-          if (typeof(obj[nodeName].push) == "undefined") {
-            var old = obj[nodeName];
-            obj[nodeName] = [];
-            obj[nodeName].push(old);
-          }
-          obj[nodeName].push(this.xmlToJson(item));
-        }
-      }
-    }
-    return obj;
   }
 }

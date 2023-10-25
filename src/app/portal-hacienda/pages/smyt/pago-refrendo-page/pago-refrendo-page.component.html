@@ -1,12 +1,12 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-<div class="col md:col-6 md:col-offset-3 md:mt-4">
-  <h3>Cálculo de Costos</h3>
-  <small>{{nameConcept | titlecase}}</small>
-
-  <mat-divider class="mb-2"></mat-divider>
-
-  <div class="">
+<div class="card">
+  <div class="flex justify-content-center flex-wrap">
     <mat-card>
+      <mat-card-header>
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle><small>{{nameConcept | titlecase}}</small></mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
       <mat-card-content>
         <div class="">
           <form action="" fxLayout="column"  [formGroup]="refrendoForm" (ngSubmit)="onSubmit()">
@@ -27,7 +27,7 @@
 
               <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
                 <mat-label>Serie Vehicular</mat-label>
-                <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5" (keyup)="onKeyPress(serie.value)">
+                <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
                 <mat-error *ngIf="isValidField('serie')"> Campo requerido </mat-error>
               </mat-form-field>
@@ -40,7 +40,7 @@
 
       <mat-card-actions align="end">
         <div class="flex justify-content-between">
-          <button mat-stroked-button color="warn">
+          <button mat-stroked-button color="warn" [routerLink]="['pagos/']">
             <mat-icon>cancel</mat-icon>
             Cancelar
           </button>
@@ -53,5 +53,4 @@
       </mat-card-actions>
     </mat-card>
   </div>
-
 </div>

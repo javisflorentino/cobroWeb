@@ -61,8 +61,6 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   private childComponent!: FormAltaVehiculoComponent;
 
 
-  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  private verticalPosition: MatSnackBarVerticalPosition = 'top';
   public sizeDisplay!: string;
   destroyed = new Subject<void>();
   private displayNameMap = new Map([
@@ -221,8 +219,8 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
 
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Cerrar', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
+      horizontalPosition: "center",
+      verticalPosition: "top",
       duration: 5000
     });
   }

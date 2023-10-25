@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedDatosPolizaComponent } from './components/shared-datos-poliza/shared-datos-poliza.component';
 import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
 import { SegmentTextPipe } from './pipes/segment-text.pipe';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 
 
 
@@ -24,7 +25,8 @@ import { SegmentTextPipe } from './pipes/segment-text.pipe';
     DatosContribuyenteComponent,
     SharedDatosPolizaComponent,
     LoadSpinnerComponent,
-    SegmentTextPipe
+    SegmentTextPipe,
+    SnackBarComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { SegmentTextPipe } from './pipes/segment-text.pipe';
     SharedToolbarComponent,
     TablaCalculoConceptosComponent,
     LoadSpinnerComponent,
-    SegmentTextPipe
+    SegmentTextPipe,
+    SnackBarComponent
   ]
 })
 export class SharedModule { }
