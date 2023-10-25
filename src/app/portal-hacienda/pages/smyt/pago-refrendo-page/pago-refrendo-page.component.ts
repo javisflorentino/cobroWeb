@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
 import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
 import { NavigationStart, Router } from '@angular/router';
@@ -41,7 +41,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
 
 
-  public refrendoForm = this.fb.group({
+  public refrendoForm: FormGroup = this.fb.group({
     id:      [''],
     oficina: ['', [Validators.required]],
     placa:   ['', [Validators.required, Validators.minLength(4)]],
@@ -77,6 +77,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
   ngOnDestroy(): void {
     console.log('Destruido');
     this.debouncerSubscription?.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   onSubmit(): void {

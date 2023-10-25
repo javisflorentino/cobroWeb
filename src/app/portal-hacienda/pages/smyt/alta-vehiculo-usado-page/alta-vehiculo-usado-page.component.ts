@@ -1,13 +1,15 @@
-import { Component, ViewChild, Pipe } from '@angular/core';
+import { Component, ViewChild, Pipe, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
-import { Subscribable, Subscription } from 'rxjs';
+import { Subject, Subscribable, Subscription, takeUntil } from 'rxjs';
 import { FormAltaVehiculoComponent } from 'src/app/portal-hacienda/components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { TipoVehiculo } from '../../../interface/portal-tipovehiculo.interface';
 import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.interfacce';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -16,7 +18,9 @@ import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.inte
   styles: [
   ],
 })
-export class AltaVehiculoUsadoPageComponent {
+export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit {
+
+  public step: number = 0;
 
   aniosPago = [
     {name: '2018', value:'p2018'},
@@ -56,6 +60,19 @@ export class AltaVehiculoUsadoPageComponent {
   @ViewChild(FormAltaVehiculoComponent)
   private childComponent!: FormAltaVehiculoComponent;
 
+
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  private verticalPosition: MatSnackBarVerticalPosition = 'top';
+  public sizeDisplay!: string;
+  destroyed = new Subject<void>();
+  private displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
   //Metodo sincrono que devuelve un valor especifico con formato, en este caso devuelve parte del Form por referencia como un FormArray
   get ordersFormArray() {
     return this.myForm.controls['pagos'] as FormArray;
@@ -64,26 +81,40 @@ export class AltaVehiculoUsadoPageComponent {
   constructor(
     private fb: FormBuilder,
     private smytService: SmytService,
-    private validatorService: ValidatorsService
-  ) {}
+    private validatorService: ValidatorsService,
+    private breakpointObserver: BreakpointObserver,
+    private _snackBar: MatSnackBar
+  ) {
+    this.mediaQuery();
+  }
 
   // Se implementó para la carga del formulario FormAltaVehiculoComponent
   ngAfterViewInit(): void {
+    console.log('ngAfterViewInit')
     setTimeout( () => {
       this.myForm.addControl('oficinas',this.childComponent.myFormShared);
       this.childComponent.myFormShared.setParent(this.myForm);
     });
 
+    //this.openSnackBar(message: string)
+
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit')
     //Obtiene el Nombre del concepto que se requiere procesar
     this.conceptTitle = localStorage.getItem('concept')!;
-
+    let msg: string = '';
     //Llamado al sevico para obtener los mensajes a mostrar
     this.smytService.getMessages()
       .subscribe( message => {
         this.messages = message;
+        if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
+          this.messages.forEach(mss=> {
+            msg += mss.message;
+          });
+          this.openSnackBar(msg);
+        }
       });
 
     // Observable de los cambios suscitado en el apartado del formulario "pagos" y modifica el valor del elemento,
@@ -106,6 +137,8 @@ export class AltaVehiculoUsadoPageComponent {
 
 
   }
+
+
 
   updateFiel(event: number): void {
     if (event === 8) {
@@ -132,6 +165,8 @@ export class AltaVehiculoUsadoPageComponent {
   ngOnDestroy() {
     this.checkboxControl.unsubscribe();
     //this.vehicleType.unsubscribe();
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 
   get oficinas() {
@@ -156,5 +191,39 @@ export class AltaVehiculoUsadoPageComponent {
       pagos: checkboxControl.value.filter((value: any) => !!value)
     }
     this.submittedValue = formValue;
+  }
+
+  public mediaQuery() {
+
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
+          }
+        }
+      });
+
+
+ }
+
+  setStep(index: number): void {
+    this.step = index;
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Cerrar', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5000
+    });
   }
 }

@@ -1,5 +1,5 @@
 <div class="grid flex">
-  <div class="col-8">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'" >
     <mat-card>
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
@@ -11,7 +11,7 @@
           <!--div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px"-->
 
           <mat-accordion class="example-headers-align" multi>
-            <mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
               <mat-expansion-panel-header>
                 <mat-panel-description>
                   Datos Vehiculo 1
@@ -19,30 +19,32 @@
               </mat-expansion-panel-header>
               <form-alta-vehiculo (tipoVehiculoEmit)="updateFiel($event)"></form-alta-vehiculo>
             </mat-expansion-panel>
-            <mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
               <mat-expansion-panel-header>
                 <mat-panel-description>
                   Datos Vehiculo 2
                 </mat-panel-description>
               </mat-expansion-panel-header>
+              <div class="flex flex-wrap card-container gap-1 row-gap-3 md:gap-4 xl:gap-8">
+                <mat-form-field fxFlex class="border-round w-12rem h-3rem flex align-items-center justify-content-center" style="margin-right:0.5em;" appearance="outline">
+                  <mat-label>Modelo</mat-label>
+                  <input matInput type="number" formControlName="modelo">
+                  <mat-error *ngIf="isValidField('modelo')"> Debe tener un valor entre el rango de 1900 y {{anio + 1}}</mat-error>
+                </mat-form-field>
 
-              <mat-form-field fxFlex class="example-full-width" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Modelo</mat-label>
-                <input matInput type="number" formControlName="modelo">
-                <mat-error *ngIf="isValidField('modelo')"> Debe tener un valor entre el rango de 1900 y {{anio + 1}}</mat-error>
-              </mat-form-field>
+                <mat-form-field fxFlex class="border-round w-12rem h-3rem bg-blue-500 text-white font-bold flex align-items-center justify-content-center" style="margin-right:0.5em;" appearance="outline">
+                  <mat-label>Cilindros</mat-label>
+                  <input matInput formControlName="cilindros" type="number" name="" id="">
+                  <mat-error *ngIf="isValidField('cilindros')">Campo requerido y numérico</mat-error>
+                </mat-form-field>
 
-              <mat-form-field fxFlex class="example-full-width" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Cilindros</mat-label>
-                <input matInput formControlName="cilindros" type="number" name="" id="">
-                <mat-error *ngIf="isValidField('cilindros')">Campo requerido y numérico</mat-error>
-              </mat-form-field>
-
-              <mat-form-field fxFlex class="example-full-width" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Centímetros cúbicos</mat-label>
-                <input matInput formControlName="centimetros" type="number" >
-                <mat-error *ngIf="isValidField('centimetros')">Campo requerido y numérico</mat-error>
-              </mat-form-field>
+                <mat-form-field fxFlex class="border-round w-12rem h-3rem bg-blue-500 text-white font-bold flex align-items-center justify-content-center" style="margin-right:0.5em;" appearance="outline">
+                  <mat-label>Centímetros cúbicos</mat-label>
+                  <input matInput formControlName="centimetros" type="number" >
+                  <mat-error *ngIf="isValidField('centimetros')">Campo requerido y numérico</mat-error>
+                </mat-form-field>
+              </div>
             </mat-expansion-panel>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -128,7 +130,7 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <div class="col-4">
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
     <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
   </div>
 </div>
