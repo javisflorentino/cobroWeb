@@ -8,9 +8,13 @@ import { TopLevel } from '../../interfaces/calculo-conceptos';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { Municipios } from 'src/app/portal-hacienda/interface/municipios';
 
+/* arreglo de datos */
 import ListaMunicipios from '../../../../../data/arreglos/municipios.json';
+import ListMessageSmyt from '../../../../../data/arreglos/smyt_mensajes.json'
+
 import { SnackBarComponent } from '../snack-bar/snack-bar.component';
 import { ValidatorsService } from '../../services/validators.service';
+import { MessageSmyt } from '../../interfaces/message-smyt.interface';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -19,8 +23,12 @@ import { ValidatorsService } from '../../services/validators.service';
 })
 export class DatosContribuyenteComponent implements OnInit {
 
+  public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt;
   public arrMunicipios: Municipios[] = ListaMunicipios;
   private cadenaError: string = '';
+
+  /* Bloque el boton de Calcular para evitar acciones duplicadas  */
+  public buttBlock = false;
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -107,11 +115,21 @@ export class DatosContribuyenteComponent implements OnInit {
       codigoPostal: ['', [Validators.required]],
       municipio: [],
       observaciones: []
-    })
+    },
+    {
+      validators:[this.validatosService.validateDataInput('calle',4),
+        this.validatosService.validateDataInput('numeroExterior',5),
+        this.validatosService.validateDataInput('colonia',6),
+        this.validatosService.validateDataInput('codigoPostal',7)
+      ]
+    }
+    )
   },
   {
-    validators:[this.validatosService.validateDataInput('nombre'),this.validatosService.validateDataInput('primerApellido'),
-    this.validatosService.validateDataInput('segundoApellido'), this.validatosService.validateDataInput('calle')],
+    validators:[this.validatosService.validateDataInput('nombre',1),
+      this.validatosService.validateDataInput('primerApellido',2),
+      this.validatosService.validateDataInput('segundoApellido',3)
+    ],
   }
   );
 
@@ -143,7 +161,7 @@ export class DatosContribuyenteComponent implements OnInit {
     console.log('Datos Contribuyente: ' + this.contribuyenteArr.data.contribuyente)
   }
 
-  customerValidate() {
+  /*customerValidate() {
     if (this.contribuyenteArr.data.contribuyente.nombre !==  String(this.myFormContribuyente.get('nombre')?.value).trim()) {
       this.cadenaError += 'Nombre';
     }
@@ -154,11 +172,53 @@ export class DatosContribuyenteComponent implements OnInit {
       this.cadenaError += 'Apellido Materno';
     }
       console.log(this.contribuyenteArr.data.contribuyente.nombre + "==" + this.myFormContribuyente.get('nombre')?.value)
+  }*/
+
+  getMessage(idMssg:number, nameField:string) {
+
+    let touched = this.myFormContribuyente.get('domicilio')?.get(nameField)?.touched;
+    let nameFileValue = this.myFormContribuyente.get('domicilio')?.get(nameField)?.value;
+    let pathSelect = this.validatosService.streetNamePath;
+
+    if(idMssg !== null) {
+      const message = this.mssgArr.filter(({id}) => id == idMssg )
+      return message[0].msg;
+    }
+    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido') {
+      touched = this.myFormContribuyente.get(nameField)?.touched;
+      nameFileValue = this.myFormContribuyente.get(nameField)?.value;
+      pathSelect = this.validatosService.peoplesNamePath;
+    }
+
+    if( touched ) {
+      let idMessage=101;
+      let pattern = new RegExp(pathSelect);//'^[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ]+)*');//'^[A-ZÑÁÉÍÓÚ. ]+$')
+      if(!pattern.test(nameFileValue) || nameFileValue == null) {
+        if (nameFileValue === null) {
+          idMessage = 100;
+        }
+        const message = this.mssgArr.filter(({id}) => id == idMessage );
+        this.myFormContribuyente.get('domicilio')?.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
+        if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido')
+          this.myFormContribuyente.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
+
+        return message[0].msg;
+      }
+
+    }
+    return '';
   }
 
   generarPoliza(): void {
+    if (this.myFormContribuyente.invalid) {
+      this.myFormContribuyente.markAllAsTouched();
+      this.isLoading = false;
+      this.buttBlock = false;
+      return;
+    }
 
     this.isLoading = true;
+    this.buttBlock = true;
 
     const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
     const datosAdicionales = `PLACA: ${dataVehicleLs.placa},PLACA ANTERIOR: -,,,,,MODELO: ,,,,MOTOR: ,FECHA FACTURA: ,VALOR FACTURA: ,PROCEDENCIA:,,NO DE SERIE: ${dataVehicleLs.serie},VALOR VENTA: ,SERVICIO: ,T: 08.`;

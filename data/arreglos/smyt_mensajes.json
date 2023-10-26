@@ -1,0 +1,32 @@
+{
+  "smyt": [
+    {
+      "id": 1,
+      "msg": "incompatible con información de SMyT"
+    },
+    {
+      "id": 2,
+      "msg": "Apellido paterno no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 3,
+      "msg": "Apellido materno no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 4,
+      "msg": "Nombre no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 5,
+      "msg": "Calle no coincide con la informacion de SMyT"
+    },
+    {
+      "id":100,
+      "msg": "Campo Requerido"
+    },
+    {
+      "id":101,
+      "msg": "Formato incorrecto"
+    }
+  ]
+}

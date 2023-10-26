@@ -13,6 +13,8 @@ export class ValidatorsService {
   public firstNameAndLastnamePattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   public emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   public numberPattern: string = "^[0-9]+$";
+  public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ]+)*$';
+  public streetNamePath: string = '^(?![*_:]*$)[a-zA-ZÑÁÉÍÓÚ.#0-9\ ]+$';
 
   private asJson!:ValidateVehicle;
 
@@ -68,14 +70,14 @@ export class ValidatorsService {
       return null;
     }
   }
-  validateDataInput(field: string) {
+  validateDataInput(field: string, mssg: number) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
       const contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
 
       if (contribuyenteArr.data.contribuyente !== undefined) {
         if (contribuyenteArr.data.contribuyente[field] !==  String(formGroup.get(field)?.value).trim()) {
-          formGroup.get(field)?.setErrors( { notEqual: true } );
-          return { notEqual: true };
+          formGroup.get(field)?.setErrors( { notEqual: true, error:mssg } );
+          return { notEqual: true, error:mssg };
         }
       }
       formGroup.get(field)?.setErrors( null );
