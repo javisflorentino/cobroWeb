@@ -13,7 +13,7 @@ export class ValidatorsService {
   public firstNameAndLastnamePattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   public emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   public numberPattern: string = "^[0-9]+$";
-  public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ]+)*$';
+  public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
   public streetNamePath: string = '^(?![*_:]*$)[a-zA-ZÑÁÉÍÓÚ.#0-9\ ]+$';
 
   private asJson!:ValidateVehicle;
@@ -51,7 +51,7 @@ export class ValidatorsService {
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
       if(!formGroup.get(serie)?.pristine) {
-        this.smytService.validateVehicle(fileValue2!,fielValue1!)
+        /*this.smytService.validateVehicle(fileValue2!,fielValue1!)
         .then(response => response.text())
         .then(xml => {
           console.log(xml)
@@ -63,19 +63,43 @@ export class ValidatorsService {
           formGroup.get(serie)?.setErrors( { notEqual: true } );
           return { notEqual: true };
         }).catch (err => console.log(err));
-        return null;
+        return null;*/
+        this.smytService.validateVehicle({ "tramite": 1, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false })
+          .subscribe(resp => {
+            if (resp?.success) {
+              formGroup.get(serie)?.setErrors( null );
+              return null;
+            }
+            formGroup.get(serie)?.setErrors( { notEqual: true } );
+            return { notEqual: true };
+          });
       }
 
       formGroup.get(serie)?.setErrors( null );
       return null;
     }
   }
-  validateDataInput(field: string, mssg: number) {
+  validateDataInput(field: string, mssg: number, route:string) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
+      console.log('Log_1')
       const contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
+      console.log(contribuyenteArr.data[route])
+      if ( contribuyenteArr.data[route] !== undefined ) {// && contribuyenteArr.data[route]['razonSocial']=='F') {
+        console.log('Log_2')
+        if (contribuyenteArr.data[route]['tipoPersona']=='M' && (field == 'primerApellido' || field == 'segundoApellido')) {
+          console.log('Log_3')
+          formGroup.get(field)?.setErrors( null );
+          return null;
+        }
 
-      if (contribuyenteArr.data.contribuyente !== undefined) {
-        if (contribuyenteArr.data.contribuyente[field] !==  String(formGroup.get(field)?.value).trim()) {
+        if (contribuyenteArr.data[route]['tipoPersona']=='F' && field == 'razonSocial') {
+          console.log('Log_4')
+          formGroup.get(field)?.setErrors( null );
+          return null;
+        }
+
+        if (contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)] !==  String(formGroup.get(field)?.value).trim()) {
+          console.log('Log_5')
           formGroup.get(field)?.setErrors( { notEqual: true, error:mssg } );
           return { notEqual: true, error:mssg };
         }
@@ -84,4 +108,5 @@ export class ValidatorsService {
       return null;
     }
   }
+
 }

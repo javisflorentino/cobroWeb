@@ -14,11 +14,23 @@
     },
     {
       "id": 4,
-      "msg": "Nombre no coincide con la informacion de SMyT"
+      "msg": "Calle no coincide con la informacion de SMyT"
     },
     {
       "id": 5,
-      "msg": "Calle no coincide con la informacion de SMyT"
+      "msg": "No. Ext. no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 6,
+      "msg": "Colonia no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 7,
+      "msg": "Codigo Postal no coincide con la informacion de SMyT"
+    },
+    {
+      "id": 8,
+      "msg": "La razon social no coicide con la información de SMyT"
     },
     {
       "id":100,

@@ -84,8 +84,22 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
     localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"serie":s}));
+    this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
+      .subscribe(resp => {
+        if (resp?.success) {
+          localStorage.setItem('route_origen','smyt-refrendo')
+          this.router.navigate(['/pagos/tabla-conceptos',1]);
+          return
+        }
+        this._snackBar.openFromComponent(SnackBarComponent, {
+          data: resp?.data,
+          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+        });
 
-    this.smytService.validateVehicle(p!,s!)
+        this.isLoading = false;
+        this.buttBlock = false;
+      });
+    /*this.smytService.validateVehicle(p!,s!)
       .then(response => response.text())
       .then(xml => {
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
@@ -102,7 +116,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
         this.isLoading = false;
         this.buttBlock = false;
-      }).catch (err => console.log(err));
+      }).catch (err => console.log(err));*/
 
   }
 

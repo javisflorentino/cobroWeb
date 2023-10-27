@@ -105,7 +105,7 @@ export class DatosContribuyenteComponent implements OnInit {
     nombre: ['',[Validators.required]],
     primerApellido: ['', [Validators.required]],
     segundoApellido: ['', [Validators.required]],
-    razonSocial: ['',[Validators.required]],
+    razonSocial: [{value: '', disabled: true},[Validators.required]],
     rfc: [],
     curp: [],
     domicilio: this.fb.group({
@@ -118,17 +118,19 @@ export class DatosContribuyenteComponent implements OnInit {
       observaciones: []
     },
     {
-      validators:[this.validatosService.validateDataInput('calle',4),
-        this.validatosService.validateDataInput('numeroExterior',5),
-        this.validatosService.validateDataInput('colonia',6)
+      validators:[this.validatosService.validateDataInput('calle',4,'domicilio'),
+        this.validatosService.validateDataInput('numeroExterior',5,'domicilio'),
+        this.validatosService.validateDataInput('colonia',6,'domicilio'),
+        this.validatosService.validateDataInput('codigoPostal',7,'domicilio'),
       ]
     }
     )
   },
   {
-    validators:[this.validatosService.validateDataInput('nombre',1),
-      this.validatosService.validateDataInput('primerApellido',2),
-      this.validatosService.validateDataInput('segundoApellido',3)
+    validators:[this.validatosService.validateDataInput('nombre',1,'contribuyente'),
+      this.validatosService.validateDataInput('primerApellido',2,'contribuyente'),
+      this.validatosService.validateDataInput('segundoApellido',3,'contribuyente'),
+      this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
     ],
   }
   );
@@ -154,12 +156,31 @@ export class DatosContribuyenteComponent implements OnInit {
 
     }
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
-    console.log(this.contribuyenteArr)
+    if (this.contribuyenteArr.data.contribuyente) {
+      this.myFormContribuyente.get('tipoPersona')?.disable();
+    }
+
     this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
     this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
 
     if (this.contribuyenteArr.data.contribuyente === undefined) {
       this.myFormContribuyente.reset({tipoPersona:'F'})
+    }
+
+    /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
+    if(this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
+      //this.myFormContribuyente.get('razonSocial')?.enable();
+
+      //this.myFormContribuyente.get('razonSocial')?.addValidators(this.validatosService.validateDataInput('razonSocial',8,'contribuyente'))
+      //reset({razonSocial:this.myFormContribuyente.get('nombre')?.value});
+
+      /*this.myFormContribuyente.get('nombre')?.disable();
+      this.myFormContribuyente.get('primerApellido')?.disable();
+      this.myFormContribuyente.get('segundoApellido')?.disable();*/
+      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
+      //this.myFormContribuyente.get('razonSocial')?.setValue(this.myFormContribuyente.get('nombre')?.value);
+      //this.myFormContribuyente.get('razonSocial')?.addValidators(this.validatosService.validateDataInput('razonSocial',8,'contribuyente'))
+      this.tipoPersona = 'M';
     }
   }
 
@@ -177,7 +198,6 @@ export class DatosContribuyenteComponent implements OnInit {
   }*/
 
   getMessage(idMssg:number, nameField:string) {
-
     let touched = this.myFormContribuyente.get('domicilio')?.get(nameField)?.touched;
     let nameFileValue = this.myFormContribuyente.get('domicilio')?.get(nameField)?.value;
     let pathSelect = this.validatosService.streetNamePath;
@@ -186,7 +206,7 @@ export class DatosContribuyenteComponent implements OnInit {
       const message = this.mssgArr.filter(({id}) => id == idMssg )
       return message[0].msg;
     }
-    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido') {
+    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' || nameField === 'razonSocial') {
       touched = this.myFormContribuyente.get(nameField)?.touched;
       nameFileValue = this.myFormContribuyente.get(nameField)?.value;
       pathSelect = this.validatosService.peoplesNamePath;
@@ -194,6 +214,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
     if( touched ) {
       let idMessage=101;
+
       let pattern = new RegExp(pathSelect);//'^[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ]+)*');//'^[A-ZÑÁÉÍÓÚ. ]+$')
       if(!pattern.test(nameFileValue) || nameFileValue == null) {
         if (nameFileValue === null) {
@@ -201,7 +222,7 @@ export class DatosContribuyenteComponent implements OnInit {
         }
         const message = this.mssgArr.filter(({id}) => id == idMessage );
         this.myFormContribuyente.get('domicilio')?.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
-        if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido')
+        if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' || nameField === 'razonSocial')
           this.myFormContribuyente.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
 
         return message[0].msg;
@@ -210,20 +231,34 @@ export class DatosContribuyenteComponent implements OnInit {
     }
     return '';
   }
+  disabledEnabledElement(element:string[],enabledElement:string[]) {
+    element.forEach(element => {
+      this.myFormContribuyente.get(element)?.disable();
+      //this.myFormContribuyente.get(element)?.removeValidators;
+      //setErrors( { notEqual: false, error:'' } );
+    });
+    enabledElement.forEach(element => {
+      this.myFormContribuyente.get(element)?.enable();
+    });
+  }
   changeRadioTP(evento:string): void {
-    console.log(evento);
+    if (evento==='M') {
+      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
+    }
+    this.disabledEnabledElement(['razonSocial'], ['nombre','primerApellido','segundoApellido']);
     this.tipoPersona = evento;
-    //this.myFormContribuyente.get() .addValidators([]);
+    this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
   }
 
   generarPoliza(): void {
+    console.log('Log_1')
     if (this.myFormContribuyente.invalid) {
       this.myFormContribuyente.markAllAsTouched();
       this.isLoading = false;
       this.buttBlock = false;
       return;
     }
-
+    console.log('Log_2')
     this.isLoading = true;
     this.buttBlock = true;
 
@@ -254,7 +289,7 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 
-    //console.log(this.dataPoliza)
+    console.log(this.dataPoliza)
 
 
     /*this.smytService.generarPolizaServ(this.dataPoliza)
