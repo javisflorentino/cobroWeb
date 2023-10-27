@@ -26,6 +26,7 @@ export class DatosContribuyenteComponent implements OnInit {
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt;
   public arrMunicipios: Municipios[] = ListaMunicipios;
   private cadenaError: string = '';
+  public tipoPersona: string = 'F';
 
   /* Bloque el boton de Calcular para evitar acciones duplicadas  */
   public buttBlock = false;
@@ -104,7 +105,7 @@ export class DatosContribuyenteComponent implements OnInit {
     nombre: ['',[Validators.required]],
     primerApellido: ['', [Validators.required]],
     segundoApellido: ['', [Validators.required]],
-    razonSocial: [],
+    razonSocial: ['',[Validators.required]],
     rfc: [],
     curp: [],
     domicilio: this.fb.group({
@@ -119,8 +120,7 @@ export class DatosContribuyenteComponent implements OnInit {
     {
       validators:[this.validatosService.validateDataInput('calle',4),
         this.validatosService.validateDataInput('numeroExterior',5),
-        this.validatosService.validateDataInput('colonia',6),
-        this.validatosService.validateDataInput('codigoPostal',7)
+        this.validatosService.validateDataInput('colonia',6)
       ]
     }
     )
@@ -158,7 +158,9 @@ export class DatosContribuyenteComponent implements OnInit {
     this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
     this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
 
-    console.log('Datos Contribuyente: ' + this.contribuyenteArr.data.contribuyente)
+    if (this.contribuyenteArr.data.contribuyente === undefined) {
+      this.myFormContribuyente.reset({tipoPersona:'F'})
+    }
   }
 
   /*customerValidate() {
@@ -207,6 +209,11 @@ export class DatosContribuyenteComponent implements OnInit {
 
     }
     return '';
+  }
+  changeRadioTP(evento:string): void {
+    console.log(evento);
+    this.tipoPersona = evento;
+    //this.myFormContribuyente.get() .addValidators([]);
   }
 
   generarPoliza(): void {

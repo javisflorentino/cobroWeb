@@ -14,37 +14,37 @@
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
               <mat-label>Tipo de Persona</mat-label>
               <input matInput style="display:none" required>
-              <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap" >
-                <mat-radio-button #buttons_c_tp value="F">
+              <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap" (change)="changeRadioTP($event.value)">
+                <mat-radio-button #buttons_c_tp value="F" >
                   <span class="wrap-label-text">Física</span>
                 </mat-radio-button>
-                <mat-radio-button #buttons_pf value="M">
+                <mat-radio-button #buttons_c_tp value="M">
                   <span class="wrap-label-text">Moral</span>
                 </mat-radio-button>
               </mat-radio-group>
             </mat-form-field>
-            <ng-template fxFlex class="" style="margin-right:0.5em;" #razonsocial>
-              <mat-form-field appearance="outline">
+
+              <mat-form-field *ngIf="tipoPersona=='M'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Razon Social</mat-label>
                 <input matInput type="text" formControlName="razonSocial">
                 <mat-error *ngIf="isValidField('razonSocial')"> Campo requerido</mat-error>
               </mat-form-field>
-            </ng-template>
 
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+
+            <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Nombre</mat-label>
               <input matInput type="text" formControlName="nombre">
               <mat-error >{{ getMessage(myFormContribuyente.get('nombre')?.getError('error'),'nombre') }}</mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Apellido Paterno</mat-label>
               <input matInput type="text" formControlName="primerApellido">
               <mat-error >{{ getMessage(myFormContribuyente.get('primerApellido')?.getError('error'),'primerApellido') }}</mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Apellido Materno</mat-label>
               <input matInput type="text" formControlName="segundoApellido">
               <mat-error >{{ getMessage(myFormContribuyente.get('segundoApellido')?.getError('error'),'segundoApellido') }}</mat-error>
@@ -88,8 +88,8 @@
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Código Postal</mat-label>
-                <input matInput formControlName="codigoPostal" type="text">
-                <mat-error >{{ getMessage(myFormContribuyente.get('codigoPostal')?.getError('error'),'codigoPostal') }}</mat-error>
+                <input matInput formControlName="codigoPostal" type="number">
+                <mat-error >Valor numérico requerido</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Municipio</mat-label>
@@ -131,7 +131,7 @@
 </div>
 
 <code>
-  {{ myFormContribuyente.get('domicilio')?.get('calle')?.errors | json }}
+  {{ myFormContribuyente.value | json }}
 </code>
 
 
