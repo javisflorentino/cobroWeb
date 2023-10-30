@@ -1,7 +1,9 @@
 import { SmytService } from './../../../services/smyt.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
+import ListMessageSmyt from '../../../../../../data/arreglos/smyt_mensajes.json'
+
 import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 import { formatCurrency } from '@angular/common';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
+import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 
 
 @Component({
@@ -22,6 +25,7 @@ import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar
 })
 export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
+  public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt_refrendo;
   /* Arreglo de oficinas de SMyT */
   public oficinasArr: Oficinas[] = ListaOficinas;
   /* Variable de tipo Interface-ValidateVehicle */
@@ -36,10 +40,10 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
   public refrendoForm: FormGroup = this.fb.group({
     id:      [''],
     oficina: ['', [Validators.required]],
-    placa:   ['ABC123D', [Validators.required, Validators.minLength(4)]],
-    serie:   ['MARZ5', [Validators.required, Validators.minLength(5)]]
+    placa:   ['', [Validators.required, Validators.minLength(4)]],
+    serie:   ['', [Validators.required, Validators.minLength(5)]]
   },{
-    validators: [this.validatorsService.existsSeries('serie','placa')]
+    validators: [this.validatorsService.existsSeries('serie','placa',1)]
   });
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
   public subscription: Subscription;
@@ -62,6 +66,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.nameConcept = localStorage.getItem('concept')!;
+    this.refrendoForm.markAllAsTouched();
   }
 
   ngOnDestroy(): void {
@@ -120,8 +125,39 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   }
 
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
+
   isValidField( field: string ) {
     //TODO: Obtener validación desde un servicio
     return this.validatorsService.isValidField( this.refrendoForm, field );
+  }
+  getMessage(idMssg:number, nameField:string) {
+    console.log('getMessage_1')
+    let touched = this.refrendoForm.get(nameField)?.touched;
+    let nameFileValue = this.refrendoForm.get(nameField)?.value;
+    let pathSelect = this.validatorsService.alfaPath;
+
+    if(idMssg !== null) {
+      console.log('getMessage_2')
+      const message = this.mssgArr.filter(({id}) => id == idMssg );
+      return message[0].msg;
+    }
+    if( touched ) {
+      console.log('getMessage_3')
+      let idMessage=100;
+
+      let pattern = new RegExp(pathSelect);
+      console.log(pattern.test(nameFileValue))
+      if(!pattern.test(nameFileValue) || nameFileValue == null) {
+        console.log('getMessage_4')
+        const message = this.mssgArr.filter(({id}) => id == idMessage );
+        this.refrendoForm.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
+        return message[0].msg;
+      }
+
+    }
+    return '';
   }
 }

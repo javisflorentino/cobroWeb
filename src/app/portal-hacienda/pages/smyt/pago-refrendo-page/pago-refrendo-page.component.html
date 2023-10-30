@@ -29,7 +29,7 @@
                 <mat-label>Serie Vehicular</mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
-                <mat-error *ngIf="isValidField('serie')"> Campo requerido </mat-error>
+                <mat-error > {{ getMessage(refrendoForm.get('serie')?.getError('error'),'serie') }} </mat-error>
               </mat-form-field>
             </div>
           </form>

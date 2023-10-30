@@ -1,3 +1,4 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="grid flex">
   <div class="col-8">
     <mat-card>
@@ -23,7 +24,7 @@
             Cancelar
           </button>
           <span class="spacer"></span>
-          <button mat-stroked-button color="primary" (click)="calcularPago()">
+          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="calcularPago()">
             <mat-icon>calculate</mat-icon>
               Calcular
           </button>

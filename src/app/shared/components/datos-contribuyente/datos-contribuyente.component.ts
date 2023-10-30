@@ -169,33 +169,10 @@ export class DatosContribuyenteComponent implements OnInit {
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
     if(this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
-      //this.myFormContribuyente.get('razonSocial')?.enable();
-
-      //this.myFormContribuyente.get('razonSocial')?.addValidators(this.validatosService.validateDataInput('razonSocial',8,'contribuyente'))
-      //reset({razonSocial:this.myFormContribuyente.get('nombre')?.value});
-
-      /*this.myFormContribuyente.get('nombre')?.disable();
-      this.myFormContribuyente.get('primerApellido')?.disable();
-      this.myFormContribuyente.get('segundoApellido')?.disable();*/
       this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
-      //this.myFormContribuyente.get('razonSocial')?.setValue(this.myFormContribuyente.get('nombre')?.value);
-      //this.myFormContribuyente.get('razonSocial')?.addValidators(this.validatosService.validateDataInput('razonSocial',8,'contribuyente'))
       this.tipoPersona = 'M';
     }
   }
-
-  /*customerValidate() {
-    if (this.contribuyenteArr.data.contribuyente.nombre !==  String(this.myFormContribuyente.get('nombre')?.value).trim()) {
-      this.cadenaError += 'Nombre';
-    }
-    if (this.contribuyenteArr.data.contribuyente.primerApellido !==  String(this.myFormContribuyente.get('primerApellido')?.value).trim()) {
-      this.cadenaError += 'Apellido Paterno';
-    }
-    if (this.contribuyenteArr.data.contribuyente.segundoApellido !==  String(this.myFormContribuyente.get('segundoApellido')?.value).trim()) {
-      this.cadenaError += 'Apellido Materno';
-    }
-      console.log(this.contribuyenteArr.data.contribuyente.nombre + "==" + this.myFormContribuyente.get('nombre')?.value)
-  }*/
 
   getMessage(idMssg:number, nameField:string) {
     let touched = this.myFormContribuyente.get('domicilio')?.get(nameField)?.touched;
@@ -234,8 +211,6 @@ export class DatosContribuyenteComponent implements OnInit {
   disabledEnabledElement(element:string[],enabledElement:string[]) {
     element.forEach(element => {
       this.myFormContribuyente.get(element)?.disable();
-      //this.myFormContribuyente.get(element)?.removeValidators;
-      //setErrors( { notEqual: false, error:'' } );
     });
     enabledElement.forEach(element => {
       this.myFormContribuyente.get(element)?.enable();
@@ -264,9 +239,6 @@ export class DatosContribuyenteComponent implements OnInit {
 
     const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
     const datosAdicionales = `PLACA: ${dataVehicleLs.placa},PLACA ANTERIOR: -,,,,,MODELO: ,,,,MOTOR: ,FECHA FACTURA: ,VALOR FACTURA: ,PROCEDENCIA:,,NO DE SERIE: ${dataVehicleLs.serie},VALOR VENTA: ,SERVICIO: ,T: 08.`;
-    /*if (this.contribuyenteArr.data.contribuyente !== undefined) {
-      this.customerValidate();
-    }*/
 
    this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
