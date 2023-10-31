@@ -61,6 +61,10 @@
       "msg": "No puede ser mayor a la fecha actual"
     },
     {
+      "id": 3,
+      "msg": "El número de serie ya existe"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido (MM/DD/YYYY)"
     },

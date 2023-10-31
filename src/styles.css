@@ -12,25 +12,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .spacer {
   flex: 1 1 auto;
 }
-/*.example-container mat-form-field {
-  width: 40%;
-}
-.example-container mat-form-field + mat-form-field {
-  margin-left: 8px;
-}
-
-.example-container form {
-  margin-bottom: 20px;
-}
-
-.example-container form > * {
-  margin: 12px 0;
-}
-
-.example-form-fields {
-  display: flex;
-  align-items: flex-start;
-}
 
 .alert-danger {
   color: #721c24;
@@ -53,6 +34,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+/*.example-container mat-form-field {
+  width: 40%;
+}
+.example-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.example-container form {
+  margin-bottom: 20px;
+}
+
+.example-container form > * {
+  margin: 12px 0;
+}
+
+.example-form-fields {
+  display: flex;
+  align-items: flex-start;
+}
+
+
 
 .example-section {
   display: flex;

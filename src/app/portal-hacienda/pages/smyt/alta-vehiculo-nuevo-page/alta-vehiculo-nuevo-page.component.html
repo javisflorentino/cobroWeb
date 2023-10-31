@@ -1,16 +1,16 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="grid flex">
-  <div class="col-8">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
     <mat-card>
-      <mat-card-header>
+      <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
         <mat-card-subtitle>{{conceptTitle | titlecase}}</mat-card-subtitle>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-content class="mt-3">
+      <mat-card-content class="mt-5">
         <form [formGroup]="myForm">
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-            <form-alta-vehiculo ></form-alta-vehiculo>
+            <form-alta-vehiculo (tipoVehiculoEmit)="updateFiel($event)"></form-alta-vehiculo>
           </div>
         </form>
       </mat-card-content>
@@ -32,10 +32,11 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <div class="col-4">
-    <smyt-messages [messageArr]="messages"></smyt-messages>
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+    <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
   </div>
 </div>
+
 
 
 

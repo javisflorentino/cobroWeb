@@ -43,7 +43,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     placa:   ['', [Validators.required, Validators.minLength(4)]],
     serie:   ['', [Validators.required, Validators.minLength(5)]]
   },{
-    validators: [this.validatorsService.existsSeries('serie','placa',1)]
+    validators: [this.validatorsService.existsSeries('serie','placa',1, 1, '1','')]
   });
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
   public subscription: Subscription;
@@ -88,7 +88,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     let s = this.refrendoForm.get('serie')?.value;
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"serie":s}));
+    localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"numeroSerie":s,"tramite":1,"obtenerContribuyente":true}));
     this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
       .subscribe(resp => {
         if (resp?.success) {

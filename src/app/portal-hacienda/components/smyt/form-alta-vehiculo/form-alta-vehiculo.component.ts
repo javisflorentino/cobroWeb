@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import ListaTipoVehiculo from '../../../../../../data/arreglos/smyt_tipo_vehiculo.json';
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
@@ -9,7 +9,7 @@ import { TipoVehiculo } from 'src/app/portal-hacienda/interface/portal-tipovehic
 import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
-import { Moment } from 'moment';
+
 import moment from 'moment';
 
 @Component({
@@ -42,12 +42,12 @@ export class FormAltaVehiculoComponent implements OnInit {
       tipo_vehiculo: ['',[Validators.required]],
       no_serie: ['',[Validators.required]],
       no_serie2: ['',[Validators.required]],
-      fecha_factura: [new Date(),Validators.required]
+      fecha_factura: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]]
     },
     {
       validators: [
         this.validatorsService.isFieldOneEqualFielTwo('no_serie', 'no_serie2',1),
-        this.validatorsService.validateDateGreat(new Date, 'fecha_factura',2)
+        this.validatorsService.existsSeries('no_serie', '',3,2,'tipo_vehiculo','fecha_factura')
       ]
     });
     //this.myFormShared.markAllAsTouched();

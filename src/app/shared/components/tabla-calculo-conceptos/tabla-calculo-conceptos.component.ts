@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
-import { Concepto, TopLevel } from '../../interfaces/calculo-conceptos';
+import { Concepto } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SnackBarComponent } from '../snack-bar/snack-bar.component';
+import { DatosTramite } from '../../interfaces/datos-tramite.interface';
 
 
 @Component({
@@ -81,24 +82,20 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
-        console.log(this.tipoform)
+
         if (this.tipoform == 1 || this.tipoform == 0) {
           this.openSnackBar('La cantidad inicial es 1. Si desea pagar mas de un concepto cambie el valor en cantidad.');
         }
         this.consultConceptoPago(idConcepto,1);
       });
     }
-    const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
-    this.smyPagosService.getCalculoPagos(
-      { "tramite": 1, "placa": dataVehicleLs.placa, "numeroSerie": dataVehicleLs.serie, "obtenerContribuyente":true }
-    )
+    //const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
+    const dataVehicleLs: DatosTramite = JSON.parse(localStorage.getItem('vehicle_data')!);
+    this.smyPagosService.getCalculoPagos(dataVehicleLs)
       .subscribe(result => {
         this.isLoading = false;
-        console.log(result.data.total);
-        //this.conceptoPago = result;
         if(result.success && result.data.conceptos.length>0) {
           this.conceptos = result.data.conceptos;
-          console.log(this.conceptos)
           this.total = result.data.total;
           localStorage.setItem('contribuyente',JSON.stringify(result));
           return;
@@ -147,7 +144,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   /* Recibe el objeto que contiene los valores del renglos seleccionado */
   selectRow(event:any) {
     this.selectedRowIndex = event.id;
-    console.log(event)
   }
   datosContribuyente():void {
     //if(!localStorage.getItem('contribuyente')) {
@@ -172,14 +168,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
           if (result.breakpoints[query]) {
             this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
           }
-          console.log(this.sizeDisplay)
         }
       });
 
 
  }
   sendCant(): void {
-    console.log(this.cantidadPago);
     this.consultConceptoPago(this.idConcepto,this.cantidadPago);
   }
 }

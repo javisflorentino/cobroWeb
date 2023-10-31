@@ -20,8 +20,8 @@
 
     <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
       <mat-label>Fecha factura</mat-label>
-      <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" >
-      <mat-error > {{ getMessage(myFormShared.get('fecha_factura')?.getError('error'),'fecha_factura') }}</mat-error>
+      <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true" >
+      <mat-error >No puede ser mayor a la fecha actual</mat-error>
       <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
       <mat-datepicker #dpff disabled="false"></mat-datepicker>
     </mat-form-field>
@@ -30,7 +30,7 @@
     <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
       <mat-label>No de serie Vehicular</mat-label>
       <input matInput type="text" formControlName="no_serie">
-      <mat-error *ngIf="isValidField('no_serie')"> Campo requerido</mat-error>
+      <mat-error> {{ getMessage(myFormShared.get('no_serie')?.getError('error'),'no_serie') }} </mat-error>
     </mat-form-field>
 
     <mat-form-field fxFlex appearance="outline">

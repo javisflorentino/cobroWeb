@@ -13,7 +13,7 @@
           <mat-icon>chevron_right</mat-icon>
         </button>
       </mat-toolbar>
-      <mat-list-item  *ngFor="let item of conceptos; index as i" [lines]="item.descripcion.length/35 + 4" [style]="{'background-color':(i%2==0)?'#e8d0fc':''}">
+      <mat-list-item  *ngFor="let item of conceptos; index as i" [lines]="item.descripcion.length/35 + 4" [style]="{'background-color':(i%2==0)?'#e8d0fc':'#f5f5f5'}">
         <div matListItemLine routerLinkActive="active" >
           <span style="font-size: 13px;" [innerHTML]="item.descripcion | segmentText:43"></span>
         </div>

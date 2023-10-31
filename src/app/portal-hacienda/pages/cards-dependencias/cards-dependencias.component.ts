@@ -59,7 +59,6 @@ export class CardsDependenciasComponent implements AfterViewInit, OnDestroy {
           if (result.breakpoints[query]) {
             this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
           }
-          console.log(this.sizeDisplay)
         }
       });
 

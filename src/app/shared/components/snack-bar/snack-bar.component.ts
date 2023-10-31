@@ -10,9 +10,14 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar'
           notifications
         </mat-icon>
         <p class="information">
-            <strong>Notification</strong><br>
-            {{ data }}
+            <strong>Notificación</strong><br>
+            <span [innerHTML]="data"></span>
         </p>
+        <span matSnackBarActions>
+          <button mat-button matSnackBarAction (click)="sbRef.dismissWithAction()">
+          <mat-icon>close</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
   `,

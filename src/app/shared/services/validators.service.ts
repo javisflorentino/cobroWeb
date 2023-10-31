@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { SmyCalculoPagosService } from './smy-calculo-pagos.service';
 import { ValidateVehicle } from '../interfaces/soap-valid-vehicle.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
@@ -30,6 +30,15 @@ export class ValidatorsService {
       && form.controls[field].touched;
   }
   /* validar fecha mayor a  */
+  public cantBeGreat = ( control: FormControl ): ValidationErrors | null => {
+
+    let value = moment(control.value).toDate();
+    let toDate = new Date()
+    if( value > toDate) {
+      return {dateGrate:true}
+    }
+    return null
+  }
   public validateDateGreat(currentDate: Date, date: string, mssg: number) {
 
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
@@ -64,13 +73,22 @@ export class ValidatorsService {
     }
   }
 
-  public existsSeries( serie: string, placa: string, mssg: number ) {
+  public existsSeries( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
-
+      let tipo: string = tipoVehiculo;
+      let dateForm;
+      if (tipoVehiculo === 'tipo_vehiculo')
+        tipo = formGroup.get(tipoVehiculo)?.value;
+      if(fechaFactura !== null) {
+        dateForm = moment(formGroup.get(fechaFactura)?.value ).toDate();
+        dateForm = dateForm.getDate() + '/' + (dateForm.getMonth()+1) + '/' + dateForm.getFullYear();
+      }
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
+
+      let parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo":Number.parseInt(tipo), fechaFactura:dateForm, "obtenerContribuyente":false };
       if(!formGroup.get(serie)?.pristine) {
-        this.smytService.validateVehicle({ "tramite": 1, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false })
+        this.smytService.validateVehicle(parameters)
           .subscribe(resp => {
             if (resp?.success) {
               formGroup.get(serie)?.setErrors( null );

@@ -1,15 +1,20 @@
-import { Component, ViewChild, Pipe, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
-import { Subject, Subscribable, Subscription, takeUntil } from 'rxjs';
+import { Component, ViewChild, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { FormAltaVehiculoComponent } from 'src/app/portal-hacienda/components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
-import { TipoVehiculo } from '../../../interface/portal-tipovehiculo.interface';
+
 import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.interfacce';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
+import { MatAccordion } from '@angular/material/expansion';
+import moment from 'moment';
+import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,6 +24,11 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
   ],
 })
 export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit {
+
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
+  /* Bloque el boton de Calcular para evitar acciones duplicadas  */
+  public buttBlock = false;
 
   public step: number = 0;
 
@@ -71,9 +81,17 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
+  @ViewChild('accordion',{static:true})
+  public Accordion!: MatAccordion;
+
+
   //Metodo sincrono que devuelve un valor especifico con formato, en este caso devuelve parte del Form por referencia como un FormArray
   get ordersFormArray() {
     return this.myForm.controls['pagos'] as FormArray;
+  }
+
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
   }
 
   constructor(
@@ -81,14 +99,14 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     private smytService: SmytService,
     private validatorService: ValidatorsService,
     private breakpointObserver: BreakpointObserver,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.mediaQuery();
   }
 
   // Se implementó para la carga del formulario FormAltaVehiculoComponent
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit')
     setTimeout( () => {
       this.myForm.addControl('oficinas',this.childComponent.myFormShared);
       this.childComponent.myFormShared.setParent(this.myForm);
@@ -99,7 +117,6 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit')
     //Obtiene el Nombre del concepto que se requiere procesar
     this.conceptTitle = localStorage.getItem('concept')!;
     let msg: string = '';
@@ -109,7 +126,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
         this.messages = message;
         if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
           this.messages.forEach(mss=> {
-            msg += mss.message;
+            msg += mss.message + "<br><br>";
           });
           this.openSnackBar(msg);
         }
@@ -145,9 +162,16 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       return;
     }
     if(event === 7) {
+      let msg: string = '';
       this.smytService.getMessages_vehicle()
         .subscribe( message => {
           this.messages_other = message;
+          if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
+            this.messages_other.forEach(mss=> {
+              msg += mss.message + "<br><br>";
+            });
+            this.openSnackBar(msg);
+          }
         });
     }
 
@@ -168,7 +192,6 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   }
 
   get oficinas() {
-    console.log(this.myForm.get('oficinas'))
     return this.myForm.get('oficinas')?.disable;
   }
 
@@ -179,16 +202,48 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
 
   // Metodo que se encarga de llamar al servicio para calcular el monto a pagar y redireccionar a componente correspondiente
   calcularPago() {
+
+    this.isLoading = true;
+    this.buttBlock = true;
+
     if ( this.myForm.invalid ) {
       this.myForm.markAllAsTouched();
+      this.Accordion.openAll();
+      this.isLoading = false;
+      this.buttBlock = false;
       return;
     }
-    const checkboxControl = this.ordersFormArray;
-    const formValue = {
-      ...this.myForm.value,
-      pagos: checkboxControl.value.filter((value: any) => !!value)
-    }
-    this.submittedValue = formValue;
+    let invoiceDate = moment(this.myForm.get('oficinas')?.get('fecha_factura')?.value).toDate();
+    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":this.myForm.get('oficinas')?.get('no_serie')?.value,"tramite":6,
+      "tipoVehiculo":this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
+      "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('valor_factura')?.value}));
+
+      let parameters: DatosTramite = {
+        tramite:              2,
+        placa:                '',
+        numeroSerie:          this.myForm.get('oficinas')?.get('no_serie')?.value,
+        tipoVehiculo:         this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value,
+        obtenerContribuyente: false,
+        fechaFactura:         invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
+        modelo:               this.myForm.get('modelo')?.value,
+        valorFactura:         this.myForm.get('valor_factura')?.value
+      }
+
+      this.smytService.validateVehicle(parameters)
+      .subscribe(resp => {
+        if (resp?.success) {
+          localStorage.setItem('route_origen','smyt-altavehiculo-usado')
+          this.router.navigate(['/pagos/tabla-conceptos',1]);
+          return
+        }
+        this._snackBar.openFromComponent(SnackBarComponent, {
+          data: resp?.data,
+          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+        });
+
+        this.isLoading = false;
+        this.buttBlock = false;
+      });
   }
 
   public mediaQuery() {
@@ -218,10 +273,8 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message, 'Cerrar', {
-      horizontalPosition: "center",
-      verticalPosition: "top",
-      duration: 5000
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message,duration: 15000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
     });
   }
 }
