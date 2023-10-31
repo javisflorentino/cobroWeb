@@ -54,13 +54,13 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   }
 
   calcularPago() {
-    let dateOfFactura: Moment =this.myForm.get('oficina_tramite')?.get('fecha_factura')?.value;
+    let dateOfFactura = moment(this.myForm.get('oficina_tramite')?.get('fecha_factura')?.value).toDate();
     //dateOfFactura = this.myForm.get('oficina_tramite')?.get('fecha_factura')?.value
     //dateOfFactura.
     let pattern = new RegExp(this.validatorsService.datePath);
-    console.log('FEchaValida: ' + dateOfFactura.toObject().date + '/' + (dateOfFactura.toObject().months + 1) + '/' + dateOfFactura.toObject().years)
+    console.log('FEchaValida: ' + dateOfFactura.getDate() + '/' + (dateOfFactura.getMonth() + 1) + '/' + dateOfFactura.getFullYear())
 
-    console.log(pattern.test(dateOfFactura.toObject().date + '/' + (dateOfFactura.toObject().months + 1) + '/' + dateOfFactura.toObject().years))
+    console.log(pattern.test(dateOfFactura.getDay() + '/' + (dateOfFactura.getMonth() + 1) + '/' + dateOfFactura.getFullYear()))
     this.isLoading = true;
     this.buttBlock = true;
     if ( this.myForm.invalid ) {

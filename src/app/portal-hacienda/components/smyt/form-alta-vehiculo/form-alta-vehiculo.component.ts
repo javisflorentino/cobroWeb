@@ -10,6 +10,7 @@ import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.inte
 import { ValidatorsService } from '../../../../shared/services/validators.service';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 import { Moment } from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'form-alta-vehiculo',
@@ -41,7 +42,7 @@ export class FormAltaVehiculoComponent implements OnInit {
       tipo_vehiculo: ['',[Validators.required]],
       no_serie: ['',[Validators.required]],
       no_serie2: ['',[Validators.required]],
-      fecha_factura: ['',Validators.required]
+      fecha_factura: [new Date(),Validators.required]
     },
     {
       validators: [
@@ -60,38 +61,47 @@ export class FormAltaVehiculoComponent implements OnInit {
     //TODO: Obtener validación desde un servicio
     return this.validatorsService.isValidField( this.myFormShared, field );
   }
+  getMessageDate(idMssg:number, nameField:string) {
+    let nameFileValue = moment(this.myFormShared.get(nameField)?.value).toDate();
+    let pathSelect = this.validatorsService.datePath;
+    let stringVal = nameFileValue.getDate()+'/'+(nameFileValue.getMonth()+1)+'/'+nameFileValue.getFullYear();
 
+    let pattern = new RegExp(pathSelect);
+      if(!pattern.test(stringVal) || nameFileValue == null) {
+        const message = this.mssgArr.filter(({id}) => id == 100 );
+        this.myFormShared.get(nameField)?.setErrors( { notEqual: true, error:100 } );
+        return message[0].msg;
+      }
+      return '';
+  }
   getMessage(idMssg:number, nameField:string) {
-    console.log(this.myFormShared.value)
     let touched = this.myFormShared.get(nameField)?.touched;
     let nameFileValue = this.myFormShared.get(nameField)?.value;
     let pathSelect = this.validatorsService.alfaPath;
-    if(nameField==='fecha_factura'){
-      console.log('getMessage_Form-Alta_1::' + nameField)
-      let nameFileValue: Moment = this.myFormShared.get(nameField)?.value;
-      let pathSelect = this.validatorsService.datePath;
-      console.log('nameFileValue-Fecha: ' + nameFileValue)
-    }
-    //console.log('nameFileValue: ' + nameFileValue)
+
+
     if(idMssg !== null) {
-      console.log('getMessage_Form-Alta_2: ' + idMssg)
       const message = this.mssgArr.filter(({id}) => id == idMssg );
       return message[0].msg;
     }
     if( touched ) {
-      let idMessage=100;
-      console.log('getMessage_Form-Alta_3')
+      let idMessage=101;
+      if(nameField==='fecha_factura'){
+        idMessage = 100;
+        nameFileValue = this.myFormShared.get(nameField)?.value;
+        pathSelect = this.validatorsService.datePath;
+        this.getMessageDate(idMssg, nameField);
+
+      }
 
       let pattern = new RegExp(pathSelect);
       if(!pattern.test(nameFileValue) || nameFileValue == null) {
-        console.log('getMessage_Form-Alta_4')
         const message = this.mssgArr.filter(({id}) => id == idMessage );
         this.myFormShared.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
         return message[0].msg;
       }
 
     }
-    console.log('getMessage_Form-Alta_5')
     return '';
   }
 

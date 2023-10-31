@@ -4,6 +4,7 @@ import { SmyCalculoPagosService } from './smy-calculo-pagos.service';
 import { ValidateVehicle } from '../interfaces/soap-valid-vehicle.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ConvertXmlString } from '../clases/convert-xml-string';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -32,14 +33,15 @@ export class ValidatorsService {
   public validateDateGreat(currentDate: Date, date: string, mssg: number) {
 
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
-      console.log('validateDateGreat_1: ' + formGroup.get(date)?.value + ' / CurrentDate: ' + currentDate)
-      if(formGroup.get(date)?.value > currentDate) {
+      console.log('validateDateGreat_1: ' + moment( formGroup.get(date)?.value ).toDate()+ ' / CurrentDate: ' + currentDate)
+      const dateForm = moment(formGroup.get(date)?.value ).toDate();
+      if(dateForm > currentDate) {
         console.log('validateDateGreat_2')
         formGroup.get(date)?.setErrors( { notEqual: true, error:mssg } );
         return { notEqual: true, error:mssg };
       }
       console.log('validateDateGreat_3')
-      formGroup.get(date)?.markAsTouched();
+      //formGroup.get(date)?.markAsTouched();
       formGroup.get(date)?.setErrors( null );
       return null;
     }

@@ -63,6 +63,10 @@
     {
       "id": 100,
       "msg": "Campo requerido (MM/DD/YYYY)"
+    },
+    {
+      "id": 101,
+      "msg": "Campo requerido "
     }
   ]
 }
