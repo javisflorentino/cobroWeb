@@ -63,7 +63,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     }
 
   ngOnDestroy() {
-      localStorage.removeItem('route_origen');
+      //localStorage.removeItem('route_origen');
       this.destroyed.next();
       this.destroyed.complete();
   }

@@ -134,24 +134,19 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     return this.validatorsService.isValidField( this.refrendoForm, field );
   }
   getMessage(idMssg:number, nameField:string) {
-    console.log('getMessage_1')
     let touched = this.refrendoForm.get(nameField)?.touched;
     let nameFileValue = this.refrendoForm.get(nameField)?.value;
     let pathSelect = this.validatorsService.alfaPath;
 
     if(idMssg !== null) {
-      console.log('getMessage_2')
       const message = this.mssgArr.filter(({id}) => id == idMssg );
       return message[0].msg;
     }
     if( touched ) {
-      console.log('getMessage_3')
       let idMessage=100;
 
       let pattern = new RegExp(pathSelect);
-      console.log(pattern.test(nameFileValue))
       if(!pattern.test(nameFileValue) || nameFileValue == null) {
-        console.log('getMessage_4')
         const message = this.mssgArr.filter(({id}) => id == idMessage );
         this.refrendoForm.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
         return message[0].msg;

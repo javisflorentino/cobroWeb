@@ -61,7 +61,6 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       this.reciveActionSideNav = dep;
       this.processChangeOnView();
     });
-    console.log(this.showMessage )
   }
 
   processChangeOnView() {
@@ -107,7 +106,6 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
         this.itemsConceptos = [];
         this.showMessage = true;
-        console.log(this.showMessage )
         this.isLoading = false;
         //this.itemsConceptos[0].textoTitulo='sin informacion';
       });
@@ -152,9 +150,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {
-      console.log(padreId)
       let x: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
-      console.log( x)
       if(x) {
         x.forEach(() =>  x.push({'padreId':padreId}))
         localStorage.setItem('idParent',JSON.stringify(x))
