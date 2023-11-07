@@ -1,5 +1,27 @@
 export interface DatosPoliza {
-    opc:                 string;
+  sistema:             string;
+  movimiento:          string;
+  total:               number;
+  rfc:                 string;
+  nombre:              string;
+  primerApellido:      string;
+  segundoApellido:     string;
+  razonSocial:         string;
+  tipoPersona:         string;
+  origen:              string;
+  calle:               string;
+  numeroExterior:      string;
+  numeroInterior:      string;
+  colonia:             string;
+  municipio:           string;
+  estado:              string;
+  codigoPostal:        string;
+  referenciaDomicilio: string;
+  observaciones:       string;
+  datosAdicionales:    string;
+  detalle:             string;
+
+    /*opc:                 string;
     sistema:             string;
     nombrePoliza:        string;
     fechaVencimiento:    string;
@@ -53,5 +75,5 @@ export interface DatosPoliza {
     tipoPlacaId:         string;
     motor:               string;
     fechaFactura:        string;
-    tipoMovimiento:      string;
+    tipoMovimiento:      string;*/
 }

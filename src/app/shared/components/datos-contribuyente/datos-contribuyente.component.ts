@@ -208,144 +208,77 @@ export class DatosContribuyenteComponent implements OnInit {
   }
 
   generarPoliza(): void {
-    console.log('Log_1')
+
     if (this.myFormContribuyente.invalid) {
       this.myFormContribuyente.markAllAsTouched();
       this.isLoading = false;
       this.buttBlock = false;
       return;
     }
-    console.log(TipoServicio.SMYTALTAVEHICULONUEVO)
+    if (!this.contribuyenteArr.data.contribuyente) {
+      this.contribuyenteArr.data.contribuyente = {
+        nombre:          '',
+        tipoPersona:     '',
+        razonSocial:     '',
+        primerApellido:  '',
+        segundoApellido: '',
+        rfc:             '',
+        curp:            '',
+        id:              0,
+      };
+      this.contribuyenteArr.data.contribuyente.nombre = String( this.myFormContribuyente.get('nombre')?.value ).toUpperCase();
+      this.contribuyenteArr.data.contribuyente.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
+      this.contribuyenteArr.data.contribuyente.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
+      localStorage.setItem('contribuyente_only',JSON.stringify(this.contribuyenteArr));
+    }
+
     this.isLoading = true;
     this.buttBlock = true;
     const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
     let vehicle_data: VehicleData = JSON.parse(localStorage.getItem('vehicle_data')!);
-    let route_origen:string = localStorage.getItem('route_origen')?.replace('-','').toUpperCase()!;
-    let tipoSer;
+    let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
+    let tipoSer = [];
+    let servicio = '';
+    const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
 
-    /*for(const key of Object.keys(TipoServicio)) {
-      if(key == route_origen)
-        tipoOrigen = TipoServicio[key]
-    }*/
-    /*Object.entries(TipoServicio).forEach((k,v) => {
-      if(k === route_origen)
-        tipoSer = v;
-    })*/
+    Object.entries(TipoServicio).forEach((v,k) => {
+      tipoSer = v.toString().split(',');
+      if (tipoSer[0]==route_origen){
+        servicio = ',' + tipoSer[1];
+      }
+    })
 
-    const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
-    const datosAdicionales = `PLACA: ${dataVehicleLs.placa},PLACA ANTERIOR: -,,,,,MODELO: ,,,,MOTOR: ,FECHA FACTURA: ,VALOR FACTURA: ,PROCEDENCIA:,,NO DE SERIE: ${dataVehicleLs.serie},VALOR VENTA: ,SERVICIO: ,T: 08.`;
+  let datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO: ${servicio}.`;
 
-    this.dataPoliza.opc = '8';
-    this.dataPoliza.sistema = this.sistema.toString();
-    this.dataPoliza.nombrePoliza = concept!;
-    this.dataPoliza.fechaVencimiento = '00';
-    this.dataPoliza.montoTotal = this.contribuyenteArr.data.total.toString();
-    this.dataPoliza.observaciones = this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value;
-    this.dataPoliza.datosAdicionales = '';
-    // Checar esta linea, posiblemente en algunos casos se tendrá que construir
-    this.dataPoliza.lineaDetalle = this.contribuyenteArr.data.lineaDetalle;
-    this.dataPoliza.rfc = this.myFormContribuyente.get('rfc')?.value;
-    this.dataPoliza.nombre = this.myFormContribuyente.get('nombre')?.value;
-    this.dataPoliza.paterno = this.myFormContribuyente.get('primerApellido')?.value;
-    this.dataPoliza.materno = this.myFormContribuyente.get('segundoApellido')?.value;
-    this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
-    this.dataPoliza.calle = this.myFormContribuyente.get('domicilio')?.get('calle')?.value;
-    this.dataPoliza.numeroExt = this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value;
-    this.dataPoliza.numeroInt = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
-    this.dataPoliza.colonia = this.myFormContribuyente.get('domicilio')?.get('colonia')?.value;
-    this.dataPoliza.codigoPostal = this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value;
-    // Dato Fijo
-    this.dataPoliza.estados = '17|MORELOS';
-    this.dataPoliza.municipios = this.myFormContribuyente.get('domicilio')?.get('municipio')?.value;
-    this.dataPoliza.tipoDomicilio1 = '';
-    // La referencia cambia, hasta el momento ceo 3 y 2
-    this.dataPoliza.referencia1 = '3';
-    this.dataPoliza.ip = '';
-    this.dataPoliza.explorador = 'PAGINA';
-    this.dataPoliza.isp = '';
-    this.dataPoliza.paginaAnterior = '';
-    this.dataPoliza.lineaCaptura = '';
-    this.dataPoliza.numeroPoliza = '';
-    this.dataPoliza.lineaOxxo = '';
-    this.dataPoliza.fechaGeneracion = '';
-    this.dataPoliza.curp = this.myFormContribuyente.get('curp')?.value;
-    this.dataPoliza.fechaNacimiento = '';
-    this.dataPoliza.idVehiculo = this.myFormContribuyente.get('domicilio')?.get('municipio')?.value;
-    this.dataPoliza.noSeriev = vehicle_data.numeroSerie;
-    this.dataPoliza.placav = vehicle_data.placa;
-    // valor Opcional solo en vehiculos_usados
-    this.dataPoliza.placaAnterior = vehicle_data.placaAnterior!;
-    // solo se usa en vehiculos usados
-    this.dataPoliza.noCilindros = this.myFormContribuyente.get('cilindros')?.value;
-    // solo se usa en vehiculos usados
-    this.dataPoliza.centimetrosCubicos = this.myFormContribuyente.get('centimetros')?.value;
-    // solo se usa en vehiculos usados
-    this.dataPoliza.modelo = this.myFormContribuyente.get('modelo')?.value;
-    // solo se usa en vehiculos usados
-    this.dataPoliza.valorFactura = this.myFormContribuyente.get('valor_factura')?.value;
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.valorVenta = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.tonelaje = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.combustible = '';
-    // solo se usa en vehiculos usados
-    this.dataPoliza.procedencia = this.myFormContribuyente.get('procedencia')?.value;
-    //,T: 08 | PARTICULAR,T: 01,TRAMITE: ALTA | PARTICULAR,T: 10,TRAMITE: ALTA | ,T: 03 | T: 05
-    this.dataPoliza.servicio =
-    // solo se usa en vehiculos usados
-    this.dataPoliza.capacidadPasajeros = this.myFormContribuyente.get('pasajeros')?.value;
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.clase = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.versionLineaId = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.versionLineaCvMarca = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.versionCvVersion = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.estadoVehiculo = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.tipoPlacaId = '';
-    // ningun tipo de vehiculo lo tiene habilitado
-    this.dataPoliza.motor = '';
-    this.dataPoliza.fechaFactura = ''
-    // Checar este valor
-    this.dataPoliza.tipoMovimiento = '100';
-
-
-    /*this.dataPoliza.sistema = this.sistema.toString();
+   this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
-   this.dataPoliza.rfc = this.contribuyenteArr.data.contribuyente.rfc;
-   this.dataPoliza.nombre = this.contribuyenteArr.data.contribuyente.nombre;
-   this.dataPoliza.primerApellido = this.contribuyenteArr.data.contribuyente.primerApellido;
-   this.dataPoliza.segundoApellido = this.contribuyenteArr.data.contribuyente.segundoApellido;
-   this.dataPoliza.razonSocial = this.contribuyenteArr.data.contribuyente.razonSocial;
-   this.dataPoliza.tipoPersona = this.contribuyenteArr.data.contribuyente.tipoPersona;
+   this.dataPoliza.rfc = this.myFormContribuyente.get('rfc')?.value;
+   this.dataPoliza.nombre = this.myFormContribuyente.get('nombre')?.value;
+   this.dataPoliza.primerApellido = this.myFormContribuyente.get('primerApellido')?.value;
+   this.dataPoliza.segundoApellido = this.myFormContribuyente.get('segundoApellido')?.value;
+   this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
+   this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
    this.dataPoliza.origen = 'VU';
-   this.dataPoliza.calle = this.contribuyenteArr.data.domicilio.calle;
-   this.dataPoliza.numeroExterior = this.contribuyenteArr.data.domicilio.numeroExterior;
-   this.dataPoliza.numeroInterior = this.contribuyenteArr.data.domicilio.numeroInterior;
-   this.dataPoliza.colonia = this.contribuyenteArr.data.domicilio.colonia;
-   this.dataPoliza.municipio = this.contribuyenteArr.data.domicilio.municipio;
-   this.dataPoliza.estado = this.contribuyenteArr.data.domicilio.estado;
-   this.dataPoliza.codigoPostal = this.contribuyenteArr.data.domicilio.codigoPostal;
+   this.dataPoliza.calle = this.myFormContribuyente.get('domicilio')?.get('calle')?.value;
+   this.dataPoliza.numeroExterior = this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value;
+   this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
+   this.dataPoliza.colonia = this.myFormContribuyente.get('domicilio')?.get('colonia')?.value;
+   this.dataPoliza.municipio = this.myFormContribuyente.get('domicilio')?.get('municipio')?.value;
+   this.dataPoliza.estado = 'MORELOS'
+   this.dataPoliza.codigoPostal = this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value;
    this.dataPoliza.observaciones = (this.myFormContribuyente.get('observaciones')?.value)?this.myFormContribuyente.get('observaciones')?.value:"";
    this.dataPoliza.datosAdicionales = datosAdicionales;
-   this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;*/
+   this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 
-    console.log(this.dataPoliza)
-
-
-    /*this.smytService.generarPolizaServ(this.dataPoliza)
+    this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         if ( resp.success) {
           this.isLoading = false;
           localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
           this.router.navigate(['pagos/generar_poliza']);
         }
-      });*/
+    });
   }
 
   isValidField(field: string) {
@@ -371,10 +304,6 @@ extra: ECONOMIA-
 https://app.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=93001241432540381253
 GET
 lineaCaptura=93001241432540381253
-
-
-
-smytmacrocuerna@morelos.gob.mx
 
 
 this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);

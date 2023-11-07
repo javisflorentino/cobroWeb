@@ -219,6 +219,13 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('valor_factura')?.value,
       "placaAnterior":this.myForm.get('placa_foranea')?.value}));
 
+    localStorage.setItem('vehicle_data_adicional',JSON.stringify({
+      "capacidadPasajeros":this.myForm.get('pasajeros')?.value,
+      "centimetrosCubicos":this.myForm.get('centimetros')?.value,
+      "noCilindros":this.myForm.get('cilindros')?.value,
+      "procedencia":this.myForm.get('procedencia')?.value
+    }))
+
       let parameters: DatosTramite = {
         tramite:              2,
         placa:                '',

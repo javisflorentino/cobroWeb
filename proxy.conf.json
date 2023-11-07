@@ -10,5 +10,11 @@
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
+},
+"/pagoenlinea/*": {
+  "target": "https://app.hacienda.morelos.gob.mx",
+  "secure": true,
+  "logLevel": "debug",
+  "changeOrigin": true
 }
 }

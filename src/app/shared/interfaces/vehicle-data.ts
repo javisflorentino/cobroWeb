@@ -6,4 +6,11 @@ export interface VehicleData {
     fechaFactura?:        Date;
     obtenerContribuyente: boolean;
     placaAnterior?:       string;
+
+    capacidadPasajeros?:  number;
+    centimetrosCubicos?:  number;
+    modelo?:              number;
+    noCilindros?:         number;
+    procedencia?:         string;
+    valorFactura?:        number;
 }
