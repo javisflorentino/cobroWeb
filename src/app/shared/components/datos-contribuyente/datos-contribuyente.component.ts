@@ -37,7 +37,7 @@ export class DatosContribuyenteComponent implements OnInit {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
-  public contribuyenteArr: TopLevel = {
+  public contribuyenteArr = {} as TopLevel;/*: TopLevel = {
     data:    {
       total:         0,
       conceptos:     [],
@@ -67,7 +67,7 @@ export class DatosContribuyenteComponent implements OnInit {
       lineaDetalle:  '',
     },
     success: false,
-  };
+  };*/
   public contribDom: Object[] = [];
 
   public messages: Messages[] = [];
@@ -88,7 +88,7 @@ export class DatosContribuyenteComponent implements OnInit {
     primerApellido: ['', [Validators.required]],
     segundoApellido: ['', [Validators.required]],
     razonSocial: [{value: '', disabled: true},[Validators.required]],
-    rfc: [],
+    rfc: ['', [Validators.required, Validators.pattern(this.validatosService.rfcPath)]],
     curp: [],
     domicilio: this.fb.group({
       calle: ['', [Validators.required]],

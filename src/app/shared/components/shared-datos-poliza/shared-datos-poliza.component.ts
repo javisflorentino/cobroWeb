@@ -38,7 +38,8 @@ export class SharedDatosPolizaComponent implements OnInit {
     lineaDetallePago: [''],
     pago2015: ['2015'],
     banco: ['Bancomer'],
-    extra: ['ECONOMIA-']
+    extra: ['ECONOMIA-'],
+    fecha: ['']
   })
 
   constructor( private fb: FormBuilder ) {}
@@ -57,7 +58,8 @@ export class SharedDatosPolizaComponent implements OnInit {
       lineaDetallePago: this.contribuyenteArr.data.lineaDetalle,
       pago2015: '2015',
       banco: 'Bancomer',
-      extra: 'ECONOMIA-'
+      extra: 'ECONOMIA-',
+      fecha: String(new Date().getDate()+4).toString()
     })
   }
 

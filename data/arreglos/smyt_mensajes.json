@@ -72,5 +72,25 @@
       "id": 101,
       "msg": "Campo requerido "
     }
+  ],
+  "smyt_baja": [
+    {
+      "id": 1,
+      "msg": "Los datos ingresados no corresponden a la Inf. de SMyT"
+    },
+    {
+      "id": 100,
+      "msg": "Campo requerido"
+    }
+  ],
+  "smyt_sustitucion_placa": [
+    {
+      "id": 1,
+      "msg": "Los datos ingresados no corresponden a la Inf. de SMyT"
+    },
+    {
+      "id": 100,
+      "msg": "Campo requerido"
+    }
   ]
 }

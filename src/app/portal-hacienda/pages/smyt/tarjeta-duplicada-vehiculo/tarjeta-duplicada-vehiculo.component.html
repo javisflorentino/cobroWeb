@@ -1,0 +1,59 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="grid flex">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle><small>{{conceptTitle | titlecase}}</small></mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content>
+        <div class="">
+          <form action="" fxLayout="column"  [formGroup]="myForm" >
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+              <mat-form-field fxFlex class="col-10" appearance="outline">
+                <mat-label>Oficina del trámite</mat-label>
+                <mat-select formControlName="oficina" required>
+                  <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
+                </mat-select>
+                <mat-error > Campo requerido </mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>No Placa</mat-label>
+                <input matInput formControlName="placa" required type="text" maxlength="8">
+                <mat-error > Campo requerido </mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
+                <mat-label>Serie Vehicular</mat-label>
+                <input #serie matInput formControlName="serie" required #serieV type="text" name="">
+                <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
+                <mat-error > {{ getMessage(myForm.get('serie')?.getError('error'),'serie') }} </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn" [routerLink]="['pagos/']">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="onSubmit()">
+            <mat-icon>calculate</mat-icon>
+            Calcular
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+    <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
+  </div>
+</div>

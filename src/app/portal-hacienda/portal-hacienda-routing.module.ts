@@ -10,6 +10,9 @@ import { DatosContribuyenteComponent } from '../shared/components/datos-contribu
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 import { LicenciaVehiculoComponent } from './pages/smyt/licencia-vehiculo/licencia-vehiculo.component';
 import { ProteccionCivilComponent } from './pages/proteccion-civil/proteccion-civil/proteccion-civil.component';
+import { BajaVehiculoComponent } from './pages/smyt/baja-vehiculo/baja-vehiculo.component';
+import { TarjetaDuplicadaVehiculoComponent } from './pages/smyt/tarjeta-duplicada-vehiculo/tarjeta-duplicada-vehiculo.component';
+import { SustitucionPlacaVehiculoComponent } from './pages/smyt/sustitucion-placa-vehiculo/sustitucion-placa-vehiculo.component';
 
 const routes: Routes = [
   {
@@ -31,6 +34,18 @@ const routes: Routes = [
       {
         path: 'smyt-altavehiculo-usado',
         component: AltaVehiculoUsadoPageComponent
+      },
+      {
+        path: 'smyt-baja',
+        component: BajaVehiculoComponent
+      },
+      {
+        path: 'smyt-tarjeta-duplicada',
+        component: TarjetaDuplicadaVehiculoComponent
+      },
+      {
+        path: 'smyt-sustitucion-placa',
+        component: SustitucionPlacaVehiculoComponent
       },
       {
         path: 'tabla-conceptos/:idConcepto',
