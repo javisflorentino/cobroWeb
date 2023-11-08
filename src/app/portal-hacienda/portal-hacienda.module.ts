@@ -35,7 +35,6 @@ import { SustitucionPlacaVehiculoComponent } from './pages/smyt/sustitucion-plac
     BajaVehiculoComponent,
     TarjetaDuplicadaVehiculoComponent,
     SustitucionPlacaVehiculoComponent
-
   ],
   imports: [
     CommonModule,

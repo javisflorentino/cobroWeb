@@ -48,6 +48,10 @@ const routes: Routes = [
         component: SustitucionPlacaVehiculoComponent
       },
       {
+        path: 'smyt-arrastre-otros/:idConcepto/:tipoForm',
+        component: TablaCalculoConceptosComponent//ArrastreOtrosVehiculoComponent
+      },
+      {
         path: 'tabla-conceptos/:idConcepto',
         component: TablaCalculoConceptosComponent
       },

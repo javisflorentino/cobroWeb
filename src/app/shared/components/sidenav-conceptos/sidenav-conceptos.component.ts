@@ -136,9 +136,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   }
 
   buildTitle(concept: string) {
-    const concep = (localStorage.getItem('concept'))?
-      localStorage.setItem('concept',localStorage.getItem('concept') +  ' - ' + concept):
-      localStorage.setItem('concept',concept);
+    localStorage.setItem('concept',concept);
     //(concept.length>0)? concept += ' - ' + concept:concept;
 
     //localStorage.setItem('idConcepto',idConcepto);
@@ -146,7 +144,26 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     this.nameConcept.emit(concept);
   }
 
+  dellLocalStore() {
+    //if(localStorage.getItem('concept'))
+    //  localStorage.removeItem('concept');
+    if(localStorage.getItem('contribuyente') && !localStorage.getItem('idParent'))
+      localStorage.removeItem('contribuyente');
+    if(localStorage.getItem('contribuyente_only'))
+      localStorage.removeItem('contribuyente_only');
+    if(localStorage.getItem('route_origen'))
+      localStorage.removeItem('route_origen');
+    if(localStorage.getItem('vehicle_data'))
+      localStorage.removeItem('vehicle_data');
+    if(localStorage.getItem('vehicle_data_adicional'))
+      localStorage.removeItem('vehicle_data_adicional');
+    if(localStorage.getItem('datos_poliza'))
+      localStorage.removeItem('datos_poliza');
+  }
+
   actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number) {
+    console.log(item + '-' + concept+ '-'+id+ '-'+idConcepto+ '-'+padreId)
+    this.dellLocalStore();
 
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {
@@ -155,23 +172,25 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
         x.forEach(() =>  x.push({'padreId':padreId}))
         localStorage.setItem('idParent',JSON.stringify(x))
       } else {
-        localStorage.removeItem('concept');
+        //localStorage.removeItem('concept');
         localStorage.setItem('idParent',JSON.stringify([{'padreId':padreId}]))
       }
-      this.buildTitle(concept);
+      //this.buildTitle(concept);
       this.reciveActionSideNav = id;
       this.buildMenu(Number.parseInt(idConcepto));
       this.showBack  = true;
       return;
     }
 
+    //this.dellLocalStore();
+
     this.isLoading = true;
     //this.showMessage = false;
     this.itemsConceptos = this.menuService.conceptoStorage;
-    if(!localStorage.getItem('idParent')) {
+    /*if(!localStorage.getItem('idParent')) {
       localStorage.removeItem('concept');
 
-    }
+    }*/
     this.buildTitle(concept);
 
     const conceptSelect: Conceptos[] = this.itemsConceptos.filter(resp => resp.id == id )
