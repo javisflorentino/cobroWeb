@@ -56,6 +56,10 @@ const routes: Routes = [
         component: TablaCalculoConceptosComponent
       },
       {
+        path: 'tabla-conceptos/:idConcepto/:tipoForm',
+        component: TablaCalculoConceptosComponent
+      },
+      {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent
       },
@@ -64,7 +68,7 @@ const routes: Routes = [
         component: SharedDatosPolizaComponent
       },
       {
-        path: 'smyt-licencia-vehiculo',
+        path: 'smyt-licencia-vehiculo/:idConcepto/:tipoForm',
         component: LicenciaVehiculoComponent
       },
       {

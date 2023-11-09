@@ -69,12 +69,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
       //localStorage.removeItem('route_origen');
+      console.log('Destroy TABLA-CALCULO');
       this.destroyed.next();
       this.destroyed.complete();
   }
 
   ngOnInit(): void {
-    console.log('OnInit')
     if(localStorage.getItem('route_origen'))
       this.route_origen = localStorage.getItem('route_origen')!;
 
@@ -132,7 +132,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
       if(localStorage.getItem('contribuyente')) {
-        console.log('Definido')
         let LocalS:TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
         Object.keys(LocalS.data.conceptos).forEach((k,v)=>{
           this.onAddElementForm();
@@ -158,6 +157,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
             let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
             contribuyente.data.conceptos.push(resp.data.conceptos[0]);//concat(resp.data.conceptos);
             contribuyente.data.total += resp.data.total;
+            contribuyente.data.lineaDetalle = contribuyente.data.lineaDetalle + resp.data.lineaDetalle;
             localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
             this.total += resp.data.total;
             this.conceptos = contribuyente.data.conceptos;
@@ -192,6 +192,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     //if(!localStorage.getItem('contribuyente')) {
     //  localStorage.setItem('contribuyente',JSON.stringify(this.conceptoPago));
     //}
+    if(localStorage.getItem('idParent')) {
+      let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+      contribuyente.data.total = this.total;
+      localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+    }
     this.router.navigate(['pagos/datos-contribuyente']);
   }
 
@@ -217,18 +222,44 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
  }
   sendCant(val:any): void {
-    //this.consultConceptoPago(this.idConcepto,this.cantidadPago);
     this.total = 0;
     let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
-    contribuyente.data.conceptos.forEach(({importe},key)=> {
-      console.log(importe + ' - ' + key)
+    let lineDetalle: string = '';
+    let keyDel: number = 0;
+    let flagKey: boolean = false;
+
+    contribuyente.data.conceptos.forEach(({importe,id},key)=> {
+      if(Number.parseInt(this.cantidadPago.controls[key].value) > 0){
+      let control: number = 0;
+
       this.total += importe * this.cantidadPago.controls[key].value;
+      //if(control === 1) {
+        contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
+            const val = va.split('¬');
+
+            if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
+              //lineDetalle += va + '|';
+              for(let inc = this.cantidadPago.controls[key].value; inc > 0; inc-- ) {
+                lineDetalle += va + '|';
+              }
+            }
+            control = Number.parseInt(val[0]);
+        });
+      } else {
+        keyDel = key;
+        flagKey = true;
+      }
+        //control++;
+      //}
     });
+    if (flagKey) {
+      contribuyente.data.conceptos.splice(keyDel,1);
+      this.cantidadPago.removeAt(keyDel);
+    }
+    contribuyente.data.lineaDetalle = lineDetalle;
+    contribuyente.data.total = this.total;
     //this.total = contribuyente.data.total * this.cantidadPago.controls[val].value;
     localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
-    console.log(localStorage.getItem('contribuyente'))
-    //this.total = contribuyente.data.total;
-    console.log(this.total)
     this.conceptos = contribuyente.data.conceptos;
   }
 }

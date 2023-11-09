@@ -3,6 +3,7 @@
 export interface PolizaRecive {
   success: boolean;
   poliza:  Poliza;
+  data?:   string;
 }
 
 export interface Poliza {

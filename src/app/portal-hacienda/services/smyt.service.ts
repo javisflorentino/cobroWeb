@@ -27,6 +27,9 @@ export class SmytService {
   getMessages_vehicle(): Observable<Messages[]> {
     return this.http.get<Messages[]>(`${this.urlMessage}_vehicle`);
   }
+  getMessages_licencia(): Observable<Messages[]> {
+    return this.http.get<Messages[]>(`${this.urlMessage}_licencia`);
+  }
 
   /*async validateVehicle(placa:string,serie:string): Promise<any> {
     return await fetch(`${this.urlSOPA}`, {

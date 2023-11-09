@@ -181,7 +181,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       this.showBack  = true;
       return;
     }
-
+    //localStorage.setItem('idConcepto',idConcepto);
     //this.dellLocalStore();
 
     this.isLoading = true;
@@ -198,6 +198,11 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     if ( idConcepto !== "0" ) this.changSidenav.toggle();
     //localStorage.setItem('concept',concept);
     if (conceptSelect[0].opcionFormulario > 1) {
+      if (conceptSelect[0].opcionFormulario === 13) {
+        console.log(item);
+        this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
+        return;
+      }
       this.router.navigate(['/pagos/'+item]);
       return;
     }

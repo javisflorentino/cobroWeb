@@ -234,21 +234,26 @@ export class DatosContribuyenteComponent implements OnInit {
 
     this.isLoading = true;
     this.buttBlock = true;
-    const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
-    let vehicle_data: VehicleData = JSON.parse(localStorage.getItem('vehicle_data')!);
-    let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
-    let tipoSer = [];
+    let vehicle_data = {} as VehicleData;
+    let datosAdicionales: string = '';
     let servicio = '';
+    let tipoSer = [];
     const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
-
+    let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
     Object.entries(TipoServicio).forEach((v,k) => {
       tipoSer = v.toString().split(',');
       if (tipoSer[0]==route_origen){
         servicio = ',' + tipoSer[1];
       }
     })
+    const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
+    if (localStorage.getItem('vehicle_data')) {
+      vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
+      datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO: ${servicio}.`;
+    }
 
-  let datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO: ${servicio}.`;
+
+
 
    this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
@@ -273,11 +278,15 @@ export class DatosContribuyenteComponent implements OnInit {
 
     this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
+        this.isLoading = false;
+        this.buttBlock = false;
         if ( resp.success) {
-          this.isLoading = false;
           localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
           this.router.navigate(['pagos/generar_poliza']);
+          return;
         }
+        this.openSnackBar(resp.data!);
+        return;
     });
   }
 

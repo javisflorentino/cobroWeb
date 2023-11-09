@@ -11,5 +11,10 @@
     {
       "message": "<b>Nota: </b> No hay placas de auto antiguo por el momento, si desea continuar con la póliza de pago no podrá obtener sus placas hasta que haya nuevamente en existencia."
     }
+  ],
+  "messages_licencia": [
+    {
+      "message": "<b>Nota: </b> Este trámite solo aplica para la expedición por primera vez de la licencia de conducir o para aquellos trámites de licencia cuya vigencia se ha agotado."
+    }
   ]
 }
