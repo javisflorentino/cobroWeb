@@ -93,6 +93,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if (this.tipoform == 1 || this.tipoform == 0) {
           this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
+        if (this.tipoform == 13) {
+          this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
+        }
         this.consultConceptoPago(idConcepto,1);
       });
       return;
@@ -159,8 +162,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
             contribuyente.data.total += resp.data.total;
             contribuyente.data.lineaDetalle = contribuyente.data.lineaDetalle + resp.data.lineaDetalle;
             localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
-            this.total += resp.data.total;
             this.conceptos = contribuyente.data.conceptos;
+            if (this.total === 0) {
+              this.total = contribuyente.data.total;
+              return;
+            }
+            this.total += resp.data.total;
             return;
           }
           this.conceptos = resp.data.conceptos;

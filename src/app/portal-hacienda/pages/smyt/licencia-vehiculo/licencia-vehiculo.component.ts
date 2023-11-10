@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,7 +6,7 @@ import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { ValidatorsFormService } from 'src/app/shared/validators/validators-form.service';
 import { Moment } from 'moment';
 import moment from 'moment';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
@@ -19,10 +19,13 @@ import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar
   templateUrl: './licencia-vehiculo.component.html',
   styleUrls: ['./licencia-vehiculo.component.css']
 })
-export class LicenciaVehiculoComponent implements OnInit {
+export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
   public buttBlock: boolean = true;
   public formBlock: boolean = true;
+
+  private debounce: Subject<string> = new Subject<string>();
+  private debouncerSubscription?: Subscription;
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -39,13 +42,15 @@ export class LicenciaVehiculoComponent implements OnInit {
   public conceptTitle: string = '';
 
   public formLicencias: FormGroup = this.fb.group({
-    no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required] ],
-    fecha_vencimiento: [{value:'',disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
+    no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required,Validators.minLength(7), Validators.maxLength(20),] ],
+    fecha_vencimiento: [{value:new Date(),disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
     tien_licencia:     ['', [Validators.required] ]
   });
 
   public messages: Messages[] = [];
   public messages_other: Messages[] = [];
+
+  public tipoLic: string = '';
 
   public sizeDisplay!: string;
   destroyed = new Subject<void>();
@@ -86,11 +91,15 @@ export class LicenciaVehiculoComponent implements OnInit {
 
     this.mediaQuery();
   }
+  ngOnDestroy(): void {
+    this.debouncerSubscription?.unsubscribe();
+  }
 
 
   ngOnInit(): void {
     let msg: string = '';
-    localStorage.removeItem('contribuyente');
+
+    //localStorage.removeItem('contribuyente');
     this.smytService.getMessages_licencia()
       .subscribe( message => {
         this.messages = message;
@@ -107,18 +116,47 @@ export class LicenciaVehiculoComponent implements OnInit {
         this.idConcepto = idConcepto;
         localStorage.setItem('route_origen','smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
       });
+
+      this.debouncerSubscription = this.debounce
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe( value => {
+        const resp = this.validatorFormService.licenseValidate(value,this.idConcepto);
+        if (resp) this.openSnackBar(resp);
+      });
+
+      if ([838,835,830].find(resp => resp == this.idConcepto ) ) {
+        this.tipoLic = 'AUTOMOVILISTA';
+      }
+      if ([837,834,829].find(resp => resp == this.idConcepto ) ) {
+        this.tipoLic = 'CHOFER';
+      }
+      if ([839,836,831].find(resp => resp == this.idConcepto ) ) {
+        this.tipoLic = 'MOTOCICLISTA';
+      }
+      console.log(this.tipoLic)
+  }
+
+  onKeyPress( searchTerm: string ) {
+    this.debounce.next( searchTerm );
   }
 
   onSubmit() {
+    this.isLoading = true;
+    this.buttBlock = true;
+
     if ( this.formLicencias.valid ) {
-      if ( localStorage.getItem('idConcepto')  && localStorage.getItem('idConcepto') !== "0" ) {
-        this.router.navigate(['/pagos/tabla-conceptos', localStorage.getItem('idConcepto')]);
+      if ( this.idConcepto && this.idConcepto !== 0 ) {
+        this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto]);
         return;
       }
       this.openSnackBar("No se cuenta con un Id Concepto o el valor es 0, favor de seguir el proceso correcto");
       this.isLoading = false;
     }
     this.formLicencias.markAllAsTouched();
+    this.isLoading = false;
+    this.buttBlock = false;
   }
 
   tieneLicencia(event:number) {

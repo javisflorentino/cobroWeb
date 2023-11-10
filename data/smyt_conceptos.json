@@ -2834,7 +2834,7 @@
           "textoTitulo":"TRES AÑOS",
           "idConcepto":835,
           "consumoInterno":null,
-          "url":"-",
+          "url":"smyt-licencia-vehiculo",
           "textoMensaje":"-",
           "muestraIndex":"-",
           "urlIcono":"-",
@@ -2846,9 +2846,7 @@
           "posicionLista":null,
           "combo":null,
           "nivelBd":null,
-          "menuHijo":[
-
-          ],
+          "menuHijo":[],
           "error":null,
           "padreId":1476,
           "tipoMovimiento":100,
@@ -2860,7 +2858,7 @@
           "textoTitulo":"UN AÑO",
           "idConcepto":830,
           "consumoInterno":null,
-          "url":"-",
+          "url":"smyt-licencia-vehiculo",
           "textoMensaje":"-",
           "muestraIndex":"-",
           "urlIcono":"-",
@@ -2872,9 +2870,7 @@
           "posicionLista":null,
           "combo":null,
           "nivelBd":null,
-          "menuHijo":[
-
-          ],
+          "menuHijo":[],
           "error":null,
           "padreId":1476,
           "tipoMovimiento":100,
@@ -2964,7 +2960,7 @@
       "textoTitulo":"CINCO A\u00d1OS",
       "idConcepto":839,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-licencia-vehiculo",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -2976,9 +2972,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1484,
       "tipoMovimiento":100,
@@ -2990,7 +2984,7 @@
       "textoTitulo":"TRES A\u00d1OS",
       "idConcepto":836,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-licencia-vehiculo",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3002,9 +2996,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1484,
       "tipoMovimiento":100,
@@ -3016,7 +3008,7 @@
       "textoTitulo":"UN A\u00d1O",
       "idConcepto":831,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-licencia-vehiculo",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3028,9 +3020,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1484,
       "tipoMovimiento":100,
