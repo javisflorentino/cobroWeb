@@ -52,6 +52,10 @@ const routes: Routes = [
         component: TablaCalculoConceptosComponent//ArrastreOtrosVehiculoComponent
       },
       {
+        path: 'smyt-permisos/:idConcepto/:tipoForm',
+        component: TablaCalculoConceptosComponent//ArrastreOtrosVehiculoComponent
+      },
+      {
         path: 'tabla-conceptos/:idConcepto',
         component: TablaCalculoConceptosComponent
       },

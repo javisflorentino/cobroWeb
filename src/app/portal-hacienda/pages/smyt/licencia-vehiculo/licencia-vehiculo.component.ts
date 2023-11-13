@@ -87,8 +87,6 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
     //this.minDate = moment([currentYear -1, 0, 1]);
     this.maxDate = moment([currentYear , 10, 30]);
 
-    this.conceptTitle = localStorage.getItem('concept')!;
-
     this.mediaQuery();
   }
   ngOnDestroy(): void {
@@ -111,7 +109,10 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
         }
       });
 
+      //Observable que se mantiene vivo mientras no se abandone el componente. Ejemplo cuando se cambia en el meni de 5 a 3 años por ejemplo
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
+        this.conceptTitle = localStorage.getItem('concept')!;
+
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
         localStorage.setItem('route_origen','smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)

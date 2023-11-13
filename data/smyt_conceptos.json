@@ -2882,7 +2882,7 @@
         "textoTitulo":"CINCO A\u00d1OS",
         "idConcepto":837,
         "consumoInterno":null,
-        "url":"-",
+        "url":"smyt-licencia-vehiculo",
         "textoMensaje":"-",
         "muestraIndex":"-",
         "urlIcono":"-",
@@ -2894,9 +2894,7 @@
         "posicionLista":null,
         "combo":null,
         "nivelBd":null,
-        "menuHijo":[
-
-        ],
+        "menuHijo":[],
         "error":null,
         "padreId":1480,
         "tipoMovimiento":100,
@@ -2908,7 +2906,7 @@
         "textoTitulo":"TRES A\u00d1OS",
         "idConcepto":834,
         "consumoInterno":null,
-        "url":"-",
+        "url":"smyt-licencia-vehiculo",
         "textoMensaje":"-",
         "muestraIndex":"-",
         "urlIcono":"-",
@@ -2920,9 +2918,7 @@
         "posicionLista":null,
         "combo":null,
         "nivelBd":null,
-        "menuHijo":[
-
-        ],
+        "menuHijo":[],
         "error":null,
         "padreId":1480,
         "tipoMovimiento":100,
@@ -2934,7 +2930,7 @@
         "textoTitulo":"UN A\u00d1O",
         "idConcepto":829,
         "consumoInterno":null,
-        "url":"-",
+        "url":"smyt-licencia-vehiculo",
         "textoMensaje":"-",
         "muestraIndex":"-",
         "urlIcono":"-",
@@ -2946,9 +2942,7 @@
         "posicionLista":null,
         "combo":null,
         "nivelBd":null,
-        "menuHijo":[
-
-        ],
+        "menuHijo":[],
         "error":null,
         "padreId":1480,
         "tipoMovimiento":100,
@@ -3032,7 +3026,7 @@
       "textoTitulo":"UN A\u00d1O",
       "idConcepto":832,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-licencia-vehiculo",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3044,9 +3038,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1488,
       "tipoMovimiento":100,
@@ -3058,7 +3050,7 @@
       "textoTitulo":"PARA MENORES DE 18 A\u00d1OS AUTOMOVILISTA",
       "idConcepto":840,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-permisos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3070,9 +3062,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1490,
       "tipoMovimiento":100,
@@ -3084,7 +3074,7 @@
       "textoTitulo":"PARA MENORES DE 18 A\u00d1OS MOTOCICLISTA",
       "idConcepto":841,
       "consumoInterno":null,
-      "url":"-",
+      "url":"smyt-permisos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3096,9 +3086,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1490,
       "tipoMovimiento":100,
@@ -3110,7 +3098,7 @@
       "textoTitulo":"AUTOMOVILISTA",
       "idConcepto":843,
       "consumoInterno":null,
-      "url":"-",
+      "url":"tabla-conceptos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3122,9 +3110,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1493,
       "tipoMovimiento":100,
@@ -3136,7 +3122,7 @@
       "textoTitulo":"CHOFER",
       "idConcepto":842,
       "consumoInterno":null,
-      "url":"-",
+      "url":"tabla-conceptos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3148,9 +3134,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1493,
       "tipoMovimiento":100,
@@ -3162,7 +3146,7 @@
       "textoTitulo":"MOTOCICLISTA",
       "idConcepto":844,
       "consumoInterno":null,
-      "url":"-",
+      "url":"tabla-conceptos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3174,9 +3158,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1493,
       "tipoMovimiento":100,
@@ -3188,7 +3170,7 @@
       "textoTitulo":"PARA OPERAR VEH\u00cdCULOS DEL SERVICIO DE TRANSPORTE P\u00daBLICO CON VIGENCIA DE TRES A\u00d1OS",
       "idConcepto":2036,
       "consumoInterno":null,
-      "url":"-",
+      "url":"tabla-conceptos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3200,9 +3182,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1502,
       "tipoMovimiento":100,
@@ -3214,7 +3194,7 @@
       "textoTitulo":"PARA OPERAR VEH\u00cdCULOS DEL SERVICIO DE TRANSPORTE P\u00daBLICO CON VIGENCIA DE CINCO A\u00d1OS",
       "idConcepto":2035,
       "consumoInterno":null,
-      "url":"-",
+      "url":"tabla-conceptos",
       "textoMensaje":"-",
       "muestraIndex":"-",
       "urlIcono":"-",
@@ -3226,9 +3206,7 @@
       "posicionLista":null,
       "combo":null,
       "nivelBd":null,
-      "menuHijo":[
-
-      ],
+      "menuHijo":[],
       "error":null,
       "padreId":1502,
       "tipoMovimiento":100,
