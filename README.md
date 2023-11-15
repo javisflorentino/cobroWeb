@@ -30,5 +30,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## DEPLOY
 1. Instalar CopyFile ``` npm install --save-dev copyfiles ```
 2. Ejecutar desde CMD ``` npm run build:github:local ```
+3. Copiamos de la carpeta ``` DIST ``` la carpeta ``` ASSETS ``` Y LA PEGAMOS EN ``` DEPLOY ```   
 3. La carpeta ``` DEPLOY ``` contendra el producto final
 
