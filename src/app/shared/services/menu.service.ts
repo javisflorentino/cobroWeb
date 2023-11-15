@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, catchError, of, tap, switchMap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { Conceptos } from '../interfaces/shared-conceptos.interface';
+
+import ListaConceptos from '../../../../data/arreglos/smyt_conceptos_arr.json'
+
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +33,8 @@ export class MenuService {
     this.conceptoStorage = JSON.parse(localStorage.getItem('cachestore')!);
   }
 
-  requestConceptos(id: number): Observable<Conceptos[]> {
+  /* DESCOMENTAR ESTE METODO SI SE VA A CONSUMIR POR SERVICIO Y COMENTAR SU COPIA */
+  /*requestConceptos(id: number): Observable<Conceptos[]> {
     this.deleteLocalStorage();
     return this.http.get<Conceptos[]>(`${this.urlConceptos}menu?padreId=${id}`)
       .pipe(
@@ -39,6 +43,19 @@ export class MenuService {
         tap( conceptos => this.conceptoStorage = conceptos),
         tap( () => this.saveToLocalStorage())
       );
+  }*/
+  requestConceptos(id: number): Conceptos[] {
+    this.deleteLocalStorage();
+    let listaC = ListaConceptos;
+    listaC.forEach(f=> {
+      f.menu.forEach(ff => {
+        if (ff.padreId === id ) {
+          this.conceptoStorage.push(ff);//console.log(ff)
+        }
+      })
+    })
+    this.saveToLocalStorage();
+    return this.conceptoStorage;
   }
   getParentByPadreId(id: number): Observable<Conceptos[]> {
     return this.http.get<Conceptos[]>(`${this.urlConceptos}menu?id=${id}`)

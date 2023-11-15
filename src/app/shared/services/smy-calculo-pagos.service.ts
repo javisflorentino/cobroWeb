@@ -1,18 +1,19 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, filter, map, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TopLevel } from '../interfaces/calculo-conceptos';
 import { DatosTramite } from '../interfaces/datos-tramite.interface';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
+import { environments } from 'src/environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SmyCalculoPagosService {
 
-  private urlSmytParticular = 'serviciosHacienda/smyt/particular';
-  private pagoLinea = 'pagoenlinea';
-  //'https://app.hacienda.morelos.gob.mx/serviciosHacienda/smyt/particular';
+  private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private pagoLinea = `${environments.baseUrlApp}pagoenlinea`;//'pagoenlinea';
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
@@ -20,7 +21,7 @@ export class SmyCalculoPagosService {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers});
   }
@@ -28,7 +29,7 @@ export class SmyCalculoPagosService {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<TopLevel>(`serviciosHacienda/concepto/obtenerConcepto`,JSON.stringify(datosTramite),{headers});
   }

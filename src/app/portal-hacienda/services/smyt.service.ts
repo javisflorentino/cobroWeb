@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { Messages } from '../interface/portal-message.interface';
-import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
 import { PolizaRecive } from '../interface/portal-datos-poliza.interface';
 import { DatosPoliza } from '../../shared/interfaces/datos-poliza';
 import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
 import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
+
+import { environments} from 'src/environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,9 @@ import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface'
 export class SmytService {
 
   private urlMessage = 'http://localhost:3001/messages';
-  private urlSOPA='tramitesSMyT/services/SMyT/validarVehiculo';
-  private urlSmytGenerarPoliza = 'serviciosHacienda/poliza/generar';
-  private urlSmytParticular = 'serviciosHacienda/smyt/particular';
+  private urlSOPA = `${environments.baseUrlServ}tramitesSMyT/services/SMyT/validarVehiculo`;//'tramitesSMyT/services/SMyT/validarVehiculo';
+  private urlSmytGenerarPoliza = `${environments.baseUrlApp}serviciosHacienda/poliza/generar`;//'serviciosHacienda/poliza/generar';
+  private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
 
   constructor( private http: HttpClient ) { }
 
@@ -43,7 +44,7 @@ export class SmytService {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
       .pipe(
@@ -55,7 +56,7 @@ export class SmytService {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<CalculoConcepto[]>(`serviciosHacienda/concepto/obtenerConcepto`,JSON.stringify(''),{headers});
 
@@ -65,7 +66,7 @@ export class SmytService {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + btoa("WS_SH1:Hdes22G*_106"));
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<PolizaRecive>(`${this.urlSmytGenerarPoliza}`,JSON.stringify(datosTramite),{headers})
       .pipe(

@@ -94,8 +94,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       return ;
     }
 
-
-    this.menuService.requestConceptos(this.reciveActionSideNav)
+    /* DESCOMENTAR LAS LINEAS DE LA 98 - 110 SI SE VA A CONSUMIR SERVICIO */
+    /*this.menuService.requestConceptos(this.reciveActionSideNav)
       .subscribe(conceptos => {
         if ( conceptos.length > 0) {
           this.showMessage = false;
@@ -107,9 +107,18 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
         this.itemsConceptos = [];
         this.showMessage = true;
         this.isLoading = false;
-        //this.itemsConceptos[0].textoTitulo='sin informacion';
-      });
+      });*/
 
+      /* COMENTAR LAS LINEAS DE LA 113 - 121 SI SE VA A CONSUMIR SERVICIO */
+      this.itemsConceptos = this.menuService.requestConceptos(this.reciveActionSideNav)
+      if (this.itemsConceptos.length > 0) {
+        this.showMessage = false;
+        this.isLoading = false;
+        return;
+      }
+      this.itemsConceptos = [];
+      this.showMessage = true;
+      this.isLoading = false;
 
     return;
   }
