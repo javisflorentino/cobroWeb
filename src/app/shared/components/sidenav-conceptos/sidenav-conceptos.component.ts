@@ -172,6 +172,12 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
   actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number) {
     console.log(item + '-' + concept+ '-'+id+ '-'+idConcepto+ '-'+padreId)
+
+    if (new RegExp('^(?:https?):\/\/?').test(item)) {
+      window.open(`${item}`);
+      return;
+    }
+
     this.dellLocalStore();
 
     idConcepto = idConcepto.toString();
