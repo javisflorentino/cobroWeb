@@ -1,0 +1,8 @@
+{
+  "hacienda_impuestos": [
+    {
+      "id": 1,
+      "msg": "El monto no puede ser igual o menor a 0"
+    }
+  ]
+}

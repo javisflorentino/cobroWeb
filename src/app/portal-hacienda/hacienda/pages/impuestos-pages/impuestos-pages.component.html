@@ -1,0 +1,37 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="card">
+  <div class="flex justify-content-center flex-wrap">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle><small>{{conceptTitle | titlecase}}</small></mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+
+      <mat-card-content>
+        <form action="" fxLayout="column"  [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <hacienda-impuestos-shared></hacienda-impuestos-shared>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn" [routerLink]="['pagos/']">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="onSubmit()">
+            <mat-icon>calculate</mat-icon>
+            Calcular
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -96,7 +96,7 @@
             <input matInput type="number" formControlName="cantidadPago" (change)="sendCant()">
           </mat-form-field>
         </div-->
-        <div [formGroup]="formTableCal" *ngIf="tipoform; else desCant">
+        <div [formGroup]="formTableCal" *ngIf="tipoFormEdit; else desCant">
 
             <div *ngFor="let item of cantidadPago.controls;index as x">
               <div *ngIf="x==i" formArrayName="cantidadPago">

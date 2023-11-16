@@ -1,0 +1,25 @@
+<div class="" [formGroup]="myFormImpuestos" #ChildComponentHacImp>
+
+  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+    <mat-label>Impuestos</mat-label>
+    <input matInput type="number" formControlName="impuesto" />
+    <mat-error > Campo requerido y mayor a 0</mat-error>
+  </mat-form-field>
+
+  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+    <mat-label>Actualización</mat-label>
+    <input matInput formControlName="actualizacion" type="number" min="0"  />
+    <mat-error >Campo numérico y mayor o igual a 0</mat-error>
+  </mat-form-field>
+
+  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+    <mat-label>Recargo</mat-label>
+    <input matInput formControlName="recargo" type="number" min="0"  />
+    <mat-error > Campo numérico y mayor o igual a 0</mat-error>
+  </mat-form-field>
+
+</div>
+
+
+
+

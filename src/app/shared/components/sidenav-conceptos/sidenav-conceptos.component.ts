@@ -212,8 +212,9 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
     if ( idConcepto !== "0" ) this.changSidenav.toggle();
     //localStorage.setItem('concept',concept);
+    console.log(conceptSelect[0].opcionFormulario)
     if (conceptSelect[0].opcionFormulario > 1) {
-      if (conceptSelect[0].opcionFormulario === 13) {
+      if (conceptSelect[0].opcionFormulario === 13 || conceptSelect[0].opcionFormulario === 5) {
         console.log(item);
         this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
         return;

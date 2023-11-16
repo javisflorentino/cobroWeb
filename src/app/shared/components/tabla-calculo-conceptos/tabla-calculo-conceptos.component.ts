@@ -28,6 +28,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
 
   public tipoform: number = 0;
+  public tipoFormEdit: boolean = false;
   public idConcepto: number = 0;
   /* ruta desde donde se origino la peticion, se almacena en LocalStorage */
   public route_origen: string = 'dependencias';
@@ -72,6 +73,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       console.log('Destroy TABLA-CALCULO');
       this.destroyed.next();
       this.destroyed.complete();
+      this.activatedRoute.params.subscribe().unsubscribe();
   }
 
   ngOnInit(): void {
@@ -91,12 +93,13 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         this.idConcepto = idConcepto;
 
         if (this.tipoform == 1 || this.tipoform == 0) {
+          this.tipoFormEdit = true;
           this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
         if (this.tipoform == 13) {
           this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
-        this.consultConceptoPago(idConcepto,1);
+        this.consultConceptoPago(idConcepto,1,this.tipoform);
       });
       return;
     }
@@ -131,10 +134,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     //this.newElementForm.reset();
   }
 
-  consultConceptoPago(idConcepto:number,cantidad:number) {
-
+  consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
-      if(localStorage.getItem('contribuyente')) {
+      if(localStorage.getItem('contribuyente') && this.tipoFormEdit) {
         let LocalS:TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
         Object.keys(LocalS.data.conceptos).forEach((k,v)=>{
           this.onAddElementForm();
@@ -148,7 +150,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const datos = {
       "idConcepto": idConcepto,
-      "monto": null,
+      "monto": (monto)?monto:null,
       "cantidad": cantidad
     };
     this.smyPagosService.otherCalculoPagos(datos)
@@ -156,7 +158,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         this.isLoading = false
         //this.conceptoPago = resp;
         if(resp.success && resp.data.conceptos.length>0) {
-          if(localStorage.getItem('contribuyente')) {
+          if(localStorage.getItem('contribuyente') && this.tipoFormEdit) {
             let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
             contribuyente.data.conceptos.push(resp.data.conceptos[0]);//concat(resp.data.conceptos);
             contribuyente.data.total += resp.data.total;

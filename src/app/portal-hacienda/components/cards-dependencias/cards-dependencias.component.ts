@@ -3,7 +3,7 @@ import { PortalMenu } from '../../interface/portal-menu.interface';
 
 import ListaDependencias from '../../../../../data/arreglos/portal_pago_menu.json'
 
-import { LayoutPortalPagosComponent } from '../layout-portal-pagos.component'
+import { LayoutPortalPagosComponent } from '../../pages/layout-portal-pagos.component'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
 

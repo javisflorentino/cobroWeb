@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { TopLevel } from '../interfaces/calculo-conceptos';
 import { DatosTramite } from '../interfaces/datos-tramite.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ export class SmyCalculoPagosService {
 
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
   private pagoLinea = `${environments.baseUrlApp}pagoenlinea`;//'pagoenlinea';
+  private otherPages = `${environments.baseUrlApp}serviciosHacienda/concepto/obtenerConcepto`
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
@@ -31,7 +32,7 @@ export class SmyCalculoPagosService {
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<TopLevel>(`serviciosHacienda/concepto/obtenerConcepto`,JSON.stringify(datosTramite),{headers});
+    return this.http.post<TopLevel>(`${this.otherPages}`,JSON.stringify(datosTramite),{headers});
   }
   sendDataPortalLinea() {
     //https://app.hacienda.morelos.gob.mx/pagoenlinea/
