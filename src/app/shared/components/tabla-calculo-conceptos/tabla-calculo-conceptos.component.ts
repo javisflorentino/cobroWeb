@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
-import { Concepto, TopLevel } from '../../interfaces/calculo-conceptos';
+import { Concepto, TopLevel, Contribuyente } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -99,7 +99,40 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if (this.tipoform == 13) {
           this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
-        this.consultConceptoPago(idConcepto,1,this.tipoform);
+        if( this.tipoform == 5) {
+          const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
+          Object.keys(datos).forEach(r => {
+            console.log(`${r} == ${datos[r]}`)
+            if(datos[r]>0 && r !== 'cantidad')
+            {
+              if (r === 'monto'){
+                this.consultConceptoPago(idConcepto,1,datos[r]);//this.consultConceptoPago((r=='actualizacion' || r=='recargo'?651:idConcepto),1,datos[r]);
+              } else {
+                console.log('siiii')
+                let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+                console.log(contribuyente)
+                contribuyente.data.conceptos.push(
+                  {
+                    id:              0,
+                    clave:           '0637',
+                    cantidad:        1,
+                    descripcion:     (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO') + contribuyente.data.conceptos[0].descripcion,
+                    ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal,
+                    importe:         contribuyente.data.conceptos[0].importe,
+                    padre:          idConcepto
+                  }
+                );//concat(resp.data.conceptos);
+                contribuyente.data.total += contribuyente.data.total;
+                contribuyente.data.lineaDetalle = '';
+                console.log(contribuyente)
+                localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+              }
+            }
+          })
+          //this.consultConceptoPago(idConcepto,datos.cantidad,datos.monto);
+        } else {
+          this.consultConceptoPago(idConcepto,1,this.tipoform);
+        }
       });
       return;
     }
@@ -153,12 +186,14 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       "monto": (monto)?monto:null,
       "cantidad": cantidad
     };
+    if( !this.tipoFormEdit )
+      localStorage.removeItem('contribuyente');
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
         this.isLoading = false
         //this.conceptoPago = resp;
         if(resp.success && resp.data.conceptos.length>0) {
-          if(localStorage.getItem('contribuyente') && this.tipoFormEdit) {
+          if(localStorage.getItem('contribuyente') ) {//&& this.tipoFormEdit) {
             let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
             contribuyente.data.conceptos.push(resp.data.conceptos[0]);//concat(resp.data.conceptos);
             contribuyente.data.total += resp.data.total;

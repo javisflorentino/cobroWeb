@@ -57,7 +57,7 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
       this.buttBlock = false;
       return;
     }
-    if(this.myForm.get('impuestos')?.get('actualizacion')?.value > 0) {
+    /*if(this.myForm.get('impuestos')?.get('actualizacion')?.value > 0) {
       let contribuyente: TopLevel = {} as TopLevel;
       contribuyente.data.conceptos.push({
             id: 0,
@@ -68,24 +68,20 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
             importe:         0,
             padre:          0,
           });
-
-          /*
-          var resultadoTMP = {claveConcepto: null, descripcion: null, ejercicioFiscal: null, importe: null, adicional15: null, adicional5i: null, adicional5u: null, adicional25: null, recargos: null, multas: null, descRecargos: null, descMultas: null, total: null, lineaDetalle: null, actualizacion: null, idConcepto: null};
-            if (conceptoCobrar.idConcepto === '651') { // 114 y 651 son sobre rifas, se trabajara con 651 por motivo de la descripción
-                resultadoTMP.claveConcepto = "0637";
-                resultadoTMP.descripcion = "ACTUALIZACIÓN IMPUESTO SOBRE LOTERIAS, RIFAS Y SORTEOS";
-            } else {
-                resultadoTMP.claveConcepto = "0637";
-                resultadoTMP.descripcion = "ACTUALIZACION" + " " + conceptoCobrar.descripcion;
-            }
-          */
-
-    }
-    if(this.myForm.get('impuestos')?.get('recargo'))
+    }*/
+    //if(this.myForm.get('impuestos')?.get('recargo'))
 
     localStorage.setItem('route_origen',`hacienda/hacienda-impuestos/${this.idConcepto}/${this.tipoForm}`);
+    localStorage.setItem('datos_cobro',JSON.stringify(
+      {
+        cantidad:      1,
+        monto:         Number(this.myForm.get('impuestos')?.get('impuesto')?.value),
+        actualizacion: Number(this.myForm.get('impuestos')?.get('actualizacion')?.value),
+        recargo:       Number(this.myForm.get('impuestos')?.get('recargo')?.value)
+      })
+    )
 
     this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
-          return
+    return
   }
 }
