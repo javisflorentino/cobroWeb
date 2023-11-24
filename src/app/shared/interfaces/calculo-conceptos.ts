@@ -3,6 +3,7 @@
 export interface TopLevel {
   data:    Data;
   success: boolean;
+  mensaje?: string;
 }
 
 export interface Data {

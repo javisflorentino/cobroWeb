@@ -102,30 +102,34 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if( this.tipoform == 5) {
           const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
           Object.keys(datos).forEach(r => {
-            console.log(`${r} == ${datos[r]}`)
             if(datos[r]>0 && r !== 'cantidad')
             {
               if (r === 'monto'){
                 this.consultConceptoPago(idConcepto,1,datos[r]);//this.consultConceptoPago((r=='actualizacion' || r=='recargo'?651:idConcepto),1,datos[r]);
               } else {
-                console.log('siiii')
-                let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
-                console.log(contribuyente)
-                contribuyente.data.conceptos.push(
-                  {
-                    id:              0,
-                    clave:           '0637',
-                    cantidad:        1,
-                    descripcion:     (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO') + contribuyente.data.conceptos[0].descripcion,
-                    ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal,
-                    importe:         contribuyente.data.conceptos[0].importe,
-                    padre:          idConcepto
+                let control: boolean = true;
+                let id = setInterval(() => {
+                  if(localStorage.getItem('contribuyente')) {
+                    let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+                    contribuyente.data.conceptos.push(
+                      {
+                        id:              0,
+                        clave:           '0637',
+                        cantidad:        1,
+                        descripcion:     (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
+                        ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal,
+                        importe:         datos[r],
+                      }
+                    );//concat(resp.data.conceptos);
+                    //(r == 'actualizacion'?datos[0].actualizacion:datos[0].recargo)
+                    contribuyente.data.total += datos[r];
+                    contribuyente.data.lineaDetalle = '';
+                    localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+                    this.conceptos = contribuyente.data.conceptos;
+                    this.total += datos[r];
+                    clearInterval(id);
                   }
-                );//concat(resp.data.conceptos);
-                contribuyente.data.total += contribuyente.data.total;
-                contribuyente.data.lineaDetalle = '';
-                console.log(contribuyente)
-                localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+                },150)
               }
             }
           })
@@ -212,7 +216,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
           this.total += resp.data.total;
           return;
         }
-        this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
+        this.openSnackBar(resp.mensaje!);//'EL TRÁMITE YA SE HA REALIZADO');
         setTimeout(()=>{
           this.router.navigate(['pagos']);
         },2000)
