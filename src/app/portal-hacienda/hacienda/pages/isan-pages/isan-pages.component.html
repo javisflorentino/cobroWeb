@@ -1,6 +1,6 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-<div class="grid flex">
-  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'" >
+<div class="card">
+  <div class="flex justify-content-center flex-wrap" >
     <mat-card>
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
@@ -28,8 +28,117 @@
             ></mat-datepicker>
           </mat-form-field>
 
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>RFC</mat-label>
+            <input matInput formControlName="rfc" type="text" name="" id="">
+            <button mat-icon-button matSuffix (click)="addNewTaxtPay()" >
+              <mat-icon>person_add</mat-icon>
+            </button>
+            <mat-error >Dato requerido</mat-error>
+          </mat-form-field>
+
         </form>
       </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos']">
+          <mat-icon>cancel</mat-icon>
+            Cancelar Trámite
+        </button>
+        <span class=""></span>
+        <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="onSubmit()">
+          <mat-icon>request_page</mat-icon>
+            Generar Póliza
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </div>
+
+<ng-template #callDialog>
+  <h2 mat-dialog-title>Add Organization</h2>
+  <mat-dialog-content>
+    <form [formGroup]="myFormTaxt">
+      <mat-accordion class="example-headers-align" [multi]="true" #accordion="matAccordion">
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Generales:
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>RFC</mat-label>
+            <input matInput formControlName="rfc_taxt" type="text">
+            <mat-error >Dato requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput formControlName="pass_taxt" type="password">
+            <mat-error >Dato requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="email_taxt" type="email">
+            <mat-error >Dato requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
+            <mat-label>Nacionalidad</mat-label>
+            <input matInput style="display:none" required>
+            <mat-radio-group #group_c_tp formControlName="nacion_taxt" class="flex-wrap">
+              <mat-radio-button #buttons_c_tp value="M" >
+                <span class="wrap-label-text">Mexicana</span>
+              </mat-radio-button>
+              <mat-radio-button #buttons_c_tp value="E">
+                <span class="wrap-label-text">Extranjera</span>
+              </mat-radio-button>
+            </mat-radio-group>
+          </mat-form-field>
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Razon Social</mat-label>
+            <input matInput type="text" formControlName="razon_social_taxt">
+            <mat-error >Campo requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Abreviatura</mat-label>
+            <input matInput type="text" formControlName="abreviatura_taxt">
+            <mat-error >Campo requerido</mat-error>
+          </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Domicilio:
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div formGroupName="domicilio_taxt">
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="estado_taxt" (valueChange)="changeEstado($event)">
+                <mat-option value="">--- Seleccione estado ---</mat-option>
+                <mat-option *ngFor="let estados of estadosArr" [value]="estados.pk">
+                  {{estados.descripcion}}
+                </mat-option>
+              </mat-select>
+              <mat-error > Campo requerido</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <mat-select formControlName="estado_taxt" >
+                <mat-option value="">--- Seleccione estado ---</mat-option>
+                <mat-option *ngFor="let municipi of municipiosArr" [value]="municipi.pk">{{municipi.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error > Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button matDialogClose="no">Cancel</button>
+    <button type="submit" mat-button>Submit</button>
+  </mat-dialog-actions>
+
+</ng-template>

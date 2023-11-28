@@ -1,0 +1,130 @@
+[
+  {
+      "idEstado": "1",
+      "nombreEstado": "AGUASCALIENTES"
+  },
+  {
+      "idEstado": "2",
+      "nombreEstado": "BAJA CALIFORNIA"
+  },
+  {
+      "idEstado": "3",
+      "nombreEstado": "BAJA CALIFORNIA SUR"
+  },
+  {
+      "idEstado": "4",
+      "nombreEstado": "CAMPECHE"
+  },
+  {
+      "idEstado": "5",
+      "nombreEstado": "CHIAPAS"
+  },
+  {
+      "idEstado": "6",
+      "nombreEstado": "CHIHUAHUA"
+  },
+  {
+      "idEstado": "7",
+      "nombreEstado": "COAHUILA DE ZARAGOZA"
+  },
+  {
+      "idEstado": "8",
+      "nombreEstado": "COLIMA"
+  },
+  {
+      "idEstado": "9",
+      "nombreEstado": "CDMX"
+  },
+  {
+      "idEstado": "10",
+      "nombreEstado": "DURANGO"
+  },
+  {
+      "idEstado": "11",
+      "nombreEstado": "GUANAJUATO"
+  },
+  {
+      "idEstado": "12",
+      "nombreEstado": "GUERRERO"
+  },
+  {
+      "idEstado": "13",
+      "nombreEstado": "HIDALGO"
+  },
+  {
+      "idEstado": "14",
+      "nombreEstado": "JALISCO"
+  },
+  {
+      "idEstado": "15",
+      "nombreEstado": "MÉXICO"
+  },
+  {
+      "idEstado": "16",
+      "nombreEstado": "MICHOACÁN DE OCAMPO"
+  },
+  {
+      "idEstado": "17",
+      "nombreEstado": "MORELOS"
+  },
+  {
+      "idEstado": "18",
+      "nombreEstado": "NAYARIT"
+  },
+  {
+      "idEstado": "19",
+      "nombreEstado": "NUEVO LEÓN"
+  },
+  {
+      "idEstado": "20",
+      "nombreEstado": "OAXACA"
+  },
+  {
+      "idEstado": "21",
+      "nombreEstado": "PUEBLA"
+  },
+  {
+      "idEstado": "22",
+      "nombreEstado": "QUERÉTARO"
+  },
+  {
+      "idEstado": "23",
+      "nombreEstado": "QUINTANA ROO"
+  },
+  {
+      "idEstado": "24",
+      "nombreEstado": "SAN LUIS POTOSÍ"
+  },
+  {
+      "idEstado": "25",
+      "nombreEstado": "SINALOA"
+  },
+  {
+      "idEstado": "26",
+      "nombreEstado": "SONORA"
+  },
+  {
+      "idEstado": "27",
+      "nombreEstado": "TABASCO"
+  },
+  {
+      "idEstado": "28",
+      "nombreEstado": "TAMAULIPAS"
+  },
+  {
+      "idEstado": "29",
+      "nombreEstado": "TLAXCALA"
+  },
+  {
+      "idEstado": "30",
+      "nombreEstado": "VERACRUZ DE IGNACIO DE LA LLAVE"
+  },
+  {
+      "idEstado": "31",
+      "nombreEstado": "YUCATÁN"
+  },
+  {
+      "idEstado": "32",
+      "nombreEstado": "ZACATECAS"
+  }
+]

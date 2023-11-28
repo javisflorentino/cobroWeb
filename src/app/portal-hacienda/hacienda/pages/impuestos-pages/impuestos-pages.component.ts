@@ -16,6 +16,7 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
   public conceptTitle: string = '';
   /* Bloque el boton de Calcular para evitar acciones duplicadas  */
   public buttBlock = false;
+
   //Se obtiene una referencia a todo el componente que se renderizó en este componente. Se uso el nombre del componente
   private idConcepto: number = 0;
   private tipoForm: number = 0;
