@@ -71,17 +71,17 @@
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>RFC</mat-label>
             <input matInput formControlName="rfc_taxt" type="text">
-            <mat-error >Dato requerido</mat-error>
+            <mat-error >{{ getMessage(myFormTaxt.get('rfc_taxt')?.errors,'rfc_taxt') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Contraseña</mat-label>
             <input matInput formControlName="pass_taxt" type="password">
-            <mat-error >Dato requerido</mat-error>
+            <mat-error >{{ getMessage(myFormTaxt.get('pass_taxt')?.errors,'pass_taxt') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Correo</mat-label>
             <input matInput formControlName="email_taxt" type="email">
-            <mat-error >Dato requerido</mat-error>
+            <mat-error >{{ getMessage(myFormTaxt.get('email_taxt')?.errors,'email_taxt') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
             <mat-label>Nacionalidad</mat-label>
@@ -98,12 +98,12 @@
           <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
             <mat-label>Razon Social</mat-label>
             <input matInput type="text" formControlName="razon_social_taxt">
-            <mat-error >Campo requerido</mat-error>
+            <mat-error >{{ getMessage(myFormTaxt.get('razon_social_taxt')?.errors,'razon_social_taxt') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
             <mat-label>Abreviatura</mat-label>
             <input matInput type="text" formControlName="abreviatura_taxt">
-            <mat-error >Campo requerido</mat-error>
+            <mat-error >{{ getMessage(myFormTaxt.get('abreviatura_taxt')?.errors,'abreviatura_taxt') }}</mat-error>
           </mat-form-field>
         </mat-expansion-panel>
         <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
@@ -121,24 +121,80 @@
                   {{estados.descripcion}}
                 </mat-option>
               </mat-select>
-              <mat-error > Campo requerido</mat-error>
+              <mat-error > {{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('estado_taxt')?.errors,'estado_taxt') }}</mat-error>
             </mat-form-field>
             <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
               <mat-label>Municipio</mat-label>
-              <mat-select formControlName="estado_taxt" >
-                <mat-option value="">--- Seleccione estado ---</mat-option>
+              <mat-select formControlName="municipio_taxt" (valueChange)="changeMunicipio($event)">
+                <mat-option value="">--- Seleccione municipio ---</mat-option>
                 <mat-option *ngFor="let municipi of municipiosArr" [value]="municipi.pk">{{municipi.descripcion}}</mat-option>
               </mat-select>
-              <mat-error > Campo requerido</mat-error>
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('municipio_taxt')?.errors,'municipio_taxt') }}</mat-error>
             </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Localidad</mat-label>
+              <mat-select formControlName="localidad_taxt" >
+                <mat-option value="">--- Seleccione localidad ---</mat-option>
+                <mat-option *ngFor="let localidad of localidadArr" [value]="localidad.pk" style="font-size: small;">{{localidad.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('localidad_taxt')?.errors,'localidad_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Asentamiento</mat-label>
+              <mat-select formControlName="tipo_asentamineto_taxt" >
+                <mat-option value="">--- Seleccione localidad ---</mat-option>
+                <mat-option *ngFor="let asentamiento of asentamientoList" [value]="asentamiento.id" style="font-size: small;">{{asentamiento.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('tipo_asentamineto_taxt')?.errors,'tipo_asentamineto_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>CP</mat-label>
+              <input matInput type="number" formControlName="cp_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('cp_taxt')?.errors,'cp_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Nombre asentamiento</mat-label>
+              <input matInput type="text" formControlName="nombre_asentamiento_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('nombre_asentamiento_taxt')?.errors,'nombre_asentamiento_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Tipo vialidad</mat-label>
+              <input matInput type="text" formControlName="tipo_vialidad_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('tipo_vialidad_taxt')?.errors,'tipo_vialidad_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Nombre vialidad</mat-label>
+              <input matInput type="text" formControlName="nombre_vialidad_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('nombre_vialidad_taxt')?.errors,'nombre_vialidad_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>No exterior</mat-label>
+              <input matInput type="text" formControlName="no_ext_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('no_ext_taxt')?.errors,'no_ext_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>No interior</mat-label>
+              <input matInput type="text" formControlName="no_int_taxt">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('no_int_taxt')?.errors,'no_int_taxt') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input matInput type="tel" formControlName="telefono_taxt" placeholder="(777) 1111111">
+              <mat-error >{{ getMessage(myFormTaxt.get('domicilio_taxt')?.get('telefono_taxt')?.errors,'telefono_taxt') }}</mat-error>
+            </mat-form-field>
+
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button matDialogClose="no">Cancel</button>
-    <button type="submit" mat-button>Submit</button>
+    <button mat-stroked-button mat-raised color="warn" matDialogClose="no">Cancelar</button>
+    <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="onSubmitNewTaxtPay()">Enviar</button>
   </mat-dialog-actions>
+  <code>
 
+  </code>
 </ng-template>
+
+

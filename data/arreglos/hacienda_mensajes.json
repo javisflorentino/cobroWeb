@@ -4,5 +4,19 @@
       "id": 1,
       "msg": "El monto no puede ser igual o menor a 0"
     }
+  ],
+  "hacienda_isan": [
+    {
+      "id":1,
+      "msg": ""
+    },
+    {
+      "id":100,
+      "msg": "Campo Requerido"
+    },
+    {
+      "id":101,
+      "msg": "Formato incorrecto"
+    }
   ]
 }

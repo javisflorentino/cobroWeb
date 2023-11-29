@@ -1,20 +1,21 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
-import { Subject, takeUntil } from 'rxjs';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 
-import ListaEstados from '../../../../../../data/arreglos/estados.json'
 import { GeneralesService } from '../../../services/generales.service';
 import { ComboConcept, ComboDTO } from 'src/app/portal-hacienda/interface/datos-combo.interface';
-import { Data } from '../../../interface/portal-calculo-concepto.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
+
+import ListaAsentamientos from '../../../../../../data/arreglos/asentamientos.json'
+import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
+import ListMessage from '../../../../../../data/arreglos/hacienda_mensajes.json'
+import { MatAccordion } from '@angular/material/expansion';
 
 const moment = _rollupMoment || _moment;
 const MY_FORMATS = {
@@ -43,9 +44,16 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   @ViewChild('callDialog')
   private callDialog?: TemplateRef<any>;
 
+  @ViewChild('accordion')
+  public Accordion!: MatAccordion;
+
   //Variable de tipo Estados y se le agrega el arreglo
-  public estadosArr: ComboConcept[] = [];
+  public estadosArr:    ComboConcept[] = [];
   public municipiosArr: ComboConcept[] = [];
+  public localidadArr:  ComboConcept[] = [];
+  public asentamientoList = ListaAsentamientos;
+
+  public mssgArr: MessageSmyt[] = ListMessage.hacienda_isan;
 
   public step: number = 0;
 
@@ -59,31 +67,35 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   private fb = inject( FormBuilder )
   public myForm: FormGroup = this.fb.group({
     monto: [ 1,[Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberPattern)] ],
-    fecha_pago: [moment()],
+    fecha_pago: [moment(),[Validators.required]],
     rfc: ['', [Validators.pattern(this.validatorService.rfcPath)]]
   });
 
   public myFormTaxt: FormGroup = this.fb.group({
-    rfc_taxt:          [],
-    pass_taxt:         [],
-    email_taxt:        [],
-    nacion_taxt:       [],
-    razon_social_taxt: [],
-    abreviatura_taxt:  [],
+    rfc_taxt:          ['',[Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
+    pass_taxt:         ['',[Validators.required]],
+    email_taxt:        ['',[Validators.required, Validators.pattern(this.validatorService.emailPattern)]],
+    nacion_taxt:       ['M',[Validators.required]],
+    razon_social_taxt: ['',[Validators.required, Validators.pattern(this.validatorService.peoplesNamePath)]],
+    abreviatura_taxt:  ['',[Validators.required]],
     domicilio_taxt: this.fb.group({
       estado_taxt:              ['',[Validators.required]],
       municipio_taxt:           ['',[Validators.required]],
-      localidad_taxt:           [],
-      cp_taxt:                  [],
-      tipo_asentamineto_taxt:   [],
-      nombre_asentamineto_taxt: [],
-      tipo_vialidad_taxt:       [],
-      nombre_vialidad:          [],
-      no_ext_taxt:              [],
-      no_int_taxt:              [],
-      telefono_taxt:            []
+      localidad_taxt:           ['',[Validators.required]],
+      cp_taxt:                  ['',[Validators.required, Validators.pattern(this.validatorService.exprCp)]],
+      tipo_asentamineto_taxt:   ['',[Validators.required]],
+      nombre_asentamiento_taxt: ['',[Validators.required]],
+      tipo_vialidad_taxt:       ['',[Validators.required]],
+      nombre_vialidad_taxt:          ['',[Validators.required]],
+      no_ext_taxt:              ['',[Validators.required]],
+      no_int_taxt:              ['',[Validators.required]],
+      telefono_taxt:            ['',[Validators.required, Validators.pattern(this.validatorService.expNoTel)]]
     })
-  })
+  });
+
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
 
   constructor( private validatorService: ValidatorsService,
                public dialog:MatDialog,
@@ -136,7 +148,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
     this.step = index;
   }
 
-  changeEstado(event: string) {
+  changeEstado(event: string): void {
     console.log(event);
     this.generalesService.getMunicipios(event)
       .subscribe(resp => {
@@ -149,17 +161,66 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
       });
   }
 
+  changeMunicipio(event: string): void {
+    this.generalesService.getLocalida(event)
+      .subscribe(resp => {
+        if(!resp){
+          this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+        } else {
+          this.localidadArr = resp.data;
+        }
+
+      });
+  }
+
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
       data: message,duration: 5500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
     });
   }
 
+  getMessage(idMssg:ValidationErrors|null|undefined, nameField:string) {
+    if ( !idMssg ) {
+      return '';
+    }
+    const errors = Object.keys(idMssg);
+    if(errors.includes('required')) {
+      return 'Este campo requerido';
+    }
+    if(errors.includes('pattern')) {
+      return 'Formato incorrecto';
+    }
+
+    return '';
+  }
+
   onSubmit() {
-    this.isLoading = true;
+    let month = moment(this.myForm.get('fecha_pago')?.value).month();
+    let year = moment(this.myForm.get('fecha_pago')?.value).year();
+    let toDate = new Date()
+    console.log((month+1) + '/' + year + '|' + new Date().getFullYear() + '/' + new Date().getMonth())
+    /*this.isLoading = true;
     this.buttBlock = true;
     if ( this.myForm.invalid ) {
       this.myForm.markAllAsTouched();
+      this.isLoading = false;
+      this.buttBlock = false;
+      return;
+    }*/
+    if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
+      console.log('correcto')
+    } else {
+      console.log('INCORRECTO')
+    }
+
+  }
+  onSubmitNewTaxtPay(): void {
+    console.log(this.myFormTaxt.valid)
+    this.isLoading = true;
+    this.buttBlock = true;
+    if ( this.myFormTaxt.invalid ) {
+      this.myFormTaxt.markAllAsTouched();
+      this.Accordion.openAll();
       this.isLoading = false;
       this.buttBlock = false;
       return;

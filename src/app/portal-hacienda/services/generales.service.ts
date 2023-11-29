@@ -37,4 +37,17 @@ export class GeneralesService {
         catchError(error => of(null))
       );
   }
+
+  getLocalida(idMunicipio: string): Observable<ComboDTO|null> {
+    let headers = new HttpHeaders();
+    const body= new FormData();
+    body.append("pk", idMunicipio);
+    headers = headers.set("mimeType", "multipart/form-data")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    return this.http.post<ComboDTO>(`${this.baseUrlApp}/combo/obtenerLocalidades`,body,{headers})
+    .pipe(
+      tap(resp => console.log(resp)),
+      catchError(error => of(null))
+    );
+  }
 }

@@ -1,0 +1,166 @@
+[
+  {
+    "id":"AEROPUERTO",
+    "descripcion":"AEROPUERTO"
+  },
+  {
+    "id":"AMPLIACIÓN",
+    "descripcion":"AMPLIACIÓN"
+  },
+  {
+    "id":"BARRIO",
+    "descripcion":"BARRIO"
+  },
+  {
+    "id":"CANTÓN",
+    "descripcion":"CANTÓN"
+  },
+  {
+    "id":"CIUDAD",
+    "descripcion":"CIUDAD"
+  },
+  {
+    "id":"CIUDAD INDUSTRIAL",
+    "descripcion":"CIUDAD INDUSTRIAL"
+  },
+  {
+    "id":"COLONIA",
+    "descripcion":"COLONIA"
+  },
+  {
+    "id":"CONDOMINIO",
+    "descripcion":"CONDOMINIO"
+  },
+  {
+    "id":"CONJUNTO HABITACIONAL",
+    "descripcion":"CONJUNTO HABITACIONAL"
+  },
+  {
+    "id":"CORREDOR INDUSTRIAL",
+    "descripcion":"CORREDOR INDUSTRIAL"
+  },
+  {
+    "id":"COTO",
+    "descripcion":"COTO"
+  },
+  {
+    "id":"CUARTEL",
+    "descripcion":"CUARTEL"
+  },
+  {
+    "id":"EJIDO",
+    "descripcion":"EJIDO"
+  },
+  {
+    "id":"EXHACIENDA",
+    "descripcion":"EXHACIENDA"
+  },
+  {
+    "id":"FRACCIÓN",
+    "descripcion":"FRACCIÓN"
+  },
+  {
+    "id":"FRACCIONAMIENTO",
+    "descripcion":"FRACCIONAMIENTO"
+  },
+  {
+    "id":"GRANJA",
+    "descripcion":"GRANJA"
+  },
+  {
+    "id":"HACIENDA",
+    "descripcion":"HACIENDA"
+  },
+  {
+    "id":"INGENIO",
+    "descripcion":"INGENIO"
+  },
+  {
+    "id":"MANZANA",
+    "descripcion":"MANZANA"
+  },
+  {
+    "id":"PARAJE",
+    "descripcion":"PARAJE"
+  },
+  {
+    "id":"PARQUE INDUSTRIAL",
+    "descripcion":"PARQUE INDUSTRIAL"
+  },
+  {
+    "id":"PRIVADA",
+    "descripcion":"PRIVADA"
+  },
+  {
+    "id":"PROLONGACIÓN",
+    "descripcion":"PROLONGACIÓN"
+  },
+  {
+    "id":"PUEBLO",
+    "descripcion":"PUEBLO"
+  },
+  {
+    "id":"PUERTO",
+    "descripcion":"PUERTO"
+  },
+  {
+    "id":"RANCHERÍA",
+    "descripcion":"RANCHERÍA"
+  },
+  {
+    "id":"RANCHO",
+    "descripcion":"RANCHO"
+  },
+  {
+    "id":"REGIÓN",
+    "descripcion":"REGIÓN"
+  },
+  {
+    "id":"RESIDENCIAL",
+    "descripcion":"RESIDENCIAL"
+  },
+  {
+    "id":"RINCONADA",
+    "descripcion":"RINCONADA"
+  },
+  {
+    "id":"SECCIÓN",
+    "descripcion":"SECCIÓN"
+  },
+  {
+    "id":"SECTOR",
+    "descripcion":"SECTOR"
+  },
+  {
+    "id":"SUPERMANZANA",
+    "descripcion":"SUPERMANZANA"
+  },
+  {
+    "id":"UNIDAD",
+    "descripcion":"UNIDAD"
+  },
+  {
+    "id":"UNIDAD HABITACIONAL",
+    "descripcion":"UNIDAD HABITACIONAL"
+  },
+  {
+    "id":"VILLA",
+    "descripcion":"VILLA"
+  },
+  {
+    "id":"ZONA FEDERAL",
+    "descripcion":"ZONA FEDERAL"
+  },
+  {
+    "id":"ZONA INDUSTRIAL",
+    "descripcion":"ZONA INDUSTRIAL"
+  },
+  {
+    "id":"ZONA MILITAR",
+    "descripcion":"ZONA MILITAR"
+  },
+  {
+    "id":"ZONA NAVAL",
+    "descripcion":"ZONA NAVAL"
+  }
+]
