@@ -16,6 +16,8 @@ import ListaAsentamientos from '../../../../../../data/arreglos/asentamientos.js
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 import ListMessage from '../../../../../../data/arreglos/hacienda_mensajes.json'
 import { MatAccordion } from '@angular/material/expansion';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 const moment = _rollupMoment || _moment;
 const MY_FORMATS = {
@@ -56,6 +58,13 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   public mssgArr: MessageSmyt[] = ListMessage.hacienda_isan;
 
   public step: number = 0;
+
+  /** Se usa para finalizar la subscripcion al salir del módulo */
+  private ActivatedRouteSubscribe?: Subscription;
+
+  //Se obtiene una referencia a todo el componente que se renderizó en este componente. Se uso el nombre del componente
+  private idConcepto: number = 0;
+  private tipoForm: number = 0;
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -100,10 +109,17 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   constructor( private validatorService: ValidatorsService,
                public dialog:MatDialog,
                private generalesService: GeneralesService,
-               private _snackBar: MatSnackBar ) {}
+               private _snackBar: MatSnackBar,
+               private activateRaute: ActivatedRoute,
+               private router: Router ) {}
 
   ngOnInit(): void {
     this.conceptTitle = localStorage.getItem('concept')!;
+
+    this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
+      this.idConcepto = idConcepto;
+      this.tipoForm = tipoForm;
+    });
 
     this.generalesService.getEntidadesFederativas()
       .subscribe(resp => {
@@ -118,7 +134,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-
+    this.ActivatedRouteSubscribe?.unsubscribe();
   }
 
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -197,20 +213,30 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   onSubmit() {
     let month = moment(this.myForm.get('fecha_pago')?.value).month();
     let year = moment(this.myForm.get('fecha_pago')?.value).year();
-    let toDate = new Date()
     console.log((month+1) + '/' + year + '|' + new Date().getFullYear() + '/' + new Date().getMonth())
-    /*this.isLoading = true;
+    this.isLoading = true;
     this.buttBlock = true;
     if ( this.myForm.invalid ) {
       this.myForm.markAllAsTouched();
       this.isLoading = false;
       this.buttBlock = false;
       return;
-    }*/
+    }
     if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
-      console.log('correcto')
+      localStorage.setItem('route_origen',`hacienda/hacienda-impuestos/${this.idConcepto}/${this.tipoForm}`);
+      localStorage.setItem('datos_cobro',JSON.stringify(
+        {
+          cantidad:      1,
+          monto:         Number(this.myForm.get('monto')?.value),
+          periodo:       month+1,
+          ejercicio:     year
+        })
+      );
+
+      this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
+      return;
     } else {
-      console.log('INCORRECTO')
+      this.openSnackBar('No puede pagar un periodo o ejercicio fiscal que no ha pasado.');
     }
 
   }

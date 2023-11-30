@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImpuestosComponent } from '../../components/impuestos/impuestos.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'hacienda-impuestos-pages',
@@ -21,6 +22,8 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
   private idConcepto: number = 0;
   private tipoForm: number = 0;
 
+  private ActivatedRouteSubscribe?: Subscription;
+
   @ViewChild(ImpuestosComponent)
   private childComponent!: ImpuestosComponent;
 
@@ -30,7 +33,8 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
   constructor( private fb: FormBuilder, private router: Router, private activateRaute: ActivatedRoute ) {}
 
   ngOnDestroy(): void {
-    this.activateRaute.params.subscribe().unsubscribe();
+    //this.activateRaute.params.subscribe().unsubscribe();
+    this.ActivatedRouteSubscribe?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +47,7 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit(): void {
     this.conceptTitle = localStorage.getItem('concept')!;
 
-    this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
+    this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
       this.tipoForm = tipoForm;
     });

@@ -10,6 +10,7 @@ import { ComboDTO } from '../interface/datos-combo.interface';
 export class GeneralesService {
 
   private baseUrlApp = `${environments.baseUrlApp}serviciosHacienda`;
+  private urlSOAP = `${environments.baseUrlServ}`;
 
   constructor( private http: HttpClient ) { }
 
@@ -49,5 +50,14 @@ export class GeneralesService {
       tap(resp => console.log(resp)),
       catchError(error => of(null))
     );
+  }
+
+  async getFechaVencimientoISNA(periodo:number,ejercicio:number): Promise<any> {
+    return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:imp="http://impuestos/"><soapenv:Header/><soapenv:Body><imp:obtenFechaVencimiento><!--Optional:--><periodo>${periodo}</periodo><!--Optional:--><ejercicio>${ejercicio}</ejercicio></imp:obtenFechaVencimiento></soapenv:Body></soapenv:Envelope>`,
+      headers: { "Content-type": "text/xml; charset=utf-8" }
+    })
+
   }
 }

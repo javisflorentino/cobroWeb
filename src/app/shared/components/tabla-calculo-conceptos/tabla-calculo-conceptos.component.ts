@@ -8,6 +8,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackBarComponent } from '../snack-bar/snack-bar.component';
 import { DatosTramite } from '../../interfaces/datos-tramite.interface';
+import { GeneralesService } from '../../../portal-hacienda/services/generales.service';
+import { ConvertXmlString } from '../../clases/convert-xml-string';
+import { FechaVencimientoISAN } from '../../interfaces/soap-fechavencimiento-isan';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -57,13 +60,18 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     return this.formTableCal.get('cantidadPago') as FormArray;
   }
 
+  /* Variables SOAP Actualizar o Borrar */
+  private asJson!:FechaVencimientoISAN;
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
+
   constructor(
     private smyPagosService: SmyCalculoPagosService,
     private router:Router,
     private _snackBar: MatSnackBar,
     private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private generalesService:GeneralesService
     ) {
       this.mediaQuery();
     }
@@ -99,7 +107,10 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if (this.tipoform == 13) {
           this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
-        if( this.tipoform == 5) {
+        if ( this.tipoform == 4) {
+          this.consultConceptoPagoSOAP();
+        }
+        if ( this.tipoform == 5) {
           const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
           Object.keys(datos).forEach(r => {
             if(datos[r]>0 && r !== 'cantidad')
@@ -170,7 +181,32 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
     //this.newElementForm.reset();
   }
+  /** SOAP Actualizar */
+  consultConceptoPagoSOAP() {
+    const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
+    if ( this.tipoform == 4) {
+      console.log(localStorage.getItem('datos_cobro'));
+    }
+    this.generalesService.getFechaVencimientoISNA(Number(datos.periodo),Number(datos.ejercicio))
+      .then(response => response.text())
+      .then(xml => {
+        console.log(this.xmlSring.xmlStringToJson(xml.toString()))
+        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+        /*if(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text']) {//this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] === 'EXITO') {
+          localStorage.setItem('route_origen','smyt-refrendo')
+          this.router.navigate(['/pagos/tabla-conceptos',1]);
+          return
+        }*/
 
+        this._snackBar.openFromComponent(SnackBarComponent, {
+          data: this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'],
+          duration: 5500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+        });
+
+        //this.isLoading = false;
+        //this.buttBlock = false;
+      }).catch (err => console.log(err));
+  }
   consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
       if(localStorage.getItem('contribuyente') && this.tipoFormEdit) {
