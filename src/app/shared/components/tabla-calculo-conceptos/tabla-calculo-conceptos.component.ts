@@ -108,7 +108,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
           this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
         }
         if ( this.tipoform == 4) {
-          this.consultConceptoPagoSOAP();
+          this.consultConceptoPagoISAN(this.idConcepto);
         }
         if ( this.tipoform == 5) {
           const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
@@ -182,29 +182,21 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     //this.newElementForm.reset();
   }
   /** SOAP Actualizar */
-  consultConceptoPagoSOAP() {
+  consultConceptoPagoISAN(idConcepto:number) {
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
-    if ( this.tipoform == 4) {
-      console.log(localStorage.getItem('datos_cobro'));
-    }
-    this.generalesService.getFechaVencimientoISNA(Number(datos.periodo),Number(datos.ejercicio))
+    console.log(datos);
+    let fechaVencimiento: string = '';
+    this.generalesService.getFechaVencimientoISAN(Number(datos.periodo),Number(datos.ejercicio))
       .then(response => response.text())
       .then(xml => {
         console.log(this.xmlSring.xmlStringToJson(xml.toString()))
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        /*if(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text']) {//this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] === 'EXITO') {
-          localStorage.setItem('route_origen','smyt-refrendo')
-          this.router.navigate(['/pagos/tabla-conceptos',1]);
-          return
-        }*/
-
-        this._snackBar.openFromComponent(SnackBarComponent, {
-          data: this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'],
-          duration: 5500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
-        });
-
-        //this.isLoading = false;
-        //this.buttBlock = false;
+        fechaVencimiento = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'].toString();
+        this.generalesService.getDetalleCobroISAN(datos.monto,fechaVencimiento,idConcepto)
+          .then(resp => resp.text())
+          .then(xml_sec => {
+            console.log(this.xmlSring.xmlStringToJson(xml_sec.toString()))
+          });
       }).catch (err => console.log(err));
   }
   consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
