@@ -22,6 +22,7 @@ export interface Concepto {
   ejercicioFiscal: number;
   importe:         number;
   padre?:          number;
+  no_hojas?:       number;
 }
 
 export interface Contribuyente {

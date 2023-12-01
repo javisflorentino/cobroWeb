@@ -20,6 +20,7 @@ export interface DatosPoliza {
   observaciones:       string;
   datosAdicionales:    string;
   detalle:             string;
+  fechaVencimiento?:   string;
 
     /*opc:                 string;
     sistema:             string;

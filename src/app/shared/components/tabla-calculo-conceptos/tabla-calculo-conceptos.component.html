@@ -114,6 +114,34 @@
       <td mat-footer-cell *matFooterCellDef> Total </td>
 
     </ng-container>
+
+    <ng-container matColumnDef="no_hojas" *ngIf="control_hoja">
+      <th mat-header-cell *matHeaderCellDef> No Hojas </th>
+      <td mat-cell *matCellDef="let concepto; let i = index;">
+        <!--div [formGroup]="formTableCal" *ngIf="tipoform; else desCant">
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <input matInput type="number" formControlName="cantidadPago" (change)="sendCant()">
+          </mat-form-field>
+        </div-->
+        <div [formGroup]="formTableCal" *ngIf="tipoFormEdit; else desCant">
+
+            <div *ngFor="let item of cantidadPago.controls;index as x">
+              <div *ngIf="x==i" formArrayName="cantidadPago">
+              <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <input matInput type="number" [formControlName]="x" (change)="sendCant(x)">
+              </mat-form-field>
+              </div>
+            </div>
+
+        </div>
+        <ng-template #desCant>
+          {{concepto.cantidad | number}}
+        </ng-template>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> Total </td>
+
+    </ng-container>
+
     <ng-container matColumnDef="subtotal">
       <th mat-header-cell *matHeaderCellDef> Subtotal </th>
       <td mat-cell *matCellDef="let concepto"> {{concepto.importe | currency:'MXN':'symbol-narrow':'1.2-2'}} </td>

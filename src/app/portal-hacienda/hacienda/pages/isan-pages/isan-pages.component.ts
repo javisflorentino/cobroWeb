@@ -18,6 +18,8 @@ import ListMessage from '../../../../../../data/arreglos/hacienda_mensajes.json'
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { FechaVencimientoISAN } from 'src/app/shared/interfaces/soap-fechavencimiento-isan';
+import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 
 const moment = _rollupMoment || _moment;
 const MY_FORMATS = {
@@ -72,6 +74,9 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   public buttBlock = false;
 
   public conceptTitle: string = '';
+
+  private asJson!:FechaVencimientoISAN;
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   private fb = inject( FormBuilder )
   public myForm: FormGroup = this.fb.group({
@@ -152,7 +157,6 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
         if (result !== undefined) {
             if (result !== 'no') {
               const enabled = "Y"
-                console.log(result);
             } else if (result === 'no') {
                console.log('User clicked no.');
             }
@@ -165,7 +169,6 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   }
 
   changeEstado(event: string): void {
-    console.log(event);
     this.generalesService.getMunicipios(event)
       .subscribe(resp => {
         if(!resp){
@@ -213,7 +216,6 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   onSubmit() {
     let month = moment(this.myForm.get('fecha_pago')?.value).month();
     let year = moment(this.myForm.get('fecha_pago')?.value).year();
-    console.log((month+1) + '/' + year + '|' + new Date().getFullYear() + '/' + new Date().getMonth())
     this.isLoading = true;
     this.buttBlock = true;
     if ( this.myForm.invalid ) {
@@ -223,25 +225,31 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
       return;
     }
     if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
-      localStorage.setItem('route_origen',`hacienda/hacienda-impuestos/${this.idConcepto}/${this.tipoForm}`);
-      localStorage.setItem('datos_cobro',JSON.stringify(
-        {
-          cantidad:      1,
-          monto:         Number(this.myForm.get('monto')?.value),
-          periodo:       month+1,
-          ejercicio:     year
-        })
-      );
-
-      this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
-      return;
+      let fechaVencimiento: string = '';
+      this.generalesService.getFechaVencimientoISAN(month+1,year)
+      .then(response => response.text())
+      .then(xml => {
+        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+        fechaVencimiento = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'].toString();
+        localStorage.setItem('datos_cobro',JSON.stringify(
+          {
+            cantidad:         1,
+            monto:            Number(this.myForm.get('monto')?.value),
+            periodo:          month+1,
+            ejercicio:        year,
+            fechaVencimiento: fechaVencimiento,
+            sistema:          40
+          })
+        );
+        localStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
+        this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
+      });
     } else {
       this.openSnackBar('No puede pagar un periodo o ejercicio fiscal que no ha pasado.');
     }
 
   }
   onSubmitNewTaxtPay(): void {
-    console.log(this.myFormTaxt.valid)
     this.isLoading = true;
     this.buttBlock = true;
     if ( this.myFormTaxt.invalid ) {

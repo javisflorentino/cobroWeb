@@ -11,6 +11,7 @@ import { DatosTramite } from '../../interfaces/datos-tramite.interface';
 import { GeneralesService } from '../../../portal-hacienda/services/generales.service';
 import { ConvertXmlString } from '../../clases/convert-xml-string';
 import { FechaVencimientoISAN } from '../../interfaces/soap-fechavencimiento-isan';
+import { IsanCobros } from '../../interfaces/soap-IsanCobros';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -20,9 +21,10 @@ import { FechaVencimientoISAN } from '../../interfaces/soap-fechavencimiento-isa
 export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
   /* Controla el nombre de los aributos del objeto obtenido */
-  public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
+  public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','no_hojas','subtotal'];
   /* Variable en donde se almacena la consulta y que cumpla con la estructura CONCEPTO */
   public conceptos: Concepto[] = [];
+  public control_hoja: boolean=false;
   /* Controla el valor resultante de la consulta */
   public total: number = 0;
   /* Controla valor del renglon seleccionado */
@@ -61,7 +63,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   }
 
   /* Variables SOAP Actualizar o Borrar */
-  private asJson!:FechaVencimientoISAN;
+  private asJson!:IsanCobros;
+  //private asJsonIsan!: IsanCobros;
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   constructor(
@@ -103,14 +106,23 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if (this.tipoform == 1 || this.tipoform == 0) {
           this.tipoFormEdit = true;
           this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
+          this.consultConceptoPago(idConcepto,1,this.tipoform);
+        }
+        if (this.tipoform == 8) {
+          this.control_hoja=true;
+          this.tipoFormEdit = true;
+          this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
+          this.consultConceptoPago(idConcepto,1,this.tipoform);
+
         }
         if (this.tipoform == 13) {
           this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
+          this.consultConceptoPago(idConcepto,1,this.tipoform);
         }
         if ( this.tipoform == 4) {
           this.consultConceptoPagoISAN(this.idConcepto);
         }
-        if ( this.tipoform == 5) {
+        if ( this.tipoform == 5 ) {
           const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
           Object.keys(datos).forEach(r => {
             if(datos[r]>0 && r !== 'cantidad')
@@ -145,7 +157,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
             }
           })
           //this.consultConceptoPago(idConcepto,datos.cantidad,datos.monto);
-        } else {
+        } else if(!this.tipoform) {
           this.consultConceptoPago(idConcepto,1,this.tipoform);
         }
       });
@@ -184,20 +196,26 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   /** SOAP Actualizar */
   consultConceptoPagoISAN(idConcepto:number) {
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
-    console.log(datos);
-    let fechaVencimiento: string = '';
-    this.generalesService.getFechaVencimientoISAN(Number(datos.periodo),Number(datos.ejercicio))
-      .then(response => response.text())
-      .then(xml => {
-        console.log(this.xmlSring.xmlStringToJson(xml.toString()))
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        fechaVencimiento = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'].toString();
-        this.generalesService.getDetalleCobroISAN(datos.monto,fechaVencimiento,idConcepto)
-          .then(resp => resp.text())
-          .then(xml_sec => {
-            console.log(this.xmlSring.xmlStringToJson(xml_sec.toString()))
-          });
-      }).catch (err => console.log(err));
+
+
+        this.generalesService.getDetalleCobroISAN(datos.monto,datos.fechaVencimiento,927)
+          .then(response => response.text())
+          .then(xml => {
+            this.isLoading = false;
+            this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+            let adeudos = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse'].adeudos;
+            this.conceptos = [{
+              id:              0,
+              clave:           String(adeudos['claveConcepto']['#text']),
+              cantidad:        1,
+              descripcion:     String(adeudos['descripcion']['#text']),
+              ejercicioFiscal: Number(adeudos['ejercicioFiscal']['#text']),
+              importe:         Number(adeudos['importe']['#text'])
+            }];
+            localStorage.setItem('contribuyente',JSON.stringify({data:{total:Number(adeudos['total']['#text']),conceptos:this.conceptos,lineaDetalle:String(adeudos['lineaDetalle']['#text'])},success:true}));//this.conceptoPago));
+            this.total += Number(adeudos['total']['#text']);
+          }).catch (err => console.log(err));;
+
   }
   consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form

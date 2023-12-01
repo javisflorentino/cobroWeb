@@ -34,6 +34,7 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnDestroy(): void {
     //this.activateRaute.params.subscribe().unsubscribe();
+    console.log('Destruction Impuestos-page');
     this.ActivatedRouteSubscribe?.unsubscribe();
   }
 
@@ -45,11 +46,10 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.conceptTitle = localStorage.getItem('concept')!;
-
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
       this.tipoForm = tipoForm;
+      this.conceptTitle = localStorage.getItem('concept')!;
     });
   }
 

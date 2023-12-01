@@ -215,6 +215,7 @@ export class DatosContribuyenteComponent implements OnInit {
       this.buttBlock = false;
       return;
     }
+    const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
     if (!this.contribuyenteArr.data.contribuyente) {
       this.contribuyenteArr.data.contribuyente = {
         nombre:          '',
@@ -254,7 +255,13 @@ export class DatosContribuyenteComponent implements OnInit {
 
 
 
+   if(datos) {
+    this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
+    if(datos.sistema) {
+      this.sistema = datos.sistema;
+    }
 
+   }
    this.dataPoliza.sistema = this.sistema.toString();
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
