@@ -66,6 +66,25 @@ export class GeneralesService {
       method: "POST",
       body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:imp="http://impuestos/"><soapenv:Header/><soapenv:Body><imp:obtenerRezagosActualizacionAdicionales><!--Optional:--><idConcepto>${idConcepto}</idConcepto><!--Optional:--><importe>${importe}</importe><!--Optional:--><fecha>${fecha}</fecha></imp:obtenerRezagosActualizacionAdicionales></soapenv:Body></soapenv:Envelope>`,
       headers: { "Content-type": "text/xml; charset=utf-8" }
-    })
+    });
+  }
+  async getConceptoDetalle(idConcepto:number, monto:number): Promise<any> {
+    return await fetch(`${this.urlSOAP}conceptos/services/conceptos`, {
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://conceptos/">
+      <soapenv:Header/>
+      <soapenv:Body>
+         <con:obtenUnConceptoDetalle>
+            <!--Optional:-->
+            <idConcepto>${idConcepto}</idConcepto>
+            <!--Optional:-->
+            <monto>${monto}</monto>
+            <!--Optional:-->
+            <cantidad>1</cantidad>
+         </con:obtenUnConceptoDetalle>
+      </soapenv:Body>
+   </soapenv:Envelope>`,
+      headers: { "Content-type": "text/xml; charset=utf-8" }
+    });
   }
 }

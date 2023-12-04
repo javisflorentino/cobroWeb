@@ -12,6 +12,8 @@ import { GeneralesService } from '../../../portal-hacienda/services/generales.se
 import { ConvertXmlString } from '../../clases/convert-xml-string';
 import { FechaVencimientoISAN } from '../../interfaces/soap-fechavencimiento-isan';
 import { IsanCobros } from '../../interfaces/soap-IsanCobros';
+import { environments } from 'src/environments/environments';
+import { SoapServiciosConceptosDetalle } from '../../interfaces/soap-servicios_conceptos';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -21,10 +23,10 @@ import { IsanCobros } from '../../interfaces/soap-IsanCobros';
 export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
   /* Controla el nombre de los aributos del objeto obtenido */
-  public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','no_hojas','subtotal'];
+  public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
   /* Variable en donde se almacena la consulta y que cumpla con la estructura CONCEPTO */
   public conceptos: Concepto[] = [];
-  public control_hoja: boolean=false;
+  //public control_hoja: boolean=false;
   /* Controla el valor resultante de la consulta */
   public total: number = 0;
   /* Controla valor del renglon seleccionado */
@@ -34,6 +36,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
   public tipoform: number = 0;
   public tipoFormEdit: boolean = false;
+  public tipoFormEdit_hoja: boolean = false;
   public idConcepto: number = 0;
   /* ruta desde donde se origino la peticion, se almacena en LocalStorage */
   public route_origen: string = 'dependencias';
@@ -103,15 +106,20 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
 
-        if (this.tipoform == 1 || this.tipoform == 0) {
+        if (this.tipoform == 1 || this.tipoform == 0 || this.tipoform == 7) {
           this.tipoFormEdit = true;
+          if(this.tipoform == 0) this.tipoFormEdit = false;
           this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
           this.consultConceptoPago(idConcepto,1,this.tipoform);
         }
         if (this.tipoform == 8) {
-          this.control_hoja=true;
-          this.tipoFormEdit = true;
-          this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
+          //this.control_hoja=true;
+          //this.tipoFormEdit = true;
+          this.tipoFormEdit_hoja = true;
+          this.displayedColumns.pop();
+          this.displayedColumns.push('no_hojas');
+          this.displayedColumns.push('subtotal');
+          this.openSnackBar('El No de Hojas es 1. Si desea agregar mas, cambie el valor en el campo No Hojas.');
           this.consultConceptoPago(idConcepto,1,this.tipoform);
 
         }
@@ -214,12 +222,13 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
             }];
             localStorage.setItem('contribuyente',JSON.stringify({data:{total:Number(adeudos['total']['#text']),conceptos:this.conceptos,lineaDetalle:String(adeudos['lineaDetalle']['#text'])},success:true}));//this.conceptoPago));
             this.total += Number(adeudos['total']['#text']);
-          }).catch (err => console.log(err));;
+          }).catch (err => console.log(err));
 
   }
   consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
+    monto = (monto==0)?1:monto;
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
-      if(localStorage.getItem('contribuyente') && this.tipoFormEdit) {
+      if(localStorage.getItem('contribuyente') && (this.tipoFormEdit || this.tipoFormEdit_hoja)) {
         let LocalS:TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
         Object.keys(LocalS.data.conceptos).forEach((k,v)=>{
           this.onAddElementForm();
@@ -236,7 +245,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       "monto": (monto)?monto:null,
       "cantidad": cantidad
     };
-    if( !this.tipoFormEdit )
+    if( !this.tipoFormEdit || !this.tipoFormEdit_hoja)
       localStorage.removeItem('contribuyente');
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
@@ -315,7 +324,49 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
 
  }
+ sendNoHoja() {
+  /** SOAP */
+  this.total = 0;
+  this.isLoading = true;
+  const totalHojas = this.cantidadPago.controls[0].value;
+  let idConcepto = this.idConcepto;
+  let monto = environments.valor_uma;
+  let asJson:SoapServiciosConceptosDetalle;
+  if ( totalHojas ==1 ) {
+    idConcepto = 1416;
+  }
+  if( totalHojas >=2 && totalHojas <= 50) {
+    idConcepto = 4021;
+    monto = environments.valor_uma + ((totalHojas-1) * (monto*0.15));
+  }
+  if( totalHojas > 50) {
+    idConcepto = 4022;
+    monto = environments.valor_uma + ((environments.valor_uma*0.15)*49) + ((totalHojas-50) * (monto*0.15));
+  }
+  console.log(idConcepto + '-' + monto)
+  this.generalesService.getConceptoDetalle(idConcepto,monto)
+    .then(response => response.text())
+    .then(xml => {
+      this.isLoading = false;
+      asJson = this.xmlSring.xmlStringToJson(xml.toString());
+      let adeudos = asJson['soap:Envelope']['soap:Body']['ns2:obtenUnConceptoDetalleResponse'].DetalleCobro;
+      this.conceptos = [{
+        id:              0,
+        clave:           String(adeudos['claveConcepto']['#text']),
+        cantidad:        1,
+        descripcion:     String(adeudos['descripcion']['#text']),
+        ejercicioFiscal: Number(adeudos['ejercicioFiscal']['#text']),
+        importe:         Number(adeudos['importe']['#text'])
+      }];
+      localStorage.setItem('contribuyente',JSON.stringify({data:{total:Number(adeudos['total']['#text']),conceptos:this.conceptos,lineaDetalle:String(adeudos['lineaDetalle']['#text'])},success:true}));//this.conceptoPago));
+      this.total = Number(adeudos['total']['#text']);
+    }).catch (err => console.log(err));
+ }
   sendCant(val:any): void {
+    if( this.tipoform == 8) {
+      this.sendNoHoja();
+      return;
+    }
     this.total = 0;
     let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
     let lineDetalle: string = '';
@@ -324,27 +375,23 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
     contribuyente.data.conceptos.forEach(({importe,id},key)=> {
       if(Number.parseInt(this.cantidadPago.controls[key].value) > 0){
-      let control: number = 0;
+        let control: number = 0;
 
-      this.total += importe * this.cantidadPago.controls[key].value;
-      //if(control === 1) {
+        this.total += importe * this.cantidadPago.controls[key].value;
         contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
-            const val = va.split('¬');
+          const val = va.split('¬');
 
-            if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
-              //lineDetalle += va + '|';
+          if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
               for(let inc = this.cantidadPago.controls[key].value; inc > 0; inc-- ) {
                 lineDetalle += va + '|';
               }
-            }
-            control = Number.parseInt(val[0]);
+          }
+          control = Number.parseInt(val[0]);
         });
       } else {
         keyDel = key;
         flagKey = true;
       }
-        //control++;
-      //}
     });
     if (flagKey) {
       contribuyente.data.conceptos.splice(keyDel,1);

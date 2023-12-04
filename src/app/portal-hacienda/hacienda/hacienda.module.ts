@@ -8,13 +8,14 @@ import { ImpuestosPagesComponent } from './pages/impuestos-pages/impuestos-pages
 import { ImpuestosComponent } from './components/impuestos/impuestos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { IsanPagesComponent } from './pages/isan-pages/isan-pages.component';
-
+import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pages.component';
 
 @NgModule({
   declarations: [
     ImpuestosComponent,
     ImpuestosPagesComponent,
-    IsanPagesComponent
+    IsanPagesComponent,
+    ReintegrosPagesComponent
   ],
   imports: [
     CommonModule,
