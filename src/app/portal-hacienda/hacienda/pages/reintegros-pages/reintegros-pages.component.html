@@ -1,34 +1,109 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-<div class="card">
-  <div class="flex justify-content-center flex-wrap" >
+<div class="grid flex">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'" >
     <mat-card>
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
         <mat-card-subtitle>{{conceptTitle | titlecase }}</mat-card-subtitle>
       </mat-card-header>
-      <mat-divider></mat-divider>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
       <mat-card-content class="mt-5">
-        <form [formGroup]="myFormHReintegro">
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Nombre</mat-label>
-            <input matInput type="text" formControlName="nombre">
-            <mat-error >{{ getMessage(myFormHReintegro.get('nombre')?.errors,'nombre') }}</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Teléfono</mat-label>
-            <input matInput type="tel" formControlName="telefono" placeholder="(777) 1111111">
-            <mat-error >{{ getMessage(myFormHReintegro.get('telefono')?.errors,'telefono') }}</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email">
-            <mat-error >{{ getMessage(myFormHReintegro.get('email')?.errors,'email') }}</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Monto a pagar</mat-label>
-            <input matInput formControlName="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
-            <mat-error >{{ getMessage(myFormHReintegro.get('monto')?.errors,'monto') }}</mat-error>
-          </mat-form-field>
+        <form fxLayout="column" [formGroup]="myFormHReintegro">
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput type="text" formControlName="nombre">
+              <mat-error >{{ getMessage(myFormHReintegro.get('nombre')?.errors,'nombre') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <input matInput type="tel" formControlName="telefono" placeholder="(777) 1111111">
+              <mat-error >{{ getMessage(myFormHReintegro.get('telefono')?.errors,'telefono') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-error >{{ getMessage(myFormHReintegro.get('email')?.errors,'email') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Monto a pagar</mat-label>
+              <input matInput formControlName="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+              <mat-error >{{ getMessage(myFormHReintegro.get('monto')?.errors,'monto') }}</mat-error>
+            </mat-form-field>
+            <span *ngIf="enableContFourteen">
+              <mat-form-field fxFlex style="margin-right:0.5em;" floatLabel="always" appearance="outline" class="full-width radio-container">
+                <mat-label>Es reintegro por apooyo <br>emergentea transportistas ?</mat-label>
+                <input matInput style="display:none" required>
+                <mat-radio-group #group_c_tp formControlName="reintegro" class="flex-wrap" (change)="changeReintegro($event.value)">
+                  <mat-radio-button #buttons_c_tp value="0" >
+                    <span class="wrap-label-text">No</span>
+                  </mat-radio-button>
+                  <mat-radio-button #buttons_c_tp value="1">
+                    <span class="wrap-label-text">Sí</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </mat-form-field>
+            </span>
+            <span *ngIf="enableContSeventeen">
+              <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Fecha de retención</mat-label>
+                <input matInput [matDatepicker]="dpff" formControlName="fecha_retencion" [readonly]="true" >
+                <mat-error >No puede ser mayor a la fecha actual</mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+                <mat-datepicker #dpff disabled="false"></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Ejercicio fiscal</mat-label>
+                <mat-select formControlName="ejercicio_fiscal">
+                  <mat-option value="">--- Seleccione ejercicio fiscal ---</mat-option>
+                  <mat-option *ngFor="let ejercicio of arrEjercicioFiscal" [value]="ejercicio">
+                    {{ejercicio}}
+                  </mat-option>
+                </mat-select>
+                <mat-error > {{ getMessage(myFormHReintegro.get('ejercicio_fiscal')?.errors,'ejercicio_fiscal') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Nombre del fondo o programa</mat-label>
+                <input matInput type="text" formControlName="nombre_fondo">
+                <mat-error >{{ getMessage(myFormHReintegro.get('nombre_fondo')?.errors,'nombre_fondo') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Número de contrato</mat-label>
+                <input matInput type="text" formControlName="numero_contrato">
+                <mat-error >{{ getMessage(myFormHReintegro.get('numero_contrato')?.errors,'numero_contrato') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Objetivo del contrato</mat-label>
+                <input matInput type="text" formControlName="objeto_contrato">
+                <mat-error >{{ getMessage(myFormHReintegro.get('objeto_contrato')?.errors,'objeto_contrato') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Fuente de financiamiento</mat-label>
+                <input matInput type="text" formControlName="fuente_financiamiento">
+                <mat-error >{{ getMessage(myFormHReintegro.get('fuente_financiamiento')?.errors,'fuente_financiamiento') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Monto ejercido</mat-label>
+                <input matInput type="number" formControlName="monto_ejercido"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+                <mat-error >{{ getMessage(myFormHReintegro.get('monto_ejercido')?.errors,'monto_ejercido') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Monto retenido</mat-label>
+                <input matInput type="number" formControlName="monto_retenido"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+                <mat-error >{{ getMessage(myFormHReintegro.get('monto_retenido')?.errors,'monto_retenido') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Número de oficio de autorización</mat-label>
+                <input matInput type="text" formControlName="numero_oficio">
+                <mat-error >{{ getMessage(myFormHReintegro.get('numero_oficio')?.errors,'numero_oficio') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Número de factura emitida por el proveedor</mat-label>
+                <input matInput type="text" formControlName="numero_factura">
+                <mat-error >{{ getMessage(myFormHReintegro.get('numero_factura')?.errors,'numero_factura') }}</mat-error>
+              </mat-form-field>
+            </span>
+          </div>
         </form>
       </mat-card-content>
 
@@ -48,4 +123,9 @@
 
     </mat-card>
   </div>
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+    <messages-hacienda [messageArr]="messages" ></messages-hacienda>
+  </div>
 </div>
+
+

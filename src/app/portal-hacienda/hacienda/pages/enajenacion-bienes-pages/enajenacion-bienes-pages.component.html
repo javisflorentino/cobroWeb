@@ -1,0 +1,53 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="card">
+  <div class="flex justify-content-center flex-wrap" >
+    <mat-card>
+      <mat-card-header class="mb-3">
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle>{{conceptTitle | titlecase }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content class="mt-5">
+        <form fxLayout="column" [formGroup]="myFormHEnajenacion">
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Escritura</mat-label>
+            <input matInput type="text" formControlName="escritura">
+            <mat-error >{{ getMessage(myFormHEnajenacion.get('escritura')?.errors,'escritura') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Fecha de retención</mat-label>
+            <input matInput [matDatepicker]="dpff" formControlName="fecha_escritura" [readonly]="true" >
+            <mat-error >No puede ser mayor a la fecha actual</mat-error>
+            <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+            <mat-datepicker #dpff disabled="false"></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Contribuyente</mat-label>
+            <input matInput type="text" formControlName="contribuyente">
+            <mat-error >{{ getMessage(myFormHEnajenacion.get('contribuyente')?.errors,'contribuyente') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Monto</mat-label>
+            <input matInput formControlName="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+            <mat-error >{{ getMessage(myFormHEnajenacion.get('monto')?.errors,'monto') }}</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos']">
+          <mat-icon>cancel</mat-icon>
+            Cancelar
+        </button>
+        <span class=""></span>
+        <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="onSubmit()">
+          <mat-icon>calculate</mat-icon>
+            Calcular
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</div>

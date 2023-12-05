@@ -105,16 +105,76 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
+        console.log(this.tipoform + '-' + this.idConcepto)
+        const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
+        switch(Number(this.tipoform)) {
+          case 0: case 1: case 7:
+            this.tipoFormEdit = true;
+            if(this.tipoform == 0) this.tipoFormEdit = false;
+            this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
+            this.consultConceptoPago(idConcepto,1,this.tipoform);
+            break;
+          case 4:
+            this.consultConceptoPagoISAN(this.idConcepto);
+            break;
+          case 5:
+            Object.keys(datos).forEach(r => {
+              if(datos[r]>0 && r !== 'cantidad')
+              {
+                if (r === 'monto'){
+                  this.consultConceptoPago(idConcepto,1,datos[r]);//this.consultConceptoPago((r=='actualizacion' || r=='recargo'?651:idConcepto),1,datos[r]);
+                } else {
+                  let control: boolean = true;
+                  let id = setInterval(() => {
+                    if(localStorage.getItem('contribuyente')) {
+                      let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+                      contribuyente.data.conceptos.push(
+                        {
+                          id:0, clave: '0637', cantidad: 1, descripcion: (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
+                          ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal, importe: datos[r]
+                        }
+                      );
+                      contribuyente.data.total += datos[r];
+                      contribuyente.data.lineaDetalle = '';
+                      localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+                      this.conceptos = contribuyente.data.conceptos;
+                      this.total += datos[r];
+                      clearInterval(id);
+                    }
+                  },150)
+                }
+              }
+            });
+            break;
+          case 8:
+            this.tipoFormEdit_hoja = true;
+            this.displayedColumns.pop();
+            this.displayedColumns.push('no_hojas');
+            this.displayedColumns.push('subtotal');
+            this.openSnackBar('El No de Hojas es 1. Si desea agregar mas, cambie el valor en el campo No Hojas.');
+            this.consultConceptoPago(idConcepto,1,this.tipoform);
+            break;
+          case 13:
+            this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
+            this.consultConceptoPago(idConcepto,1,this.tipoform);
+            break;
+          case 16: case 14: case 17: case 6:
+            this.consultConceptoPago(idConcepto,1,datos.monto);
+            break;
+          default:
+            if(!this.tipoform) {
+              this.consultConceptoPago(idConcepto,1,this.tipoform);
+            }
+            break;
+        }
 
-        if (this.tipoform == 1 || this.tipoform == 0 || this.tipoform == 7) {
+        /*if (this.tipoform == 1 || this.tipoform == 0 || this.tipoform == 7) {
           this.tipoFormEdit = true;
           if(this.tipoform == 0) this.tipoFormEdit = false;
           this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
           this.consultConceptoPago(idConcepto,1,this.tipoform);
         }
         if (this.tipoform == 8) {
-          //this.control_hoja=true;
-          //this.tipoFormEdit = true;
           this.tipoFormEdit_hoja = true;
           this.displayedColumns.pop();
           this.displayedColumns.push('no_hojas');
@@ -136,7 +196,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
             if(datos[r]>0 && r !== 'cantidad')
             {
               if (r === 'monto'){
-                this.consultConceptoPago(idConcepto,1,datos[r]);//this.consultConceptoPago((r=='actualizacion' || r=='recargo'?651:idConcepto),1,datos[r]);
+                this.consultConceptoPago(idConcepto,1,datos[r]);
               } else {
                 let control: boolean = true;
                 let id = setInterval(() => {
@@ -151,8 +211,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
                         ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal,
                         importe:         datos[r],
                       }
-                    );//concat(resp.data.conceptos);
-                    //(r == 'actualizacion'?datos[0].actualizacion:datos[0].recargo)
+                    );
                     contribuyente.data.total += datos[r];
                     contribuyente.data.lineaDetalle = '';
                     localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
@@ -164,10 +223,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
               }
             }
           })
-          //this.consultConceptoPago(idConcepto,datos.cantidad,datos.monto);
         } else if(!this.tipoform) {
           this.consultConceptoPago(idConcepto,1,this.tipoform);
-        }
+        }*/
       });
       return;
     }

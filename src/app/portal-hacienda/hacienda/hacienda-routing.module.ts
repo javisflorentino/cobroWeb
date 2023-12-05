@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ImpuestosPagesComponent } from './pages/impuestos-pages/impuestos-pages.component';
 import { IsanPagesComponent } from './pages/isan-pages/isan-pages.component';
 import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pages.component';
+import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'hacienda-reintegros/:idConcept/:tipoForm',
     component: ReintegrosPagesComponent
+  },
+  {
+    path: 'hacienda-enajenacion/:idConcept/:tipoForm',
+    component: EnajenacionBienesPagesComponent
   }
 ];
 

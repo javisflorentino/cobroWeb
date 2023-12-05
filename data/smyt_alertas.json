@@ -16,5 +16,10 @@
     {
       "message": "<b>Nota: </b> Este trámite solo aplica para la expedición por primera vez de la licencia de conducir o para aquellos trámites de licencia cuya vigencia se ha agotado."
     }
+  ],
+  "messages_hacienda_reintegros": [
+    {
+      "message": "<b>Nota: </b> Favor de llenar el siguiente formulario para cualquier duda o aclaración, ya que si su pago no cuenta con los datos correctos, no será aplicado contablemante. "
+    }
   ]
 }

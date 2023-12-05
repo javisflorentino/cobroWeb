@@ -1,0 +1,10 @@
+<mat-card class="mb-2" *ngFor="let item of messageArr">
+  <mat-card-content >
+    <div [ngClass]="{ 'alert': 'Prueba', 'alert-info': 'error' }"><span [innerHTML]="item.message"></span></div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="mb-2" *ngFor="let message of messageArr_other">
+  <mat-card-content >
+    <div [ngClass]="{ 'alert': 'Prueba', 'alert-success': 'error' }"><span [innerHTML]="message.message"></span></div>
+  </mat-card-content>
+</mat-card>

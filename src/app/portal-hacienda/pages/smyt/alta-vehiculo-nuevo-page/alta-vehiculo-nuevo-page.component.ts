@@ -118,7 +118,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     this.smytService.validateVehicle(parameters)
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt-altavehiculo-nuevo')
+          localStorage.setItem('route_origen','smyt/smyt-altavehiculo-nuevo')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

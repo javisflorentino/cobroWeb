@@ -17,7 +17,7 @@ import { ValidatorsService } from '../../services/validators.service';
 import { MessageSmyt } from '../../interfaces/message-smyt.interface';
 import { VehicleData } from '../../interfaces/vehicle-data';
 import { TipoServicio } from '../../interfaces/tipo_servicios.enum';
-import { filter } from 'rxjs';
+import { Observable, filter } from 'rxjs';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -237,20 +237,34 @@ export class DatosContribuyenteComponent implements OnInit {
     this.buttBlock = true;
     let vehicle_data = {} as VehicleData;
     let datosAdicionales: string = '';
+    let datosAdicionales_adic: string = '';
     let servicio = '';
     let tipoSer = [];
+    let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
     const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
     let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
+
     Object.entries(TipoServicio).forEach((v,k) => {
       tipoSer = v.toString().split(',');
-      if (tipoSer[0]==route_origen){
-        servicio = ',' + tipoSer[1];
+      console.log(tipoSer[0] + '==' + route_origen.split('/').find((v,k) => k == 1 ))
+      if (tipoSer[0]==route_origen.split('/').find((v,k) => k == 1 )){
+        servicio = tipoSer[1];//',' + tipoSer[1];
       }
-    })
+    });
+
     const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
     if (localStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
-      datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO: ${servicio}.`;
+      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,
+        MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},
+        VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,
+        NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ') +
+        `,${servicio}` + ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
+    }
+
+    if(servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13') {
+      datosAdicionales = datosAdicionales_adic + '|' +  ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
+      observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
     }
 
 
@@ -266,24 +280,24 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
    this.dataPoliza.rfc = this.myFormContribuyente.get('rfc')?.value;
-   this.dataPoliza.nombre = this.myFormContribuyente.get('nombre')?.value;
-   this.dataPoliza.primerApellido = this.myFormContribuyente.get('primerApellido')?.value;
-   this.dataPoliza.segundoApellido = this.myFormContribuyente.get('segundoApellido')?.value;
+   this.dataPoliza.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
+   this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
+   this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
    this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
    this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
    this.dataPoliza.origen = 'VU';
-   this.dataPoliza.calle = this.myFormContribuyente.get('domicilio')?.get('calle')?.value;
+   this.dataPoliza.calle = String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase();
    this.dataPoliza.numeroExterior = this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value;
    this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
-   this.dataPoliza.colonia = this.myFormContribuyente.get('domicilio')?.get('colonia')?.value;
+   this.dataPoliza.colonia = String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase();
    this.dataPoliza.municipio = this.myFormContribuyente.get('domicilio')?.get('municipio')?.value;
    this.dataPoliza.estado = 'MORELOS'
    this.dataPoliza.codigoPostal = this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value;
-   this.dataPoliza.observaciones = (this.myFormContribuyente.get('observaciones')?.value)?this.myFormContribuyente.get('observaciones')?.value:"";
+   this.dataPoliza.observaciones = observaciones;
    this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-
-    this.smytService.generarPolizaServ(this.dataPoliza)
+   console.log(this.dataPoliza);
+    /*this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         this.isLoading = false;
         this.buttBlock = false;
@@ -294,7 +308,7 @@ export class DatosContribuyenteComponent implements OnInit {
         }
         this.openSnackBar(resp.data!);
         return;
-    });
+    });*/
   }
 
   isValidField(field: string) {

@@ -214,7 +214,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     //localStorage.setItem('concept',concept);
     console.log(conceptSelect[0].opcionFormulario)
     if (conceptSelect[0].opcionFormulario > 1) {
-      if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 ||
+      if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 || conceptSelect[0].opcionFormulario === 6 ||
         conceptSelect[0].opcionFormulario === 7 || conceptSelect[0].opcionFormulario === 8 ||  conceptSelect[0].opcionFormulario === 13 ||
         conceptSelect[0].opcionFormulario === 14 || conceptSelect[0].opcionFormulario === 16 || conceptSelect[0].opcionFormulario === 17) {
         console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
