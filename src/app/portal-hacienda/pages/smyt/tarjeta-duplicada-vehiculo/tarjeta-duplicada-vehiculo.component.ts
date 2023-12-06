@@ -150,7 +150,8 @@ export class TarjetaDuplicadaVehiculoComponent implements OnInit {
     this.smytService.validateVehicle({ "tramite": 4, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt-tarjeta-duplicada')
+          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
+          //localStorage.setItem('route_origen','smyt/smyt-tarjeta-duplicada')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

@@ -240,7 +240,8 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       this.smytService.validateVehicle(parameters)
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt/smyt-altavehiculo-usado');
+          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
+          //localStorage.setItem('route_origen','smyt/smyt-altavehiculo-usado');
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

@@ -115,7 +115,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
-        localStorage.setItem('route_origen','smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
+        localStorage.setItem('route_origen','smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
       });
 
       this.debouncerSubscription = this.debounce

@@ -168,7 +168,8 @@ export class SustitucionPlacaVehiculoComponent implements OnInit {
     this.smytService.validateVehicle(parameters)
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt-sustitucion-placa')
+          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
+          //localStorage.setItem('route_origen','smyt/smyt-sustitucion-placa')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

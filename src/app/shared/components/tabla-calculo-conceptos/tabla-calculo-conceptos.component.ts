@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
-import { Concepto, TopLevel, Contribuyente } from '../../interfaces/calculo-conceptos';
+import { Concepto, TopLevel, Contribuyente, Domicilio } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -14,6 +14,7 @@ import { FechaVencimientoISAN } from '../../interfaces/soap-fechavencimiento-isa
 import { IsanCobros } from '../../interfaces/soap-IsanCobros';
 import { environments } from 'src/environments/environments';
 import { SoapServiciosConceptosDetalle } from '../../interfaces/soap-servicios_conceptos';
+import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -67,6 +68,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
 
   /* Variables SOAP Actualizar o Borrar */
   private asJson!:IsanCobros;
+  private asJsonEstadoVehiculo!: estadoVehiculo;
   //private asJsonIsan!: IsanCobros;
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
@@ -237,6 +239,45 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         if(result.success && result.data.conceptos.length>0) {
           this.conceptos = result.data.conceptos;
           this.total += result.data.total;
+          //localStorage.setItem('contribuyente',JSON.stringify(result));
+          if(!result.data.contribuyente) {
+            /** SOAP obtener datos del Contribuyente*/
+            let datosContibuyente;
+            let datosContibuyenteDomicilio;
+            let contribuyente:Contribuyente = {} as Contribuyente;
+            let contribuyenteDomicilio: Domicilio = {} as Domicilio;
+            let localServContribuyente: TopLevel = result;
+
+            this.smyPagosService.getTaxpayData(dataVehicleLs)
+            .then(response => response.text())
+            .then(xml => {
+              this.asJsonEstadoVehiculo = this.xmlSring.xmlStringToJson(xml.toString());
+              datosContibuyente = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.propietario;
+              datosContibuyenteDomicilio = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.domicilio;
+
+              contribuyente.nombre = String(datosContibuyente.nombre['#text']);
+              contribuyente.primerApellido = String(datosContibuyente.apellidoPaterno['#text']);
+              contribuyente.segundoApellido = String(datosContibuyente.apellidoMaterno['#text']);
+              contribuyente.rfc = String(datosContibuyente.rfc['#text']);
+              contribuyente.tipoPersona = String((datosContibuyente.tipoPersona['#text']?.includes('Fisica'))?'F':'M');
+              contribuyente.curp = '';
+              contribuyente.id = Number(datosContibuyente.idContribuyente['#text']);
+
+              contribuyenteDomicilio.calle = String(datosContibuyenteDomicilio.nombreVialidad['#text']);
+              contribuyenteDomicilio.codigoPostal = String(datosContibuyenteDomicilio.codigoPostal['#text']);
+              contribuyenteDomicilio.colonia = String(datosContibuyenteDomicilio.nombreAsentamiento['#text']);
+              contribuyenteDomicilio.estado = '';
+              contribuyenteDomicilio.municipio = '';
+              contribuyenteDomicilio.numeroExterior = String(datosContibuyenteDomicilio.numeroExterior['#text']);
+              contribuyenteDomicilio.numeroInterior = '';
+
+              localServContribuyente.data.contribuyente = contribuyente;
+              localServContribuyente.data.domicilio = contribuyenteDomicilio;
+
+              localStorage.setItem('contribuyente',JSON.stringify(localServContribuyente));
+              return;
+            });
+          }
           localStorage.setItem('contribuyente',JSON.stringify(result));
           return;
         }
@@ -309,6 +350,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         this.isLoading = false
         //this.conceptoPago = resp;
+        //console.log(resp)
         if(resp.success && resp.data.conceptos.length>0) {
           if(localStorage.getItem('contribuyente') ) {//&& this.tipoFormEdit) {
             let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);

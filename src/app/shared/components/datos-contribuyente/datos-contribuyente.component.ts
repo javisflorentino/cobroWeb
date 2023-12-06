@@ -79,7 +79,7 @@ export class DatosContribuyenteComponent implements OnInit {
   public dataPoliza = {} as DatosPoliza;
 
   // estos informacion se enviara desde el modulo de SMYT
-  private sistema: number = 64;//46;
+  //private sistema: number = 64;//46;
   private movimiento: number = 100
 
   public myFormContribuyente: FormGroup = this.fb.group({
@@ -216,6 +216,7 @@ export class DatosContribuyenteComponent implements OnInit {
       return;
     }
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
+    const gestora = localStorage.getItem('gestora')!;
     if (!this.contribuyenteArr.data.contribuyente) {
       this.contribuyenteArr.data.contribuyente = {
         nombre:          '',
@@ -262,21 +263,22 @@ export class DatosContribuyenteComponent implements OnInit {
         `,${servicio}` + ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
     }
 
-    if(servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13') {
+    if((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora=='64')) {
       datosAdicionales = datosAdicionales_adic + '|' +  ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
       observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
+    }
+    if ( servicio.length == 0  && gestora=='22') {
+      datosAdicionales = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
+      observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
     }
 
 
 
    if(datos) {
     this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
-    if(datos.sistema) {
-      this.sistema = datos.sistema;
-    }
-
    }
-   this.dataPoliza.sistema = this.sistema.toString();
+
+   this.dataPoliza.sistema = gestora;
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
    this.dataPoliza.rfc = this.myFormContribuyente.get('rfc')?.value;
@@ -297,7 +299,7 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
    console.log(this.dataPoliza);
-    /*this.smytService.generarPolizaServ(this.dataPoliza)
+    this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         this.isLoading = false;
         this.buttBlock = false;
@@ -308,7 +310,7 @@ export class DatosContribuyenteComponent implements OnInit {
         }
         this.openSnackBar(resp.data!);
         return;
-    });*/
+    });
   }
 
   isValidField(field: string) {

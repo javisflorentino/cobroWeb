@@ -160,18 +160,21 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       localStorage.removeItem('contribuyente');
     if(localStorage.getItem('contribuyente_only'))
       localStorage.removeItem('contribuyente_only');
-    if(localStorage.getItem('route_origen'))
-      localStorage.removeItem('route_origen');
+    //if(localStorage.getItem('route_origen'))
+    //  localStorage.removeItem('route_origen');
     if(localStorage.getItem('vehicle_data'))
       localStorage.removeItem('vehicle_data');
     if(localStorage.getItem('vehicle_data_adicional'))
       localStorage.removeItem('vehicle_data_adicional');
     if(localStorage.getItem('datos_poliza'))
       localStorage.removeItem('datos_poliza');
+    if(localStorage.getItem('datos_cobro'))
+      localStorage.removeItem('datos_cobro');
   }
 
-  actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number) {
-    console.log(item + '-' + concept+ '-'+id+ '-'+idConcepto+ '-'+padreId)
+  actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number, gestora?:number) {
+
+    console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
 
     if (new RegExp('^(?:https?):\/\/?').test(item)) {
       window.open(`${item}`);
@@ -179,6 +182,9 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     }
 
     this.dellLocalStore();
+
+    localStorage.setItem('gestora',String(gestora));
+    localStorage.setItem('route_origen',item);
 
     idConcepto = idConcepto.toString();
     if ( idConcepto === "0" ) {

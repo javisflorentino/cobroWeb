@@ -15,6 +15,7 @@ export class SmyCalculoPagosService {
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
   private pagoLinea = `${environments.baseUrlApp}pagoenlinea`;//'pagoenlinea';
   private otherPages = `${environments.baseUrlApp}serviciosHacienda/concepto/obtenerConcepto`
+  private urlSOAP = `${environments.baseUrlServ}`;
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }
 
@@ -45,6 +46,25 @@ export class SmyCalculoPagosService {
     return this.http.post(`${this.pagoLinea}/`,params,{headers})
     .subscribe(resp => {
       window.open(`${this.pagoLinea}/?data=${encodeURI(params)}`, '_blank')
+    })
+  }
+  async getTaxpayData(dataVehicleLs: DatosTramite): Promise<any> {
+    return await fetch(`${this.urlSOAP}tramitesSMyT/services/SMyT?wsdl`, {
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
+      <soapenv:Header/>
+      <soapenv:Body>
+         <smyt:obtenEstatusVehiculo>
+            <!--Optional:-->
+            <placa>${dataVehicleLs.placa}</placa>
+            <!--Optional:-->
+            <noSerie>${dataVehicleLs.numeroSerie}</noSerie>
+            <!--Optional:-->
+            <usuario>?</usuario>
+         </smyt:obtenEstatusVehiculo>
+      </soapenv:Body>
+   </soapenv:Envelope>`,
+      headers: { "Content-type": "text/xml; charset=utf-8" }
     })
   }
 }

@@ -145,7 +145,8 @@ export class BajaVehiculoComponent implements OnInit {
     this.smytService.validateVehicle({ "tramite": 3, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt-baja')
+          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
+          //localStorage.setItem('route_origen','smyt/smyt-baja')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

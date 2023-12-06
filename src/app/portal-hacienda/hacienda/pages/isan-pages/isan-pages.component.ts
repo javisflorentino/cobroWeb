@@ -226,6 +226,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
     }
     if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
       let fechaVencimiento: string = '';
+      /** SOAP */
       this.generalesService.getFechaVencimientoISAN(month+1,year)
       .then(response => response.text())
       .then(xml => {

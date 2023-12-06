@@ -92,7 +92,8 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('route_origen','smyt/smyt-refrendo')
+          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
+          //localStorage.setItem('route_origen','smyt/smyt-refrendo')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }
