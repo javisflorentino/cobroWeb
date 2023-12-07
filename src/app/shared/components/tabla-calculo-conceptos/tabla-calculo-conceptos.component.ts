@@ -137,7 +137,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
                         }
                       );
                       contribuyente.data.total += datos[r];
-                      contribuyente.data.lineaDetalle += '0637'+'¬¬'+'1'+'¬'+(r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') +' '+ contribuyente.data.conceptos[0].descripcion+'¬'+contribuyente.data.conceptos[0].ejercicioFiscal+'¬'+datos[r]+'¬'+'0637¬|';
+                      contribuyente.data.lineaDetalle += '0637'+'¬¬'+'1'+'¬'+(r == 'actualizacion'?'ACTUALIZACION ':'RECARGO ') +' '+ contribuyente.data.conceptos[0].descripcion+'¬'+contribuyente.data.conceptos[0].ejercicioFiscal+'¬'+datos[r]+'¬'+'0637¬|';
                       localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
                       this.conceptos = contribuyente.data.conceptos;
                       this.total += datos[r];
