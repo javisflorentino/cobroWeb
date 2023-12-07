@@ -107,7 +107,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
-        console.log(this.tipoform + '-' + this.idConcepto)
+
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch(Number(this.tipoform)) {
           case 0: case 1: case 7:
@@ -132,12 +132,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
                       let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
                       contribuyente.data.conceptos.push(
                         {
-                          id:0, clave: '0637', cantidad: 1, descripcion: (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
+                          id:0, clave: '0637', cantidad: 1, descripcion: (r == 'actualizacion'?'ACTUALIZACION ':'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
                           ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal, importe: datos[r]
                         }
                       );
                       contribuyente.data.total += datos[r];
-                      contribuyente.data.lineaDetalle = '';
+                      contribuyente.data.lineaDetalle += '0637'+'¬¬'+'1'+'¬'+(r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') +' '+ contribuyente.data.conceptos[0].descripcion+'¬'+contribuyente.data.conceptos[0].ejercicioFiscal+'¬'+datos[r]+'¬'+'0637¬|';
                       localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
                       this.conceptos = contribuyente.data.conceptos;
                       this.total += datos[r];
@@ -433,7 +433,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   let monto = environments.valor_uma;
   let asJson:SoapServiciosConceptosDetalle;
   if ( totalHojas ==1 ) {
-    idConcepto = 1416;
+    idConcepto = 4023;//1416;
   }
   if( totalHojas >=2 && totalHojas <= 50) {
     idConcepto = 4021;
@@ -443,8 +443,32 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     idConcepto = 4022;
     monto = environments.valor_uma + ((environments.valor_uma*0.15)*49) + ((totalHojas-50) * (monto*0.15));
   }
-  console.log(idConcepto + '-' + monto)
-  this.generalesService.getConceptoDetalle(idConcepto,monto)
+
+  this.generalesService.getConceptoDetalleRest(idConcepto,totalHojas)
+    .subscribe(resp => {
+      let lineaDetalle: string = '';
+      this.isLoading = false;
+      this.conceptos = [{
+        id:              0,
+        clave:           String(resp?.data.conceptos[0].clave),
+        cantidad:        1,
+        descripcion:     String(resp?.data.conceptos[0].descripcion),
+        ejercicioFiscal: Number(resp?.data.conceptos[0].ejercicioFiscal),
+        importe:         monto//Number(resp?.data.conceptos[0].importe)
+      }];
+      resp?.data.lineaDetalle.split('¬').forEach((k,v) => {
+        if(v==5) {
+          lineaDetalle += monto + '¬';
+        } else {
+          lineaDetalle += k + '¬';
+        }
+      });
+
+      localStorage.setItem('contribuyente',JSON.stringify({data:{total:monto,conceptos:this.conceptos,lineaDetalle:lineaDetalle.slice(0,lineaDetalle.length-1)},success:true}));
+      this.total = Number(monto);
+    });
+
+  /*getConceptoDetalle(idConcepto,monto)
     .then(response => response.text())
     .then(xml => {
       this.isLoading = false;
@@ -460,7 +484,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       }];
       localStorage.setItem('contribuyente',JSON.stringify({data:{total:Number(adeudos['total']['#text']),conceptos:this.conceptos,lineaDetalle:String(adeudos['lineaDetalle']['#text'])},success:true}));//this.conceptoPago));
       this.total = Number(adeudos['total']['#text']);
-    }).catch (err => console.log(err));
+    }).catch (err => console.log(err));*/
  }
   sendCant(val:any): void {
     if( this.tipoform == 8) {

@@ -247,7 +247,6 @@ export class DatosContribuyenteComponent implements OnInit {
 
     Object.entries(TipoServicio).forEach((v,k) => {
       tipoSer = v.toString().split(',');
-      console.log(tipoSer[0] + '==' + route_origen.split('/').find((v,k) => k == 1 ))
       if (tipoSer[0]==route_origen.split('/').find((v,k) => k == 1 )){
         servicio = tipoSer[1];//',' + tipoSer[1];
       }
@@ -267,7 +266,7 @@ export class DatosContribuyenteComponent implements OnInit {
       datosAdicionales = datosAdicionales_adic + '|' +  ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
       observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
     }
-    if ( servicio.length == 0  && gestora=='22') {
+    if ( servicio.length == 0  && (gestora=='22' || gestora=='9')) {
       datosAdicionales = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
       observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
     }
@@ -298,7 +297,7 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.observaciones = observaciones;
    this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-   console.log(this.dataPoliza);
+    //console.log(this.dataPoliza)
     this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         this.isLoading = false;

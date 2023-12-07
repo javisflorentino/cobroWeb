@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environments } from 'src/environments/environments';
 import { Observable, catchError, filter, map, of, tap } from 'rxjs';
 import { ComboDTO } from '../interface/datos-combo.interface';
+import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,19 @@ export class GeneralesService {
       tap(resp => console.log(resp)),
       catchError(error => of(null))
     );
+  }
+
+  getConceptoDetalleRest(idConcepto:number, cantidad:number): Observable<CalculoConcepto|null>{
+    let headers = new HttpHeaders();
+    console.log(cantidad)
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/obtenerConcepto`,JSON.stringify({"idConcepto": idConcepto,"monto": 1,"cantidad": cantidad}),{headers})
+    .pipe(
+      catchError(error => of(null))
+    );
+
   }
 
   async getFechaVencimientoISAN(periodo:number,ejercicio:number): Promise<any> {
