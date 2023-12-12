@@ -119,7 +119,7 @@ export class ValidatorsService {
           return null;
         }
 
-        if (contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)] !==  String(formGroup.get(field)?.value).trim()) {
+        if (contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)] !==  String(String(formGroup.get(field)?.value).toUpperCase()).trim()) {
           formGroup.get(field)?.setErrors( { notEqual: true, error:mssg } );
           return { notEqual: true, error:mssg };
         }

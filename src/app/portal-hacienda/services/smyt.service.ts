@@ -9,6 +9,8 @@ import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 
 import { environments} from 'src/environments/environments';
+/* MODIF: 12/12/2023 */
+import ListMessage from '../../../../data/arreglos/alertas.json'
 
 @Injectable({
   providedIn: 'root'
@@ -23,16 +25,24 @@ export class SmytService {
   constructor( private http: HttpClient ) { }
 
   getMessages(): Observable<Messages[]> {
-    return this.http.get<Messages[]>(this.urlMessage);
+    return of(ListMessage.messages);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(this.urlMessage);
   }
   getMessages_vehicle(): Observable<Messages[]> {
-    return this.http.get<Messages[]>(`${this.urlMessage}_vehicle`);
+    return of(ListMessage.messages_vehicle);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(`${this.urlMessage}_vehicle`);
   }
   getMessages_licencia(): Observable<Messages[]> {
-    return this.http.get<Messages[]>(`${this.urlMessage}_licencia`);
+    return of(ListMessage.messages_licencia);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(`${this.urlMessage}_licencia`);
   }
   getMesages_hacienda_reintegros(): Observable<Messages[]> {
-    return this.http.get<Messages[]>(`${this.urlMessage}_hacienda_reintegros`);
+    return of(ListMessage.messages_hacienda_reintegros);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(`${this.urlMessage}_hacienda_reintegros`);
   }
 
   /*async validateVehicle(placa:string,serie:string): Promise<any> {

@@ -173,6 +173,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
             this.openSnackBar(msg);
           }
         });
+      return;
     }
 
     if(this.messages_other.length > 0) this.messages_other = [];

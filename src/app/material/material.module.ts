@@ -22,6 +22,8 @@ import { MAT_RADIO_DEFAULT_OPTIONS, MatRadioModule } from '@angular/material/rad
 import { MatTableModule } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -52,7 +54,8 @@ import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
     MatRadioModule,
     MatTableModule,
     MatTabsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSlideToggleModule
   ],
   providers: [{
       provide: MAT_RADIO_DEFAULT_OPTIONS,

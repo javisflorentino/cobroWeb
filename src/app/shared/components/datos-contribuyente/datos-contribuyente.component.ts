@@ -18,6 +18,8 @@ import { MessageSmyt } from '../../interfaces/message-smyt.interface';
 import { VehicleData } from '../../interfaces/vehicle-data';
 import { TipoServicio } from '../../interfaces/tipo_servicios.enum';
 import { Observable, filter } from 'rxjs';
+import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
+import { ComboConcept } from 'src/app/portal-hacienda/interface/datos-combo.interface';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -27,7 +29,8 @@ import { Observable, filter } from 'rxjs';
 export class DatosContribuyenteComponent implements OnInit {
 
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt;
-  public arrMunicipios: Municipios[] = ListaMunicipios;
+  public arrMunicipios: ComboConcept[] = [];//Municipios[] = ListaMunicipios;
+  public arrEstados: ComboConcept[] = [];
   private cadenaError: string = '';
   public tipoPersona: string = 'F';
 
@@ -37,37 +40,7 @@ export class DatosContribuyenteComponent implements OnInit {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
-  public contribuyenteArr = {} as TopLevel;/*: TopLevel = {
-    data:    {
-      total:         0,
-      conceptos:     [],
-      contribuyente: {
-        nombre:          '',
-        tipoPersona:     '',
-        razonSocial:     '',
-        primerApellido:  '',
-        segundoApellido: '',
-        rfc:             '',
-        curp:            '',
-        id:              0,
-      },
-      domicilio:     {
-        calle:          '',
-        numeroExterior: '',
-        numeroInterior: '',
-        colonia:        '',
-        municipio:      '',
-        estado:         '',
-        origen:         '',
-        codigoPostal:   '',
-        tipoDomicilio:  '',
-        referencia:     '',
-        id:             0
-      },
-      lineaDetalle:  '',
-    },
-    success: false,
-  };*/
+  public contribuyenteArr = {} as TopLevel;
   public contribDom: Object[] = [];
 
   public messages: Messages[] = [];
@@ -78,7 +51,9 @@ export class DatosContribuyenteComponent implements OnInit {
 
   public dataPoliza = {} as DatosPoliza;
 
-  // estos informacion se enviara desde el modulo de SMYT
+  public TaxDataControl: boolean = true;
+
+  // estos informacion se enviará desde el modulo de SMYT
   //private sistema: number = 64;//46;
   private movimiento: number = 100
 
@@ -96,7 +71,8 @@ export class DatosContribuyenteComponent implements OnInit {
       numeroInterior: [],
       colonia: ['', [Validators.required]],
       codigoPostal: ['', [Validators.required]],
-      municipio: [],
+      estados: [{value: '17', disabled: true},[Validators.required]],
+      municipio: ['',[Validators.required, Validators.min(1)]],
       observaciones: []
     },
     {
@@ -122,7 +98,8 @@ export class DatosContribuyenteComponent implements OnInit {
     private router: Router,
     private _snackBar: MatSnackBar,
     private smytService: SmytService,
-    private validatosService: ValidatorsService
+    private validatosService: ValidatorsService,
+    private serviciosGenerales: GeneralesService
   ) { }
 
   @HostListener('input', ['$event']) onKeyUp(event:any) {
@@ -134,26 +111,81 @@ export class DatosContribuyenteComponent implements OnInit {
       this.openSnackBar('No se cuenta con información para continuar con el proceso')
       setTimeout(()=>{
         this.router.navigate(['pagos']);
-      },2500)
+      },2500);
 
     }
+    /*
+      OBTIENE LISTA DE ENTIDADES FEDERATIVAS
+      MODIF: 12/12/2023
+    */
+    this.serviciosGenerales.getEntidadesFederativas().subscribe(resp => {
+      if(!resp){
+        this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+      } else {
+        this.arrEstados = resp?.data;
+        this.myFormContribuyente.get('domicilio')?.get('estados')?.setValue(17);
+        if(localStorage.getItem('gestora') !== '64') {
+          this.myFormContribuyente.get('domicilio')?.get('estados')?.enable();
+        }
+        this.changeEstado('17');
+      }
+    });
+
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
     if (this.contribuyenteArr.data.contribuyente) {
       this.myFormContribuyente.get('tipoPersona')?.disable();
     }
-
-    this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
-    this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
+    /*
+      ESTAS DOS LINEAS LLENAN EL FORMULARIO CON LOS DATOS DEL CONTRIBUYENTE IBTENIDO DE LOCALSTORAGE
+      MODIF: 12/12/2023
+    */
+    //this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
+    //this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
 
     if (this.contribuyenteArr.data.contribuyente === undefined) {
       this.myFormContribuyente.reset({tipoPersona:'F'})
+    } else {
+      /* MODIF: 12/12/2023 */
+      this.myFormContribuyente.reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
     }
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
-    if(this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
+    if(this.contribuyenteArr.data.contribuyente && this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
       this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
       this.tipoPersona = 'M';
     }
+
+    /* MODIF: 12/12/2023 */
+    if(localStorage.getItem('gestora') !== '64') {
+      this.TaxDataControl = false;
+    }
+  }
+
+  /*
+      SE DISPARA AL SELECCIONAR UN ESTADO
+      MODIF: 12/12/2023
+  */
+  changeEstado(event: string): void {
+    console.log(event)
+    this.serviciosGenerales.getMunicipios(event)
+      .subscribe(resp => {
+        if(!resp){
+          this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+        } else {
+          this.arrMunicipios = resp.data;
+        }
+
+      });
+  }
+
+  changeTaxData(event:boolean) {
+    if(event) {
+      this.disabledEnabledElement(['razonSocial','rfc','curp','domicilio'],[]);
+      this.myFormContribuyente.get('domicilio')?.get('observaciones')?.enable();
+      return;
+    }
+    this.disabledEnabledElement([],['razonSocial','rfc','curp','domicilio']);
+      return;
   }
 
   getMessage(idMssg:number, nameField:string) {
@@ -174,7 +206,7 @@ export class DatosContribuyenteComponent implements OnInit {
     if( touched ) {
       let idMessage=101;
 
-      let pattern = new RegExp(pathSelect);//'^[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ]+)*');//'^[A-ZÑÁÉÍÓÚ. ]+$')
+      let pattern = new RegExp(pathSelect);
       if(!pattern.test(nameFileValue) || nameFileValue == null) {
         if (nameFileValue === null) {
           idMessage = 100;
@@ -280,24 +312,25 @@ export class DatosContribuyenteComponent implements OnInit {
    this.dataPoliza.sistema = gestora;
    this.dataPoliza.movimiento = this.movimiento.toString();
    this.dataPoliza.total = this.contribuyenteArr.data.total;
-   this.dataPoliza.rfc = this.myFormContribuyente.get('rfc')?.value;
+   this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value)?this.myFormContribuyente.get('rfc')?.value:'XAXX010101000';
    this.dataPoliza.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
    this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
    this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
    this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
    this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
    this.dataPoliza.origen = 'VU';
-   this.dataPoliza.calle = String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase();
-   this.dataPoliza.numeroExterior = this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value;
+   this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
+   this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value)?this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value:0;
    this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
-   this.dataPoliza.colonia = String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase();
-   this.dataPoliza.municipio = this.myFormContribuyente.get('domicilio')?.get('municipio')?.value;
-   this.dataPoliza.estado = 'MORELOS'
-   this.dataPoliza.codigoPostal = this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value;
+   this.dataPoliza.colonia = (this.myFormContribuyente.get('domicilio')?.get('colonia')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase():".";
+   this.dataPoliza.municipio = (this.myFormContribuyente.get('domicilio')?.get('municipio')?.value)?this.myFormContribuyente.get('domicilio')?.get('municipio')?.value:'CUERNAVACA';
+   this.dataPoliza.estado = (this.myFormContribuyente.get('domicilio')?.get('estados')?.value)?this.myFormContribuyente.get('domicilio')?.get('estados')?.value:'MORELOS';
+   this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
    this.dataPoliza.observaciones = observaciones;
    this.dataPoliza.datosAdicionales = datosAdicionales;
    this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-    //console.log(this.dataPoliza)
+    console.log(this.dataPoliza)
+
     this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         this.isLoading = false;

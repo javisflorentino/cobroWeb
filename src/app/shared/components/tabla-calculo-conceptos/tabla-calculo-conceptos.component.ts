@@ -454,7 +454,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
         cantidad:        1,
         descripcion:     String(resp?.data.conceptos[0].descripcion),
         ejercicioFiscal: Number(resp?.data.conceptos[0].ejercicioFiscal),
-        importe:         monto//Number(resp?.data.conceptos[0].importe)
+        importe:         Math.round(monto)//Number(resp?.data.conceptos[0].importe)
       }];
       resp?.data.lineaDetalle.split('¬').forEach((k,v) => {
         if(v==5) {
@@ -486,6 +486,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       this.total = Number(adeudos['total']['#text']);
     }).catch (err => console.log(err));*/
  }
+ /*
+  SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O NO DE HOJA
+ */
   sendCant(val:any): void {
     if( this.tipoform == 8) {
       this.sendNoHoja();
@@ -501,7 +504,22 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       if(Number.parseInt(this.cantidadPago.controls[key].value) > 0){
         let control: number = 0;
 
-        this.total += importe * this.cantidadPago.controls[key].value;
+        /*
+          SE CONSULTA EL CONCEPTO PARA OBTENER EL MONTO DE ACUERDO A LOS CAMBIO EN LA TABLA
+          MODIF: 12/12/2023
+        */
+        this.isLoading = true;
+        this.generalesService.getConceptoDetalleRest(this.idConcepto,this.cantidadPago.controls[key].value)
+          .subscribe(resp => {
+            if(!resp){
+              this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+            } else {
+              this.total = resp?.data.total;
+            }
+            this.isLoading = false;
+          });
+
+        //this.total += importe * this.cantidadPago.controls[key].value;
         contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
           const val = va.split('¬');
 
