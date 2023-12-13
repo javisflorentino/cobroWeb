@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, TopLevel, Contribuyente, Domicilio } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -21,7 +21,7 @@ import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
   templateUrl: './tabla-calculo-conceptos.component.html',
   styleUrls: ['./tabla-calculo-conceptos.component.css']
 })
-export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
+export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterContentInit {
 
   /* Controla el nombre de los aributos del objeto obtenido */
   public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
@@ -72,6 +72,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   //private asJsonIsan!: IsanCobros;
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
+  /*
+    NOTA: SE ALAMACENAN LOS CONCEPTOS RECIBIDOS POR LA URL
+    MODIF: 12/12/2023
+  */
+ private arrConceptos: number[] = [];
+
   constructor(
     private smyPagosService: SmyCalculoPagosService,
     private router:Router,
@@ -83,6 +89,13 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     ) {
       this.mediaQuery();
     }
+    /*
+      NOTA: SE USA CUANDO SE REFRESCA EL NAVEGADAR EVITAR SE SIGAN CARGANDO CONCEPTOS Y REINICIA AL CONCEPTO DE ORIGEN
+      MODIF: 12/12/2023
+    */
+  ngAfterContentInit(): void {
+    localStorage.removeItem('contribuyente');
+  }
 
   ngOnDestroy() {
       //localStorage.removeItem('route_origen');
@@ -93,6 +106,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     if(localStorage.getItem('route_origen'))
       this.route_origen = localStorage.getItem('route_origen')!;
 
@@ -107,6 +121,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
+        this.arrConceptos.push(idConcepto);
 
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch(Number(this.tipoform)) {
@@ -344,8 +359,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
       "monto": (monto)?monto:null,
       "cantidad": cantidad
     };
-    if( !this.tipoFormEdit || !this.tipoFormEdit_hoja)
-      localStorage.removeItem('contribuyente');
+    //if( !this.tipoFormEdit || !this.tipoFormEdit_hoja)
+      //localStorage.removeItem('contribuyente');
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
         this.isLoading = false
@@ -487,20 +502,22 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
     }).catch (err => console.log(err));*/
  }
  /*
-  SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O NO DE HOJA
+  SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O No DE HOJA
  */
   sendCant(val:any): void {
     if( this.tipoform == 8) {
       this.sendNoHoja();
       return;
     }
-    this.total = 0;
+
     let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+    this.total = 0;
     let lineDetalle: string = '';
     let keyDel: number = 0;
     let flagKey: boolean = false;
-
+    contribuyente.data.lineaDetalle = '';
     contribuyente.data.conceptos.forEach(({importe,id},key)=> {
+      //if(val == key ) {
       if(Number.parseInt(this.cantidadPago.controls[key].value) > 0){
         let control: number = 0;
 
@@ -509,40 +526,50 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy {
           MODIF: 12/12/2023
         */
         this.isLoading = true;
-        this.generalesService.getConceptoDetalleRest(this.idConcepto,this.cantidadPago.controls[key].value)
+        this.generalesService.getConceptoDetalleRest(this.arrConceptos[key],this.cantidadPago.controls[key].value)//this.idConcepto,this.cantidadPago.controls[key].value)
           .subscribe(resp => {
             if(!resp){
               this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
-            } else {
-              this.total = resp?.data.total;
+              return;
             }
+            contribuyente.data.conceptos[key].importe = resp.data.conceptos[0].importe;
+            contribuyente.data.conceptos[key].cantidad = resp.data.conceptos[0].cantidad;
+            contribuyente.data.lineaDetalle += resp.data.lineaDetalle;
+            this.total += Number(resp.data.total);
+
+            /*contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
+              const val = va.split('¬');
+
+              if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
+                  for(let inc = this.cantidadPago.controls[key].value; inc > 0; inc-- ) {
+                    lineDetalle += va + '|';
+                  }
+              }
+              control = Number.parseInt(val[0]);
+            });*/
+
             this.isLoading = false;
+
+            console.log(this.total)
+            //contribuyente.data.lineaDetalle = lineDetalle;
+            contribuyente.data.total = this.total;
+            console.log(contribuyente);
+            //this.total = contribuyente.data.total * this.cantidadPago.controls[val].value;
+            localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+            console.log(localStorage.getItem('contribuyente'))
+            this.conceptos = contribuyente.data.conceptos;
           });
 
-        //this.total += importe * this.cantidadPago.controls[key].value;
-        contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
-          const val = va.split('¬');
-
-          if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
-              for(let inc = this.cantidadPago.controls[key].value; inc > 0; inc-- ) {
-                lineDetalle += va + '|';
-              }
-          }
-          control = Number.parseInt(val[0]);
-        });
       } else {
         keyDel = key;
         flagKey = true;
       }
+      //}
     });
     if (flagKey) {
       contribuyente.data.conceptos.splice(keyDel,1);
       this.cantidadPago.removeAt(keyDel);
     }
-    contribuyente.data.lineaDetalle = lineDetalle;
-    contribuyente.data.total = this.total;
-    //this.total = contribuyente.data.total * this.cantidadPago.controls[val].value;
-    localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
-    this.conceptos = contribuyente.data.conceptos;
+
   }
 }

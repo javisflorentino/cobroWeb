@@ -8,11 +8,9 @@ import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.inte
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
-import { NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
-import { Subscription } from 'rxjs';
 import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
-import { formatCurrency } from '@angular/common';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 
@@ -46,7 +44,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     validators: [this.validatorsService.existsSeries('serie','placa',1, 1, '1','')]
   });
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
-  public subscription: Subscription;
+  //public subscription: Subscription;
   /* Recibe un arreglo de tipo  ConvertXmlString*/
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
@@ -57,11 +55,11 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     private smytService: SmytService,
     private router: Router
   ) {
-      this.subscription = router.events.subscribe((event) => {
+      /*this.subscription = router.events.subscribe((event) => {
         if (event instanceof NavigationStart) {
           console.log('refresco el navegador Refrendo')
         }
-      });
+      });*/
   }
 
   ngOnInit(): void {
@@ -71,7 +69,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy(): void {
     console.log('Destruido');
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 
   onSubmit(): void {

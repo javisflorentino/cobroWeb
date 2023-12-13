@@ -169,7 +169,7 @@ export class DatosContribuyenteComponent implements OnInit {
     console.log(event)
     this.serviciosGenerales.getMunicipios(event)
       .subscribe(resp => {
-        if(!resp){
+        if(!resp || resp.data.length==0){
           this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
         } else {
           this.arrMunicipios = resp.data;

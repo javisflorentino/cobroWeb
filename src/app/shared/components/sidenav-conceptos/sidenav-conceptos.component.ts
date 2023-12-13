@@ -1,9 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, signal } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MenuService } from '../../services/menu.service';
 import { Conceptos } from '../../interfaces/shared-conceptos.interface';
 import { Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, filter } from 'rxjs';
+
+/* OBTIENE LA LISTA DE CONCEPTOS QUE PERMITEN AGREGAR MAS CONCEPTOS */
+import ListaMasConceptos from '../../../../../data/arreglos/agregar_mas_conceptos.json'
+import { MoreConcept } from '../../interfaces/shared-conceptos_mas_conceptos';
 
 export interface IdPadre {
   padreId: number
@@ -32,9 +36,14 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   private nameConcept = new EventEmitter<string>();
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
+  /* CONTROLA LA LISTA DE CONCEPTOS QUE PERMITEN AGREGAR MAS CONCEPTOS */
+  private listaConceptos : MoreConcept= ListaMasConceptos;
 
   private subConceptos: Conceptos[] = [];
 
+  /* Father Alert  */
+  @Output()
+  public fathAlert = new EventEmitter;
 
   //Controla las acciones sobre el icono de menu de SideNav
   @ViewChild('sidenav')
@@ -47,7 +56,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   public showBack: boolean = false;
 
 
-  constructor( private menuService: MenuService, private router: Router ) {}
+  constructor( private menuService: MenuService, private router: Router ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.changSidenav) {
@@ -156,8 +165,8 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   dellLocalStore() {
     //if(localStorage.getItem('concept'))
     //  localStorage.removeItem('concept');
-    if(localStorage.getItem('contribuyente') && !localStorage.getItem('idParent'))
-      localStorage.removeItem('contribuyente');
+    //if(localStorage.getItem('contribuyente') && !localStorage.getItem('idParent'))
+    //  localStorage.removeItem('contribuyente');
     if(localStorage.getItem('contribuyente_only'))
       localStorage.removeItem('contribuyente_only');
     //if(localStorage.getItem('route_origen'))
@@ -171,10 +180,46 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     if(localStorage.getItem('datos_cobro'))
       localStorage.removeItem('datos_cobro');
   }
+  /*
+    NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
+    MODIF: 12/12/2023
+  */
+  generalLocalStorRepetirConcept(idConcepto:string|number) {
+    let flat:boolean = false;
+    Object.keys(this.listaConceptos).forEach((k,v) => {
+      this.listaConceptos[k as keyof MoreConcept].filter(resp =>{
+        if (resp.concepto == idConcepto) {
+          localStorage.setItem('repetir_concepto',JSON.stringify(this.listaConceptos[k as keyof MoreConcept]));
+          flat = true;
+        }
+      });
+    });
+    if(flat) return;
+
+    localStorage.removeItem('contribuyente');
+    localStorage.removeItem('repetir_concepto');
+  }
 
   actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number, gestora?:number) {
 
-    console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
+    //console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
+    /*
+      NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
+      MODIF: 12/12/2023
+    */
+    if(Number(gestora)>0) {
+      if(!localStorage.getItem('repetir_concepto')) {
+          this.generalLocalStorRepetirConcept(idConcepto);
+      } else {
+          const repetir_concepto = JSON.parse(localStorage.getItem('repetir_concepto')!);
+          const resp = Object.keys(repetir_concepto).filter(k => repetir_concepto[k].concepto == idConcepto)
+          if (resp.length==0) {
+            this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
+            //localStorage.removeItem('repetir_concepto');
+            this.generalLocalStorRepetirConcept(idConcepto);
+          }
+      }
+    }
 
     if (new RegExp('^(?:https?):\/\/?').test(item)) {
       window.open(`${item}`);
@@ -217,13 +262,11 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     const conceptSelect: Conceptos[] = this.itemsConceptos.filter(resp => resp.id == id )
 
     if ( idConcepto !== "0" ) this.changSidenav.toggle();
-    //localStorage.setItem('concept',concept);
-    console.log(conceptSelect[0].opcionFormulario)
     if (conceptSelect[0].opcionFormulario > 1) {
       if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 || conceptSelect[0].opcionFormulario === 6 ||
         conceptSelect[0].opcionFormulario === 7 || conceptSelect[0].opcionFormulario === 8 ||  conceptSelect[0].opcionFormulario === 13 ||
         conceptSelect[0].opcionFormulario === 14 || conceptSelect[0].opcionFormulario === 16 || conceptSelect[0].opcionFormulario === 17) {
-        console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
+        //console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
         this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
         return;
       }

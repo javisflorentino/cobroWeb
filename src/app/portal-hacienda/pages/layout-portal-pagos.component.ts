@@ -3,9 +3,11 @@
   Renderiza los componentes definidos como rutas
 */
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, AfterViewInit, signal, computed, effect } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { SidenavConceptosComponent } from 'src/app/shared/components/sidenav-conceptos/sidenav-conceptos.component';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-layout-portal-pagos',
@@ -35,6 +37,9 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy,
 
   destroyed = new Subject<void>();
 
+  /* ChildAlerts of Output */
+  public chilAlert: String = '';
+
   private displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
     [Breakpoints.Small, 'Small'],
@@ -53,7 +58,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy,
   public flag:boolean = true;
 
 
-  constructor( private breakpointObserver: BreakpointObserver ) {
+  constructor( private breakpointObserver: BreakpointObserver, private _snackBar: MatSnackBar ) {
     this.mediaQuery();
   }
 
@@ -65,11 +70,21 @@ export class LayoutPortalPagosComponent implements OnInit, OnChanges, OnDestroy,
 
   ngOnChanges(changes: SimpleChanges): void {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnDestroy() {
     this.destroyed.next();
     this.destroyed.complete();
+  }
+
+  changeChilAlert(event:string) {
+    this.openSnackBar(event);
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message,duration: 5500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+    });
   }
 
   public mediaQuery() {

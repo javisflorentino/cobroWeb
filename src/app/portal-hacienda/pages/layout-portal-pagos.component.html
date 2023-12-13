@@ -2,10 +2,10 @@
   <shared-sidenav-conceptos
     [reciveActionSideNav]="sendActionSidenav"
     [eraseLocalStor]="sendActEraseLocalStor"
-
     [reciveValCard]="sendValCardSidenav"
-
-    (nameConcept)="reciveNameConcept($event)"></shared-sidenav-conceptos>
+    (nameConcept)="reciveNameConcept($event)"
+    (fathAlert)="changeChilAlert($event)"
+    ></shared-sidenav-conceptos>
 
   <shared-toolbar
     (openOrCloseSidenav)="actionOnSidenav"
@@ -26,5 +26,4 @@
       </div-->
     <router-outlet></router-outlet> <!--*ngIf="!flag" class=""></router-outlet-->
   </div>
-
 </mat-sidenav-container>

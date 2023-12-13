@@ -55,7 +55,6 @@ export class GeneralesService {
 
   getConceptoDetalleRest(idConcepto:number, cantidad:number): Observable<CalculoConcepto|null>{
     let headers = new HttpHeaders();
-    console.log(cantidad)
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
