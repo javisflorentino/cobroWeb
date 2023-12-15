@@ -184,69 +184,10 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             }
             break;
         }
-
-        /*if (this.tipoform == 1 || this.tipoform == 0 || this.tipoform == 7) {
-          this.tipoFormEdit = true;
-          if(this.tipoform == 0) this.tipoFormEdit = false;
-          this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
-          this.consultConceptoPago(idConcepto,1,this.tipoform);
-        }
-        if (this.tipoform == 8) {
-          this.tipoFormEdit_hoja = true;
-          this.displayedColumns.pop();
-          this.displayedColumns.push('no_hojas');
-          this.displayedColumns.push('subtotal');
-          this.openSnackBar('El No de Hojas es 1. Si desea agregar mas, cambie el valor en el campo No Hojas.');
-          this.consultConceptoPago(idConcepto,1,this.tipoform);
-
-        }
-        if (this.tipoform == 13) {
-          this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
-          this.consultConceptoPago(idConcepto,1,this.tipoform);
-        }
-        if ( this.tipoform == 4) {
-          this.consultConceptoPagoISAN(this.idConcepto);
-        }
-        if ( this.tipoform == 5 ) {
-          const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
-          Object.keys(datos).forEach(r => {
-            if(datos[r]>0 && r !== 'cantidad')
-            {
-              if (r === 'monto'){
-                this.consultConceptoPago(idConcepto,1,datos[r]);
-              } else {
-                let control: boolean = true;
-                let id = setInterval(() => {
-                  if(localStorage.getItem('contribuyente')) {
-                    let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
-                    contribuyente.data.conceptos.push(
-                      {
-                        id:              0,
-                        clave:           '0637',
-                        cantidad:        1,
-                        descripcion:     (r == 'actualizacion'?'ACTUALIZACIO ':'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
-                        ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal,
-                        importe:         datos[r],
-                      }
-                    );
-                    contribuyente.data.total += datos[r];
-                    contribuyente.data.lineaDetalle = '';
-                    localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
-                    this.conceptos = contribuyente.data.conceptos;
-                    this.total += datos[r];
-                    clearInterval(id);
-                  }
-                },150)
-              }
-            }
-          })
-        } else if(!this.tipoform) {
-          this.consultConceptoPago(idConcepto,1,this.tipoform);
-        }*/
       });
       return;
     }
-    //const dataVehicleLs = JSON.parse(localStorage.getItem('vehicle_data')!);
+
     const dataVehicleLs: DatosTramite = JSON.parse(localStorage.getItem('vehicle_data')!);
     this.smyPagosService.getCalculoPagos(dataVehicleLs)
       .subscribe(result => {
@@ -254,7 +195,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         if(result.success && result.data.conceptos.length>0) {
           this.conceptos = result.data.conceptos;
           this.total += result.data.total;
-          //localStorage.setItem('contribuyente',JSON.stringify(result));
+
           if(!result.data.contribuyente) {
             /** SOAP obtener datos del Contribuyente*/
             let datosContibuyente;
@@ -305,7 +246,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   }
 
   onAddElementForm() {
-    //this.newElementForm
     if ( this.newElementForm.invalid ) return;
 
     const newGame = this.newElementForm.value
@@ -313,7 +253,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       this.fb.control( newGame )
     );
 
-    //this.newElementForm.reset();
   }
   /** SOAP Actualizar */
   consultConceptoPagoISAN(idConcepto:number) {
@@ -342,16 +281,15 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   consultConceptoPago(idConcepto:number,cantidad:number,monto?:number) {
     monto = (monto==0)?1:monto;
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
-      if(localStorage.getItem('contribuyente') && (this.tipoFormEdit || this.tipoFormEdit_hoja)) {
-        let LocalS:TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
-        Object.keys(LocalS.data.conceptos).forEach((k,v)=>{
-          this.onAddElementForm();
-        })
-      }else {
+    if(localStorage.getItem('contribuyente') && (this.tipoFormEdit || this.tipoFormEdit_hoja)) {
+      let LocalS:TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+      Object.keys(LocalS.data.conceptos).forEach((k,v)=>{
         this.onAddElementForm();
-      }
-      //this.conceptos.forEach((v,k) => console.log('val:' + k))
-    //}
+      });
+    }else {
+      this.onAddElementForm();
+    }
+
 
     this.isLoading = true;
     const datos = {
@@ -359,13 +297,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       "monto": (monto)?monto:null,
       "cantidad": cantidad
     };
-    //if( !this.tipoFormEdit || !this.tipoFormEdit_hoja)
-      //localStorage.removeItem('contribuyente');
+
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
         this.isLoading = false
-        //this.conceptoPago = resp;
-        //console.log(resp)
+
         if(resp.success && resp.data.conceptos.length>0) {
           if(localStorage.getItem('contribuyente') ) {//&& this.tipoFormEdit) {
             let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
@@ -407,9 +343,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     this.selectedRowIndex = event.id;
   }
   datosContribuyente():void {
-    //if(!localStorage.getItem('contribuyente')) {
-    //  localStorage.setItem('contribuyente',JSON.stringify(this.conceptoPago));
-    //}
     if(localStorage.getItem('idParent')) {
       let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
       contribuyente.data.total = this.total;
@@ -482,24 +415,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       localStorage.setItem('contribuyente',JSON.stringify({data:{total:monto,conceptos:this.conceptos,lineaDetalle:lineaDetalle.slice(0,lineaDetalle.length-1)},success:true}));
       this.total = Number(monto);
     });
-
-  /*getConceptoDetalle(idConcepto,monto)
-    .then(response => response.text())
-    .then(xml => {
-      this.isLoading = false;
-      asJson = this.xmlSring.xmlStringToJson(xml.toString());
-      let adeudos = asJson['soap:Envelope']['soap:Body']['ns2:obtenUnConceptoDetalleResponse'].DetalleCobro;
-      this.conceptos = [{
-        id:              0,
-        clave:           String(adeudos['claveConcepto']['#text']),
-        cantidad:        1,
-        descripcion:     String(adeudos['descripcion']['#text']),
-        ejercicioFiscal: Number(adeudos['ejercicioFiscal']['#text']),
-        importe:         Number(adeudos['importe']['#text'])
-      }];
-      localStorage.setItem('contribuyente',JSON.stringify({data:{total:Number(adeudos['total']['#text']),conceptos:this.conceptos,lineaDetalle:String(adeudos['lineaDetalle']['#text'])},success:true}));//this.conceptoPago));
-      this.total = Number(adeudos['total']['#text']);
-    }).catch (err => console.log(err));*/
  }
  /*
   SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O No DE HOJA
@@ -537,26 +452,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             contribuyente.data.lineaDetalle += resp.data.lineaDetalle;
             this.total += Number(resp.data.total);
 
-            /*contribuyente.data.lineaDetalle.split('|').forEach((va,ke) => {
-              const val = va.split('¬');
-
-              if ( id === Number.parseInt(val[0]) && va !== '' && control !== Number.parseInt(val[0])) {
-                  for(let inc = this.cantidadPago.controls[key].value; inc > 0; inc-- ) {
-                    lineDetalle += va + '|';
-                  }
-              }
-              control = Number.parseInt(val[0]);
-            });*/
-
             this.isLoading = false;
-
-            console.log(this.total)
-            //contribuyente.data.lineaDetalle = lineDetalle;
             contribuyente.data.total = this.total;
-            console.log(contribuyente);
-            //this.total = contribuyente.data.total * this.cantidadPago.controls[val].value;
             localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
-            console.log(localStorage.getItem('contribuyente'))
             this.conceptos = contribuyente.data.conceptos;
           });
 

@@ -71,7 +71,7 @@ export class DatosContribuyenteComponent implements OnInit {
       numeroInterior: [],
       colonia: ['', [Validators.required]],
       codigoPostal: ['', [Validators.required]],
-      estados: [{value: '17', disabled: true},[Validators.required]],
+      estados: [{value: '17', disabled: true},[Validators.required, Validators.min(1)]],
       municipio: ['',[Validators.required, Validators.min(1)]],
       observaciones: []
     },
@@ -139,14 +139,14 @@ export class DatosContribuyenteComponent implements OnInit {
       ESTAS DOS LINEAS LLENAN EL FORMULARIO CON LOS DATOS DEL CONTRIBUYENTE IBTENIDO DE LOCALSTORAGE
       MODIF: 12/12/2023
     */
-    //this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
-    //this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
+    this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
+    this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
 
     if (this.contribuyenteArr.data.contribuyente === undefined) {
       this.myFormContribuyente.reset({tipoPersona:'F'})
     } else {
       /* MODIF: 12/12/2023 */
-      this.myFormContribuyente.reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
+      this.myFormContribuyente.setValue({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});//reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
     }
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
@@ -166,8 +166,7 @@ export class DatosContribuyenteComponent implements OnInit {
       MODIF: 12/12/2023
   */
   changeEstado(event: string): void {
-    console.log(event)
-    this.serviciosGenerales.getMunicipios(event)
+    this.serviciosGenerales.getMunicipios(Number(event))
       .subscribe(resp => {
         if(!resp || resp.data.length==0){
           this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
@@ -309,40 +308,75 @@ export class DatosContribuyenteComponent implements OnInit {
     this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
    }
 
-   this.dataPoliza.sistema = gestora;
-   this.dataPoliza.movimiento = this.movimiento.toString();
-   this.dataPoliza.total = this.contribuyenteArr.data.total;
-   this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value)?this.myFormContribuyente.get('rfc')?.value:'XAXX010101000';
-   this.dataPoliza.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
-   this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
-   this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
-   this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
-   this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
-   this.dataPoliza.origen = 'VU';
-   this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
-   this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value)?this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value:0;
-   this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
-   this.dataPoliza.colonia = (this.myFormContribuyente.get('domicilio')?.get('colonia')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase():".";
-   this.dataPoliza.municipio = (this.myFormContribuyente.get('domicilio')?.get('municipio')?.value)?this.myFormContribuyente.get('domicilio')?.get('municipio')?.value:'CUERNAVACA';
-   this.dataPoliza.estado = (this.myFormContribuyente.get('domicilio')?.get('estados')?.value)?this.myFormContribuyente.get('domicilio')?.get('estados')?.value:'MORELOS';
-   this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-   this.dataPoliza.observaciones = observaciones;
-   this.dataPoliza.datosAdicionales = datosAdicionales;
-   this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-    console.log(this.dataPoliza)
-
-    this.smytService.generarPolizaServ(this.dataPoliza)
-      .subscribe(resp => {
-        this.isLoading = false;
-        this.buttBlock = false;
-        if ( resp.success) {
-          localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
-          this.router.navigate(['pagos/generar_poliza']);
-          return;
+   let estado: string = '';
+   let municipio: string = '';
+   let estadoPeticion: boolean = false;
+   this.serviciosGenerales.getEntidadesFederativas(this.myFormContribuyente.get('domicilio')?.get('estados')?.value)
+    .subscribe({
+      next: value=> {
+        if(value!.data.length>0) {
+          estado=value!.data[0].descripcion;
         }
-        this.openSnackBar(resp.data!);
-        return;
+      },
+      complete: () => {
+        //estadoPeticion = true
+        if(this.myFormContribuyente.get('domicilio')?.get('municipio')?.value !== '' && this.myFormContribuyente.get('domicilio')?.get('municipio')?.value >0) {
+          this.serviciosGenerales.getMunicipios(this.myFormContribuyente.get('domicilio')?.get('estados')?.value,this.myFormContribuyente.get('domicilio')?.get('municipio')?.value)
+            .subscribe({
+              next: (value) => {
+                if(value!.data.length>0) {
+                  municipio=value!.data[0].descripcion;
+                }
+              },
+              complete: () => estadoPeticion = true
+            });
+        } else {
+          municipio = 'CUERNAVACA';
+          estadoPeticion = true;
+        }
+      }
     });
+
+    let id = setInterval(() => {
+      if(estadoPeticion) {
+        this.dataPoliza.sistema = gestora;
+        this.dataPoliza.movimiento = this.movimiento.toString();
+        this.dataPoliza.total = this.contribuyenteArr.data.total;
+        this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value)?this.myFormContribuyente.get('rfc')?.value:'XAXX010101000';
+        this.dataPoliza.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
+        this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
+        this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
+        this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
+        this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
+        this.dataPoliza.origen = 'VU';
+        this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
+        this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value)?this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value:0;
+        this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
+        this.dataPoliza.colonia = (this.myFormContribuyente.get('domicilio')?.get('colonia')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase():".";
+        this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
+        this.dataPoliza.estado = (estado)?estado:'MORELOS';
+        this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
+        this.dataPoliza.observaciones = observaciones;
+        this.dataPoliza.datosAdicionales = datosAdicionales;
+        this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
+
+
+          this.smytService.generarPolizaServ(this.dataPoliza)
+            .subscribe(resp => {
+              this.isLoading = false;
+              this.buttBlock = false;
+              if ( resp.success) {
+                localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
+                this.router.navigate(['pagos/generar_poliza']);
+                return;
+              }
+              this.openSnackBar(resp.data!);
+              return;
+          });
+          clearInterval(id);
+      }
+      console.log('continua la la espera')
+    },150)
   }
 
   isValidField(field: string) {

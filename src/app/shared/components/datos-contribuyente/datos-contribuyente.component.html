@@ -106,7 +106,7 @@
                 <mat-label>Municipio</mat-label>
                 <mat-select formControlName="municipio">
                   <mat-option value="0">--- Seleccione Municipio ---</mat-option>
-                  <mat-option *ngFor="let municipio of arrMunicipios" [value]="municipio.descripcion">{{municipio.descripcion}}</mat-option>
+                  <mat-option *ngFor="let municipio of arrMunicipios" [value]="municipio.pk">{{municipio.descripcion}}</mat-option>
                 </mat-select>
                 <mat-error ></mat-error>
               </mat-form-field>

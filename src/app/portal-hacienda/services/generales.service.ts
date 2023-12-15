@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environments } from 'src/environments/environments';
 import { Observable, catchError, filter, map, of, tap } from 'rxjs';
-import { ComboDTO } from '../interface/datos-combo.interface';
+import { ComboConcept, ComboDTO, DefinArrEstMun } from '../interface/datos-combo.interface';
 import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
 
 @Injectable({
@@ -15,27 +15,32 @@ export class GeneralesService {
 
   constructor( private http: HttpClient ) { }
 
-  getEntidadesFederativas(): Observable<ComboDTO|null> {
+  getEntidadesFederativas(idEntidad?:number): Observable<ComboDTO|null> {
     let headers = new HttpHeaders();
-
+    const body = (idEntidad)?JSON.stringify({"pkEntidadFederativa": idEntidad}):JSON.stringify({});
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<ComboDTO>(`${this.baseUrlApp}/combo/obtenerEntidadesFederativas`,{headers})
+    return this.http.post<ComboDTO>(`${this.baseUrlApp}/combo/obtenerEstados`,body,{headers})
       .pipe(
         catchError(error => of(null))
       );
   }
-  getMunicipios(idEntidad:string): Observable<ComboDTO|null> {
+  getMunicipios(idEntidad:number, idMunicipio?: number): Observable<ComboDTO|null> {
     let headers = new HttpHeaders();
-    const body= new FormData();
-    body.append("pk", idEntidad);
-    headers = headers.set("mimeType", "multipart/form-data")
-      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    let body: DefinArrEstMun = {} as DefinArrEstMun;//JSON.stringify({"pkEntidadFederativa": idEntidad});//new FormData();
+    body.pkEntidadFederativa = idEntidad;
+    if ( idMunicipio ) {
+      body.pkMunicipio = idMunicipio;
+    }
+    //body.append("pkEntidadFederativa", idEntidad);
+    headers = headers.set("Content-Type", "application/json")
+    .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    //headers = headers.set("mimeType", "multipart/form-data")
 
-    return this.http.post<ComboDTO>(`${this.baseUrlApp}/combo/obtenerMunicipios`,body,{headers})
+
+    return this.http.post<ComboDTO>(`${this.baseUrlApp}/combo/obtenerListaMunicipios`,body,{headers})
       .pipe(
-        tap(resp => console.log(resp)),
         catchError(error => of(null))
       );
   }

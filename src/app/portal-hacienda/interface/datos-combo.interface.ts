@@ -7,3 +7,8 @@ export interface ComboConcept {
   pk:          number;
   descripcion: string;
 }
+
+export interface DefinArrEstMun {
+  pkEntidadFederativa: number;
+  pkMunicipio: number;
+}

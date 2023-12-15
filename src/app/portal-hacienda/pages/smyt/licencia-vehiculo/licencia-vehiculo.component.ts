@@ -149,7 +149,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
     if ( this.formLicencias.valid ) {
       if ( this.idConcepto && this.idConcepto !== 0 ) {
-        this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto]);
+        this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
         return;
       }
       this.openSnackBar("No se cuenta con un Id Concepto o el valor es 0, favor de seguir el proceso correcto");
@@ -170,7 +170,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
       return;
     }
     if ( this.idConcepto > 0 ) {
-      this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto]);
+      this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
       return;
     }
     this.openSnackBar("No se cuenta con un Id Concepto o el valor es 0, favor de seguir el proceso correcto");

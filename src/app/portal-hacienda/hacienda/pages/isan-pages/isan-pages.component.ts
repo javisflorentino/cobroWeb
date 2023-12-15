@@ -169,7 +169,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
   }
 
   changeEstado(event: string): void {
-    this.generalesService.getMunicipios(event)
+    this.generalesService.getMunicipios(Number(event))
       .subscribe(resp => {
         if(!resp){
           this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
