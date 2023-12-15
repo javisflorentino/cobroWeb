@@ -306,6 +306,9 @@ export class DatosContribuyenteComponent implements OnInit {
 
    if(datos) {
     this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
+    if(dataVehicle_adit.tipo_form && dataVehicle_adit.tipo_form==3) {
+      datosAdicionales = 'OBSERVACIONES: Fecha prósima de verificación: ' + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
+    }
    }
 
    let estado: string = '';
@@ -359,9 +362,9 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
+        console.log(this.dataPoliza)
 
-
-          this.smytService.generarPolizaServ(this.dataPoliza)
+          /*this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
               this.buttBlock = false;
@@ -372,7 +375,7 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               this.openSnackBar(resp.data!);
               return;
-          });
+          });*/
           clearInterval(id);
       }
       console.log('continua la la espera')

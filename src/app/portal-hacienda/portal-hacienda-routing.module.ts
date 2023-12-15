@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: () => import('./hacienda/hacienda.module').then(m => m.HaciendaModule)
       },
       {
+        path: 'desarrollo-sustentable',
+        loadChildren: () => import('./desarrollo-sustentable/desarrollo-sustentable.module').then(m => m.DesarrolloSustentableModule)
+      },
+      {
         path: '**',
         redirectTo: 'dependencias'
       }

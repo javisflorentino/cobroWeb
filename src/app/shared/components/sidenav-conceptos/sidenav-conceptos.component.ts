@@ -261,12 +261,16 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
     const conceptSelect: Conceptos[] = this.itemsConceptos.filter(resp => resp.id == id )
 
-    if ( idConcepto !== "0" ) this.changSidenav.toggle();
+    if ( idConcepto !== "0" ){
+      this.changSidenav.toggle();
+    }
+
     if (conceptSelect[0].opcionFormulario > 1) {
-      if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 || conceptSelect[0].opcionFormulario === 6 ||
-        conceptSelect[0].opcionFormulario === 7 || conceptSelect[0].opcionFormulario === 8 ||  conceptSelect[0].opcionFormulario === 13 ||
-        conceptSelect[0].opcionFormulario === 14 || conceptSelect[0].opcionFormulario === 16 || conceptSelect[0].opcionFormulario === 17) {
-        //console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
+      if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 || conceptSelect[0].opcionFormulario === 3 ||
+        conceptSelect[0].opcionFormulario === 6 || conceptSelect[0].opcionFormulario === 7 || conceptSelect[0].opcionFormulario === 8 ||
+        conceptSelect[0].opcionFormulario === 13 || conceptSelect[0].opcionFormulario === 14 || conceptSelect[0].opcionFormulario === 16 ||
+        conceptSelect[0].opcionFormulario === 17 || conceptSelect[0].opcionFormulario === 12) {
+        console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
         this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
         return;
       }

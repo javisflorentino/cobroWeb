@@ -175,7 +175,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
             this.consultConceptoPago(idConcepto,1,this.tipoform);
             break;
-          case 16: case 14: case 17: case 6:
+          case 16: case 14: case 17: case 6: case 12: case 3:
             this.consultConceptoPago(idConcepto,1,datos.monto);
             break;
           default:

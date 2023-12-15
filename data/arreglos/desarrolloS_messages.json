@@ -1,0 +1,26 @@
+{
+  "calidad_aire_certificacionver": [
+    {
+      "id": 1,
+      "msg": "los datos ingresados no corresponden a una placa válida"
+    },
+    {
+      "id": 100,
+      "msg": "Campo Requerido"
+    }
+  ],
+  "calidad_aire_multaverif": [
+    {
+      "id":1,
+      "msg": ""
+    },
+    {
+      "id":100,
+      "msg": "Campo Requerido"
+    },
+    {
+      "id":101,
+      "msg": "Formato incorrecto"
+    }
+  ]
+}

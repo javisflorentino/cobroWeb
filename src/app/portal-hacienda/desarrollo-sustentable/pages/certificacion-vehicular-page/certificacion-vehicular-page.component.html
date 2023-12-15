@@ -1,0 +1,77 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="card">
+  <div class="flex justify-content-center flex-wrap">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle><small>{{conceptTitle | titlecase}}</small></mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content>
+        <div class="">
+          <form action="" fxLayout="column"  [formGroup]="myForm" (ngSubmit)="onSubmit()">
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>No de folio</mat-label>
+                <input matInput formControlName="folio" required type="text">
+                <mat-error>{{ getMessage(myForm.get('folio')?.errors,'folio') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Año </mat-label>
+                <input matInput [matDatepicker]="dpff" formControlName="anio" [readonly]="true" [max]="_max"
+                [min]="_min">
+                <mat-error >No puede pagar un periodo o ejercicio fiscal que no ha pasado.</mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+                <mat-datepicker #dpff disabled="false"
+                startView="multi-year"
+                (yearSelected)="setMonthAndYear($event, dpff)"
+                panelClass="example-month-picker"
+                ></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Tipo de certificacion</mat-label>
+                <input matInput formControlName="certificacion" required type="text">
+                <mat-error>{{ getMessage(myForm.get('certificacion')?.errors,'certificacion') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
+                <mat-label>Semestre</mat-label>
+                <input matInput style="display:none" required>
+                <mat-radio-group #group_c_tp formControlName="semestre" class="flex-wrap">
+                  <mat-radio-button #buttons_c_tp value="1" >
+                    <span class="wrap-label-text">1er Semestre</span>
+                  </mat-radio-button>
+                  <mat-radio-button #buttons_c_tp value="2">
+                    <span class="wrap-label-text">2o Semestre</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </mat-form-field>
+
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn" [routerLink]="['pagos/']">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="onSubmit()">
+            <mat-icon>calculate</mat-icon>
+            Calcular
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+
+
