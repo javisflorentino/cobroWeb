@@ -8,6 +8,11 @@ import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import ListMessageDesarrollo from '../../../../../../data/arreglos/desarrolloS_messages.json';
 import { Concepto } from '../../../interface/portal-calculo-concepto.interface';
 import moment from 'moment';
+import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
+import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
+import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'desarrollos-multa-verificacion-page',
@@ -18,6 +23,7 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
 
   /* Inyeccion del servicio donde se aplican las validaciones de campos del FORM */
   private validatorsService = inject( ValidatorsService );
+  private generalService = inject( GeneralesService );
 
   /* Inyeccion de la depoendencia encargada de formularios */
   private fb = inject( FormBuilder );
@@ -26,7 +32,7 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
     fecha_verificacion: [new Date, [Validators.required]],
     serie:              ['', [Validators.required, Validators.minLength(5)]]
   },{
-    validators: [this.validatorsService.existsSeries('serie','placa',1, 1, '1','')]
+    validators: [this.generalService.validateVahicle('serie','placa',1, 1, '1','')]
   });
 
   /* ACCEDER A LAS REDIRECCIONES */
@@ -35,6 +41,8 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
   /* MANEJO DE INFORMACION RECIBIDA POR LA URL */
   private activateRaute = inject( ActivatedRoute );
   private ActivatedRouteSubscribe!: Subscription;
+
+  private _snackBar = inject(MatSnackBar);
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -53,6 +61,9 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
 
   /* CONTROLA EL NOMBRE DEL CONCEPTO Y MOSTRARLO EN HTML */
   public conceptTitle: string = '';
+
+  private asJson!:ValidateVehicle;
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   /* CONVIERTE A MAYUSCULAS */
   @HostListener('input', ['$event']) onKeyUp(event:any) {
@@ -81,22 +92,35 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
       this.buttBlock = false;
       return;
     }
-    const fecha = moment(this.myForm.get('fecha_verificacion')?.value).toDate();
-    localStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-multaverif/${this.idConcepto}/${this.tipoForm}`);
-    localStorage.setItem('datos_cobro',JSON.stringify(
-      {
-        cantidad:           1,
-        monto:              1,
-        idConcepto:         this.idConcepto,
-        placa:               this.myForm.get('placa')?.value,
-        serie:              this.myForm.get('serie')?.value,
-        fecha_verificacion: fecha.getFullYear() + '-' + (fecha.getMonth()+1) + '-' + fecha.getDay(),
-        tipo_form:          this.tipoForm
-      })
-    )
+    this.generalService.validateVahicleOnDb(this.myForm.get('placa')?.value, this.myForm.get('serie')?.value)
+    .then(response => response.text())
+    .then(xml => {
+      this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+      const response = this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'];
+      if(response.includes('EXITO')) {
+        const fecha = moment(this.myForm.get('fecha_verificacion')?.value);
+        localStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-multaverif/${this.idConcepto}/${this.tipoForm}`);
+        localStorage.setItem('datos_cobro',JSON.stringify(
+          {
+            cantidad:           1,
+            monto:              1,
+            idConcepto:         this.idConcepto,
+            placa:               this.myForm.get('placa')?.value,
+            serie:              this.myForm.get('serie')?.value,
+            fecha_verificacion: fecha.format('YYYY-MM-DD'),//fecha.getFullYear() + '-' + (fecha.getMonth()+1) + '-' + fecha.getDay(),
+            tipo_form:          this.tipoForm
+          })
+        )
 
-    this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
-    return;
+        this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
+        return;
+      }
+      this.openSnackBar(response);
+      this.isLoading = false;
+      this.buttBlock = false;
+    });
+
+    //return;
   }
 
   getMessage(idMssg:ValidationErrors|null|undefined, nameField:string) {
@@ -133,5 +157,11 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
 
     }
     return '';
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message,duration: 5500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+    });
   }
 }

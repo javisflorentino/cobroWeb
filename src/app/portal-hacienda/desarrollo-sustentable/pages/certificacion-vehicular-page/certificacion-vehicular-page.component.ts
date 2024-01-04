@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
@@ -74,6 +74,10 @@ export class CertificacionVehicularPageComponent implements OnInit, OnDestroy {
   /* CONTROLA EL NOMBRE DEL CONCEPTO Y MOSTRARLO EN HTML */
   public conceptTitle: string = '';
 
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
+
 
   ngOnInit(): void {
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
@@ -99,9 +103,14 @@ export class CertificacionVehicularPageComponent implements OnInit, OnDestroy {
     localStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-certificacionver/${this.idConcepto}/${this.tipoForm}`);
     localStorage.setItem('datos_cobro',JSON.stringify(
       {
-        cantidad:      1,
-        monto:         1,
-        idConcepto:    this.idConcepto
+        cantidad:           1,
+        monto:              1,
+        idConcepto:         this.idConcepto,
+        folio:              this.myForm.get('folio')?.value,
+        anio:               this.myForm.get('anio')?.value,
+        semestre:           this.myForm.get('semestre')?.value,
+        certificacion:      this.myForm.get('certificacion')?.value,
+        tipo_form:          this.tipoForm
       })
     )
 

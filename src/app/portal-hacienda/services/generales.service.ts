@@ -4,6 +4,10 @@ import { environments } from 'src/environments/environments';
 import { Observable, catchError, filter, map, of, tap } from 'rxjs';
 import { ComboConcept, ComboDTO, DefinArrEstMun } from '../interface/datos-combo.interface';
 import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
+import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +16,9 @@ export class GeneralesService {
 
   private baseUrlApp = `${environments.baseUrlApp}serviciosHacienda`;
   private urlSOAP = `${environments.baseUrlServ}`;
+
+  private asJson!:ValidateVehicle;
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   constructor( private http: HttpClient ) { }
 
@@ -104,5 +111,49 @@ export class GeneralesService {
    </soapenv:Envelope>`,
       headers: { "Content-type": "text/xml; charset=utf-8" }
     });
+  }
+
+  async validateVahicleOnDb(placa:string, no_serie:string): Promise<any> {
+    return await fetch(`${this.urlSOAP}tramitesSMyT/services/SMyT`,{
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
+      <soapenv:Header/>
+      <soapenv:Body>
+         <smyt:validarVehiculo>
+            <!--Optional:-->
+            <placa>${placa}</placa>
+            <!--Optional:-->
+            <noSerie>${no_serie}</noSerie>
+         </smyt:validarVehiculo>
+      </soapenv:Body>
+   </soapenv:Envelope>`,
+      headers:{"Content-type": "text/xml; charset=utf-8"}
+    });
+  }
+
+  public validateVahicle( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
+    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+      const fielValue1 = formGroup.get(serie)?.value;
+      const fileValue2 = formGroup.get(placa)?.value;
+
+      if(!formGroup.get(serie)?.pristine) {
+        this.validateVahicleOnDb(fileValue2,fielValue1)
+        .then(response => response.text())
+        .then(xml => {
+          this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+          const response = this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'];
+          if(response.includes('EXITO')) {
+            formGroup.get(serie)?.setErrors( null );
+            return null;
+          }
+          formGroup.get(serie)?.setErrors( { notEqual: true, error:1 } );
+            return { notEqual: true };
+        });
+      }
+
+      formGroup.get(serie)?.markAsTouched();
+      formGroup.get(serie)?.setErrors( null );
+      return null;
+    }
   }
 }

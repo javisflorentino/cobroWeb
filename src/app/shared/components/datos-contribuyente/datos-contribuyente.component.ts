@@ -309,6 +309,22 @@ export class DatosContribuyenteComponent implements OnInit {
     if(datos.tipo_form && datos.tipo_form==3) {
       datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
     }
+    /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
+    if(datos.tipo_form && datos.tipo_form==12) {
+      datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
+      if (observaciones!=='')
+        datosAdicionales += `OBSERVACIONES: ${observaciones} `;
+    }
+    /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
+    if(datos.tipo_form && datos.tipo_form==3) {
+      if (observaciones!=='') {
+        datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+      }
+      if(datos.fecha_verificacion) {
+        datosAdicionales += `Fecha proxima verificacion: ${datos.fecha_verificacion},`
+      }
+      datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
+    }
    }
 
    let estado: string = '';
@@ -362,9 +378,9 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        //console.log(this.dataPoliza)
+        console.log(this.dataPoliza)
 
-          this.smytService.generarPolizaServ(this.dataPoliza)
+          /*this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
               this.buttBlock = false;
@@ -375,7 +391,7 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               this.openSnackBar(resp.data!);
               return;
-          });
+          });*/
           clearInterval(id);
       }
       //console.log('continua la la espera')
