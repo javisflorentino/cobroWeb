@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, signal } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MenuService } from '../../services/menu.service';
-import { Conceptos } from '../../interfaces/shared-conceptos.interface';
+import { Conceptos, MenuConceptos } from '../../interfaces/shared-conceptos.interface';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription, filter } from 'rxjs';
 
@@ -24,9 +24,9 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
   //Recibe de Layout el valor del concepto seleccionado
   @Input()
-  public reciveActionSideNav!:number;
+  public reciveActionSideNav!: number;
   // Variable de tipo Observable que recible el valor de la dependencia por parte de Layout
-  @Input ()
+  @Input()
   public reciveValCard: Observable<number> = new Observable<number>();
 
   @Input()
@@ -37,7 +37,7 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
   /* CONTROLA LA LISTA DE CONCEPTOS QUE PERMITEN AGREGAR MAS CONCEPTOS */
-  private listaConceptos : MoreConcept= ListaMasConceptos;
+  private listaConceptos: MoreConcept = ListaMasConceptos;
 
   private subConceptos: Conceptos[] = [];
 
@@ -49,17 +49,17 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   @ViewChild('sidenav')
   public changSidenav!: MatSidenav;
 
-  public itemsConceptos: Conceptos[] = [];
+  public itemsConceptos: MenuConceptos[] = [];//Conceptos[] = [];
 
   public showMessage: boolean = false;
   //Mostrar el icono de Back. Se usa en el caso de menus anidados
   public showBack: boolean = false;
 
 
-  constructor( private menuService: MenuService, private router: Router ) { }
+  constructor(private menuService: MenuService, private router: Router) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.changSidenav) {
+    if (this.changSidenav) {
       this.processChangeOnView();
     }
   }
@@ -73,10 +73,10 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
   }
 
   processChangeOnView() {
-    if(this.changSidenav.opened == false )
+    if (this.changSidenav.opened == false)
       this.changSidenav.open();
     //this.changSidenav.toggle();
-    if ( this.eraseLocalStor ) {
+    if (this.eraseLocalStor) {
       localStorage.clear();
       this.itemsConceptos = [];
       this.eraseLocalStor = 0;
@@ -88,27 +88,30 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
       this.router.navigate(['/pagos']);
       return;
     }
-    this.buildMenu();
+    //this.buildMenu();
+    this.activeIdParent(this.reciveActionSideNav,String(0),this.reciveActionSideNav);
   }
 
   buildMenu(padreId?: number) {
     this.isLoading = true;
-    if(!localStorage.getItem('idParent'))
+    if (!localStorage.getItem('idParent'))
       this.showBack = false;
 
-    if ( this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav%1)>0) {
+    if (this.menuService.conceptoStorage.length > 0 && (this.reciveActionSideNav % 1) > 0) {
       this.isLoading = false;
       this.showMessage = false;
-      this.itemsConceptos = this.menuService.conceptoStorage;
-      return ;
+      this.itemsConceptos = this.menuService.conceptoStorage.filter(resp => resp.rol == 0);
+      return;
     }
 
     /* DESCOMENTAR LAS LINEAS DE LA 98 - 110 SI SE VA A CONSUMIR SERVICIO */
-    /*this.menuService.requestConceptos(this.reciveActionSideNav)
+    this.menuService.requestConceptos(this.reciveActionSideNav)
       .subscribe(conceptos => {
-        if ( conceptos.length > 0) {
+        const result = conceptos.filter(resp => resp.rol == 0);
+        console.log(result)
+        if (result.length > 0) {
           this.showMessage = false;
-          this.itemsConceptos = conceptos
+          this.itemsConceptos = result
           this.isLoading = false;
           return;
         }
@@ -116,45 +119,45 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
         this.itemsConceptos = [];
         this.showMessage = true;
         this.isLoading = false;
-      });*/
+      });
 
-      /* COMENTAR LAS LINEAS DE LA 113 - 121 SI SE VA A CONSUMIR SERVICIO */
-      this.itemsConceptos = this.menuService.requestConceptos(this.reciveActionSideNav)
-      if (this.itemsConceptos.length > 0) {
-        this.showMessage = false;
-        this.isLoading = false;
-        return;
-      }
-      this.itemsConceptos = [];
-      this.showMessage = true;
+    /* COMENTAR LAS LINEAS DE LA 113 - 121 SI SE VA A CONSUMIR SERVICIO */
+    /*this.itemsConceptos = this.menuService.requestConceptos(this.reciveActionSideNav)
+    if (this.itemsConceptos.length > 0) {
+      this.showMessage = false;
       this.isLoading = false;
+      return;
+    }
+    this.itemsConceptos = [];
+    this.showMessage = true;
+    this.isLoading = false;*/
 
     return;
   }
 
   destroyLocalStorAndArray() {
     localStorage.clear();
-    this.itemsConceptos=[];
+    this.itemsConceptos = [];
   }
 
   backMenu() {
-     let idParent: IdPadre[]= JSON.parse(localStorage.getItem('idParent')!);
-     this.reciveActionSideNav = idParent[idParent.length -1].padreId;
-     idParent.pop();
-     if(idParent.length===0) {
+    let idParent: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
+    this.reciveActionSideNav = idParent[idParent.length - 1].padreId;
+    idParent.pop();
+    if (idParent.length === 0) {
       localStorage.removeItem('idParent')
       this.buildMenu();
       return;
-     }
-     localStorage.setItem('idParent',JSON.stringify(idParent))
-     this.buildMenu();
+    }
+    localStorage.setItem('idParent', JSON.stringify(idParent))
+    this.buildMenu();
 
-     //this.reciveActionSideNav = idParent.padreId;
+    //this.reciveActionSideNav = idParent.padreId;
 
   }
 
   buildTitle(concept: string) {
-    localStorage.setItem('concept',concept);
+    localStorage.setItem('concept', concept);
     //(concept.length>0)? concept += ' - ' + concept:concept;
 
     //localStorage.setItem('idConcepto',idConcepto);
@@ -167,57 +170,76 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     //  localStorage.removeItem('concept');
     //if(localStorage.getItem('contribuyente') && !localStorage.getItem('idParent'))
     //  localStorage.removeItem('contribuyente');
-    if(localStorage.getItem('contribuyente_only'))
+    if (localStorage.getItem('contribuyente_only'))
       localStorage.removeItem('contribuyente_only');
     //if(localStorage.getItem('route_origen'))
     //  localStorage.removeItem('route_origen');
-    if(localStorage.getItem('vehicle_data'))
+    if (localStorage.getItem('vehicle_data'))
       localStorage.removeItem('vehicle_data');
-    if(localStorage.getItem('vehicle_data_adicional'))
+    if (localStorage.getItem('vehicle_data_adicional'))
       localStorage.removeItem('vehicle_data_adicional');
-    if(localStorage.getItem('datos_poliza'))
+    if (localStorage.getItem('datos_poliza'))
       localStorage.removeItem('datos_poliza');
-    if(localStorage.getItem('datos_cobro'))
+    if (localStorage.getItem('datos_cobro'))
       localStorage.removeItem('datos_cobro');
   }
   /*
     NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
     MODIF: 12/12/2023
   */
-  generalLocalStorRepetirConcept(idConcepto:string|number) {
-    let flat:boolean = false;
-    Object.keys(this.listaConceptos).forEach((k,v) => {
-      this.listaConceptos[k as keyof MoreConcept].filter(resp =>{
+  generalLocalStorRepetirConcept(idConcepto: string | number) {
+    let flat: boolean = false;
+    Object.keys(this.listaConceptos).forEach((k, v) => {
+      this.listaConceptos[k as keyof MoreConcept].filter(resp => {
         if (resp.concepto == idConcepto) {
-          localStorage.setItem('repetir_concepto',JSON.stringify(this.listaConceptos[k as keyof MoreConcept]));
+          localStorage.setItem('repetir_concepto', JSON.stringify(this.listaConceptos[k as keyof MoreConcept]));
           flat = true;
         }
       });
     });
-    if(flat) return;
+    if (flat) return;
 
     localStorage.removeItem('contribuyente');
     localStorage.removeItem('repetir_concepto');
   }
 
-  actionList(item: string, concept: string, id: number, idConcepto: string|number, padreId: number, gestora?:number) {
+  activeIdParent(padreId:number, idConcepto:string,id:number) {
+    console.log('Entra a activeParent')
+    let x: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
+    console.log(x);
+    if (x) {
+      x.push({ 'padreId': padreId });
+      //x.forEach(() => x.push({ 'padreId': padreId }))
+      localStorage.setItem('idParent', JSON.stringify(x))
+    } else {
+      //localStorage.removeItem('concept');
+      localStorage.setItem('idParent', JSON.stringify([{ 'padreId': padreId }]))
+    }
+    //this.buildTitle(concept);
+    this.reciveActionSideNav = id;
+    this.buildMenu(Number.parseInt(idConcepto));
+    this.showBack = true;
+    return;
+  }
 
-    //console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
+  actionList(item: string, concept: string, id: number, idConcepto: string | number, padreId: number, gestora?: number) {
+
+    console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
     /*
       NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
       MODIF: 12/12/2023
     */
-    if(Number(gestora)>0) {
-      if(!localStorage.getItem('repetir_concepto')) {
-          this.generalLocalStorRepetirConcept(idConcepto);
+    if (Number(gestora) > 0) {
+      if (!localStorage.getItem('repetir_concepto')) {
+        this.generalLocalStorRepetirConcept(idConcepto);
       } else {
-          const repetir_concepto = JSON.parse(localStorage.getItem('repetir_concepto')!);
-          const resp = Object.keys(repetir_concepto).filter(k => repetir_concepto[k].concepto == idConcepto)
-          if (resp.length==0) {
-            this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
-            //localStorage.removeItem('repetir_concepto');
-            this.generalLocalStorRepetirConcept(idConcepto);
-          }
+        const repetir_concepto = JSON.parse(localStorage.getItem('repetir_concepto')!);
+        const resp = Object.keys(repetir_concepto).filter(k => repetir_concepto[k].concepto == idConcepto)
+        if (resp.length == 0) {
+          this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
+          //localStorage.removeItem('repetir_concepto');
+          this.generalLocalStorRepetirConcept(idConcepto);
+        }
       }
     }
 
@@ -228,24 +250,12 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
 
     this.dellLocalStore();
 
-    localStorage.setItem('gestora',String(gestora));
-    localStorage.setItem('route_origen',item);
+    localStorage.setItem('gestora', String(gestora));
+    localStorage.setItem('route_origen', item);
 
     idConcepto = idConcepto.toString();
-    if ( idConcepto === "0" ) {
-      let x: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
-      if(x) {
-        x.forEach(() =>  x.push({'padreId':padreId}))
-        localStorage.setItem('idParent',JSON.stringify(x))
-      } else {
-        //localStorage.removeItem('concept');
-        localStorage.setItem('idParent',JSON.stringify([{'padreId':padreId}]))
-      }
-      //this.buildTitle(concept);
-      this.reciveActionSideNav = id;
-      this.buildMenu(Number.parseInt(idConcepto));
-      this.showBack  = true;
-      return;
+    if (idConcepto === "0" && gestora === 0) {
+      this.activeIdParent(padreId, idConcepto, id);
     }
     //localStorage.setItem('idConcepto',idConcepto);
     //this.dellLocalStore();
@@ -253,31 +263,32 @@ export class SidenavConceptosComponent implements OnInit, OnChanges {
     this.isLoading = true;
     //this.showMessage = false;
     this.itemsConceptos = this.menuService.conceptoStorage;
+    console.log('ItemConceptos: ' + this.itemsConceptos)
     /*if(!localStorage.getItem('idParent')) {
       localStorage.removeItem('concept');
 
     }*/
     this.buildTitle(concept);
 
-    const conceptSelect: Conceptos[] = this.itemsConceptos.filter(resp => resp.id == id )
+    const conceptSelect: MenuConceptos[] = this.itemsConceptos.filter(resp => resp.pk == id)//id == id )
 
-    if ( idConcepto !== "0" ){
+    if (idConcepto !== "0" || gestora! > 0) {
       this.changSidenav.toggle();
     }
-
-    if (conceptSelect[0].opcionFormulario > 1) {
-      if (conceptSelect[0].opcionFormulario === 5 || conceptSelect[0].opcionFormulario === 4 || conceptSelect[0].opcionFormulario === 3 ||
-        conceptSelect[0].opcionFormulario === 6 || conceptSelect[0].opcionFormulario === 7 || conceptSelect[0].opcionFormulario === 8 ||
-        conceptSelect[0].opcionFormulario === 13 || conceptSelect[0].opcionFormulario === 14 || conceptSelect[0].opcionFormulario === 16 ||
-        conceptSelect[0].opcionFormulario === 17 || conceptSelect[0].opcionFormulario === 12) {
-        console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario);
-        this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
+    console.log(conceptSelect)
+    if (conceptSelect[0].formulario > 1) {
+      if (conceptSelect[0].formulario === 5 || conceptSelect[0].formulario === 4 || conceptSelect[0].formulario === 3 ||
+        conceptSelect[0].formulario === 6 || conceptSelect[0].formulario === 7 || conceptSelect[0].formulario === 8 ||
+        conceptSelect[0].formulario === 13 || conceptSelect[0].formulario === 14 || conceptSelect[0].formulario === 16 ||
+        conceptSelect[0].formulario === 17 || conceptSelect[0].formulario === 12) {
+        console.log(item + ' ° ' + '/pagos/' + item, idConcepto, conceptSelect[0].formulario);
+        this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
         return;
       }
-      this.router.navigate(['/pagos/'+item]);
+      this.router.navigate(['/pagos/' + item]);
       return;
     }
-    this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].opcionFormulario]);
+    this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
   }
 
 }
