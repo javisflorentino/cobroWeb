@@ -1,8 +1,8 @@
-<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<!--shared-load-spinner *ngIf="isLoading"></!--shared-load-spinner-->
 <div class="grid mb-8 p-3 cursor-pointer flex align-items-center justify-content-center">
   <div class="col-4 sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">
     <mat-card>
-      <img mat-card-image [src]="item | menuImage:sizeDisplay" [alt]="item.name" (click)="reciveValCard(item.padreId)">
+      <img mat-card-image [src]="item | menuImage:viewResolution" [alt]="item.name" (click)="emitValCard(item.padreId)">
     </mat-card>
   </div>
 </div>

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,30 +9,29 @@ import { Router } from '@angular/router';
 })
 export class SharedToolbarComponent {
 
-  @Output()
-  private openOrCloseSidenav = new EventEmitter<boolean>();
-
-  @Output()
-  private closeLocalStor = new EventEmitter<boolean>();
-
+  @Input()
+  public viewResolution!: string;
+   /*Recibe el nombre de la Dependencia seleccionada - origen dependencias-cards */
   @Input()
   public receiveNameDep: string = '';
 
-  @Input()
-  public nameConceptToolbar: string = '';
+  /* EMITE VALOR BOOLEAN AL PADRE LAYOUT  */
+  @Output()
+  private openOrCloseSidenav = new EventEmitter<boolean>();
+  /* NOTA: SE DIO CLICK EN HOME, NOTIFICAR AL PADRE PARA QUE SE LIMPIEN VARIABLES */
+  @Output()
+  private closeLocalStor = new EventEmitter<boolean>();
 
-  @Input()
-  public viewResolution!: string;
+  /* CONTROLA EL VALOR DEL EVENTO AL DAR CLICK EN EL ICONO MENU */
+  private controlElemnentMenu: boolean = false;
 
-  constructor( private router: Router) {}
-
-  sidenavAction(): void {
-    this.openOrCloseSidenav.emit(true);
+  redirectPagos(): void{
+    this.closeLocalStor.emit(true);
   }
 
-  redirectPagos(): void {
-    //localStorage.clear();
-    //this.router.navigate(['/pagos']);
-    this.closeLocalStor.emit(true);
+  sidenavAction(): void{
+    this.controlElemnentMenu=!this.controlElemnentMenu
+    /* EMITE VALORES BOOLEAN AL PADRE LAYOUT PAR INDICARLE QUE SE CLICKIO MENU */
+    this.openOrCloseSidenav.emit(!this.controlElemnentMenu);
   }
 }

@@ -46,7 +46,6 @@ export class MenuService {
       JSON.stringify(id),{headers})
     .pipe(
       map(resp => resp.data),
-      tap(resp => this.conceptoStorage = resp),
       catchError(error => of([])),
     );
 

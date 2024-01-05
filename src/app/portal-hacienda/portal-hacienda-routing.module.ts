@@ -11,10 +11,10 @@ const routes: Routes = [
     path: '',
     component: LayoutPortalPagosComponent,
     children: [
-      {
+      /*{
         path: 'dependencias',
         component: CardsDependenciasComponent
-      },
+      },*/
       {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent

@@ -9,73 +9,73 @@
     {
       "dependencia":"Hacienda",
       "name": "Hacienda",
-      "padreId": 1,
+      "padreId": 2,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"DesarrolloSustentable",
       "name": "Desarrollo Sustentable",
-      "padreId": 554,
+      "padreId": 3,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"Contraloria",
       "name": "Contraloria",
-      "padreId": 1424,
+      "padreId": 4,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"Gobierno",
       "name": "Gobierno",
-      "padreId": 380,
+      "padreId": 5,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"SeguridadPublica",
       "name": "Seguridad Pública",
-      "padreId": 356,
+      "padreId": 6,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"Educacion",
       "name": "Educación",
-      "padreId": 920,
+      "padreId": 7,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"TurismoCultura",
       "name": "Turismo y Cultura",
-      "padreId": 2001,
+      "padreId": 8,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"DesarrolloAgropecuario",
       "name": "Desarrollo Agropecuario",
-      "padreId": 310,
+      "padreId": 9,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"RegistralesCatastrales",
       "name": "Registrales y Catastrales",
-      "padreId": 1810,
+      "padreId": 10,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"ProteccionCivil",
       "name": "Protección Civil",
-      "padreId": 1000005,
+      "padreId": 11,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"Administracion",
       "name": "Administración",
-      "padreId": 1000039,
+      "padreId": 12,
       "iconURL": "bookmark"
     },
     {
       "dependencia":"ReservasTerritoriales",
       "name": "Reservas Territoriales",
-      "padreId": 1000055,
+      "padreId": 13,
       "iconURL": "bookmark"
     }
 ]

@@ -4922,6 +4922,7 @@
         "pagoEnLinea": null
       },
       {
+        "OBS": "AQUI ME QUEDE",
         "id": 89,
         "textoTitulo": "CUALQUIER OTRO EVENTO",
         "idConcepto": 696,
@@ -5402,6 +5403,7 @@
         "pagoEnLinea": null
       },
       {
+        "ASUI_ME_QUEDE": "aqui me quede",
         "id": 1494,
         "textoTitulo": "AUTOMOVILISTA",
         "idConcepto": 843,
