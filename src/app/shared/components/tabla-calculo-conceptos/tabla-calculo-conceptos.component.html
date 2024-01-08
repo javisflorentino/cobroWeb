@@ -1,9 +1,9 @@
-<section class="example-container mat-elevation-z8" tabindex="0">
+<!--section class="example-container mat-elevation-z8" tabindex="0"-->
   <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
   <div *ngIf="(sizeDisplay==='XSmall' || sizeDisplay==='Small'); else tableRes">
     <mat-nav-list>
       <mat-toolbar color="" class="my-toolbar" [class.mat-elevation-z1]="true">
-        <button mat-mini-fab color="primary" routerLink="/pagos/{{route_origen}}">
+        <button mat-mini-fab color="primary" routerLink="/pagos/dependencias"><!--routerLink="/pagos/{{route_origen}}"-->
           <mat-icon>cancel</mat-icon>
         </button>
         <span class="spacer"></span>
@@ -71,7 +71,7 @@
   </div>
   <ng-template #tableRes>
 
-  <table mat-table [dataSource]="conceptos">
+  <table mat-table [dataSource]="conceptos" class="mat-elevation-z8">
     <!-- Item Column -->
     <ng-container matColumnDef="descripcion">
       <th mat-header-cell *matHeaderCellDef> Descricpion </th>
@@ -161,5 +161,5 @@
   </table>
 </ng-template>
 
-</section>
+<!--/section-->
 

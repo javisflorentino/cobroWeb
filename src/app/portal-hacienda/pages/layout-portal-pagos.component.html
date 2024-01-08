@@ -16,11 +16,12 @@
 
 
   <div class=" p-2">
-    <portalhacienda-cards-dependencias *ngIf="!controlView"
+    <!--portalhacienda-cards-dependencias *ngIf="!controlView"
         (valCardDep)="reciveValCard($event)"
-        [viewResolution]="sizeDisplay" />
+        [viewResolution]="sizeDisplay" /-->
 
     <!--shared-load-spinner *ngIf="controlView"></!--shared-load-spinner-->
+    <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
     <router-outlet></router-outlet>
   </div>
 </mat-sidenav-container>

@@ -154,4 +154,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
     }
     return '';
   }
+  redirectHome(): void {
+    location.reload();
+  }
 }

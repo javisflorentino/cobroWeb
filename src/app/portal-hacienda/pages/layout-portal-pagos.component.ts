@@ -7,7 +7,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
-import { PortalMenu } from '../interface/portal-menu.interface';
+import { MenuConceptos } from 'src/app/shared/interfaces/shared-conceptos.interface';
 
 @Component({
   selector: 'app-layout-portal-pagos',
@@ -20,7 +20,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   /* NOTA: SE CREA OBSERVABLE QUE EMITIRA VALOR AL COMPONENTE SIDENAV   */
   public sendActionSidenav: Subject<boolean> = new Subject<boolean>();
   /* NOTA: SE CREA OBSERVABLE QUE EMITIRA UN OBJETO DE LA DEPENDENCIA SELECCIONADA AL COMPONENTE SIDENAV   */
-  public valCardSubjectEmitt: Subject<PortalMenu[]> = new Subject<PortalMenu[]>();
+  public valCardSubjectEmitt: Subject<MenuConceptos[]> = new Subject<MenuConceptos[]>();//PortalMenu[]> = new Subject<PortalMenu[]>();
 
   private _snackBar = inject(MatSnackBar);
 
@@ -28,12 +28,15 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   public receiveNameConcept!: string;
 
   /* se envia a shared-toolbar */
-  public senNameDep: string = 'SECRETARÍA DE HACIENDA Y CRÉDITO PUBLICO';
+  public senNameDep: string = 'SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO';
 
   // Envia un valor numerico aleatorio mayot a 0 para indicar que se quiere ir al home. Se envia al Sidenav que limpiara variables al recibir
   public sendActEraseLocalStor: Subject<boolean> = new Subject<boolean>();//: boolean = false;
 
   public controlView: boolean = false;
+
+  //Controla la visualización del Spinner
+  public isLoading: boolean = false;
 
   private destroyed = new Subject<void>();
   /* CONTROLAR LA RESOLUCION DE LA PANTALLA */
@@ -88,11 +91,11 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   }
 
   /* RECIBE UN OBJETO DE LA DEPENDENCIA SELECIONADA DEL HIJO DEPENDENCIAS-CARD */
-  reciveValCard(valCard: PortalMenu[]) {
+  reciveValCard(valCard: MenuConceptos[]){//PortalMenu[]) {
     this.valCardSubjectEmitt.next(valCard);
     //this.sendActionSidenav = val;
     //this.sendValCardSidenav.next(val);
-    this.senNameDep = valCard[0].name;
+    this.senNameDep = valCard[0].titulo;
     //localStorage.removeItem('idParent');
   }
 
@@ -104,7 +107,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
 
   redirectHome(event: boolean): void {
     this.controlView = false;
-    this.senNameDep = 'SECRETARIA DE HACIENDA Y CREDITO PUBLICO';
+    this.senNameDep = 'SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO';
     this.receiveNameConcept = '';
     //this.sendActEraseLocalStor = true;
     this.sendActEraseLocalStor.next(true);

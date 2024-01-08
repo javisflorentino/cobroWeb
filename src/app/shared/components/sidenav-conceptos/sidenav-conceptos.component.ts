@@ -28,7 +28,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
 
   /* NOTA: RECIBE UN OBJETO DEL PADRE LAYOUT DE LA DEPENDECIA SELECCIONADA POR EL HIJO DEPENDENCIAS-CARD */
   @Input()
-  public valDependenciaCard: Subject<PortalMenu[]> = new Subject<PortalMenu[]>();
+  public valDependenciaCard: Subject<MenuConceptos[]> = new Subject<MenuConceptos[]>();//Subject<PortalMenu[]> = new Subject<PortalMenu[]>();
 
   /* NOTA: RECIBE LA ORDEN DEL PADRE PARA BORRAR LA LISTA DE CONCEPTOS */
   @Input()
@@ -75,10 +75,10 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
     this.eraseLocalStor.subscribe(() => {
       localStorage.clear();
       this.itemsConceptos = [];
-      this.changSidenav.toggle();
+      //this.changSidenav.toggle();
       this.showMessage = true;
       this.showBack=false;
-      this.router.navigate(['/pagos']);
+      this.router.navigate(['/pagos/dependencias']);//['/pagos']);
     })
   }
 
@@ -90,7 +90,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       this.valDependenciaCard.subscribe(resp => {
         //this.processChangeOnView(resp[0].padreId);
         localStorage.removeItem('idParent');
-        this.activeIdParent(resp[0].padreId, "0", resp[0].padreId);
+        this.activeIdParent(resp[0].pk, "0", resp[0].pk);
       });
   }
 
@@ -233,6 +233,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
     idConcepto = idConcepto.toString();
     if (idConcepto === "0" && gestora === 0) {
       this.activeIdParent(padreId, idConcepto, id);
+      return;
     }
     this.isLoading=false;
     this.itemsConceptos = this.generalService.conceptoStorage;//this.listConceptos = this.generalService.conceptoStorage;

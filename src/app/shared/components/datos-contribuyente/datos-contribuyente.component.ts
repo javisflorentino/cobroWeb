@@ -139,14 +139,14 @@ export class DatosContribuyenteComponent implements OnInit {
       ESTAS DOS LINEAS LLENAN EL FORMULARIO CON LOS DATOS DEL CONTRIBUYENTE IBTENIDO DE LOCALSTORAGE
       MODIF: 12/12/2023
     */
-    this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
-    this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
-
+    //this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
+    //this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
+    console.log(this.contribuyenteArr.data.contribuyente)
     if (this.contribuyenteArr.data.contribuyente === undefined) {
       this.myFormContribuyente.reset({tipoPersona:'F'})
     } else {
       /* MODIF: 12/12/2023 */
-      this.myFormContribuyente.setValue({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});//reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
+      this.myFormContribuyente.get('tipoPersona')!.setValue(this.contribuyenteArr.data.contribuyente.tipoPersona);//reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
     }
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
@@ -378,9 +378,9 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        console.log(this.dataPoliza)
+        //console.log(this.dataPoliza)
 
-          /*this.smytService.generarPolizaServ(this.dataPoliza)
+          this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
               this.buttBlock = false;
@@ -391,7 +391,7 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               this.openSnackBar(resp.data!);
               return;
-          });*/
+          });
           clearInterval(id);
       }
       //console.log('continua la la espera')
