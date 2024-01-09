@@ -14,8 +14,8 @@ export class MenuImagePipe implements PipeTransform {
     if (!item.titulo) {
       return `${path}no-image.png`;
     }
-
-    return `${path}${item.titulo.slice(0,-5).replace(/ /g, "").replace(/\./g,"").toLowerCase()}.png`;
+    //return `${path}${item.titulo.slice(0,-5).replace(/ /g, "").replace(/\./g,"").toLowerCase()}.png`;
+    return `${path}${item.titulo.replace(/ /g, "").replace(/\./g,"").toLowerCase()}.png`;
   }
 
 }

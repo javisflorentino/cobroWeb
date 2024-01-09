@@ -141,7 +141,7 @@ export class DatosContribuyenteComponent implements OnInit {
     */
     //this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
     //this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
-    console.log(this.contribuyenteArr.data.contribuyente)
+
     if (this.contribuyenteArr.data.contribuyente === undefined) {
       this.myFormContribuyente.reset({tipoPersona:'F'})
     } else {
@@ -286,7 +286,7 @@ export class DatosContribuyenteComponent implements OnInit {
     const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
     if (localStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
-      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior:''},,,,,
+      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():''},,,,,
         MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},
         VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,
         NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ') +

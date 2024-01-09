@@ -84,6 +84,24 @@ figcaption span {
 .u:before {
 	box-shadow: 1em 1em, 1em 2em, 1em 3em, 1em 4em, 1em 5em, 4em 1em, 4em 2em, 4em 3em, 4em 4em, 4em 5em, 2em 6em, 3em 6em;
 }
+.a:before {
+	box-shadow:
+  1em 2em, 1em 3em, 1em 4em, 1em 5em, 1em 6em, 1em 7em,
+  5em 2em, 5em 3em, 5em 4em, 5em 5em, 5em 6em, 5em 7em,
+
+  2em 1em, 3em 1em, 4em 1em,
+  1em 4em, 2em 4em, 3em 4em;
+
+}
+.p:before {
+	box-shadow:
+  1em 1em, 2em 1em, 3em 1em, 4em 1em,
+  1em 2em, 5em 2em,
+  1em 3em, 5em 3em,
+  1em 4em, 2em 4em, 3em 4em, 4em 4em,
+
+  1em 5em, 1em 6em, 1em 7em;
+}
 /* III. Responsiveness */
 /* This cannot be smoothly done using viewport units; sprite pixels will look divided when font size is a floating point. */
 @media screen and (min-width: 720px) {
