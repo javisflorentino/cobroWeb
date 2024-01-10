@@ -112,7 +112,7 @@
             <div *ngFor="let item of cantidadPago.controls;index as x">
               <div *ngIf="x==i" formArrayName="cantidadPago">
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-                <input matInput type="number" [formControlName]="x" (change)="sendCant(x)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+                <input matInput type="number" [formControlName]="x" (change)="sendCant(x)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0">
               </mat-form-field>
               </div>
             </div>

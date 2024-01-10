@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit, inject } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, TopLevel, Contribuyente, Domicilio } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { IsanCobros } from '../../interfaces/soap-IsanCobros';
 import { environments } from 'src/environments/environments';
 import { SoapServiciosConceptosDetalle } from '../../interfaces/soap-servicios_conceptos';
 import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -41,6 +42,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   public idConcepto: number = 0;
   /* ruta desde donde se origino la peticion, se almacena en LocalStorage */
   public route_origen: string = 'dependencias';
+
+  private generalService = inject(MenuService);
 
   destroyed = new Subject<void>();
   public sizeDisplay!: string;
@@ -128,7 +131,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 0: case 1: case 7:
             this.tipoFormEdit = true;
             if(this.tipoform == 0) this.tipoFormEdit = false;
-            this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.<br><br>Para agregagar otro concepto, seleccionelo en el menu lateral');
+            this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.');
             this.consultConceptoPago(idConcepto,1,this.tipoform);
             break;
           case 4:
@@ -172,7 +175,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.consultConceptoPago(idConcepto,1,this.tipoform);
             break;
           case 13:
-            this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
             this.consultConceptoPago(idConcepto,1,this.tipoform);
             break;
           case 16: case 14: case 17: case 6: case 12: case 3:
@@ -320,6 +322,10 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.conceptos = resp.data.conceptos;
           localStorage.setItem('contribuyente',JSON.stringify(resp));//this.conceptoPago));
           this.total += resp.data.total;
+          if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable==1).length>0) {
+            this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
+          }
+
           return;
         }
         this.openSnackBar(resp.mensaje!);//'EL TRÁMITE YA SE HA REALIZADO');
@@ -420,6 +426,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O No DE HOJA
  */
   sendCant(val:any): void {
+    console.log(val)
     if( this.tipoform == 8) {
       this.sendNoHoja();
       return;
@@ -431,24 +438,25 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     let keyDel: number = 0;
     let flagKey: boolean = false;
     contribuyente.data.lineaDetalle = '';
-    contribuyente.data.conceptos.forEach(({importe,id},key)=> {
-      //if(val == key ) {
-      if(Number.parseInt(this.cantidadPago.controls[key].value) > 0){
-        let control: number = 0;
-
-        /*
-          SE CONSULTA EL CONCEPTO PARA OBTENER EL MONTO DE ACUERDO A LOS CAMBIO EN LA TABLA
-          MODIF: 12/12/2023
-        */
-        this.isLoading = true;
-        this.generalesService.getConceptoDetalleRest(this.arrConceptos[key],this.cantidadPago.controls[key].value)//this.idConcepto,this.cantidadPago.controls[key].value)
+    if(Number(this.cantidadPago.controls[val].value) == 0) {
+      contribuyente.data.conceptos.splice(val,1);
+      this.cantidadPago.removeAt(val);
+      this.conceptos = contribuyente.data.conceptos;
+      if(this.conceptos.length==0)  {
+        this.router.navigate(['/pagos/dependencias']);
+      }
+      localStorage.setItem('contribuyente',JSON.stringify(contribuyente));
+      return
+    }
+    this.isLoading = true;
+        this.generalesService.getConceptoDetalleRest(this.arrConceptos[val],this.cantidadPago.controls[val].value)//this.idConcepto,this.cantidadPago.controls[key].value)
           .subscribe(resp => {
             if(!resp){
               this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
               return;
             }
-            contribuyente.data.conceptos[key].importe = resp.data.conceptos[0].importe;
-            contribuyente.data.conceptos[key].cantidad = resp.data.conceptos[0].cantidad;
+            contribuyente.data.conceptos[val].importe = resp.data.conceptos[0].importe;
+            contribuyente.data.conceptos[val].cantidad = resp.data.conceptos[0].cantidad;
             contribuyente.data.lineaDetalle += resp.data.lineaDetalle;
             this.total += Number(resp.data.total);
 
@@ -458,16 +466,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.conceptos = contribuyente.data.conceptos;
           });
 
-      } else {
-        keyDel = key;
-        flagKey = true;
-      }
-      //}
-    });
-    if (flagKey) {
-      contribuyente.data.conceptos.splice(keyDel,1);
-      this.cantidadPago.removeAt(keyDel);
-    }
+
+
 
   }
 }

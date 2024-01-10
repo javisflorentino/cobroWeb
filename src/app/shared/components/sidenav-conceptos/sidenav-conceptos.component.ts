@@ -135,6 +135,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
 
   backMenu() {
     if ( localStorage.getItem('idParent') ) {
+      localStorage.removeItem('contribuyente');
       let idParent: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
       const idControl = idParent[idParent.length - 2].padreId;
       idParent.pop();
@@ -144,6 +145,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       }
       localStorage.setItem('idParent', JSON.stringify(idParent))
       this.buildMenu(idControl);
+      //this.router.navigate(['/pagos/dependencias']);
       return;
     }
   }
@@ -202,13 +204,17 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   }
 
   actionList(item: string, concept: string, id: number, idConcepto: string | number, padreId: number, gestora?: number) {
-    //console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
+    console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
     /*
       NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
       MODIF: 12/12/2023
     */
     if (Number(gestora) > 0) {
-      if (!localStorage.getItem('repetir_concepto')) {
+      console.log(this.generalService.conceptoStorage)
+      if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable==1).length==0) {
+        (localStorage.getItem('contribuyente'))?localStorage.removeItem('contribuyente'):'';
+      }
+      /*if (!localStorage.getItem('repetir_concepto')) {
         this.generalLocalStorRepetirConcept(idConcepto);
       } else {
         const repetir_concepto = JSON.parse(localStorage.getItem('repetir_concepto')!);
@@ -217,7 +223,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
           this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
           this.generalLocalStorRepetirConcept(idConcepto);
         }
-      }
+      }*/
     }
 
     if (new RegExp('^(?:https?):\/\/?').test(item)) {
