@@ -427,7 +427,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
    SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O No DE HOJA
   */
   sendCant(val: any): void {
-    console.log(val)
     if (this.tipoform == 8) {
       this.sendNoHoja();
       return;
@@ -458,13 +457,10 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     this.generalesService.getConceptoDetalleRest(this.arrConceptos[val], this.cantidadPago.controls[val].value)//this.idConcepto,this.cantidadPago.controls[key].value)
       .subscribe({
         next: (resp) => {
-          console.log('Se ejecuta NEXT ' + this.arrConceptos[val])
-          console.log(resp);
           if (!resp) {
             this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
             return;
           }
-          console.log(this.total);
           contribuyente.data.conceptos[val].importe = resp.data.conceptos[0].importe;
           contribuyente.data.conceptos[val].cantidad = resp.data.conceptos[0].cantidad;
           contribuyente.data.lineaDetalle += resp.data.lineaDetalle;
@@ -473,7 +469,6 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.conceptos = contribuyente.data.conceptos;
         },
         complete: () => {
-          console.log('Se ejecuta COMPLETE')
           this.isLoading = false;
           contribuyente.data.conceptos.forEach(({ importe }) => {
             this.total += importe;

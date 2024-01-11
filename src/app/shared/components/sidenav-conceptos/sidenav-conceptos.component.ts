@@ -108,7 +108,6 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   buildMenu(padreId: number) {
     this.isLoading=true;
     if(!localStorage.getItem('idParent') || JSON.parse(localStorage.getItem('idParent')!).length <= 1) {
-      console.log('Deshabilitar Bck')
       this.showBack=false;
     }
     this.generalService.requestConceptos(padreId)
@@ -145,7 +144,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       }
       localStorage.setItem('idParent', JSON.stringify(idParent))
       this.buildMenu(idControl);
-      //this.router.navigate(['/pagos/dependencias']);
+      this.router.navigate(['/pagos/dependencias',true]);
       return;
     }
   }
@@ -204,13 +203,12 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   }
 
   actionList(item: string, concept: string, id: number, idConcepto: string | number, padreId: number, gestora?: number) {
-    console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
+    //console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
     /*
       NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
       MODIF: 12/12/2023
     */
     if (Number(gestora) > 0) {
-      console.log(this.generalService.conceptoStorage)
       if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable==1).length==0) {
         (localStorage.getItem('contribuyente'))?localStorage.removeItem('contribuyente'):'';
       }
@@ -256,7 +254,6 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
         conceptSelect[0].formulario === 6 || conceptSelect[0].formulario === 7 || conceptSelect[0].formulario === 8 ||
         conceptSelect[0].formulario === 13 || conceptSelect[0].formulario === 14 || conceptSelect[0].formulario === 16 ||
         conceptSelect[0].formulario === 17 || conceptSelect[0].formulario === 12) {
-        console.log(item +' ° ' + '/pagos/'+item,idConcepto,conceptSelect[0].formulario);
         this.router.navigate(['/pagos/'+item,idConcepto,conceptSelect[0].formulario]);
         return;
       }

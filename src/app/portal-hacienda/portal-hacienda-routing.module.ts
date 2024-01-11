@@ -16,6 +16,10 @@ const routes: Routes = [
         component: CardsDependenciasComponent
       },
       {
+        path: 'dependencias/:flag',
+        component: CardsDependenciasComponent
+      },
+      {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent
       },
