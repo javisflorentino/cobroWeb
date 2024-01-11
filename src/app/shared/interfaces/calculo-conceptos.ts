@@ -21,6 +21,7 @@ export interface Concepto {
   descripcion:     string;
   ejercicioFiscal: number;
   importe:         number;
+  importeUnitario?:number;
   padre?:          number;
   no_hojas?:       number;
 }

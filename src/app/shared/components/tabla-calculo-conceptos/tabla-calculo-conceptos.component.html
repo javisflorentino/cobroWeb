@@ -21,7 +21,7 @@
           <b>Ejercico:</b> <span [innerHTML]="item.ejercicioFiscal"></span>
         </div>
         <div matListItemLine >
-          <b>Costo Unitario:</b> <span [innerHTML]="item.importe | currency:'MXN':'symbol-narrow':'1.2-2'"></span>
+          <b>Costo Unitario:</b> <span [innerHTML]="item.importeUnitario | currency:'MXN':'symbol-narrow':'1.2-2'"></span>
         </div>
         <div matListItemLine >
           <b>cantidad:</b>
@@ -30,7 +30,7 @@
             <div *ngFor="let item of cantidadPago.controls;index as x">
               <div *ngIf="x==i" formArrayName="cantidadPago">
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-                <input matInput type="number" [formControlName]="x" (change)="sendCant(x)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+                <input matInput type="number" [formControlName]="x" (change)="sendCant(x)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0">
               </mat-form-field>
               </div>
             </div>
@@ -100,7 +100,7 @@
     </ng-container>
     <ng-container matColumnDef="importe">
       <th mat-header-cell *matHeaderCellDef> Costo Unitario </th>
-      <td mat-cell *matCellDef="let concepto"> {{concepto.importe | currency:'MXN':'symbol-narrow':'1.2-2'}} </td>
+      <td mat-cell *matCellDef="let concepto"> {{concepto.importeUnitario | currency:'MXN':'symbol-narrow':'1.2-2'}} </td>
       <td mat-footer-cell *matFooterCellDef>  </td>
 
     </ng-container>
