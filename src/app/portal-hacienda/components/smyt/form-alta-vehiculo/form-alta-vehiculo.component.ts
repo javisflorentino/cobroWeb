@@ -46,7 +46,7 @@ export class FormAltaVehiculoComponent implements OnInit {
     },
     {
       validators: [
-        this.validatorsService.isFieldOneEqualFielTwo('no_serie', 'no_serie2',1),
+        this.validatorsService.isFieldOneEqualFielTwo('no_serie', 'no_serie2',4),
         this.validatorsService.existsSeries('no_serie', '',3,2,'tipo_vehiculo','fecha_factura')
       ]
     });

@@ -64,7 +64,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.nameConcept = localStorage.getItem('concept')!;
-    this.refrendoForm.markAllAsTouched();
+    //this.refrendoForm.markAllAsTouched();
   }
 
   ngOnDestroy(): void {

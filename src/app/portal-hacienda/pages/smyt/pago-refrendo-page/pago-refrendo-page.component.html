@@ -26,7 +26,7 @@
               </mat-form-field>
 
               <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
-                <mat-label>Serie Vehicular</mat-label>
+                <mat-label>Serie Vehicular <span style="font-size: 10px;"><br>(5 últimos caracteres)</span></mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="5">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
                 <mat-error > {{ getMessage(refrendoForm.get('serie')?.getError('error'),'serie') }} </mat-error>

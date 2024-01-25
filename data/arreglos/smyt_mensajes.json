@@ -2,7 +2,7 @@
   "smyt": [
     {
       "id": 1,
-      "msg": "incompatible con información de SMyT"
+      "msg": "Nombre no coincide con la informacion de SMyT"
     },
     {
       "id": 2,
@@ -63,6 +63,10 @@
     {
       "id": 3,
       "msg": "El número de serie ya existe"
+    },
+    {
+      "id": 4,
+      "msg": "El No de serie no coincide"
     },
     {
       "id": 100,
