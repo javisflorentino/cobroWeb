@@ -42,8 +42,10 @@ export class MenuService {
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
+    const body = {"pk":id}
+
     return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
-      JSON.stringify(id),{headers})
+      JSON.stringify(body),{headers})
     .pipe(
       map(resp => resp.data),
       catchError(error => of([])),
