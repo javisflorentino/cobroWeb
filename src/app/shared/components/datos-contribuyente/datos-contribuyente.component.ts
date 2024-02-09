@@ -58,37 +58,37 @@ export class DatosContribuyenteComponent implements OnInit {
   private movimiento: number = 100
 
   public myFormContribuyente: FormGroup = this.fb.group({
-    tipoPersona: ['',[Validators.required]],
+    tipoPersona: ['F',[Validators.required]],
     nombre: ['',[Validators.required]],
     primerApellido: ['', [Validators.required]],
     segundoApellido: ['', [Validators.required]],
     razonSocial: [{value: '', disabled: true},[Validators.required]],
-    rfc: ['', [Validators.required, Validators.pattern(this.validatosService.rfcPath)]],
-    curp: [],
+    rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatosService.rfcFisica)]],
+    curp: [''],
     domicilio: this.fb.group({
       calle: ['', [Validators.required]],
       numeroExterior: ['', [Validators.required]],
       numeroInterior: [],
       colonia: ['', [Validators.required]],
-      codigoPostal: ['', [Validators.required]],
+      codigoPostal: ['', [Validators.required, Validators.pattern(this.validatosService.exprCp)]],
       estados: [{value: '17', disabled: true},[Validators.required, Validators.min(1)]],
       municipio: ['',[Validators.required, Validators.min(1)]],
       observaciones: []
-    },
+    }/*,
     {
       validators:[this.validatosService.validateDataInput('calle',4,'domicilio'),
         this.validatosService.validateDataInput('numeroExterior',5,'domicilio'),
         this.validatosService.validateDataInput('colonia',6,'domicilio'),
         this.validatosService.validateDataInput('codigoPostal',7,'domicilio'),
       ]
-    }
+    }*/
     )
   },
   {
     validators:[this.validatosService.validateDataInput('nombre',1,'contribuyente'),
       this.validatosService.validateDataInput('primerApellido',2,'contribuyente'),
       this.validatosService.validateDataInput('segundoApellido',3,'contribuyente'),
-      this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
+      //this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
     ],
   }
   );
@@ -132,28 +132,13 @@ export class DatosContribuyenteComponent implements OnInit {
     });
 
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
-    if (this.contribuyenteArr.data.contribuyente) {
-      this.myFormContribuyente.get('tipoPersona')?.disable();
-    }
-    /*
-      ESTAS DOS LINEAS LLENAN EL FORMULARIO CON LOS DATOS DEL CONTRIBUYENTE IBTENIDO DE LOCALSTORAGE
-      MODIF: 12/12/2023
-    */
-    //this.myFormContribuyente.reset(this.contribuyenteArr.data.contribuyente);
-    //this.myFormContribuyente.get('domicilio')?.reset(this.contribuyenteArr.data.domicilio);
 
-    if (this.contribuyenteArr.data.contribuyente === undefined) {
-      this.myFormContribuyente.reset({tipoPersona:'F'})
-    } else {
-      /* MODIF: 12/12/2023 */
-      this.myFormContribuyente.get('tipoPersona')!.setValue(this.contribuyenteArr.data.contribuyente.tipoPersona);//reset({tipoPersona:this.contribuyenteArr.data.contribuyente.tipoPersona});
-    }
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
-    if(this.contribuyenteArr.data.contribuyente && this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
-      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
+    /*if(this.contribuyenteArr.data.contribuyente && this.contribuyenteArr.data.contribuyente.tipoPersona === 'M') {
+      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido','curp'],['razonSocial']);
       this.tipoPersona = 'M';
-    }
+    }*/
 
     /* MODIF: 12/12/2023 */
     if(localStorage.getItem('gestora') !== '64') {
@@ -230,12 +215,22 @@ export class DatosContribuyenteComponent implements OnInit {
     });
   }
   changeRadioTP(evento:string): void {
-    if (evento==='M') {
-      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido'],['razonSocial']);
-    }
-    this.disabledEnabledElement(['razonSocial'], ['nombre','primerApellido','segundoApellido']);
     this.tipoPersona = evento;
+    if (evento==='M') {
+      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido','curp'],['razonSocial']);
+      this.myFormContribuyente.get('rfc')?.setValue('');
+      this.myFormContribuyente.get('rfc')?.clearValidators();
+      this.myFormContribuyente.get('rfc')?.setValidators([Validators.pattern(this.validatosService.rfcMoral)]);
+      this.myFormContribuyente.updateValueAndValidity();
+      return;
+    }
+    this.disabledEnabledElement(['razonSocial'], ['nombre','primerApellido','segundoApellido','curp']);
     this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
+    this.myFormContribuyente.get('rfc')?.clearValidators();
+    this.myFormContribuyente.get('rfc')?.setValue('XAXX010101000');
+    this.myFormContribuyente.get('rfc')?.setValidators([Validators.pattern(this.validatosService.rfcFisica)]);
+    this.myFormContribuyente.updateValueAndValidity();
+    return;
   }
 
   generarPoliza(): void {
@@ -286,8 +281,13 @@ export class DatosContribuyenteComponent implements OnInit {
     const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
     if (localStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
+      let fecha_factura = '';
+      if(vehicle_data.fechaFactura) {
+        fecha_factura = String(vehicle_data.fechaFactura.getFullYear()) + '-' + String((vehicle_data.fechaFactura.getMonth()+1)).padStart(2,'0') + '-' + String(vehicle_data.fechaFactura.getDate()).padStart(2,'0');
+      }
+
       datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():''},,,,,
-        MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${(vehicle_data.fechaFactura)?vehicle_data.fechaFactura:''},
+        MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
         VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,
         NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ') +
         `,${servicio}` + ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
@@ -378,9 +378,9 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        //console.log(this.dataPoliza)
+        console.log(this.dataPoliza)
 
-          this.smytService.generarPolizaServ(this.dataPoliza)
+          /*this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
               this.buttBlock = false;
@@ -391,7 +391,7 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               this.openSnackBar(resp.data!);
               return;
-          });
+          });*/
           clearInterval(id);
       }
       //console.log('continua la la espera')

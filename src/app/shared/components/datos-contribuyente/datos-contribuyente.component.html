@@ -1,24 +1,26 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="card">
   <div class="flex justify-content-center flex-wrap">
-<mat-card>
-  <mat-card-header class="mb-3">
-    <mat-card-title-group>
-      <mat-card-title></mat-card-title>
-      <mat-card-subtitle>Datos del Contribuyente</mat-card-subtitle>
-      <mat-slide-toggle color="primary" (change)="changeTaxData($event.checked)" [disabled]="TaxDataControl">Sin datos fiscales</mat-slide-toggle>
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-divider></mat-divider>
-  <mat-card-content class="mt-3">
-    <form [formGroup]="myFormContribuyente" >
-      <div class="card">
-        <div class="flex justify-content-start flex-wrap">
-          <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
+    <mat-card>
+      <mat-card-header class="mb-3">
+        <mat-card-title-group>
+          <mat-card-title></mat-card-title>
+          <mat-card-subtitle>Datos del Contribuyente</mat-card-subtitle>
+          <mat-slide-toggle color="primary" (change)="changeTaxData($event.checked)" [disabled]="TaxDataControl">Sin
+            datos fiscales</mat-slide-toggle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="mt-3">
+        <form [formGroup]="myFormContribuyente">
+
+          <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+            class="full-width radio-container">
             <mat-label>Tipo de Persona</mat-label>
             <input matInput style="display:none" required>
-            <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap" (change)="changeRadioTP($event.value)">
-              <mat-radio-button #buttons_c_tp value="F" >
+            <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap"
+              (change)="changeRadioTP($event.value)">
+              <mat-radio-button #buttons_c_tp value="F">
                 <span class="wrap-label-text">Física</span>
               </mat-radio-button>
               <mat-radio-button #buttons_c_tp value="M">
@@ -26,116 +28,109 @@
               </mat-radio-button>
             </mat-radio-group>
           </mat-form-field>
-          <mat-form-field *ngIf="tipoPersona=='M'" fxFlex class="col-8" style="margin-right:0.5em;" appearance="outline">
+          <mat-form-field *ngIf="tipoPersona=='M'" appearance="outline" class="sm:w-5" style="margin-right:0.5em;">
             <mat-label>Razon Social</mat-label>
             <input matInput type="text" formControlName="razonSocial">
-            <mat-error >{{ getMessage(myFormContribuyente.get('razonSocial')?.getError('error'),'razonSocial') }}</mat-error>
+            <mat-error>El campo no puede ir vacio.</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Nombre</mat-label>
             <input matInput type="text" formControlName="nombre">
-            <mat-error >{{ getMessage(myFormContribuyente.get('nombre')?.getError('error'),'nombre') }}</mat-error>
+            <mat-error>{{ getMessage(myFormContribuyente.get('nombre')?.getError('error'),'nombre') }}</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Apellido Paterno</mat-label>
             <input matInput type="text" formControlName="primerApellido">
-            <mat-error >{{ getMessage(myFormContribuyente.get('primerApellido')?.getError('error'),'primerApellido') }}</mat-error>
+            <mat-error>{{ getMessage(myFormContribuyente.get('primerApellido')?.getError('error'),'primerApellido')
+              }}</mat-error>
           </mat-form-field>
 
           <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Apellido Materno</mat-label>
             <input matInput type="text" formControlName="segundoApellido">
-            <mat-error >{{ getMessage(myFormContribuyente.get('segundoApellido')?.getError('error'),'segundoApellido') }}</mat-error>
+            <mat-error>{{ getMessage(myFormContribuyente.get('segundoApellido')?.getError('error'),'segundoApellido')
+              }}</mat-error>
           </mat-form-field>
-        </div>
-      </div>
-      <div class="card">
-        <div class="flex justify-content-start flex-wrap">
+
+
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>RFC</mat-label>
             <input matInput formControlName="rfc" type="text" name="" id="">
-            <mat-error >Dato requerido</mat-error>
+            <mat-error>El RFC es incorrecto</mat-error>
           </mat-form-field>
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+          <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>CURP</mat-label>
-            <input matInput formControlName="curp" type="text" >
-            <mat-error ></mat-error>
+            <input matInput formControlName="curp" type="text">
+            <mat-error></mat-error>
           </mat-form-field>
-        </div>
-      </div>
-        <div formGroupName="domicilio">
-          <div class="card">
-            <div class="flex justify-content-start flex-wrap">
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" >
-                <mat-label>Calle</mat-label>
-                <input matInput form formControlName="calle" type="text" >
-                <mat-error>{{ getMessage(myFormContribuyente.get('domicilio')?.get('calle')?.getError('error'),'calle') }}</mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>No Exterior</mat-label>
-                <input matInput formControlName="numeroExterior" type="text">
-                <mat-error >{{ getMessage(myFormContribuyente.get('domicilio')?.get('numeroExterior')?.getError('error'),'numeroExterior') }}</mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;"  appearance="outline">
-                <mat-label>No Interior</mat-label>
-                <input matInput formControlName="numeroInterior" type="text">
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Colonia</mat-label>
-                <input matInput formControlName="colonia" type="text" >
-                <mat-error >{{ getMessage(myFormContribuyente.get('domicilio')?.get('colonia')?.getError('error'),'colonia') }}</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="card">
-            <div class="flex justify-content-start flex-wrap">
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Código Postal</mat-label>
-                <input matInput formControlName="codigoPostal" type="number">
-                <mat-error >{{ getMessage(myFormContribuyente.get('domicilio')?.get('codigoPostal')?.getError('error'),'codigoPostal') }}</mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Estado</mat-label>
-                <mat-select formControlName="estados" (valueChange)="changeEstado($event)">
-                  <mat-option value="0">--- Seleccione Estado ---</mat-option>
-                  <mat-option *ngFor="let estado of arrEstados" [value]="estado.pk">{{estado.descripcion}}</mat-option>
-                </mat-select>
-                <mat-error ></mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Municipio</mat-label>
-                <mat-select formControlName="municipio">
-                  <mat-option value="0">--- Seleccione Municipio ---</mat-option>
-                  <mat-option *ngFor="let municipio of arrMunicipios" [value]="municipio.pk">{{municipio.descripcion}}</mat-option>
-                </mat-select>
-                <mat-error ></mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Observaciones</mat-label>
-                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
+
+          <div formGroupName="domicilio">
+
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Calle</mat-label>
+              <input matInput form formControlName="calle" type="text">
+              <mat-error>El campo no puede ir vacío</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>No Exterior</mat-label>
+              <input matInput formControlName="numeroExterior" type="text">
+              <mat-error>El campo no puede ir vacío</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>No Interior</mat-label>
+              <input matInput formControlName="numeroInterior" type="text">
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Colonia</mat-label>
+              <input matInput formControlName="colonia" type="text">
+              <mat-error>El campo no puede ir vacío</mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Código Postal</mat-label>
+              <input matInput formControlName="codigoPostal" type="number">
+              <mat-error>Código postal incorrecto</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="estados" (valueChange)="changeEstado($event)">
+                <mat-option value="0">--- Seleccione Estado ---</mat-option>
+                <mat-option *ngFor="let estado of arrEstados" [value]="estado.pk">{{estado.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error></mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <mat-select formControlName="municipio">
+                <mat-option value="0">--- Seleccione Municipio ---</mat-option>
+                <mat-option *ngFor="let municipio of arrMunicipios"
+                  [value]="municipio.pk">{{municipio.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Observaciones</mat-label>
+              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5" formControlName="observaciones"></textarea>
-              </mat-form-field>
-            </div>
+            </mat-form-field>
+
           </div>
-        </div>
-    </form>
-  </mat-card-content>
-  <mat-divider></mat-divider>
-  <mat-card-actions align="end">
-    <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos/dependencias']"><!--[routerLink]="['/pagos']"-->
-      <mat-icon>cancel</mat-icon>
-        Cancelar Trámite
-    </button>
-    <span class=""></span>
-    <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="generarPoliza()">
-      <mat-icon>request_page</mat-icon>
-        Generar Póliza
-    </button>
-  </mat-card-actions>
-</mat-card>
+        </form>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn"
+          [routerLink]="['/pagos/dependencias']"><!--[routerLink]="['/pagos']"-->
+          <mat-icon>cancel</mat-icon>
+          Cancelar Trámite
+        </button>
+        <span class=""></span>
+        <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="generarPoliza()">
+          <mat-icon>request_page</mat-icon>
+          Generar Póliza
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
-</div>
-
-
-
