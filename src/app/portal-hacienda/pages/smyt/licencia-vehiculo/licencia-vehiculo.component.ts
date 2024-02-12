@@ -42,7 +42,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   public conceptTitle: string = '';
 
   public formLicencias: FormGroup = this.fb.group({
-    no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required,Validators.minLength(7), Validators.maxLength(20),] ],
+    no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required,Validators.minLength(7), Validators.maxLength(20)] ],
     fecha_vencimiento: [{value:new Date(),disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
     tien_licencia:     ['', [Validators.required] ]
   });
@@ -124,7 +124,10 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
       )
       .subscribe( value => {
         const resp = this.validatorFormService.licenseValidate(value,this.idConcepto);
-        if (resp) this.openSnackBar(resp);
+        if (resp) {
+          this.formLicencias.get('no_licencia')?.setErrors({notUnique:true});
+          this.openSnackBar(resp);
+        }
       });
 
       if ([838,835,830].find(resp => resp == this.idConcepto ) ) {

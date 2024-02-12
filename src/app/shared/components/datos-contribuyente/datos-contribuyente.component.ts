@@ -282,8 +282,9 @@ export class DatosContribuyenteComponent implements OnInit {
     if (localStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
       let fecha_factura = '';
+      let moonLanding = new Date(vehicle_data.fechaFactura as Date);
       if(vehicle_data.fechaFactura) {
-        fecha_factura = String(vehicle_data.fechaFactura.getFullYear()) + '-' + String((vehicle_data.fechaFactura.getMonth()+1)).padStart(2,'0') + '-' + String(vehicle_data.fechaFactura.getDate()).padStart(2,'0');
+        fecha_factura = String(moonLanding.getFullYear()) + '-' + String((moonLanding.getMonth()+1)).padStart(2,'0') + '-' + String(moonLanding.getDate()).padStart(2,'0');
       }
 
       datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():''},,,,,
@@ -380,7 +381,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
         console.log(this.dataPoliza)
 
-          /*this.smytService.generarPolizaServ(this.dataPoliza)
+          this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
               this.buttBlock = false;
@@ -391,7 +392,7 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               this.openSnackBar(resp.data!);
               return;
-          });*/
+          });
           clearInterval(id);
       }
       //console.log('continua la la espera')

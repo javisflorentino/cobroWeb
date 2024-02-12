@@ -13,22 +13,52 @@
   </mat-toolbar>
 
   <mat-nav-list>
-
+    <ul class="list-none p-0 m-0 overflow-hidden" style="list-style-type: none; padding: 0; margin: 0;">
+      <div>
+        <li *ngFor="let item of itemsConceptos"
+          class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors"
+          routerLinkActive="active"
+          (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora)"
+          style="border: 1px solid #ddd; margin-top: -1px; background-color: #f6f6f6; padding: 12px;"
+          >
+          {{item.titulo}}
+          <span *ngIf="item.gestora==0" style="flex: 1 1 auto;"></span>
+          <mat-icon *ngIf="item.gestora==0" align="start">navigate_next</mat-icon>
+        </li>
+      </div>
       <mat-card class="" *ngIf="showMessage">
-        <mat-card-content >
-          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para mostrar las opciones </div>
+        <mat-card-content>
+          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para
+            mostrar las opciones </div>
         </mat-card-content>
       </mat-card>
+      <mat-card class="" *ngIf="showMessage_errReq">
+        <mat-card-content>
+          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">No se encontraron registros, comuniquese con soporte </div>
+        </mat-card-content>
+      </mat-card>
+    </ul>
 
-    <mat-list-item *ngFor="let item of itemsConceptos" [lines]="item.titulo.length/35">
-      <div matListItemLine routerLinkActive="active"  (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora)">
+
+
+
+    <!--mat-card class="" *ngIf="showMessage">
+      <mat-card-content>
+        <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para
+          mostrar las opciones </div>
+      </mat-card-content>
+    </!--mat-card>
+
+    <mat-list-item-- *ngFor="let item of itemsConceptos" [lines]="item.titulo.length/35">
+      <div matListItemLine routerLinkActive="active"
+        (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora)">
         <span [innerHTML]="item.titulo | segmentText:35"></span>
       </div>
 
       <span>
         <mat-divider></mat-divider>
       </span>
-    </mat-list-item>
+    </mat-list-item-->
   </mat-nav-list>
 
 </mat-sidenav>

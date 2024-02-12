@@ -149,8 +149,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
                       let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
                       contribuyente.data.conceptos.push(
                         {
-                          id: 0, clave: '0637', cantidad: 1, descripcion: (r == 'actualizacion' ? 'ACTUALIZACION ' : 'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
-                          ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal, importe: datos[r]
+                          id: 0,
+                          clave: '0637',
+                          cantidad: 1,
+                          descripcion: (r == 'actualizacion' ? 'ACTUALIZACION ' : 'RECARGO ') + contribuyente.data.conceptos[0].descripcion,
+                          ejercicioFiscal: contribuyente.data.conceptos[0].ejercicioFiscal, importe: datos[r],
+                          importeUnitario: datos[r],
                         }
                       );
                       contribuyente.data.total += datos[r];
@@ -197,8 +201,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.conceptos = result.data.conceptos;
           this.total += result.data.total;
 
-          if (!result.data.contribuyente) {
-            /** SOAP obtener datos del Contribuyente*/
+          /*if (!result.data.contribuyente) {
+            // SOAP obtener datos del Contribuyente
             let datosContibuyente;
             let datosContibuyenteDomicilio;
             let contribuyente: Contribuyente = {} as Contribuyente;
@@ -234,7 +238,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
                 localStorage.setItem('contribuyente', JSON.stringify(localServContribuyente));
                 return;
               });
-          }
+          }*/
           localStorage.setItem('contribuyente', JSON.stringify(result));
           return;
         }

@@ -24,6 +24,7 @@ export interface Concepto {
   importeUnitario?:number;
   padre?:          number;
   no_hojas?:       number;
+  unitario?:       number;
 }
 
 export interface Contribuyente {

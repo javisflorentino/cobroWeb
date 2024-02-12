@@ -49,7 +49,7 @@
           Cancelar
         </button>
         <span class=""></span>
-        <button mat-stroked-button color="primary" [disabled]="" (click)="onSubmit()">
+        <button mat-stroked-button color="primary" [disabled]="formLicencias.invalid" (click)="onSubmit()">
           <mat-icon>calculate</mat-icon>
           Calcular
         </button>
