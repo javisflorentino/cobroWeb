@@ -110,6 +110,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
       })
       .catch(err => {
         this.openSnackBar(err);
+        this.isLoading = false;
       });
 
 

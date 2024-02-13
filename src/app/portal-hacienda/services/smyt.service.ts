@@ -80,7 +80,7 @@ export class SmytService {
          </smyt:obtenEstatusVehiculo>
       </soapenv:Body>
    </soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8", "Content-Security-Policy": "upgrade-insecure-requests" }
+      headers: { "Content-type": "text/xml; charset=utf-8"}
     })
   }
 
