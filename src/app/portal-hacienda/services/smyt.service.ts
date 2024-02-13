@@ -18,7 +18,7 @@ import ListMessage from '../../../../data/arreglos/alertas.json'
 export class SmytService {
 
   private urlMessage = 'http://localhost:3001/messages';
-  private urlSOPA = `${environments.baseUrlServ}tramitesSMyT/services/SMyT/validarVehiculo`;//'tramitesSMyT/services/SMyT/validarVehiculo';
+  private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
   private urlSmytGenerarPoliza = `${environments.baseUrlApp}serviciosHacienda/poliza/generar`;//'serviciosHacienda/poliza/generar';
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
 
@@ -63,6 +63,25 @@ export class SmytService {
       .pipe(
         catchError(error => of())
       );
+  }
+  async validateVehicleSoap(placa:string,serie:string): Promise<any> {
+    return await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
+      <soapenv:Header/>
+      <soapenv:Body>
+         <smyt:obtenEstatusVehiculo>
+            <!--Optional:-->
+            <placa>${placa}</placa>
+            <!--Optional:-->
+            <noSerie>${serie}</noSerie>
+            <!--Optional:-->
+            <usuario>?</usuario>
+         </smyt:obtenEstatusVehiculo>
+      </soapenv:Body>
+   </soapenv:Envelope>`,
+      headers: { "Content-type": "text/xml; charset=utf-8", "http-equiv":"Content-Security-Policy", "content":"upgrade-insecure-requests" }
+    })
   }
 
   calcularCostoConcepto(idConcepto:number, cantida:number): Observable<CalculoConcepto[]>{

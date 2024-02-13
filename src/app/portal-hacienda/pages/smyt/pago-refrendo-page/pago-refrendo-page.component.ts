@@ -1,5 +1,5 @@
 import { SmytService } from './../../../services/smyt.service';
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
 
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
 import ListMessageSmyt from '../../../../../../data/arreglos/smyt_mensajes.json'
@@ -13,6 +13,7 @@ import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.in
 import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
+import { estadoVehiculo } from 'src/app/shared/interfaces/soap-estadoVehivulo';
 
 
 @Component({
@@ -21,13 +22,13 @@ import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
   styles: [
   ]
 })
-export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
+export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
 
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt_refrendo;
   /* Arreglo de oficinas de SMyT */
   public oficinasArr: Oficinas[] = ListaOficinas;
   /* Variable de tipo Interface-ValidateVehicle */
-  private asJson!:ValidateVehicle;
+  private asJson!: estadoVehiculo;//ValidateVehicle;
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
   /* Bloque el boton de Calcular para evitar acciones duplicadas  */
@@ -36,30 +37,32 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
   public nameConcept: string = '';
   /* Inicialización del formulario reactivo */
   public refrendoForm: FormGroup = this.fb.group({
-    id:      [''],
+    id: [''],
     oficina: ['', [Validators.required]],
-    placa:   ['', [Validators.required, Validators.minLength(4)]],
-    serie:   ['', [Validators.required, Validators.minLength(5)]]
-  },{
-    validators: [this.validatorsService.existsSeries('serie','placa',1, 1, '1','')]
+    placa: ['', [Validators.required, Validators.minLength(4)]],
+    serie: ['', [Validators.required, Validators.minLength(5)]]
+  }, {
+    validators: [this.validatorsService.existsSeries('serie', 'placa', 1, 1, '1', '')]
   });
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
   //public subscription: Subscription;
   /* Recibe un arreglo de tipo  ConvertXmlString*/
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
+  private smytSevice = inject(SmytService);
+
   constructor(
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private _snackBar: MatSnackBar,
     private validatorsService: ValidatorsService,
     private smytService: SmytService,
     private router: Router
   ) {
-      /*this.subscription = router.events.subscribe((event) => {
-        if (event instanceof NavigationStart) {
-          console.log('refresco el navegador Refrendo')
-        }
-      });*/
+    /*this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        console.log('refresco el navegador Refrendo')
+      }
+    });*/
   }
 
   ngOnInit(): void {
@@ -84,25 +87,34 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
     let p = this.refrendoForm.get('placa')!.value;
     let s = this.refrendoForm.get('serie')?.value;
+    this.smytSevice.validateVehicleSoap(p, s)
+      .then(response => response.text())
+      .then(xml => {
+        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+        const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
+        localStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
+        this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false })
+          .subscribe(resp => {
+            if (resp?.success) {
+              this.router.navigate(['/pagos/tabla-conceptos', 1]);
+              return
+            }
+            this._snackBar.openFromComponent(SnackBarComponent, {
+              data: resp?.data,
+              duration: 3000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
+            });
+
+            this.isLoading = false;
+            this.buttBlock = false;
+          });
+      })
+      .catch(err => {
+        this.openSnackBar(err);
+      });
+
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"numeroSerie":s,"tramite":1,"obtenerContribuyente":true}));
-    this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
-      .subscribe(resp => {
-        if (resp?.success) {
-          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
-          //localStorage.setItem('route_origen','smyt/smyt-refrendo')
-          this.router.navigate(['/pagos/tabla-conceptos',1]);
-          return
-        }
-        this._snackBar.openFromComponent(SnackBarComponent, {
-          data: resp?.data,
-          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
-        });
 
-        this.isLoading = false;
-        this.buttBlock = false;
-      });
     /*this.smytService.validateVehicle(p!,s!)
       .then(response => response.text())
       .then(xml => {
@@ -124,36 +136,43 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy  {
 
   }
 
-  @HostListener('input', ['$event']) onKeyUp(event:any) {
+  @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
   }
 
-  isValidField( field: string ) {
+  isValidField(field: string) {
     //TODO: Obtener validación desde un servicio
-    return this.validatorsService.isValidField( this.refrendoForm, field );
+    return this.validatorsService.isValidField(this.refrendoForm, field);
   }
-  getMessage(idMssg:number, nameField:string) {
+  getMessage(idMssg: number, nameField: string) {
     let touched = this.refrendoForm.get(nameField)?.touched;
     let nameFileValue = this.refrendoForm.get(nameField)?.value;
     let pathSelect = this.validatorsService.alfaPath;
 
-    if(idMssg !== null) {
-      const message = this.mssgArr.filter(({id}) => id == idMssg );
+    if (idMssg !== null) {
+      const message = this.mssgArr.filter(({ id }) => id == idMssg);
       return message[0].msg;
     }
-    if( touched ) {
-      let idMessage=100;
+    if (touched) {
+      let idMessage = 100;
 
       let pattern = new RegExp(pathSelect);
-      if(!pattern.test(nameFileValue) || nameFileValue == null) {
-        const message = this.mssgArr.filter(({id}) => id == idMessage );
-        this.refrendoForm.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
+      if (!pattern.test(nameFileValue) || nameFileValue == null) {
+        const message = this.mssgArr.filter(({ id }) => id == idMessage);
+        this.refrendoForm.get(nameField)?.setErrors({ notEqual: true, error: idMessage });
         return message[0].msg;
       }
 
     }
     return '';
   }
+
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message, duration: 5500, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
+    });
+  }
+
   redirectHome(): void {
     location.reload();
   }

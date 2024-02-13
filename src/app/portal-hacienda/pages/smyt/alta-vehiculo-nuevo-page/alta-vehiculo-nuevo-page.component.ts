@@ -102,7 +102,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
     let invoiceDate = moment(this.myForm.get('oficina_tramite')?.get('fecha_factura')?.value).toDate();
 
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":this.myForm.get('oficina_tramite')?.get('no_serie')?.value,"tramite":2,
+    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficina_tramite')?.get('no_serie')?.value).toUpperCase(),"tramite":2,
       "tipoVehiculo":this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
       "obtenerContribuyente":false}));
 

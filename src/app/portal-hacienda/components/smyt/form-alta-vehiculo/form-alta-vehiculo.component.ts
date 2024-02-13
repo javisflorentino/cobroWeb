@@ -38,8 +38,8 @@ export class FormAltaVehiculoComponent implements OnInit {
 
   ngOnInit(): void {
     this.myFormShared = this.fb.group({
-      oficina_tramite: ['',[Validators.required]],
-      tipo_vehiculo: ['',[Validators.required]],
+      oficina_tramite: [1,[Validators.required]],
+      tipo_vehiculo: [1,[Validators.required]],
       no_serie: ['',[Validators.required]],
       no_serie2: ['',[Validators.required]],
       fecha_factura: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]]

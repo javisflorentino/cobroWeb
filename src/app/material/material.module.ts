@@ -62,6 +62,7 @@ import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
       useValue: { color: 'primary' },
     },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
   ]
 })

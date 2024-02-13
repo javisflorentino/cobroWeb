@@ -215,10 +215,10 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       return;
     }
     let invoiceDate = moment(this.myForm.get('oficinas')?.get('fecha_factura')?.value).toDate();
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":this.myForm.get('oficinas')?.get('no_serie')?.value,"tramite":6,
+    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficinas')?.get('no_serie')?.value).toUpperCase(),"tramite":6,
       "tipoVehiculo":this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
       "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('valor_factura')?.value,
-      "placaAnterior":this.myForm.get('placa_foranea')?.value}));
+      "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase()}));
 
     localStorage.setItem('vehicle_data_adicional',JSON.stringify({
       "capacidadPasajeros":this.myForm.get('pasajeros')?.value,
