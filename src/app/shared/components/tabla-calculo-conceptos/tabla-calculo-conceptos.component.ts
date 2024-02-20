@@ -303,6 +303,14 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       "cantidad": cantidad
     };
 
+    if (localStorage.getItem('contribuyente')) {//&& this.tipoFormEdit) {
+      let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
+      if(contribuyente.data.conceptos.find(resp => resp.conceptoArea == idConcepto) !== undefined) {
+        this.isLoading = false;
+        return;
+      }
+    }
+
     this.smyPagosService.otherCalculoPagos(datos)
       .subscribe(resp => {
         this.isLoading = false
