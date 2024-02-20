@@ -64,7 +64,8 @@ export class SmyCalculoPagosService {
          </smyt:obtenEstatusVehiculo>
       </soapenv:Body>
    </soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8"}
+      headers: { "Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
     })
   }
 }

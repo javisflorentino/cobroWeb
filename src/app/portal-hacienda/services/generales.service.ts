@@ -81,7 +81,8 @@ export class GeneralesService {
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",
       body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:imp="http://impuestos/"><soapenv:Header/><soapenv:Body><imp:obtenFechaVencimiento><!--Optional:--><periodo>${periodo}</periodo><!--Optional:--><ejercicio>${ejercicio}</ejercicio></imp:obtenFechaVencimiento></soapenv:Body></soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8"}
+      headers: { "Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
     })
 
   }
@@ -90,7 +91,8 @@ export class GeneralesService {
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",
       body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:imp="http://impuestos/"><soapenv:Header/><soapenv:Body><imp:obtenerRezagosActualizacionAdicionales><!--Optional:--><idConcepto>${idConcepto}</idConcepto><!--Optional:--><importe>${importe}</importe><!--Optional:--><fecha>${fecha}</fecha></imp:obtenerRezagosActualizacionAdicionales></soapenv:Body></soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8"}
+      headers: { "Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
     });
   }
   async getConceptoDetalle(idConcepto:number, monto:number): Promise<any> {
@@ -109,7 +111,8 @@ export class GeneralesService {
          </con:obtenUnConceptoDetalle>
       </soapenv:Body>
    </soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8"}
+      headers: { "Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
     });
   }
 
@@ -127,7 +130,8 @@ export class GeneralesService {
          </smyt:validarVehiculo>
       </soapenv:Body>
    </soapenv:Envelope>`,
-      headers:{"Content-type": "text/xml; charset=utf-8"}
+      headers:{"Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
     });
   }
 
