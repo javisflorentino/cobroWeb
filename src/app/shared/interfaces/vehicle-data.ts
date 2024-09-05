@@ -13,4 +13,6 @@ export interface VehicleData {
     noCilindros?:         number;
     procedencia?:         string;
     valorFactura?:        number;
+
+    pagoBaja?:            number;
 }

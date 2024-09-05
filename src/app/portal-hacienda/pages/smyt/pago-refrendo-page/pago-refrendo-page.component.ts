@@ -14,6 +14,7 @@ import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 import { estadoVehiculo } from 'src/app/shared/interfaces/soap-estadoVehivulo';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -94,23 +95,28 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
         const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
         localStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
         this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false })
-          .subscribe(resp => {
-            if (resp?.success) {
-              this.router.navigate(['/pagos/tabla-conceptos', 1]);
-              return
-            }
-            this._snackBar.openFromComponent(SnackBarComponent, {
-              data: resp?.data,
-              duration: 3000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
-            });
-
-            this.isLoading = false;
-            this.buttBlock = false;
+          .subscribe({
+            next: (resp) =>{
+              if (resp?.success) {
+                this.router.navigate(['/pagos/tabla-conceptos', 1]);
+                return
+              }
+              Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
+              this.isLoading = false;
+              this.buttBlock = false;
+            },
+            error: (err) =>{
+              Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
+              this.isLoading = false;
+              this.buttBlock = false;
+            },
+            complete: () => {}
           });
       })
       .catch(err => {
-        this.openSnackBar(err);
+        Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
         this.isLoading = false;
+        this.buttBlock = false;
       });
 
 

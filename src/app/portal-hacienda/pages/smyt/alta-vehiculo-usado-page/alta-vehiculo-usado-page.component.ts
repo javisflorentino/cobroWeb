@@ -15,6 +15,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import moment from 'moment';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -33,9 +34,11 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   public step: number = 0;
 
   aniosPago = [
-    {name: '2018', value:'p2018'},
     {name: '2019', value:'p2019'},
-    {name: '2020', value:'p2020'}
+    {name: '2020', value:'p2020'},
+    {name: '2021', value:'p2021'},
+    {name: '2022', value:'p2022'},
+    {name: '2023', value:'p2023'}
   ]
 
   public anio: number = new Date().getFullYear();
@@ -55,7 +58,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     pasajeros:    [ '', [ Validators.required] ],
     valor_factura:[ '', [ Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
     placa_foranea:[ '', [ Validators.required] ],
-    pago_baja_f:  [ '1', [Validators.required] ],
+    pago_baja_f:  [ '2', [Validators.required] ],
     pagos:        this.fb.array(this.aniosPago.map(x => false))
   });
 
@@ -203,7 +206,12 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
 
   // Metodo que se encarga de llamar al servicio para calcular el monto a pagar y redireccionar a componente correspondiente
   calcularPago() {
-
+    let pagosRealizados: string = '';
+    this.ordersFormArray.value.map((value: string, i:any)  =>{
+      if(!!value) {
+        pagosRealizados += value.substring(1) + ','
+      }
+    })
     this.isLoading = true;
     this.buttBlock = true;
 
@@ -218,7 +226,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficinas')?.get('no_serie')?.value).toUpperCase(),"tramite":6,
       "tipoVehiculo":this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
       "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('valor_factura')?.value,
-      "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase()}));
+      "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase(), "pagoBaja":this.myForm.get('pago_baja_f')?.value,"pagosRealizados":pagosRealizados}));
 
     localStorage.setItem('vehicle_data_adicional',JSON.stringify({
       "capacidadPasajeros":this.myForm.get('pasajeros')?.value,
@@ -239,20 +247,21 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       }
 
       this.smytService.validateVehicle(parameters)
-      .subscribe(resp => {
-        if (resp?.success) {
-          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
-          //localStorage.setItem('route_origen','smyt/smyt-altavehiculo-usado');
-          this.router.navigate(['/pagos/tabla-conceptos',1]);
-          return
+      .subscribe({
+        next:(resp)=>{
+          if (resp?.success) {
+            this.router.navigate(['/pagos/tabla-conceptos',1]);
+            return
+          }
+          Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
+          this.isLoading = false;
+          this.buttBlock = false;
+        },
+        error: (err)=>{
+          Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
+          this.isLoading = false;
+          this.buttBlock = false;
         }
-        this._snackBar.openFromComponent(SnackBarComponent, {
-          data: resp?.data,
-          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
-        });
-
-        this.isLoading = false;
-        this.buttBlock = false;
       });
   }
 

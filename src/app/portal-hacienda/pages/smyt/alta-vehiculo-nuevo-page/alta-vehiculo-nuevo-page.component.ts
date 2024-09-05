@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../shared/components/snack-bar/snack-bar.component';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'smyt-alta-vehiculo-nuevo-page',
@@ -116,20 +117,21 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     }
 
     this.smytService.validateVehicle(parameters)
-      .subscribe(resp => {
-        if (resp?.success) {
-          //localStorage.setItem('datos_cobro',JSON.stringify({sistema: 64}));
-          //localStorage.setItem('route_origen','smyt/smyt-altavehiculo-nuevo')
-          this.router.navigate(['/pagos/tabla-conceptos',1]);
-          return
-        }
-        this._snackBar.openFromComponent(SnackBarComponent, {
-          data: resp?.data,
-          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
-        });
-
-        this.isLoading = false;
-        this.buttBlock = false;
+      .subscribe({
+        next: (resp) => {
+          if (resp?.success) {
+            this.router.navigate(['/pagos/tabla-conceptos',1]);
+            return
+          }
+          Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
+          this.isLoading = false;
+          this.buttBlock = false;
+        },
+        error: (err) =>{
+          Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
+          this.isLoading = false;
+          this.buttBlock = false;
+        },
       });
   }
 

@@ -39,6 +39,18 @@
     {
       "id":101,
       "msg": "Formato incorrecto"
+    },
+    {
+      "id":404,
+      "msg": "No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":500,
+      "msg": "Error interno del servidor. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":504,
+      "msg": "Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde"
     }
   ],
   "smyt_refrendo": [
@@ -49,6 +61,18 @@
     {
       "id": 100,
       "msg": "Campo requerido"
+    },
+    {
+      "id":404,
+      "msg": "No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":500,
+      "msg": "Error interno del servidor. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":504,
+      "msg": "Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde"
     }
   ],
   "smyt_alta_vehiculo": [
@@ -75,6 +99,18 @@
     {
       "id": 101,
       "msg": "Campo requerido "
+    },
+    {
+      "id":404,
+      "msg": "No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":500,
+      "msg": "Error interno del servidor. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":504,
+      "msg": "Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde"
     }
   ],
   "smyt_baja": [
@@ -85,6 +121,18 @@
     {
       "id": 100,
       "msg": "Campo requerido"
+    },
+    {
+      "id":404,
+      "msg": "No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":500,
+      "msg": "Error interno del servidor. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":504,
+      "msg": "Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde"
     }
   ],
   "smyt_sustitucion_placa": [
@@ -95,6 +143,18 @@
     {
       "id": 100,
       "msg": "Campo requerido"
+    },
+    {
+      "id":404,
+      "msg": "No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":500,
+      "msg": "Error interno del servidor. Repórtelo al CAT e intentelo mas tarde"
+    },
+    {
+      "id":504,
+      "msg": "Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde"
     }
   ]
 }

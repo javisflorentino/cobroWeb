@@ -91,13 +91,23 @@ export class ValidatorsService {
       let parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo":Number.parseInt(tipo), fechaFactura:dateForm, "obtenerContribuyente":false };
       if(!formGroup.get(serie)?.pristine) {
         this.smytService.validateVehicle(parameters)
-          .subscribe(resp => {
-            if (resp?.success) {
-              formGroup.get(serie)?.setErrors( null );
-              return null;
+          .subscribe({
+            next:(resp)=>{
+              if (resp?.success) {
+                formGroup.get(serie)?.setErrors( null );
+                return null;
+              }
+              formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+              return { notEqual: true };
+            },
+            error:(err)=>{
+              if(!!err.code) {
+                formGroup.get(serie)?.setErrors( { notEqual: true, error:err.code } );
+              } else {
+                formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+              }
+              return { notEqual: true };
             }
-            formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
-            return { notEqual: true };
           });
       }
 

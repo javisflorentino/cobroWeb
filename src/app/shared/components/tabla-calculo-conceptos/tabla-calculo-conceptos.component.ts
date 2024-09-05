@@ -244,7 +244,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         }
         this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
         setTimeout(() => {
-          this.router.navigate(['pagos']);
+          this.router.navigate(['pagos/dependencias']);
         }, 2000)
 
       });
@@ -343,7 +343,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         }
         this.openSnackBar(resp.mensaje!);//'EL TRÁMITE YA SE HA REALIZADO');
         setTimeout(() => {
-          this.router.navigate(['pagos']);
+          this.router.navigate(['pagos/dependencias']);
         }, 2000)
       });
   }

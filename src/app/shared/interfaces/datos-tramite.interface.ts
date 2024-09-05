@@ -7,4 +7,6 @@ export interface DatosTramite {
   fechaFactura?:        string;
   modelo?:              number;
   valorFactura?:        number;
+  pagoBaja?:            number;
+  pagosRealizados?:      string;
 }

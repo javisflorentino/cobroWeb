@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap, throwError } from 'rxjs';
 import { Messages } from '../interface/portal-message.interface';
 import { PolizaRecive } from '../interface/portal-datos-poliza.interface';
 import { DatosPoliza } from '../../shared/interfaces/datos-poliza';
@@ -61,28 +61,47 @@ export class SmytService {
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
       .pipe(
-        catchError(error => of())
+        catchError(err =>{
+          let message = '';
+          return throwError( () => {
+            message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
+            return {message: message, code: `${err.status}`};
+          });
+        })
       );
   }
   async validateVehicleSoap(placa:string,serie:string): Promise<any> {
-    return await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
-      method: "POST",
-      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
-      <soapenv:Header/>
-      <soapenv:Body>
-         <smyt:obtenEstatusVehiculo>
-            <!--Optional:-->
-            <placa>${placa}</placa>
-            <!--Optional:-->
-            <noSerie>${serie}</noSerie>
-            <!--Optional:-->
-            <usuario>?</usuario>
-         </smyt:obtenEstatusVehiculo>
-      </soapenv:Body>
-   </soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8"},
-      redirect: "follow"
-    })
+    try {
+      const response = await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
+        method: "POST",
+        body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <smyt:obtenEstatusVehiculo>
+              <!--Optional:-->
+              <placa>${placa}</placa>
+              <!--Optional:-->
+              <noSerie>${serie}</noSerie>
+              <!--Optional:-->
+              <usuario>?</usuario>
+          </smyt:obtenEstatusVehiculo>
+        </soapenv:Body>
+    </soapenv:Envelope>`,
+        headers: { "Content-type": "text/xml; charset=utf-8"},
+        redirect: "follow"
+      });
+      if (response.ok) {
+        return response;
+      } else {
+        if (response.status === 404) throw new Error('404, No se encontró el END-POINT. Repórtelo al CAT e intentelo mas tarde');
+        if (response.status === 500) throw new Error('500, Error interno del servidor. Repórtelo al CAT e intentelo mas tarde');
+        if (response.status === 504) throw new Error('504, Error de conexión con el servidor. Repórtelo al CAT e intentelo mas tarde');
+        // For any other server error
+        throw new Error(`${response.status}, Error desconocido. Repórtelo al CAT e intentelo mas tarde`);
+      }
+    }catch(err) {
+      throw err
+    }
   }
 
   calcularCostoConcepto(idConcepto:number, cantida:number): Observable<CalculoConcepto[]>{

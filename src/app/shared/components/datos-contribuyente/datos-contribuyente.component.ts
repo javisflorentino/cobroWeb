@@ -290,8 +290,13 @@ export class DatosContribuyenteComponent implements OnInit {
       datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():''},,,,,
         MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
         VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,
-        NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ') +
-        `,${servicio}` + ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
+        NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
+        if(servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
+          datosAdicionales_adic += ",T: 10";
+        } else {
+          datosAdicionales_adic += `,${servicio}`;
+        }
+        datosAdicionales_adic += ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
     }
 
     if((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora=='64')) {
