@@ -120,10 +120,7 @@ export class SmytService {
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<PolizaRecive>(`${this.urlSmytGenerarPoliza}`,JSON.stringify(datosTramite),{headers})
-      .pipe(
-        tap(res => console.log(res))
-      );
+    return this.http.post<PolizaRecive>(`${this.urlSmytGenerarPoliza}`,JSON.stringify(datosTramite),{headers});
   }
 
 

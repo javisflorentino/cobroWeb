@@ -296,7 +296,7 @@ export class DatosContribuyenteComponent implements OnInit {
         } else {
           datosAdicionales_adic += `,${servicio}`;
         }
-        datosAdicionales_adic += ((servicio == 'T: 13')?',TRAMITE: ALTA':'');
+        datosAdicionales_adic += ((servicio == 'T: 13' || servicio == 'T: 01')?',TRAMITE: ALTA':'');
     }
 
     if((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora=='64')) {
@@ -384,7 +384,6 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        console.log(this.dataPoliza)
 
           this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {

@@ -449,7 +449,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     let lineDetalle: string = '';
     let keyDel: number = 0;
     let flagKey: boolean = false;
-    contribuyente.data.lineaDetalle = '';
+    //contribuyente.data.lineaDetalle = '';
     if (Number(this.cantidadPago.controls[val].value) == 0) {
       contribuyente.data.conceptos.splice(val, 1);
       contribuyente.data.conceptos.forEach(({ importe }) => {
@@ -470,12 +470,17 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       .subscribe({
         next: (resp) => {
           if (!resp) {
-            this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+            this.openSnackBar('Problema con el API-SERVER, favor de reportarlo al CAT e intentarlo mas tarde');
             return;
           }
+
+          let arrLineaDetalle = contribuyente.data.lineaDetalle.split('|');
+          arrLineaDetalle.pop();
+          arrLineaDetalle[val] = resp.data.lineaDetalle;
+
           contribuyente.data.conceptos[val].importe = resp.data.conceptos[0].importe;
           contribuyente.data.conceptos[val].cantidad = resp.data.conceptos[0].cantidad;
-          contribuyente.data.lineaDetalle += resp.data.lineaDetalle;
+          contribuyente.data.lineaDetalle = arrLineaDetalle.join('|');//+= resp.data.lineaDetalle;
           //this.total += Number(resp.data.total);
 
           this.conceptos = contribuyente.data.conceptos;
