@@ -33,3 +33,22 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 3. Copiamos de la carpeta ``` DIST ``` la carpeta ``` ASSETS ``` Y LA PEGAMOS EN ``` DEPLOY ```   
 3. La carpeta ``` DEPLOY ``` contendra el producto final
 
+
+06/09/2024
+* Javier pendiente que en el tramite de baja agregar datos del contribuyente para - checarlo antes de las 12 para validar nuevamente la BAJA
+* validar los recibos por lo menos con un refrendo para ver si se abonan
+* Duplicado de tarjeta de circulacion tabien validar nombre del contribuyente
+* sustitucion de placas tambian valida los datos del contribuyente de SMyT
+	en la poliza en el apartado de observaciones cotejar la FECHA FACTURA
+*ISAN al generar la poliza marca error
+
+
+
+Arastre..
+	Deposito y arrastre de vehiculo
+		por arrastre de gruas de un resguardo de vehiculos a otro 
+
+
+
+RAU708D - 5KBYF5894NB801168
+MARTINA MAQUEDA BARRERA

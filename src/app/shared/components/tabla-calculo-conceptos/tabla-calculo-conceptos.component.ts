@@ -276,7 +276,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           cantidad: 1,
           descripcion: String(adeudos['descripcion']['#text']),
           ejercicioFiscal: Number(adeudos['ejercicioFiscal']['#text']),
-          importe: Number(adeudos['importe']['#text'])
+          importe: Number(adeudos['total']['#text'])
         }];
         localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(adeudos['total']['#text']), conceptos: this.conceptos, lineaDetalle: String(adeudos['lineaDetalle']['#text']) }, success: true }));//this.conceptoPago));
         this.total += Number(adeudos['total']['#text']);
