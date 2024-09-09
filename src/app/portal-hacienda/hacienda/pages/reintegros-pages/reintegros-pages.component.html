@@ -1,7 +1,7 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="grid flex">
   <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'" >
-    <mat-card>
+    <mat-card class="shadow-8">
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
         <mat-card-subtitle>{{conceptTitle | titlecase }}</mat-card-subtitle>
