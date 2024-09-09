@@ -126,7 +126,7 @@
           Cancelar Trámite
         </button>
         <span class=""></span>
-        <button [disabled]="buttBlock" mat-stroked-button mat-raised color="primary" (click)="generarPoliza()">
+        <button [disabled]="myFormContribuyente.invalid" mat-stroked-button mat-raised color="primary" (click)="generarPoliza()">
           <mat-icon>request_page</mat-icon>
           Generar Póliza
         </button>

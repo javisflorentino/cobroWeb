@@ -26,7 +26,7 @@
             Cancelar
           </button>
           <span class="spacer"></span>
-          <button mat-stroked-button color="primary" [disabled]="buttBlock" (click)="onSubmit()">
+          <button mat-stroked-button color="primary" [disabled]="myForm.invalid" (click)="onSubmit()">
             <mat-icon>calculate</mat-icon>
             Calcular
           </button>
