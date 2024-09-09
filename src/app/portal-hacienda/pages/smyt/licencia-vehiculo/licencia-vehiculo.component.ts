@@ -82,9 +82,6 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   ) {
     const currentYear = moment().year();
     const currentMonth = moment().month() + 1;
-    //moment().
-    console.log(currentMonth)
-    //this.minDate = moment([currentYear -1, 0, 1]);
     this.maxDate = moment([currentYear , 10, 30]);
 
     this.mediaQuery();
@@ -139,7 +136,6 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
       if ([839,836,831].find(resp => resp == this.idConcepto ) ) {
         this.tipoLic = 'MOTOCICLISTA';
       }
-      console.log(this.tipoLic)
   }
 
   onKeyPress( searchTerm: string ) {
@@ -164,7 +160,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   }
 
   tieneLicencia(event:number) {
-    console.log(event);
+
     if ( event == 1 ) {
       this.formBlock = false;
       this.formLicencias.get('no_licencia')?.enable();
