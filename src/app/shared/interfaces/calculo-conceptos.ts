@@ -12,6 +12,31 @@ export interface Data {
   contribuyente: Contribuyente;
   domicilio:     Domicilio;
   lineaDetalle:  string;
+  adicional?:    Adicionales;
+}
+
+export interface Adicionales {
+  capacidadPasajeros:   string;
+  combustible:          string;
+  vMarca:               string;
+  vSubmarca:            string;
+  centimetrosCubicos:   string;
+  motor:                string;
+  noCilindros:          string;
+  noSerie:              string;
+  servicio:             string;
+  tonelaje:             string;
+  placaAnterior:        string;
+  placa:                string;
+  idVehiculo:           string;
+  estadoVehiculo:       string;
+  modelo:               string;
+  valorFactura:         string;
+  tipoVehiculo:         string;
+  fechaFactura:         string;
+  valorVenta:           string;
+  procedencia:          string;
+  clase:                string;
 }
 
 export interface Concepto {

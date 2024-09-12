@@ -32,9 +32,27 @@
       "id": 8,
       "msg": "La razon social no coicide con la información de SMyT"
     },
+
+    {
+      "id":9,
+      "msg":"Vehiculo de servicio publico"
+    },
+    {
+      "id": 10,
+      "msg":"No existe el vehiculo"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
+    },
+
     {
       "id":100,
       "msg": "Campo Requerido"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
       "id":101,
@@ -57,6 +75,18 @@
     {
       "id": 1,
       "msg": "Los datos ingresados no corresponden a la Inf. de SMyT"
+    },
+    {
+      "id":9,
+      "msg":"Vehiculo de servicio publico"
+    },
+    {
+      "id": 10,
+      "msg":"No existe el vehiculo"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
       "id": 100,
@@ -93,6 +123,18 @@
       "msg": "El No de serie no coincide"
     },
     {
+      "id":9,
+      "msg":"Vehiculo de servicio publico"
+    },
+    {
+      "id": 10,
+      "msg":"No existe el vehiculo"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido (MM/DD/YYYY)"
     },
@@ -119,6 +161,18 @@
       "msg": "Los datos ingresados no corresponden a la Inf. de SMyT"
     },
     {
+      "id":9,
+      "msg":"Vehiculo de servicio publico"
+    },
+    {
+      "id": 10,
+      "msg":"No existe el vehiculo"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido"
     },
@@ -139,6 +193,18 @@
     {
       "id": 1,
       "msg": "Los datos ingresados no corresponden a la Inf. de SMyT"
+    },
+    {
+      "id":9,
+      "msg":"Vehiculo de servicio publico"
+    },
+    {
+      "id": 10,
+      "msg":"No existe el vehiculo"
+    },
+    {
+      "id": 11,
+      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
       "id": 100,

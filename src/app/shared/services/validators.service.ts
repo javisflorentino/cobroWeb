@@ -5,6 +5,9 @@ import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ConvertXmlString } from '../clases/convert-xml-string';
 import moment from 'moment';
 
+import ListMessageSmyt from '../../../../data/arreglos/smyt_mensajes.json'
+import { MessageSmyt } from '../interfaces/message-smyt.interface';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +26,8 @@ export class ValidatorsService {
   public rfcPath   = '^[a-zA-Z&Ñ]{3,4}[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[a-zA-Z0-9]{2}[0-9A]$';
   public rfcFisica = '^([a-zA-Z&Ñ]{4}([0-9]{2})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))([a-zA-Z0-9]{2}[0-9A])?$';
   public rfcMoral  = '^([a-zA-Z&Ñ]{3}([0-9]{2})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))([a-zA-Z0-9]{2}[0-9A])$';
+
+  public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt_refrendo;
 
   private asJson!:ValidateVehicle;
 
@@ -97,7 +102,8 @@ export class ValidatorsService {
                 formGroup.get(serie)?.setErrors( null );
                 return null;
               }
-              formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+              const codeArr = this.mssgArr.filter(r =>  r.msg == String(resp?.data) )
+              formGroup.get(serie)?.setErrors( { notEqual: true, error:(codeArr.length>0)?((codeArr[0].id==10)?'11':codeArr[0].id):mssg } );
               return { notEqual: true };
             },
             error:(err)=>{

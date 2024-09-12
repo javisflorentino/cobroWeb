@@ -94,10 +94,18 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
         const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
         localStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
-        this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false })
+        this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false, "obtenerVehiculo":true })
           .subscribe({
             next: (resp) =>{
               if (resp?.success) {
+                localStorage.setItem('vehicle_data_adicional', JSON.stringify({
+                  "vMarca":        resp.data.adicional?.vMarca,
+                  "vSubmarca":     resp.data.adicional?.vSubmarca,
+                  "noCilindros":   resp.data.adicional?.noCilindros,
+                  "placaAnterior": resp.data.adicional?.placaAnterior,
+                  "modelo":        resp.data.adicional?.modelo,
+                  "tipoVehiculo":  resp.data.adicional?.tipoVehiculo
+                }));
                 this.router.navigate(['/pagos/tabla-conceptos', 1]);
                 return
               }

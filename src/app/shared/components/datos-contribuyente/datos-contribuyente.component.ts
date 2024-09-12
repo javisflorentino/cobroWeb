@@ -165,12 +165,16 @@ export class DatosContribuyenteComponent implements OnInit {
 
   changeTaxData(event:boolean) {
     if(event) {
-      this.disabledEnabledElement(['razonSocial','rfc','curp','domicilio'],[]);
       this.myFormContribuyente.get('domicilio')?.get('observaciones')?.enable();
+      this.myFormContribuyente.get('tipoPersona')?.setValue('F');
+      this.myFormContribuyente.get('tipoPersona')?.disable();
+      this.changeRadioTP('F');
+      this.disabledEnabledElement(['razonSocial','rfc','curp','domicilio'],[]);
       return;
     }
-    this.disabledEnabledElement([],['razonSocial','rfc','curp','domicilio']);
-      return;
+    this.disabledEnabledElement([],['rfc','curp','domicilio']);
+    this.myFormContribuyente.get('tipoPersona')?.enable()
+    return;
   }
 
   getMessage(idMssg:number, nameField:string) {
@@ -221,7 +225,7 @@ export class DatosContribuyenteComponent implements OnInit {
       this.disabledEnabledElement(['nombre','primerApellido','segundoApellido','curp'],['razonSocial']);
       this.myFormContribuyente.get('rfc')?.setValue('');
       this.myFormContribuyente.get('rfc')?.clearValidators();
-      this.myFormContribuyente.get('rfc')?.setValidators([Validators.pattern(this.validatosService.rfcMoral)]);
+      this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
       this.myFormContribuyente.updateValueAndValidity();
       return;
     }
@@ -229,7 +233,7 @@ export class DatosContribuyenteComponent implements OnInit {
     this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
     this.myFormContribuyente.get('rfc')?.clearValidators();
     this.myFormContribuyente.get('rfc')?.setValue('XAXX010101000');
-    this.myFormContribuyente.get('rfc')?.setValidators([Validators.pattern(this.validatosService.rfcFisica)]);
+    this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcFisica)]);
     this.myFormContribuyente.updateValueAndValidity();
     return;
   }
@@ -268,7 +272,7 @@ export class DatosContribuyenteComponent implements OnInit {
     let datosAdicionales_adic: string = '';
     let servicio = '';
     let tipoSer = [];
-    let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
+    let observaciones = '';//(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
     const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
     let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
 
@@ -288,9 +292,9 @@ export class DatosContribuyenteComponent implements OnInit {
         fecha_factura = String(moonLanding.getFullYear()) + '-' + String((moonLanding.getMonth()+1)).padStart(2,'0') + '-' + String(moonLanding.getDate()).padStart(2,'0');
       }
 
-      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():''},,,,,
+      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():(dataVehicle_adit && dataVehicle_adit.placaAnterior)?dataVehicle_adit.placaAnterior:''},,,,,
         MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
-        VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit)?dataVehicle_adit.procedencia:''},,
+        VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,
         NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
         if(servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
           datosAdicionales_adic += ",T: 10";
@@ -376,6 +380,8 @@ export class DatosContribuyenteComponent implements OnInit {
 
         const movimiento = localStorage.getItem('movimiento')!;
 
+        observaciones += (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?' OBSERVACIONES: ' + String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():'';
+
         this.dataPoliza.sistema = gestora;
         this.dataPoliza.movimiento = movimiento;//this.movimiento.toString();
         this.dataPoliza.total = this.contribuyenteArr.data.total;
@@ -393,7 +399,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = ((observaciones!=='')?`OBSERVACIONES: ${observaciones}`:'');
+        this.dataPoliza.observaciones = observaciones;
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 

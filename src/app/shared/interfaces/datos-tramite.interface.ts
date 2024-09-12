@@ -8,5 +8,6 @@ export interface DatosTramite {
   modelo?:              number;
   valorFactura?:        number;
   pagoBaja?:            number;
-  pagosRealizados?:      string;
+  pagosRealizados?:     string;
+  obtenerVehiculo?:     boolean;
 }
