@@ -88,6 +88,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       localStorage.removeItem('datos_poliza');
       localStorage.removeItem('repetir_concepto');
       localStorage.removeItem('cachestore');
+      localStorage.removeItem('movimiento');
 
       this.itemsConceptos = [];
       //this.changSidenav.toggle();
@@ -224,12 +225,13 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
     return;
   }
 
-  actionList(item: string, concept: string, id: number, idConcepto: string | number, padreId: number, gestora?: number) {
+  actionList(item: string, concept: string, id: number, idConcepto: string | number, padreId: number, gestora?: number, tipoMovimiento?:number) {
     //console.log(item + '-' + concept + '-' + id + '-' + idConcepto + '-' + padreId + '-' + gestora)
     /*
       NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
       MODIF: 12/12/2023
     */
+    localStorage.setItem('movimiento',String(tipoMovimiento))
     if (Number(gestora) > 0) {
       if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable == 1).length == 0) {
         (localStorage.getItem('contribuyente')) ? localStorage.removeItem('contribuyente') : '';

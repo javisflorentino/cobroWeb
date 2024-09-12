@@ -18,7 +18,7 @@
         <li *ngFor="let item of itemsConceptos"
           class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors"
           routerLinkActive="active"
-          (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora)"
+          (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora,item.tipoMovimiento)"
           style="border: 1px solid #ddd; margin-top: -1px; background-color: #f6f6f6; padding: 12px;"
           >
           {{item.titulo}}

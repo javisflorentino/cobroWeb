@@ -34,7 +34,7 @@
             <mat-error>El campo no puede ir vacio.</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Nombre</mat-label>
+            <mat-label>Nombre(s)</mat-label>
             <input matInput type="text" formControlName="nombre">
             <mat-error>{{ getMessage(myFormContribuyente.get('nombre')?.getError('error'),'nombre') }}</mat-error>
           </mat-form-field>

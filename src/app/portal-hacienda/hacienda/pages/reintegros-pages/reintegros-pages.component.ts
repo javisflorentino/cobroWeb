@@ -7,6 +7,7 @@ import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
+import { ReintegrosStruct } from 'src/app/portal-hacienda/interface/reintegros-struct.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
@@ -209,12 +210,28 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
     }
 
     localStorage.setItem('route_origen',`hacienda/hacienda-reintegros/${this.idConcepto}/${this.tipoForm}`);
-    localStorage.setItem('datos_cobro',JSON.stringify(
-      {
-        cantidad:      1,
-        monto:         Number(this.myFormHReintegro.get('monto')?.value)
-      })
-    )
+    let datos_cobro: ReintegrosStruct = {} as ReintegrosStruct;
+    datos_cobro.cantidad =  1;
+    datos_cobro.monto =     Number(this.myFormHReintegro.get('monto')?.value);
+    datos_cobro.nombre =    String(this.myFormHReintegro.get('nombre')?.value).toUpperCase();
+    datos_cobro.telefono =  this.myFormHReintegro.get('telefono')?.value;
+    datos_cobro.email =     String(this.myFormHReintegro.get('email')?.value).toUpperCase();
+    datos_cobro.tipo_form = this.tipoForm;
+    if( this.tipoForm == 17 ) {
+      const fecha = moment(this.myFormHReintegro.get('fecha_retencion')?.value);
+      datos_cobro.fecha_retencion =       fecha.format('YYYY-MM-DD');
+      datos_cobro.ejercicio_fiscal =      this.myFormHReintegro.get('ejercicio_fiscal')?.value;
+      datos_cobro.nombre_fondo =          String(this.myFormHReintegro.get('nombre_fondo')?.value).toUpperCase();
+      datos_cobro.numero_contrato =       this.myFormHReintegro.get('numero_contrato')?.value;
+      datos_cobro.objeto_contrato =       String(this.myFormHReintegro.get('objeto_contrato')?.value).toUpperCase();
+      datos_cobro.fuente_financiamiento = String(this.myFormHReintegro.get('fuente_financiamiento')?.value).toUpperCase();
+      datos_cobro.monto_ejercido =        this.myFormHReintegro.get('monto_ejercido')?.value;
+      datos_cobro.monto_retenido =        this.myFormHReintegro.get('monto_retenido')?.value;
+      datos_cobro.numero_oficio =         this.myFormHReintegro.get('numero_oficio')?.value;
+      datos_cobro.numero_factura =        this.myFormHReintegro.get('numero_factura')?.value;
+    }
+
+    localStorage.setItem('datos_cobro',JSON.stringify(datos_cobro));
 
     this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
     return

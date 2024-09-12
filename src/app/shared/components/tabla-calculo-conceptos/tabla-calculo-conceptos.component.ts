@@ -39,6 +39,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   public tipoform: number = 0;
   public tipoFormEdit: boolean = false;
   public tipoFormEdit_hoja: boolean = false;
+  public tipoFormEdit_monto: boolean = false;
   public idConcepto: number = 0;
   /* ruta desde donde se origino la peticion, se almacena en LocalStorage */
   public route_origen: string = 'dependencias';
@@ -129,10 +130,16 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch (Number(this.tipoform)) {
           case 0: case 1: case 7:
+            if(tipoForm==7) {
+              this.tipoFormEdit_monto = true;
+              this.displayedColumns.pop();
+              this.displayedColumns.push('monto');
+            }
             this.tipoFormEdit = true;
+
             if (this.tipoform == 0) this.tipoFormEdit = false;
             this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.');
-            this.consultConceptoPago(idConcepto, 1, this.tipoform);
+            this.consultConceptoPago(idConcepto, 1, 0);//this.tipoform);
             break;
           case 4:
             this.consultConceptoPagoISAN(this.idConcepto);
@@ -392,8 +399,36 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
   }
   sendNoHoja() {
+
+    this.isLoading = true;
+    const totalHojas = this.cantidadPago.controls[0].value;
+    let idConcepto = this.idConcepto;
+
+    this.generalesService.getConceptoDetallebyForm(idConcepto, totalHojas, 'sh-form-6', 'sh-input-cantidad')
+      .subscribe(resp => {
+        let lineaDetalle: string = '';
+        this.isLoading = false;
+        this.conceptos = [{
+          id: 0,
+          clave: String(resp?.data.conceptos[0].clave),
+          cantidad: 1,
+          descripcion: String(resp?.data.conceptos[0].descripcion),
+          ejercicioFiscal: Number(resp?.data.conceptos[0].ejercicioFiscal),
+          importe: Number(resp?.data.conceptos[0].importe)
+        }];
+        resp?.data.lineaDetalle.split('¬').forEach((k, v) => {
+          if (v == 5) {
+            lineaDetalle += Number(resp?.data.conceptos[0].importe) + '¬';
+          } else {
+            lineaDetalle += k + '¬';
+          }
+        });
+
+        localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp?.data.conceptos[0].importe), conceptos: this.conceptos, lineaDetalle: lineaDetalle.slice(0, lineaDetalle.length - 1) }, success: true }));
+        this.total = Number(Number(resp?.data.conceptos[0].importe));
+      });
     /** SOAP */
-    this.total = 0;
+    /*this.total = 0;
     this.isLoading = true;
     const totalHojas = this.cantidadPago.controls[0].value;
     let idConcepto = this.idConcepto;
@@ -433,7 +468,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
         localStorage.setItem('contribuyente', JSON.stringify({ data: { total: monto, conceptos: this.conceptos, lineaDetalle: lineaDetalle.slice(0, lineaDetalle.length - 1) }, success: true }));
         this.total = Number(monto);
-      });
+      });*/
   }
   /*
    SE INVOCA AL CAMBIAR EN LA TABLA EL CAMPO CANTIDAD O No DE HOJA
@@ -466,7 +501,15 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       return
     }
     this.isLoading = true;
-    this.generalesService.getConceptoDetalleRest(this.arrConceptos[val], this.cantidadPago.controls[val].value)//this.idConcepto,this.cantidadPago.controls[key].value)
+    let cantida:number = 1;
+    let monto:number = 1;
+    if(Number(this.tipoform)!==7) {
+      cantida =  this.cantidadPago.controls[val].value;
+    } else {
+      monto = this.cantidadPago.controls[val].value;
+    }
+
+    this.generalesService.getConceptoDetalleRest(this.arrConceptos[val], cantida, monto)//this.cantidadPago.controls[val].value)//this.idConcepto,this.cantidadPago.controls[key].value)
       .subscribe({
         next: (resp) => {
           if (!resp) {

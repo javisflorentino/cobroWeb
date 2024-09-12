@@ -20,6 +20,7 @@ import { TipoServicio } from '../../interfaces/tipo_servicios.enum';
 import { Observable, filter } from 'rxjs';
 import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
 import { ComboConcept } from 'src/app/portal-hacienda/interface/datos-combo.interface';
+import { ReintegrosStruct } from 'src/app/portal-hacienda/interface/reintegros-struct.interface';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -241,7 +242,7 @@ export class DatosContribuyenteComponent implements OnInit {
       this.buttBlock = false;
       return;
     }
-    const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
+    const datos:ReintegrosStruct = JSON.parse(localStorage.getItem('datos_cobro')!);
     const gestora = localStorage.getItem('gestora')!;
     if (!this.contribuyenteArr.data.contribuyente) {
       this.contribuyenteArr.data.contribuyente = {
@@ -311,25 +312,32 @@ export class DatosContribuyenteComponent implements OnInit {
 
 
    if(datos) {
-    this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
-    if(datos.tipo_form && datos.tipo_form==3) {
-      datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
-    }
-    /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
-    if(datos.tipo_form && datos.tipo_form==12) {
-      datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
-      if (observaciones!=='')
-        datosAdicionales += `OBSERVACIONES: ${observaciones} `;
-    }
-    /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
-    if(datos.tipo_form && datos.tipo_form==3) {
-      if (observaciones!=='') {
-        datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+    if(datos.tipo_form && (datos.tipo_form==17 || datos.tipo_form==16 || datos.tipo_form==14)) {
+      if(datos.tipo_form==17) {
+        observaciones += `,${datos.fecha_retencion},${datos.ejercicio_fiscal},${datos.nombre_fondo},${datos.numero_contrato},${datos.objeto_contrato},${datos.fuente_financiamiento},${datos.monto_ejercido},${datos.monto_retenido},${datos.numero_oficio},${datos.numero_factura}`;
       }
-      if(datos.fecha_verificacion) {
-        datosAdicionales += `Fecha proxima verificacion: ${datos.fecha_verificacion},`
+      datosAdicionales += `ContribuyenteReintegro: ${datos.nombre},${datos.telefono},${datos.email}`;
+    } else {
+      this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
+      if(datos.tipo_form && datos.tipo_form==3) {
+        datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
       }
-      datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
+      /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
+      if(datos.tipo_form && datos.tipo_form==12) {
+        datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
+        if (observaciones!=='')
+          datosAdicionales += `OBSERVACIONES: ${observaciones} `;
+      }
+      /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
+      if(datos.tipo_form && datos.tipo_form==3) {
+        if (observaciones!=='') {
+          datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+        }
+        if(datos.fecha_verificacion) {
+          datosAdicionales += `Fecha proxima verificacion: ${datos.fecha_verificacion},`
+        }
+        datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
+      }
     }
    }
 
@@ -364,14 +372,18 @@ export class DatosContribuyenteComponent implements OnInit {
 
     let id = setInterval(() => {
       if(estadoPeticion) {
+        let razonSocial:string = this.myFormContribuyente.get('razonSocial')?.value;
+
+        const movimiento = localStorage.getItem('movimiento')!;
+
         this.dataPoliza.sistema = gestora;
-        this.dataPoliza.movimiento = this.movimiento.toString();
+        this.dataPoliza.movimiento = movimiento;//this.movimiento.toString();
         this.dataPoliza.total = this.contribuyenteArr.data.total;
         this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value)?this.myFormContribuyente.get('rfc')?.value:'XAXX010101000';
-        this.dataPoliza.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
+        this.dataPoliza.nombre = ((razonSocial.length>0)?this.myFormContribuyente.get('razonSocial')?.value:String(this.myFormContribuyente.get('nombre')?.value).toUpperCase());
         this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
         this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
-        this.dataPoliza.razonSocial = this.myFormContribuyente.get('razonSocial')?.value;
+        this.dataPoliza.razonSocial = String(this.myFormContribuyente.get('razonSocial')?.value).toUpperCase();
         this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
         this.dataPoliza.origen = 'VU';
         this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
@@ -381,7 +393,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = observaciones;
+        this.dataPoliza.observaciones = ((observaciones!=='')?`OBSERVACIONES: ${observaciones}`:'');
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 

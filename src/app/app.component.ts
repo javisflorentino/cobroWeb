@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('repetir_concepto');
     localStorage.removeItem('cachestore');
 
+    localStorage.removeItem('movimiento');
+
     this.router.navigate(['/pagos/dependencias'])
   }
 }

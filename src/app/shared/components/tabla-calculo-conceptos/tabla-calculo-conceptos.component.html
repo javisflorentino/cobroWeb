@@ -24,7 +24,8 @@
           <b>Costo Unitario:</b> <span [innerHTML]="item.importeUnitario | currency:'MXN':'symbol-narrow':'1.2-2'"></span>
         </div>
         <div matListItemLine >
-          <b>cantidad:</b>
+          <b *ngIf="!tipoFormEdit_monto">cantidad:</b>
+          <b *ngIf="tipoFormEdit_monto">monto:</b>
           <div [formGroup]="formTableCal" *ngIf="tipoFormEdit && !tipoFormEdit_hoja; else desCantMov">
 
             <div *ngFor="let item of cantidadPago.controls;index as x">

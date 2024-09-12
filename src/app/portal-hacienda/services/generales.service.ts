@@ -65,13 +65,26 @@ export class GeneralesService {
     );
   }
 
-  getConceptoDetalleRest(idConcepto:number, cantidad:number): Observable<CalculoConcepto|null>{
+  getConceptoDetalleRest(idConcepto:number, cantidad:number, monto:number): Observable<CalculoConcepto|null>{
     let headers = new HttpHeaders();
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/obtenerConcepto`,JSON.stringify({"idConcepto": idConcepto,"monto": 1,"cantidad": cantidad}),{headers})
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/obtenerConcepto`,JSON.stringify({"idConcepto": idConcepto,"monto": monto,"cantidad": cantidad}),{headers})
     .pipe(
+      catchError(error => of(null))
+    );
+
+  }
+
+  getConceptoDetallebyForm(idConcepto:number, cantidad:number, idFomr:string, formaType:string): Observable<CalculoConcepto|null>{
+    let headers = new HttpHeaders();
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`,JSON.stringify([{"id": idFomr,"idConcepto": idConcepto,"data": [{"id": formaType,"value": cantidad}]}]),{headers})
+    .pipe(
+      tap(resp=>console.log(resp)),
       catchError(error => of(null))
     );
 

@@ -1,0 +1,30 @@
+export interface ReintegrosStruct {
+  cantidad:               number;
+  monto:                  number;
+  nombre?:                 string;
+  telefono?:               string;
+  email?:                  string;
+  fecha_retencion?:       string;
+  ejercicio_fiscal?:      number;
+  nombre_fondo?:          string;
+  numero_contrato?:       number;
+  objeto_contrato?:       string;
+  fuente_financiamiento?: string;
+  monto_ejercido?:        number;
+  monto_retenido?:        number;
+  numero_oficio?:         string;
+  numero_factura?:        string;
+  tipo_form?:             number;
+  fecha_verificacion?:    string;
+  idConcepto?:            string;
+  placa?:                 string;
+  serie?:                 string;
+  fechaVencimiento?:      string;
+  periodo?:               string;
+  ejercicio?:             number;
+  sistema?:               number;
+  folio?:                 string;
+  anio?:                  number;
+  certificacion?:         string;
+  semestre?:              string;
+}
