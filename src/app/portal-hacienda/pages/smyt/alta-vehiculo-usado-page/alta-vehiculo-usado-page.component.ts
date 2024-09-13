@@ -159,12 +159,12 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
 
 
   updateFiel(event: number): void {
-    if (event === 8) {
+    if (event === 3) {
       this.myForm.get('centimetros')?.enable();
       this.myForm.get('cilindros')?.disable();
       return;
     }
-    if(event === 7) {
+    if(event === 9) {
       let msg: string = '';
       this.smytService.getMessages_vehicle()
         .subscribe( message => {

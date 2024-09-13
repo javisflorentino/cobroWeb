@@ -16,27 +16,27 @@
     "descripcion": "Remolque"
   },
   {
-    "id": 6,
+    "id": 10,
     "descripcion": "Demostración"
   },
   {
-    "id": 7,
+    "id": 9,
     "descripcion": "Auto antiguo"
   },
   {
-    "id": 8,
+    "id": 3,
     "descripcion": "Motocicletas"
   },
   {
-    "id": 9,
+    "id": 11,
     "descripcion": "Patrulla"
   },
   {
-    "id": 13,
+    "id": 12,
     "descripcion": "Ambulancia"
   },
   {
-    "id": 23,
+    "id": 13,
     "descripcion": "Bomberos"
   }
 ]

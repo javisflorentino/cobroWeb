@@ -287,15 +287,16 @@ export class DatosContribuyenteComponent implements OnInit {
     if (localStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
       let fecha_factura = '';
-      let moonLanding = new Date(vehicle_data.fechaFactura as Date);
+      let fecha_factura_array: Array<any> = [];
       if(vehicle_data.fechaFactura) {
-        fecha_factura = String(moonLanding.getFullYear()) + '-' + String((moonLanding.getMonth()+1)).padStart(2,'0') + '-' + String(moonLanding.getDate()).padStart(2,'0');
+        fecha_factura_array = String(vehicle_data.fechaFactura).split('/')
+        fecha_factura = String(fecha_factura_array[2]) + '-' + String(fecha_factura_array[1]).padStart(2,'0') + '-' + String(fecha_factura_array[0]).padStart(2,'0');
       }
 
       datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():(dataVehicle_adit && dataVehicle_adit.placaAnterior)?dataVehicle_adit.placaAnterior:''},,,,,
-        MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
-        VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,
-        NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
+      MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
+      VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,
+      NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
         if(servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
           datosAdicionales_adic += ",T: 10";
         } else {
