@@ -38,32 +38,29 @@ export class ValidatorsFormService {
     }
     switch(no_licencia.charAt(0)) {
       case 'A' || 'E' || 'P':
-        console.log('A -- E -- P')
         if ([838,835,830].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;
       case 'C' || 'F':
-        console.log('C -- F')
         if ([837,834,829].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;
       case 'M' || 'R':
-        console.log('M -- R')
         if ([839,836,831].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;
       case 'T':
-        if(idConcept!==832){
+        if([832].find(resp => resp==idConcept) === undefined){
           flag = true;
         }
         break;
       default:
         flag=true;
     }
-    console.log('FLAG: ' + flag)
+
     if( flag ) {
       return 'El número de licencia no coincide con los que expide la Secretaría de Movilidad y Transporte<br>Si deseas continuar con el trámite completa el formulario';
     }

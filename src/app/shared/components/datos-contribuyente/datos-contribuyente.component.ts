@@ -89,7 +89,7 @@ export class DatosContribuyenteComponent implements OnInit {
     validators:[this.validatosService.validateDataInput('nombre',1,'contribuyente'),
       this.validatosService.validateDataInput('primerApellido',2,'contribuyente'),
       this.validatosService.validateDataInput('segundoApellido',3,'contribuyente'),
-      //this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
+      this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
     ],
   }
   );
@@ -123,6 +123,13 @@ export class DatosContribuyenteComponent implements OnInit {
       if(!resp){
         this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
       } else {
+        let route_origen:string = localStorage.getItem('route_origen')!;
+        if (route_origen.includes('smyt-licencia')){
+          this.openSnackBar('Si ya cuenta con una licencia expedida por el Gobierno del Estado de Morelos, favor de anotar el número en observaciones')
+        }
+
+
+
         this.arrEstados = resp?.data;
         this.myFormContribuyente.get('domicilio')?.get('estados')?.setValue(17);
         if(localStorage.getItem('gestora') !== '64') {
@@ -177,6 +184,10 @@ export class DatosContribuyenteComponent implements OnInit {
     return;
   }
 
+  onKeyPress( stringTag: string ) {
+    this.myFormContribuyente.get('nombre')?.setValue(stringTag);
+  }
+
   getMessage(idMssg:number, nameField:string) {
     let touched = this.myFormContribuyente.get('domicilio')?.get(nameField)?.touched;
     let nameFileValue = this.myFormContribuyente.get('domicilio')?.get(nameField)?.value;
@@ -211,6 +222,7 @@ export class DatosContribuyenteComponent implements OnInit {
     }
     return '';
   }
+
   disabledEnabledElement(element:string[],enabledElement:string[]) {
     element.forEach(element => {
       this.myFormContribuyente.get(element)?.disable();
@@ -219,6 +231,7 @@ export class DatosContribuyenteComponent implements OnInit {
       this.myFormContribuyente.get(element)?.enable();
     });
   }
+
   changeRadioTP(evento:string): void {
     this.tipoPersona = evento;
     if (evento==='M') {
@@ -272,7 +285,7 @@ export class DatosContribuyenteComponent implements OnInit {
     let datosAdicionales_adic: string = '';
     let servicio = '';
     let tipoSer = [];
-    let observaciones = '';//(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
+    let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
     const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
     let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
 
@@ -288,6 +301,7 @@ export class DatosContribuyenteComponent implements OnInit {
       vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
       let fecha_factura = '';
       let fecha_factura_array: Array<any> = [];
+
       if(vehicle_data.fechaFactura) {
         fecha_factura_array = String(vehicle_data.fechaFactura).split('/')
         fecha_factura = String(fecha_factura_array[2]) + '-' + String(fecha_factura_array[1]).padStart(2,'0') + '-' + String(fecha_factura_array[0]).padStart(2,'0');
@@ -312,6 +326,15 @@ export class DatosContribuyenteComponent implements OnInit {
     if ( servicio.length == 0  && (gestora=='22' || gestora=='9')) {
       datosAdicionales = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
       observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
+
+      if(gestora=='22' && (dataVehicle_adit && dataVehicle_adit.licencia)) {
+        let fecha_vencimiento = '';
+        let fecha_vencimiento_array: Array<any> = [];
+        fecha_vencimiento_array = String(dataVehicle_adit.fecha_vencimiento).split('/')
+        fecha_vencimiento = String(fecha_vencimiento_array[2]) + '-' + String(fecha_vencimiento_array[1]).padStart(2,'0') + '-' + String(fecha_vencimiento_array[0]).padStart(2,'0');
+
+        observaciones = ((observaciones!=='')?'':'OBSERVACIONES: ') + `${observaciones} No. Licencia: ${dataVehicle_adit.licencia} ,Fecha vencimiento: ${fecha_vencimiento},.`
+      }
     }
 
 
@@ -381,7 +404,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
         const movimiento = localStorage.getItem('movimiento')!;
 
-        observaciones += (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?' OBSERVACIONES: ' + String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():'';
+        //observaciones += (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?' OBSERVACIONES: ' + String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():'';
 
         this.dataPoliza.sistema = gestora;
         this.dataPoliza.movimiento = movimiento;//this.movimiento.toString();
@@ -400,7 +423,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = observaciones;
+        this.dataPoliza.observaciones = ((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:'');
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 
@@ -428,7 +451,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
-      data: message,duration: 3500,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+      data: message,duration: 4000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
     });
   }
 

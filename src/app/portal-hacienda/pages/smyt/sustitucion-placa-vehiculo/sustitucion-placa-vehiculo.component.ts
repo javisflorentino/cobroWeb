@@ -160,7 +160,8 @@ export class SustitucionPlacaVehiculoComponent implements OnInit {
       numeroSerie:          s,
       tipoVehiculo:         this.myForm.get('tipo_vehiculo')?.value,
       obtenerContribuyente: true,
-      fechaFactura:         invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()
+      fechaFactura:         invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
+      obtenerVehiculo:      true
     }
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor

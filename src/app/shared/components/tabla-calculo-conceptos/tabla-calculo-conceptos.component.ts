@@ -43,6 +43,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   public idConcepto: number = 0;
   /* ruta desde donde se origino la peticion, se almacena en LocalStorage */
   public route_origen: string = 'dependencias';
+  private isReposicionLicencia: boolean = false;
 
   private generalService = inject(MenuService);
 
@@ -127,6 +128,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         this.idConcepto = idConcepto;
         this.arrConceptos.push(idConcepto);
 
+        if([843,842,844].find(resp => resp==idConcepto) !== undefined){
+          this.openSnackBar('ESTE TRÁMITE SOLO APLICA PARA CASOS DE ROBO O EXTRAVÍO DE LICENCIA Y QUE AÚN TENGAN VIGENCIA.');
+          this.isReposicionLicencia = true;
+        }
+
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch (Number(this.tipoform)) {
           case 0: case 1: case 7:
@@ -138,7 +144,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.tipoFormEdit = true;
 
             if (this.tipoform == 0) this.tipoFormEdit = false;
-            this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.');
+            if(!this.isReposicionLicencia){
+              this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.');
+            }
             this.consultConceptoPago(idConcepto, 1, 0);//this.tipoform);
             break;
           case 4:

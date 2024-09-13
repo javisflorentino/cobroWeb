@@ -30,8 +30,8 @@
           </mat-form-field>
           <mat-form-field *ngIf="tipoPersona=='M'" appearance="outline" class="sm:w-5" style="margin-right:0.5em;">
             <mat-label>Razon Social</mat-label>
-            <input matInput type="text" formControlName="razonSocial">
-            <mat-error>El campo no puede ir vacio.</mat-error>
+            <input matInput type="text" formControlName="razonSocial" (keyup)="onKeyPress(razonSocialInput.value)" #razonSocialInput>
+            <mat-error>{{ getMessage(myFormContribuyente.get('razonSocial')?.getError('error'),'razonSocial') }}</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="tipoPersona=='F'" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Nombre(s)</mat-label>

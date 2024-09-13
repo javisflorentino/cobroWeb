@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -86,6 +86,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
     this.mediaQuery();
   }
+
   ngOnDestroy(): void {
     this.debouncerSubscription?.unsubscribe();
   }
@@ -112,6 +113,23 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
+
+        setTimeout(()=>{
+          if([837,834,829].find(resp => resp==this.idConcepto) !== undefined) {
+            setTimeout(()=>{
+              this.openSnackBar("Para este trámite debe contar con una licencia de CHOFER emitida por el GOBIERNO DEL ESTADO DE MORELOS");
+              this.formLicencias.get('tien_licencia')?.setValue('1');
+              this.formLicencias.get('tien_licencia')?.disable();
+              this.tieneLicencia(1);
+            },1000);
+          } else {
+            this.formLicencias.get('tien_licencia')?.setValue('');
+            this.formLicencias.get('tien_licencia')?.enable();
+            this.formLicencias.get('no_licencia')?.disable();
+            this.formLicencias.get('fecha_vencimiento')?.disable();
+          }
+        },500);
+
         localStorage.setItem('route_origen','smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
       });
 
@@ -136,6 +154,9 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
       if ([839,836,831].find(resp => resp == this.idConcepto ) ) {
         this.tipoLic = 'MOTOCICLISTA';
       }
+      if (this.idConcepto == 832) {
+        this.tipoLic = 'TURISTA';
+      }
   }
 
   onKeyPress( searchTerm: string ) {
@@ -148,6 +169,8 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
     if ( this.formLicencias.valid ) {
       if ( this.idConcepto && this.idConcepto !== 0 ) {
+        let invoiceDate = moment(this.formLicencias.get('fecha_vencimiento')?.value).toDate();
+        localStorage.setItem('vehicle_data_adicional',JSON.stringify({"licencia":this.formLicencias.get('no_licencia')?.value,"fecha_vencimiento":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()}));
         this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
         return;
       }

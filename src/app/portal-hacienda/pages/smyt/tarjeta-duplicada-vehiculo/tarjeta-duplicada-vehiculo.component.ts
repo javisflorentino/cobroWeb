@@ -147,7 +147,7 @@ export class TarjetaDuplicadaVehiculoComponent implements OnInit {
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
     localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"numeroSerie":s,"tramite":4,"obtenerContribuyente":true}));
-    this.smytService.validateVehicle({ "tramite": 4, "placa": p, "numeroSerie": s, "obtenerContribuyente":false })
+    this.smytService.validateVehicle({ "tramite": 4, "placa": p, "numeroSerie": s, "obtenerContribuyente":false, "obtenerVehiculo":true })
       .subscribe(resp => {
         if (resp?.success) {
           localStorage.setItem('vehicle_data_adicional', JSON.stringify({
