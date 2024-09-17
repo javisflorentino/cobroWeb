@@ -84,6 +84,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
 
     this.arrEjercicioFiscal.push(new Date().getFullYear());
     this.arrEjercicioFiscal.push(new Date().getFullYear() - 1);
+    this.arrEjercicioFiscal.push(new Date().getFullYear() - 2);
     let msg: string = '';
     this.smytService.getMesages_hacienda_reintegros()
       .subscribe( message => {
@@ -108,7 +109,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       }
       if( this.tipoForm == 17 ) {
         this.enableContSeventeen = true;
-        this.myFormHReintegro.addControl('fecha_retencion', new FormControl(moment(),[Validators.required]));
+        this.myFormHReintegro.addControl('fecha_retencion', new FormControl(moment(),[Validators.required, this.validatorService.validateRetencion]));
         this.myFormHReintegro.addControl('ejercicio_fiscal', new FormControl(new Date().getFullYear(),[Validators.required]));
         this.myFormHReintegro.addControl('nombre_fondo', new FormControl('',[Validators.required]));
         this.myFormHReintegro.addControl('numero_contrato', new FormControl('',[Validators.required]));
@@ -149,6 +150,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       return '';
     }
     const errors = Object.keys(idMssg);
+
     if(errors.includes('required')) {
       return 'Este campo requerido';
     }
@@ -160,6 +162,9 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
     }
     if(errors.includes('pattern')) {
       return 'Formato incorrecto';
+    }
+    if(errors.includes('fechaFueraRango')){
+      return 'La fecha de retención debe estar dentro del ejercicio fiscal actual.'
     }
 
     return '';

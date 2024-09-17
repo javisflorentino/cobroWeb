@@ -49,6 +49,25 @@ export class ValidatorsService {
     }
     return null
   }
+
+  /* VALIDAR FECHA DE RETENCIÓN */
+  public validateRetencion = ( control: FormControl): ValidationErrors | null =>{
+    let retencionDate = moment(control.value).toDate();
+    let toDate = new Date()
+    const f1 = new Date(new Date().getFullYear(), 0, 20);
+
+    if(toDate > f1){
+      if(retencionDate.getFullYear() < toDate.getFullYear() || retencionDate.getFullYear() > toDate.getFullYear()){
+        return { fechaFueraRango: true}
+      }
+    } else {
+      if(retencionDate.getFullYear() > toDate.getFullYear()){
+        return { fechaFueraRango: true}
+      }
+    }
+    return null;
+  }
+
   public validateDateGreat(currentDate: Date, date: string, mssg: number) {
 
     return ( formGroup: AbstractControl ): ValidationErrors | null => {

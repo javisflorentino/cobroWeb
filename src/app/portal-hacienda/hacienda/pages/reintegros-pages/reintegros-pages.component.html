@@ -48,7 +48,7 @@
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Fecha de retención</mat-label>
                 <input matInput [matDatepicker]="dpff" formControlName="fecha_retencion" [readonly]="true" >
-                <mat-error >No puede ser mayor a la fecha actual</mat-error>
+                <mat-error >{{ getMessage(myFormHReintegro.get('fecha_retencion')?.errors,'numero_contrato') }}</mat-error>
                 <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
                 <mat-datepicker #dpff disabled="false"></mat-datepicker>
               </mat-form-field>

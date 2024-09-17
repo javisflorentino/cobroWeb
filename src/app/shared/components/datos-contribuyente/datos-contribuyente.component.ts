@@ -172,11 +172,11 @@ export class DatosContribuyenteComponent implements OnInit {
 
   changeTaxData(event:boolean) {
     if(event) {
-      this.myFormContribuyente.get('domicilio')?.get('observaciones')?.enable();
       this.myFormContribuyente.get('tipoPersona')?.setValue('F');
       this.myFormContribuyente.get('tipoPersona')?.disable();
       this.changeRadioTP('F');
       this.disabledEnabledElement(['razonSocial','rfc','curp','domicilio'],[]);
+      this.myFormContribuyente.get('domicilio')?.get('observaciones')?.enable();
       return;
     }
     this.disabledEnabledElement([],['rfc','curp','domicilio']);
@@ -323,7 +323,7 @@ export class DatosContribuyenteComponent implements OnInit {
       datosAdicionales = datosAdicionales_adic + '|' +  ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
       observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
     }
-    if ( servicio.length == 0  && (gestora=='22' || gestora=='9')) {
+    if ( servicio.length == 0  && (gestora=='22' || gestora=='9' || gestora=='53')) {
       datosAdicionales = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
       observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
 
