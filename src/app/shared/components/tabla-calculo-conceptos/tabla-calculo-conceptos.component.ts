@@ -138,8 +138,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 0: case 1: case 7:
             if(tipoForm==7) {
               this.tipoFormEdit_monto = true;
-              this.displayedColumns.pop();
-              this.displayedColumns.push('monto');
+              //this.displayedColumns.pop();
+              //this.displayedColumns.push('monto');
             }
             this.tipoFormEdit = true;
 
@@ -268,9 +268,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   onAddElementForm() {
     if (this.newElementForm.invalid) return;
 
-    const newGame = this.newElementForm.value
+    const newGame = this.newElementForm.setValue(1);//value
     this.cantidadPago.push(
-      this.fb.control(newGame)
+      this.fb.control(1)
     );
 
   }
@@ -308,6 +308,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       });
     } else {
       this.onAddElementForm();
+      this.cantidadPago.controls[0].setValue(1);
     }
 
 
@@ -338,16 +339,17 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             contribuyente.data.lineaDetalle = contribuyente.data.lineaDetalle + resp.data.lineaDetalle;
             localStorage.setItem('contribuyente', JSON.stringify(contribuyente));
             this.conceptos = contribuyente.data.conceptos;
-            if (this.total === 0) {
+            /*if (this.total === 0) {
               this.total = contribuyente.data.total;
               return;
             }
-            this.total += resp.data.total;
+            this.total += resp.data.total;*/
+            this.total = contribuyente.data.total;
             return;
           }
           this.conceptos = resp.data.conceptos;
           localStorage.setItem('contribuyente', JSON.stringify(resp));//this.conceptoPago));
-          this.total += resp.data.total;
+          this.total = resp.data.total;//this.total += resp.data.total;
           if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable == 1).length > 0) {
             setTimeout(() => {
               this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
