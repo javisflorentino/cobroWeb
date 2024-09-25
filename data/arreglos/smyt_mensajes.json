@@ -45,14 +45,14 @@
       "id": 11,
       "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
+    {
+      "id": 12,
+      "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
+    },
 
     {
       "id":100,
       "msg": "Campo Requerido"
-    },
-    {
-      "id": 11,
-      "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
       "id":101,
@@ -87,6 +87,10 @@
     {
       "id": 11,
       "msg":"No existe el vehiculo o Se encuentra dado de Baja"
+    },
+    {
+      "id": 12,
+      "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
     },
     {
       "id": 100,
@@ -135,6 +139,10 @@
       "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
+      "id": 12,
+      "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido (MM/DD/YYYY)"
     },
@@ -173,6 +181,10 @@
       "msg":"No existe el vehiculo o Se encuentra dado de Baja"
     },
     {
+      "id": 12,
+      "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido"
     },
@@ -205,6 +217,10 @@
     {
       "id": 11,
       "msg":"No existe el vehiculo o Se encuentra dado de Baja"
+    },
+    {
+      "id": 12,
+      "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
     },
     {
       "id": 100,

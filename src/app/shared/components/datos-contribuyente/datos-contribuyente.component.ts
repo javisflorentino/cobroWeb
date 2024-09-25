@@ -134,6 +134,8 @@ export class DatosContribuyenteComponent implements OnInit {
         this.myFormContribuyente.get('domicilio')?.get('estados')?.setValue(17);
         if(localStorage.getItem('gestora') !== '64') {
           this.myFormContribuyente.get('domicilio')?.get('estados')?.enable();
+        } else {
+          this.myFormContribuyente.get('domicilio')?.get('observaciones')?.disable();
         }
         this.changeEstado('17');
       }
@@ -307,10 +309,7 @@ export class DatosContribuyenteComponent implements OnInit {
         fecha_factura = String(fecha_factura_array[2]) + '-' + String(fecha_factura_array[1]).padStart(2,'0') + '-' + String(fecha_factura_array[0]).padStart(2,'0');
       }
 
-      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():(dataVehicle_adit && dataVehicle_adit.placaAnterior)?dataVehicle_adit.placaAnterior:''},,,,,
-      MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},
-      VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,
-      NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
+      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():(dataVehicle_adit && dataVehicle_adit.placaAnterior)?dataVehicle_adit.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
         if(servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
           datosAdicionales_adic += ",T: 10";
         } else {
@@ -320,7 +319,7 @@ export class DatosContribuyenteComponent implements OnInit {
     }
 
     if((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora=='64')) {
-      datosAdicionales = datosAdicionales_adic + '|' +  ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
+      datosAdicionales = datosAdicionales_adic + ((observaciones!=='')?'| OBSERVACIONES: ':'') + observaciones;
       observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
     }
     if ( servicio.length == 0  && (gestora=='22' || gestora=='9' || gestora=='53' || gestora=='75' || gestora=='30' || gestora=='68' || gestora=='14' || gestora=='73')) {
@@ -423,7 +422,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = ((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:'');
+        this.dataPoliza.observaciones = (gestora=='64')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
 
