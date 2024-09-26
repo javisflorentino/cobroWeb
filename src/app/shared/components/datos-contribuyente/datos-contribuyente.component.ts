@@ -464,7 +464,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.observaciones = (gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        console.log(this.dataPoliza)
+
           this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;
