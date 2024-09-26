@@ -253,6 +253,39 @@ export class DatosContribuyenteComponent implements OnInit {
     return;
   }
 
+  monthDescription(valor:number): string {
+
+        switch (valor) {
+            case 1:
+                return "Enero";
+            case 2:
+                return "Febrero";
+            case 3:
+                return "Marzo";
+            case 4:
+                return "Abril";
+            case 5:
+                return "Mayo";
+            case 6:
+                return "Junio";
+            case 7:
+                return "Julio";
+            case 8:
+                return "Agosto";
+            case 9:
+                return "Septiembre";
+            case 10:
+                return "Octubre";
+            case 11:
+                return "Noviembre";
+            case 12:
+                return "Diciembre";
+            default:
+                return "Error";
+        }
+
+}
+
   generarPoliza(): void {
 
     if (this.myFormContribuyente.invalid) {
@@ -366,6 +399,11 @@ export class DatosContribuyenteComponent implements OnInit {
         }
         datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
       }
+      /* HACIENDA - IMPUESTOS - ISAN */
+      if(datos.tipo_form && datos.tipo_form==4) {
+        datosAdicionales = `${datos.concepto!}-${this.monthDescription(Number(datos.periodo))}-${datos.ejercicio}`;
+        observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
+      }
     }
    }
 
@@ -423,10 +461,10 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = (gestora=='64')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
+        this.dataPoliza.observaciones = (gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
         this.dataPoliza.datosAdicionales = datosAdicionales;
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-
+        console.log(this.dataPoliza)
           this.smytService.generarPolizaServ(this.dataPoliza)
             .subscribe(resp => {
               this.isLoading = false;

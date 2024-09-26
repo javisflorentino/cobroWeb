@@ -99,7 +99,24 @@ export class GeneralesService {
     })
 
   }
-  async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
+
+  getDetalleCobroISAN(importe:number, fecha:string, periodo: number, idConcepto:number): Observable<CalculoConcepto|null> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    console.log([{"id": "sh-form-16","idConcepto": idConcepto,"data": [{"id": "sh-input-monto","value": importe},{"id": "sh-input-periodo","value": periodo},{"id": "sh-input-ejercicioFiscal","value": fecha}]}])
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`,JSON.stringify([{"id": "sh-form-16","idConcepto": idConcepto,"data": [{"id": "sh-input-monto","value": importe},{"id": "sh-input-periodo","value": periodo},{"id": "sh-input-ejercicioFiscal","value": fecha}]}]),{headers})
+    .pipe(
+      map(resp => {
+        if(resp.success) {
+          return resp;
+        }
+        throw {message:resp.mensaje,error:"Unauthorized",statusCode:401};
+      }),
+      catchError(error => { throw error; })
+    );
+  }
+  /*async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
     console.log(importe + ' | ' + fecha + ' | ' + idConcepto)
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",
@@ -107,7 +124,7 @@ export class GeneralesService {
       headers: { "Content-type": "text/xml; charset=utf-8"},
       redirect: "follow"
     });
-  }
+  }*/
   async getConceptoDetalle(idConcepto:number, monto:number): Promise<any> {
     return await fetch(`${this.urlSOAP}conceptos/services/conceptos`, {
       method: "POST",

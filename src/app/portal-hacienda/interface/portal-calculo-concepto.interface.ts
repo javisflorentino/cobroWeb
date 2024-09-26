@@ -3,6 +3,7 @@
 export interface CalculoConcepto {
   data:    Data;
   success: boolean;
+  mensaje?:string;
 }
 
 export interface Data {
@@ -18,4 +19,8 @@ export interface Concepto {
   descripcion:     string;
   ejercicioFiscal: number;
   importe:         number;
+  importeUnitario?:number;
+  unitario?:       number;
+  conceptoArea?:   number;
+
 }

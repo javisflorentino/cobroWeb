@@ -16,6 +16,7 @@ import { environments } from 'src/environments/environments';
 import { SoapServiciosConceptosDetalle } from '../../interfaces/soap-servicios_conceptos';
 import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
 import { MenuService } from '../../services/menu.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -277,26 +278,24 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   /** SOAP Actualizar */
   consultConceptoPagoISAN(idConcepto: number) {
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
-
-
-    this.generalesService.getDetalleCobroISAN(datos.monto, datos.fechaVencimiento, 927)
-      .then(response => response.text())
-      .then(xml => {
-        this.isLoading = false;
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        let adeudos = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse'].adeudos;
-        this.conceptos = [{
-          id: 0,
-          clave: String(adeudos['claveConcepto']['#text']),
-          cantidad: 1,
-          descripcion: String(adeudos['descripcion']['#text']),
-          ejercicioFiscal: Number(adeudos['ejercicioFiscal']['#text']),
-          importe: Number(adeudos['total']['#text'])
-        }];
-        localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(adeudos['total']['#text']), conceptos: this.conceptos, lineaDetalle: String(adeudos['lineaDetalle']['#text']) }, success: true }));//this.conceptoPago));
-        this.total += Number(adeudos['total']['#text']);
-      }).catch(err => console.log(err));
-
+    this.generalesService.getDetalleCobroISAN(datos.monto, datos.ejercicio, datos.periodo, 927)
+      .subscribe({
+        next:(resp) => {
+          this.isLoading = false;
+          this.conceptos = resp!.data.conceptos;
+          localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle) }, success: true }));//this.conceptoPago));
+          this.total += Number(resp!.data.total);
+          datos.concepto = resp?.data.conceptos[0].descripcion;
+          localStorage.setItem('datos_cobro',JSON.stringify(datos));
+        },
+        error: (err) => {
+          this.isLoading = false;
+          Swal.fire({title: "Error !!",text: err.message,icon: "error",allowOutsideClick:false})
+            .then((response) => {
+              this.router.navigate(['pagos/dependencias']);
+            });
+        }
+      })
   }
   consultConceptoPago(idConcepto: number, cantidad: number, monto?: number) {
     monto = (monto == 0) ? 1 : monto;

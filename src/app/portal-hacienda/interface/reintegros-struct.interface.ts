@@ -27,4 +27,5 @@ export interface ReintegrosStruct {
   anio?:                  number;
   certificacion?:         string;
   semestre?:              string;
+  concepto?:              string;
 }

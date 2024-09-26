@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FechaVencimientoISAN } from 'src/app/shared/interfaces/soap-fechavencimiento-isan';
 import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
+import Swal from 'sweetalert2';
 
 const moment = _rollupMoment || _moment;
 const MY_FORMATS = {
@@ -225,28 +226,23 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
       return;
     }
     if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
-      let fechaVencimiento: string = '';
-      /** SOAP */
-      this.generalesService.getFechaVencimientoISAN(month+1,year)
-      .then(response => response.text())
-      .then(xml => {
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        fechaVencimiento = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenFechaVencimientoResponse'].fechaVencimiento['#text'].toString();
-        localStorage.setItem('datos_cobro',JSON.stringify(
-          {
-            cantidad:         1,
-            monto:            Number(this.myForm.get('monto')?.value),
-            periodo:          month+1,
-            ejercicio:        year,
-            fechaVencimiento: fechaVencimiento,
-            sistema:          40
-          })
-        );
-        localStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
-        this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
-      });
+      localStorage.setItem('datos_cobro',JSON.stringify(
+        {
+          cantidad:         1,
+          monto:            Number(this.myForm.get('monto')?.value),
+          periodo:          month+1,
+          ejercicio:        year,
+          sistema:          40,
+          tipo_form:         this.tipoForm
+        })
+      );
+      localStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
+      this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
     } else {
-      this.openSnackBar('No puede pagar un periodo o ejercicio fiscal que no ha pasado.');
+      Swal.fire({title: "Error !!",text: 'No puede pagar un periodo o ejercicio fiscal que no ha pasado.',icon: "error",allowOutsideClick:false})
+            .then(() => {
+              this.isLoading = false;
+            });
     }
 
   }
