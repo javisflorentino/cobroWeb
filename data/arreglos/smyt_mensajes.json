@@ -49,6 +49,14 @@
       "id": 12,
       "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
     },
+    {
+      "id": 13,
+      "msg":"El vehiculo se encuentra activo, no puede realizar este tramite"
+    },
+    {
+      "id": 14,
+      "msg":"El vehiculo tiene adeudo, no puede realizar este tramite"
+    },
 
     {
       "id":100,
@@ -91,6 +99,14 @@
     {
       "id": 12,
       "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
+    },
+    {
+      "id": 13,
+      "msg":"El vehiculo se encuentra activo, no puede realizar este tramite"
+    },
+    {
+      "id": 14,
+      "msg":"El vehiculo tiene adeudo, no puede realizar este tramite"
     },
     {
       "id": 100,
@@ -143,6 +159,14 @@
       "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
     },
     {
+      "id": 13,
+      "msg":"El vehiculo se encuentra activo, no puede realizar este tramite"
+    },
+    {
+      "id": 14,
+      "msg":"El vehiculo tiene adeudo, no puede realizar este tramite"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido (MM/DD/YYYY)"
     },
@@ -185,6 +209,14 @@
       "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
     },
     {
+      "id": 13,
+      "msg":"El vehiculo se encuentra activo, no puede realizar este tramite"
+    },
+    {
+      "id": 14,
+      "msg":"El vehiculo tiene adeudo, no puede realizar este tramite"
+    },
+    {
       "id": 100,
       "msg": "Campo requerido"
     },
@@ -221,6 +253,14 @@
     {
       "id": 12,
       "msg":"No se puede realizar tramite, vehiculo tiene pagos pendientes"
+    },
+    {
+      "id": 13,
+      "msg":"El vehiculo se encuentra activo, no puede realizar este tramite"
+    },
+    {
+      "id": 14,
+      "msg":"El vehiculo tiene adeudo, no puede realizar este tramite"
     },
     {
       "id": 100,

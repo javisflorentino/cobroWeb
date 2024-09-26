@@ -332,7 +332,8 @@ export class DatosContribuyenteComponent implements OnInit {
         fecha_vencimiento_array = String(dataVehicle_adit.fecha_vencimiento).split('/')
         fecha_vencimiento = String(fecha_vencimiento_array[2]) + '-' + String(fecha_vencimiento_array[1]).padStart(2,'0') + '-' + String(fecha_vencimiento_array[0]).padStart(2,'0');
 
-        observaciones = ((observaciones!=='')?'':'OBSERVACIONES: ') + `${observaciones} No. Licencia: ${dataVehicle_adit.licencia} ,Fecha vencimiento: ${fecha_vencimiento},.`
+        observaciones = ((observaciones!=='')?'':'OBSERVACIONES: ') + `${observaciones} No. Licencia: ${String(dataVehicle_adit.licencia).toUpperCase()} ,Fecha vencimiento: ${fecha_vencimiento},.`
+        datosAdicionales = observaciones;
       }
     }
 

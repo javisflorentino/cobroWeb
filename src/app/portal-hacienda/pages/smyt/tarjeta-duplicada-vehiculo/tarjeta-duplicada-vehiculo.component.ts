@@ -33,7 +33,7 @@ export class TarjetaDuplicadaVehiculoComponent implements OnInit {
     serie:   ['', [Validators.required, Validators.minLength(5)]]
   },
   {
-    validators: [this.validatorsService.existsSeries('serie','placa',1, 1, '1','')]
+    validators: [this.validatorsService.existsSeries('serie','placa',1, 4, '1','')]
   });
 
   public messages: Messages[] = [];
