@@ -355,7 +355,7 @@ export class DatosContribuyenteComponent implements OnInit {
       datosAdicionales = datosAdicionales_adic + ((observaciones!=='')?'| OBSERVACIONES: ':'') + observaciones;
       observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
     }
-    if ( servicio.length == 0  && (gestora=='22' || gestora=='9' || gestora=='53' || gestora=='75' || gestora=='30' || gestora=='68' || gestora=='14' || gestora=='73')) {
+    if ( servicio.length == 0  && (gestora=='22' || gestora=='9' || gestora=='53' || gestora=='75' || gestora=='30' || gestora=='68' || gestora=='14' || gestora=='73' || gestora=='70' || gestora=='66')) {
       datosAdicionales = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
       observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
 
