@@ -129,7 +129,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       this.activatedRoute.params.subscribe(({ idConcepto, tipoForm }) => {
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
-        this.arrConceptos.push(idConcepto);
+
+        if(!!!localStorage.getItem('contribuyente')) {
+          this.arrConceptos[0] = idConcepto;
+        } else {
+          this.arrConceptos.push(idConcepto);
+        }
 
         if([843,842,844].find(resp => resp==idConcepto) !== undefined){
           this.openSnackBar('ESTE TRÁMITE SOLO APLICA PARA CASOS DE ROBO O EXTRAVÍO DE LICENCIA Y QUE AÚN TENGAN VIGENCIA.');
