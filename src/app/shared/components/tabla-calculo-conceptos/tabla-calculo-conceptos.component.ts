@@ -100,7 +100,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     MODIF: 12/12/2023
   */
   ngAfterContentInit(): void {
-    localStorage.removeItem('contribuyente');
+    //localStorage.removeItem('contribuyente');
   }
 
   ngOnDestroy() {
@@ -112,6 +112,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   }
 
   ngOnInit(): void {
+    /* NOTA: SE USA CUANDO SE REFRESCA EL NAVEGADAR EVITAR SE SIGAN CARGANDO CONCEPTOS Y REINICIA AL CONCEPTO DE ORIGEN */
+    localStorage.removeItem('contribuyente');
 
     if (localStorage.getItem('route_origen'))
       this.route_origen = localStorage.getItem('route_origen')!;
