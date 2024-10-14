@@ -140,6 +140,26 @@ export class SustitucionPlacaVehiculoComponent implements OnInit {
     return '';
   }
 
+  updateFiel(event: number): void {
+    console.log(event)
+    if(event === 9) {
+      let msg: string = '';
+      this.smytService.getMessages_vehicle()
+        .subscribe( message => {
+          this.messages_other = message;
+          if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
+            this.messages_other.forEach(mss=> {
+              msg += mss.message + "<br><br>";
+            });
+            this.openSnackBar(msg);
+          }
+        });
+      return;
+    }
+    if(this.messages_other.length > 0) this.messages_other = [];
+    return;
+  }
+
   onSubmit() {
     this.isLoading = true;
     this.buttBlock = true;

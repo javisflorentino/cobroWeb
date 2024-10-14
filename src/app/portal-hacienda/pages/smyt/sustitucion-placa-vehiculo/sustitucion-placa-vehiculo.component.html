@@ -21,7 +21,7 @@
 
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Tipo de vehículo</mat-label>
-                <mat-select formControlName="tipo_vehiculo">
+                <mat-select formControlName="tipo_vehiculo" (valueChange)="updateFiel($event)">
                   <mat-option value="">--- Seleccione Tipo de Vehículo ---</mat-option>
                   <mat-option *ngFor="let tipo of tipoVehiculoArr" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
                 </mat-select>

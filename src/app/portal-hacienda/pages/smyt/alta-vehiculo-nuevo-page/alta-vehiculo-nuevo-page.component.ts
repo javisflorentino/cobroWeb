@@ -162,7 +162,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   }
 
   updateFiel(event: number): void {
-    if(event === 7) {
+    if(event === 9) {
       let msg: string = '';
       this.smytService.getMessages_vehicle()
         .subscribe( message => {
@@ -174,6 +174,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
             this.openSnackBar(msg);
           }
         });
+      return;
     }
     if(this.messages_other.length > 0) this.messages_other = [];
     return;

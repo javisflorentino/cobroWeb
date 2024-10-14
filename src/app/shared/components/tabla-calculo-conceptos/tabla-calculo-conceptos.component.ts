@@ -534,8 +534,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           }
 
           let arrLineaDetalle = contribuyente.data.lineaDetalle.split('|');
-          arrLineaDetalle.pop();
-          arrLineaDetalle[val] = resp.data.lineaDetalle;
+          if(arrLineaDetalle[arrLineaDetalle.length-1].length>1) arrLineaDetalle.pop();
+          arrLineaDetalle[val] = resp.data.lineaDetalle.replaceAll('|','');
 
           contribuyente.data.conceptos[val].importe = resp.data.conceptos[0].importe;
           contribuyente.data.conceptos[val].cantidad = resp.data.conceptos[0].cantidad;
