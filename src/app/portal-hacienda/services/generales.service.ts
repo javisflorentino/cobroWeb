@@ -116,6 +116,26 @@ export class GeneralesService {
       catchError(error => { throw error; })
     );
   }
+  async getRezagosActualizaciones(idConcepto:number, monto:number, fecha:string): Promise<any> {
+    return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
+      method: "POST",
+      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:imp="http://impuestos/">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <imp:obtenerRezagosActualizacionAdicionales>
+            <!--Optional:-->
+            <idConcepto>${idConcepto}</idConcepto>
+            <!--Optional:-->
+            <importe>${monto}</importe>
+            <!--Optional:-->
+            <fecha>${fecha}</fecha>
+          </imp:obtenerRezagosActualizacionAdicionales>
+        </soapenv:Body>
+      </soapenv:Envelope>`,
+      headers: { "Content-type": "text/xml; charset=utf-8"},
+      redirect: "follow"
+    });
+  }
   /*async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
     console.log(importe + ' | ' + fecha + ' | ' + idConcepto)
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {

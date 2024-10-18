@@ -6,6 +6,7 @@ import { default as _rollupMoment, Moment } from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { formatDate } from '@angular/common';
 
 const moment = _rollupMoment || _moment;
 
@@ -127,11 +128,14 @@ export class EnajenacionBienesPagesComponent implements OnInit, OnDestroy {
       this.buttBlock = false;
       return;
     }
+
     localStorage.setItem('route_origen',`hacienda/hacienda-enajenacion/${this.idConcepto}/${this.tipoForm}`);
     localStorage.setItem('datos_cobro',JSON.stringify(
       {
         cantidad:      1,
-        monto:         Number(this.myFormHEnajenacion.get('monto')?.value)
+        monto:         Number(this.myFormHEnajenacion.get('monto')?.value),
+        fecha:         formatDate(this.myFormHEnajenacion.get('fecha_escritura')?.value,'yyyy-MM-dd','en-US'),
+        tipo_form:     this.tipoForm
       })
     )
 

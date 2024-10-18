@@ -15,7 +15,7 @@
             <mat-error >{{ getMessage(myFormHEnajenacion.get('escritura')?.errors,'escritura') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Fecha de retención</mat-label>
+            <mat-label>Fecha de escritura</mat-label>
             <input matInput [matDatepicker]="dpff" formControlName="fecha_escritura" [readonly]="true" >
             <mat-error >No puede ser mayor a la fecha actual</mat-error>
             <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>

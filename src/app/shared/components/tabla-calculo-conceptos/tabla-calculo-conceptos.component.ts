@@ -203,8 +203,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 13:
             this.consultConceptoPago(idConcepto, 1, this.tipoform);
             break;
-          case 16: case 14: case 17: case 6: case 12: case 3:
+          case 16: case 14: case 17: case 12: case 3://case 16: case 14: case 17: case 6: case 12: case 3:
             this.consultConceptoPago(idConcepto, 1, datos.monto);
+            break;
+          case 6:
+            this.consultaRezagosActualizacionAdicional(idConcepto);
             break;
           default:
             if (!this.tipoform) {
@@ -282,6 +285,45 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     );
 
   }
+
+  consultaRezagosActualizacionAdicional(idConcepto: number) {
+    const datos_cobro = JSON.parse(localStorage.getItem('datos_cobro')!);
+    let conceptos: Concepto = {} as Concepto;
+    this.generalesService.getRezagosActualizaciones(idConcepto,datos_cobro.monto,datos_cobro.fecha)
+      .then(response => response.text())
+      .then(xml => {
+        this.isLoading = false;
+        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+        if(!!this.asJson) {
+          const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text']; //estatusVehiculo.vehiculo.noSerie['#text'];
+
+          conceptos.descripcion = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'];
+          conceptos.ejercicioFiscal = Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['ejercicioFiscal']['#text']);
+          conceptos.importeUnitario = Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']);
+          conceptos.cantidad = 1;
+          conceptos.importe = Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']);
+
+          this.conceptos = [conceptos];//.push(conceptos);
+
+          localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']), conceptos: this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'], lineaDetalle: String(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['lineaDetalle']['#text']) }, success: true }));//this.conceptoPago));
+          this.total += Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']);
+          datos_cobro.concepto = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'];
+          localStorage.setItem('datos_cobro',JSON.stringify(datos_cobro));
+          return;
+        } else {
+          throw {message:"No se obtuvo informacion con los datos proporcionados",error:"Unauthorized",statusCode:412};
+        }
+      })
+      .catch(err => {
+        console.log('ERROR')
+        this.isLoading = false;
+        Swal.fire({icon: "error", title: `Error: ${err.statusCode}`, text: `${err.message}`, allowOutsideClick:false})
+          .then(()=>{
+            this.router.navigate(['pagos/dependencias']);
+          });
+      })
+  }
+
   /** SOAP Actualizar */
   consultConceptoPagoISAN(idConcepto: number) {
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
