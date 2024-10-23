@@ -1,6 +1,6 @@
-<mat-sidenav [ngStyle]="{width: '350px'}" #sidenav mode="push" style="z-index:101; position: fixed;">
+<mat-sidenav [ngStyle]="{width: '350px'}" #sidenav mode="push" class="matsidenav">
   <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-  <mat-toolbar color="primary" [class.mat-elevation-z5]="true">
+  <mat-toolbar class="my-toolbar-sidenav" [class.mat-elevation-z5]="true">
     <button mat-icon-button *ngIf="showBack" (click)="backMenu()">
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -13,13 +13,12 @@
   </mat-toolbar>
 
   <mat-nav-list>
-    <ul class="list-none p-0 m-0 overflow-hidden" style="list-style-type: none; padding: 0; margin: 0;">
+    <ul class="list-none p-0 m-0 overflow-hidden sidenav-matnav-list">
       <div>
         <li *ngFor="let item of itemsConceptos"
-          class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors"
+          class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors sidenav-matnav-ul-li"
           routerLinkActive="active"
           (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora,item.tipoMovimiento)"
-          style="border: 1px solid #ddd; margin-top: -1px; background-color: #f6f6f6; padding: 12px;"
           >
           {{item.titulo}}
           <span *ngIf="item.gestora==0" style="flex: 1 1 auto;"></span>

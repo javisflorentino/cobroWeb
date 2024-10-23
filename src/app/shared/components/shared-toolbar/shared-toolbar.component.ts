@@ -4,8 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'shared-toolbar',
   templateUrl: './shared-toolbar.component.html',
-  styles: [
-  ]
+  styleUrls: ['./shared-toolbar.component.css']
 })
 export class SharedToolbarComponent {
 

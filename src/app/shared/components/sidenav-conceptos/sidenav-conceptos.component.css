@@ -1,0 +1,20 @@
+.my-toolbar-sidenav {
+  background-color: #dbdace;
+  color: #213523;
+}
+.matsidenav{
+  z-index:101;
+  position: fixed;
+  background-color: #213523;
+}
+.sidenav-matnav-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  color:#dbdace
+}
+.sidenav-matnav-ul-li {
+  margin-top: -1px;
+  padding: 12px;
+  border-bottom:solid 1px #dbdace;
+}

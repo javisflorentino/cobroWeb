@@ -83,6 +83,7 @@ span {
   right: 0;
   width: 4rem;
   margin: auto;
+  color: #cacabf;
 }
 .loader--text:after {
   content: "Loading";

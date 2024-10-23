@@ -18,8 +18,7 @@ export interface IdPadre {
 @Component({
   selector: 'shared-sidenav-conceptos',
   templateUrl: './sidenav-conceptos.component.html',
-  styles: [
-  ]
+  styleUrls: ['./sidenav-conceptos.component.css']
 })
 export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   /* NOTA: RECIBE EL EVENTO DE CERRAR O ABRIR MENU DEL PADRE LAYOUT Y ESTE A AU VEZ LO RECIBE DEL HIJO TOOLBAR */

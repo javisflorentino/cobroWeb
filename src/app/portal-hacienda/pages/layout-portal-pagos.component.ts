@@ -12,8 +12,7 @@ import { MenuConceptos } from 'src/app/shared/interfaces/shared-conceptos.interf
 @Component({
   selector: 'app-layout-portal-pagos',
   templateUrl: './layout-portal-pagos.component.html',
-  styles: [
-  ]
+  styleUrls: ['./layout-portal-pagos.component.css']
 })
 export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
 
