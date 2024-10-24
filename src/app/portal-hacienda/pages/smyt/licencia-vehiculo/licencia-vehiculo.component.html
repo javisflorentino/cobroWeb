@@ -28,14 +28,14 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No de Licencia</mat-label>
                 <input #no_licencia matInput type="text" maxlength="20" formControlName="no_licencia" (keyup)="onKeyPress(txtInput.value)" #txtInput>
-                <mat-error *ngIf="isValidField('no_licencia')"> Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('no_licencia')"> Campo requerido</mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Fecha Vencimiento</mat-label>
                 <input matInput [matDatepicker]="dpfv" formControlName="fecha_vencimiento" > <!--[max]="maxDate" formControlName="fecha_vencimiento" -->
                 <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-error *ngIf="isValidField('fecha_vencimiento')"> Campo requerido y no mayor a 28 días </mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('fecha_vencimiento')"> Campo requerido y no mayor a 28 días </mat-error>
                 <mat-datepicker-toggle matIconSuffix [for]="dpfv"></mat-datepicker-toggle>
                 <mat-datepicker #dpfv></mat-datepicker>
               </mat-form-field>

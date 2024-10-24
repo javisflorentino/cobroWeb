@@ -18,3 +18,10 @@
   padding: 12px;
   border-bottom:solid 1px #dbdace;
 }
+
+.sizelogtext {
+  font-size: 12px;
+}
+.sizeshorttext {
+  font-size: 15px;
+}

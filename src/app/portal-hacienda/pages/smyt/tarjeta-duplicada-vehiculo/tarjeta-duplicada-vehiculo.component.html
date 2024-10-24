@@ -16,20 +16,20 @@
                 <mat-select formControlName="oficina" required>
                   <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
                 </mat-select>
-                <mat-error > Campo requerido </mat-error>
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="8">
-                <mat-error > Campo requerido </mat-error>
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
                 <mat-label>Serie Vehicular</mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
-                <mat-error > {{ getMessage(myForm.get('serie')?.getError('error'),'serie') }} </mat-error>
+                <mat-error class="fontsizeerror"> {{ getMessage(myForm.get('serie')?.getError('error'),'serie') }} </mat-error>
               </mat-form-field>
             </div>
           </form>

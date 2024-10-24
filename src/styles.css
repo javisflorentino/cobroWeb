@@ -39,6 +39,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+
+.fontsizeerror {
+  font-size: .50rem;
+}
+
 /*.example-container mat-form-field {
   width: 40%;
 }

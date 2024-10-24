@@ -31,19 +31,19 @@
                 <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                   <mat-label>Modelo</mat-label>
                   <input matInput type="number" formControlName="modelo">
-                  <mat-error *ngIf="isValidField('modelo')"> valor entre 1900 y {{anio + 1}}</mat-error>
+                  <mat-error class="fontsizeerror" *ngIf="isValidField('modelo')"> valor entre 1900 y {{anio + 1}}</mat-error>
                 </mat-form-field>
 
                 <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                   <mat-label>Cilindros</mat-label>
                   <input matInput formControlName="cilindros" type="number">
-                  <mat-error *ngIf="isValidField('cilindros')">Requerido y numérico</mat-error>
+                  <mat-error class="fontsizeerror" *ngIf="isValidField('cilindros')">Requerido y numérico</mat-error>
                 </mat-form-field>
 
                 <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                   <mat-label>Centímetros cúbicos</mat-label>
                   <input matInput formControlName="centimetros" type="number" >
-                  <mat-error *ngIf="isValidField('centimetros')">Requerido y numérico</mat-error>
+                  <mat-error class="fontsizeerror" *ngIf="isValidField('centimetros')">Requerido y numérico</mat-error>
                 </mat-form-field>
               <!--/div-->
             </mat-expansion-panel>
@@ -58,19 +58,19 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Pasajeros</mat-label>
                 <input matInput formControlName="pasajeros" type="number" name="" id="">
-                <mat-error *ngIf="isValidField('pasajeros')">Requerido y numérico</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('pasajeros')">Requerido y numérico</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Valor de la factura</mat-label>
                 <input matInput formControlName="valor_factura" type="number" >
-                <mat-error *ngIf="isValidField('valor_factura')">Requerido y numérico</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Requerido y numérico</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Placa foranea y/o placa anterior</mat-label>
                 <input matInput formControlName="placa_foranea" type="text" name="" id="">
-                <mat-error *ngIf="isValidField('valor_factura')">Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Campo requerido</mat-error>
               </mat-form-field>
             </mat-expansion-panel>
 

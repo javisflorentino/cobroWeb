@@ -14,14 +14,14 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No de folio</mat-label>
                 <input matInput formControlName="folio" required type="text">
-                <mat-error>{{ getMessage(myForm.get('folio')?.errors,'folio') }}</mat-error>
+                <mat-error class="fontsizeerror">{{ getMessage(myForm.get('folio')?.errors,'folio') }}</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Año </mat-label>
                 <input matInput [matDatepicker]="dpff" formControlName="anio" [readonly]="true" [max]="_max"
                 [min]="_min">
-                <mat-error >No puede pagar un periodo o ejercicio fiscal que no ha pasado.</mat-error>
+                <mat-error class="fontsizeerror">No puede pagar un periodo o ejercicio fiscal que no ha pasado.</mat-error>
                 <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
                 <mat-datepicker #dpff disabled="false"
                 startView="multi-year"
@@ -33,7 +33,7 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Tipo de certificacion</mat-label>
                 <input matInput formControlName="certificacion" required type="text">
-                <mat-error>{{ getMessage(myForm.get('certificacion')?.errors,'certificacion') }}</mat-error>
+                <mat-error class="fontsizeerror">{{ getMessage(myForm.get('certificacion')?.errors,'certificacion') }}</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline" class="full-width radio-container">

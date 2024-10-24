@@ -12,24 +12,24 @@
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Escritura</mat-label>
             <input matInput type="text" formControlName="escritura">
-            <mat-error >{{ getMessage(myFormHEnajenacion.get('escritura')?.errors,'escritura') }}</mat-error>
+            <mat-error class="fontsizeerror">{{ getMessage(myFormHEnajenacion.get('escritura')?.errors,'escritura') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
             <mat-label>Fecha de escritura</mat-label>
             <input matInput [matDatepicker]="dpff" formControlName="fecha_escritura" [readonly]="true" >
-            <mat-error >No puede ser mayor a la fecha actual</mat-error>
+            <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
             <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
             <mat-datepicker #dpff disabled="false"></mat-datepicker>
           </mat-form-field>
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Contribuyente</mat-label>
             <input matInput type="text" formControlName="contribuyente">
-            <mat-error >{{ getMessage(myFormHEnajenacion.get('contribuyente')?.errors,'contribuyente') }}</mat-error>
+            <mat-error class="fontsizeerror">{{ getMessage(myFormHEnajenacion.get('contribuyente')?.errors,'contribuyente') }}</mat-error>
           </mat-form-field>
           <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
             <mat-label>Monto</mat-label>
             <input matInput formControlName="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
-            <mat-error >{{ getMessage(myFormHEnajenacion.get('monto')?.errors,'monto') }}</mat-error>
+            <mat-error class="fontsizeerror">{{ getMessage(myFormHEnajenacion.get('monto')?.errors,'monto') }}</mat-error>
           </mat-form-field>
         </form>
       </mat-card-content>

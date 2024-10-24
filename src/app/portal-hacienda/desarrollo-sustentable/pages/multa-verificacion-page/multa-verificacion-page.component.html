@@ -14,13 +14,13 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Placa</mat-label>
                 <input matInput formControlName="placa" required type="text">
-                <mat-error>{{ getMessage(myForm.get('placa')?.errors,'placa') }}</mat-error>
+                <mat-error class="fontsizeerror">{{ getMessage(myForm.get('placa')?.errors,'placa') }}</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Fecha próxima verificacion </mat-label>
                 <input matInput [matDatepicker]="dpff" formControlName="fecha_verificacion" [readonly]="true">
-                <mat-error >No puede pagar un periodo o ejercicio fiscal que no ha pasado.</mat-error>
+                <mat-error class="fontsizeerror">No puede pagar un periodo o ejercicio fiscal que no ha pasado.</mat-error>
                 <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
                 <mat-datepicker #dpff disabled="false" panelClass="example-month-picker"></mat-datepicker>
               </mat-form-field>
@@ -28,7 +28,7 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No de serie</mat-label>
                 <input matInput formControlName="serie" required type="text">
-                <mat-error>{{ getMessageSec(myForm.get('serie')?.getError('error'),'serie') }}</mat-error>
+                <mat-error class="fontsizeerror">{{ getMessageSec(myForm.get('serie')?.getError('error'),'serie') }}</mat-error>
               </mat-form-field>
 
             </div>

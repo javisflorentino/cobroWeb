@@ -16,7 +16,7 @@
                 <mat-select formControlName="oficina" required>
                   <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
                 </mat-select>
-                <mat-error > Campo requerido </mat-error>
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
@@ -25,13 +25,13 @@
                   <mat-option value="">--- Seleccione Tipo de Vehículo ---</mat-option>
                   <mat-option *ngFor="let tipo of tipoVehiculoArr" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
                 </mat-select>
-                <mat-error > Campo requerido</mat-error>
+                <mat-error class="fontsizeerror"> Campo requerido</mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Fecha factura</mat-label>
                 <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true" >
-                <mat-error >No puede ser mayor a la fecha actual</mat-error>
+                <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
                 <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
                 <mat-datepicker #dpff disabled="false"></mat-datepicker>
               </mat-form-field>
@@ -39,14 +39,14 @@
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="8">
-                <mat-error > Campo requerido </mat-error>
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
 
               <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
                 <mat-label>Serie Vehicular</mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="">
                 <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
-                <mat-error > {{ getMessage(myForm.get('serie')?.getError('error'),'serie') }} </mat-error>
+                <mat-error class="fontsizeerror"> {{ getMessage(myForm.get('serie')?.getError('error'),'serie') }} </mat-error>
               </mat-form-field>
             </div>
           </form>
