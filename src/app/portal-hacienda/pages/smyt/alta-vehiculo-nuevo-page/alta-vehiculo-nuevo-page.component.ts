@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { FormAltaVehiculoComponent } from 'src/app/portal-hacienda/components/smyt/form-alta-vehiculo/form-alta-vehiculo.component';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
@@ -12,6 +12,8 @@ import { SnackBarComponent } from '../../../../shared/components/snack-bar/snack
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+
+import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.interfacce';
 
 @Component({
   selector: 'smyt-alta-vehiculo-nuevo-page',
@@ -26,7 +28,16 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   /* Bloque el boton de Calcular para evitar acciones duplicadas  */
   public buttBlock = false;
 
-  public myForm: FormGroup = this.fb.group({});
+  public anio: number = new Date().getFullYear();
+
+  public myForm: FormGroup = this.fb.group({
+    modelo: ['', [Validators.required, Validators.max(this.anio + 1), Validators.min(AnioMin.ANIOMIN_VEHICLE)]], // Entre 1900 - 2024
+    //cilindros: ['', [Validators.required, Validators.max(16), Validators.pattern(this.validatorsService.numberPattern)]],
+    //centimetros: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
+    pasajeros: ['', [Validators.required]],
+    fecha_solicitud: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]],
+    fecha_aprobacion: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]],
+  });
 
   public messages: Messages[] = [];
   public messages_other: Messages[] = [];
@@ -47,7 +58,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-  @HostListener('input', ['$event']) onKeyUp(event:any) {
+  @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
   }
 
@@ -64,8 +75,8 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
   // Se implementó para la carga del formulario FormAltaVehiculoComponent
   ngAfterViewInit(): void {
-    setTimeout( () => {
-      this.myForm.addControl('oficina_tramite',this.childComponent.myFormShared);
+    setTimeout(() => {
+      this.myForm.addControl('oficina_tramite', this.childComponent.myFormShared);
       this.childComponent.myFormShared.setParent(this.myForm);
     });
     //form.setParent(this.form);
@@ -75,10 +86,10 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     this.conceptTitle = localStorage.getItem('concept')!;
     let msg: string = '';
     this.smytService.getMessages()
-      .subscribe( message => {
+      .subscribe(message => {
         this.messages = message;
         if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
-          this.messages.forEach(mss=> {
+          this.messages.forEach(mss => {
             msg += mss.message + "<br><br>";
           });
           this.openSnackBar(msg);
@@ -93,7 +104,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   calcularPago() {
     this.isLoading = true;
     this.buttBlock = true;
-    if ( this.myForm.invalid ) {
+    if (this.myForm.invalid) {
       this.myForm.markAllAsTouched();
       this.isLoading = false;
       this.buttBlock = false;
@@ -102,33 +113,49 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
 
     let invoiceDate = moment(this.myForm.get('oficina_tramite')?.get('fecha_factura')?.value).toDate();
+    let solicitudData = moment(this.myForm.get('fecha_solicitud')?.value).toDate();
+    let aprobacionData = moment(this.myForm.get('fecha_aprobacion')?.value).toDate();
 
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficina_tramite')?.get('no_serie')?.value).toUpperCase(),"tramite":2,
-      "tipoVehiculo":this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
-      "obtenerContribuyente":false}));
+    /* TODO: 16012025 .- SE AGREGA LOS DOS ULTIMOS PARAMETROS CLAVEVEHICULA Y TIPOMOTOR */
+    localStorage.setItem('vehicle_data', JSON.stringify({
+      "placa": '', "numeroSerie": String(this.myForm.get('oficina_tramite')?.get('no_serie')?.value).toUpperCase(), "tramite": 2,
+      "tipoVehiculo": this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value, "fechaFactura": invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear(),
+      "obtenerContribuyente": false, "claveVehicular":'',"tipoMotor": this.myForm.get('oficina_tramite')?.get('tipo_motor')?.value,"fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
+      "fechaAprobacion": aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
+      "capacidadPasajeros":this.myForm.get('pasajeros')?.value,"modelo":this.myForm.get('modelo')?.value,
+      "valorFactura":this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
+    }));
 
     let parameters: DatosTramite = {
-      tramite:              2,
-      placa:                '',
-      numeroSerie:          this.myForm.get('oficina_tramite')?.get('no_serie')?.value,
-      tipoVehiculo:         this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value,
+      tramite: 2,
+      placa: '',
+      numeroSerie: this.myForm.get('oficina_tramite')?.get('no_serie')?.value,
+      tipoVehiculo: this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value,
       obtenerContribuyente: false,
-      fechaFactura:         invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()
+      fechaFactura: invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear(),
+      claveVehicular: "",/* TOTO: NO SE UTILIZA , PERO EN ALGUN MOMENTO SE PODRIA HABILITAR. AGREGAR EL COAMPO EN EL FORM-ALTA-VEHICULO*/
+      tipoMotor: this.myForm.get('oficina_tramite')?.get('tipo_motor')?.value,
+
+      fechaSolicitud: solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
+      fechaAprobacion: aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
+      capacidadPasajeros: this.myForm.get('pasajeros')?.value,
+      modelo:               this.myForm.get('modelo')?.value,
+      valorFactura:this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
     }
 
     this.smytService.validateVehicle(parameters)
       .subscribe({
         next: (resp) => {
           if (resp?.success) {
-            this.router.navigate(['/pagos/tabla-conceptos',1]);
+            this.router.navigate(['/pagos/tabla-conceptos', 1]);
             return
           }
-          Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
+          Swal.fire({ icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick: false });
           this.isLoading = false;
           this.buttBlock = false;
         },
-        error: (err) =>{
-          Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
+        error: (err) => {
+          Swal.fire({ icon: "error", title: "Error!!", text: err.message, allowOutsideClick: false });
           this.isLoading = false;
           this.buttBlock = false;
         },
@@ -157,18 +184,23 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   openSnackBar(message: string) {
 
     this._snackBar.openFromComponent(SnackBarComponent, {
-      data: message,duration: 15000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+      data: message, duration: 15000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
     });
   }
 
   updateFiel(event: number): void {
-    if(event === 9) {
+    if (event === 3) {
+      this.myForm.get('centimetros')?.enable();
+      this.myForm.get('cilindros')?.disable();
+      return;
+    }
+    if (event === 9) {
       let msg: string = '';
       this.smytService.getMessages_vehicle()
-        .subscribe( message => {
+        .subscribe(message => {
           this.messages_other = message;
           if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
-            this.messages_other.forEach(mss=> {
+            this.messages_other.forEach(mss => {
               msg += mss.message + "<br><br>";
             });
             this.openSnackBar(msg);
@@ -176,9 +208,13 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
         });
       return;
     }
-    if(this.messages_other.length > 0) this.messages_other = [];
+    if (this.messages_other.length > 0) this.messages_other = [];
     return;
   }
 
+  isValidField( field: string ) {
+    //TODO: Obtener validación desde un servicio
+    return this.validatorsService.isValidField( this.myForm, field );
+  }
 
 }

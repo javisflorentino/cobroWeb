@@ -1,6 +1,6 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="grid flex">
-  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'" >
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
     <mat-card class="shadow-8">
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
@@ -28,13 +28,44 @@
                 </mat-panel-description>
               </mat-expansion-panel-header>
               <!--div class="flex flex-wrap card-container gap-1 row-gap-3 md:gap-4 xl:gap-8"-->
-                <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                  <mat-label>Modelo</mat-label>
-                  <input matInput type="number" formControlName="modelo">
-                  <mat-error class="fontsizeerror" *ngIf="isValidField('modelo')"> valor entre 1900 y {{anio + 1}}</mat-error>
-                </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Modelo</mat-label>
+                <input matInput type="number" formControlName="modelo">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('modelo')"> valor entre 1900 y {{anio +
+                  1}}</mat-error>
+              </mat-form-field>
 
-                <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Fecha solicitud del trámite</mat-label>
+                <input matInput [matDatepicker]="dpfs" formControlName="fecha_solicitud" [readonly]="true">
+                <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="dpfs"></mat-datepicker-toggle>
+                <mat-datepicker #dpfs disabled="false"></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Fecha aprobación del trámite</mat-label>
+                <input matInput [matDatepicker]="dpfa" formControlName="fecha_aprobacion" [readonly]="true">
+                <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="dpfa"></mat-datepicker-toggle>
+                <mat-datepicker #dpfa disabled="false"></mat-datepicker>
+              </mat-form-field>
+
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Tonelaje</mat-label>
+                <input matInput formControlName="tonelaje" type="number">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('tonelaje')">Requerido y numérico</mat-error>
+              </mat-form-field>-->
+
+              <!--<mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Fecha enajenación</mat-label>
+                <input matInput [matDatepicker]="dpfe" formControlName="fecha_enajenacion" [readonly]="true">
+                <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="dpfe"></mat-datepicker-toggle>
+                <mat-datepicker #dpfe disabled="false"></mat-datepicker>
+              </mat-form-field>-->
+
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                   <mat-label>Cilindros</mat-label>
                   <input matInput formControlName="cilindros" type="number">
                   <mat-error class="fontsizeerror" *ngIf="isValidField('cilindros')">Requerido y numérico</mat-error>
@@ -44,11 +75,11 @@
                   <mat-label>Centímetros cúbicos</mat-label>
                   <input matInput formControlName="centimetros" type="number" >
                   <mat-error class="fontsizeerror" *ngIf="isValidField('centimetros')">Requerido y numérico</mat-error>
-                </mat-form-field>
+                </mat-form-field>-->
               <!--/div-->
             </mat-expansion-panel>
 
-            <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
               <mat-expansion-panel-header>
                 <mat-panel-description>
                   Datos Vehiculo 3
@@ -61,30 +92,37 @@
                 <mat-error class="fontsizeerror" *ngIf="isValidField('pasajeros')">Requerido y numérico</mat-error>
               </mat-form-field>
 
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Valor de la factura</mat-label>
                 <input matInput formControlName="valor_factura" type="number" >
                 <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Requerido y numérico</mat-error>
-              </mat-form-field>
+              </mat-form-field>-->
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Placa foranea y/o placa anterior</mat-label>
                 <input matInput formControlName="placa_foranea" type="text" name="" id="">
-                <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('placa_foranea')">Campo requerido</mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Tonelaje</mat-label>
+                <input matInput formControlName="tonelaje" type="number">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('tonelaje')">Requerido y numérico</mat-error>
               </mat-form-field>
             </mat-expansion-panel>
 
-            <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
+            <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
               <mat-expansion-panel-header>
                 <mat-panel-description>
                   Datos Vehiculo 4
                 </mat-panel-description>
               </mat-expansion-panel-header>
 
-              <mat-form-field fxFlex style="margin-right:0.5em;" #field  floatLabel="always" appearance="outline" class="full-width radio-container">
+              <mat-form-field fxFlex style="margin-right:0.5em;" #field floatLabel="always" appearance="outline"
+                class="full-width radio-container">
                 <mat-label>Procedencia</mat-label>
                 <input matInput style="display:none" required>
-                <mat-radio-group #group formControlName="procedencia" class="flex-wrap" >
+                <mat-radio-group #group formControlName="procedencia" class="flex-wrap">
                   <mat-radio-button #buttons value="NACIONAL">
                     <span class="wrap-label-text">Nacional</span>
                   </mat-radio-button>
@@ -94,10 +132,11 @@
                 </mat-radio-group>
               </mat-form-field>
 
-              <mat-form-field fxFlex style="margin-right:0.5em;" #field_pf  floatLabel="always" appearance="outline" class="full-width radio-container">
+              <mat-form-field fxFlex style="margin-right:0.5em;" #field_pf floatLabel="always" appearance="outline"
+                class="full-width radio-container">
                 <mat-label>Pago baja foranea ?</mat-label>
                 <input matInput style="display:none" required>
-                <mat-radio-group #group_pf formControlName="pago_baja_f" class="flex-wrap" >
+                <mat-radio-group #group_pf formControlName="pago_baja_f" class="flex-wrap">
                   <mat-radio-button #buttons_pf value="1">
                     <span class="wrap-label-text">Si</span>
                   </mat-radio-button>
@@ -110,8 +149,9 @@
               <mat-form-field #field_p floatLabel="always" appearance="outline" class="full-width radio-container">
                 <mat-label>Pagos realizados</mat-label>
                 <input matInput style="display:none" required>
-                <mat-radio-group #group_p class="flex-wrap" *ngFor="let subtask of aniosPago; index as i" formArrayName="pagos">
-                  <mat-checkbox [formControlName]="i" >{{subtask.name}}</mat-checkbox>
+                <mat-radio-group #group_p class="flex-wrap" *ngFor="let subtask of aniosPago; index as i"
+                  formArrayName="pagos">
+                  <mat-checkbox [formControlName]="i">{{subtask.name}}</mat-checkbox>
                 </mat-radio-group>
               </mat-form-field>
             </mat-expansion-panel>
@@ -123,12 +163,12 @@
       <mat-card-actions align="end">
         <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos/dependencias']">
           <mat-icon>cancel</mat-icon>
-            Cancelar
+          Cancelar
         </button>
-        <span ></span>
+        <span></span>
         <button mat-stroked-button mat-raised color="primary" [disabled]="myForm.invalid" (click)="calcularPago()">
           <mat-icon>calculate</mat-icon>
-            Calcular
+          Calcular
         </button>
       </mat-card-actions>
     </mat-card>
@@ -137,9 +177,3 @@
     <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
   </div>
 </div>
-
-
-
-
-
-

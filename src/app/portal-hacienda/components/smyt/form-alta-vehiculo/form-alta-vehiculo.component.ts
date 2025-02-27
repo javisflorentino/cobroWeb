@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import ListaTipoVehiculo from '../../../../../../data/arreglos/smyt_tipo_vehiculo.json';
+import ListaTipoMotor from '../../../../../../data/arreglos/smyt_tipo_motor.json';
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
 import ListMessageSmyt from '../../../../../../data/arreglos/smyt_mensajes.json'
 
@@ -11,6 +12,7 @@ import { ValidatorsService } from '../../../../shared/services/validators.servic
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 
 import moment from 'moment';
+import { TipoMotor } from 'src/app/portal-hacienda/interface/portal-tipomotor.interface';
 
 @Component({
   selector: 'form-alta-vehiculo',
@@ -26,6 +28,8 @@ export class FormAltaVehiculoComponent implements OnInit {
   public tipoVehiculoArr: TipoVehiculo[] = ListaTipoVehiculo;
   //declaracion de variable de tipo Oficina y se le agrega el arreglo
   public oficinasArr: Oficinas[] = ListaOficinas;
+  //declaracion de variable de tipo de motor
+  public tipoMotor: TipoMotor[] = ListaTipoMotor;
 
   @Output()
   private tipoVehiculoEmit = new EventEmitter<number>();
@@ -40,9 +44,11 @@ export class FormAltaVehiculoComponent implements OnInit {
     this.myFormShared = this.fb.group({
       oficina_tramite: [1,[Validators.required]],
       tipo_vehiculo: [1,[Validators.required]],
+      tipo_motor: ['',[Validators.required]],
       no_serie: ['',[Validators.required]],
       no_serie2: ['',[Validators.required]],
-      fecha_factura: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]]
+      fecha_factura: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]],
+      valor_factura:[ '', [ Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
     },
     {
       validators: [
@@ -55,6 +61,11 @@ export class FormAltaVehiculoComponent implements OnInit {
 
   changeFielVehicleType(value: any) {
     this.tipoVehiculoEmit.emit(value);
+    if(value=='5'){
+      this.myFormShared.get('tipo_motor')?.disable()
+    } else {
+      this.myFormShared.get('tipo_motor')?.enable()
+    }
   }
 
   isValidField( field: string ) {

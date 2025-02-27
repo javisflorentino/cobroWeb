@@ -34,11 +34,11 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   public step: number = 0;
 
   aniosPago = [
-    {name: '2019', value:'p2019'},
     {name: '2020', value:'p2020'},
     {name: '2021', value:'p2021'},
     {name: '2022', value:'p2022'},
-    {name: '2023', value:'p2023'}
+    {name: '2023', value:'p2023'},
+    {name: '2024', value:'p2024'}
   ]
 
   public anio: number = new Date().getFullYear();
@@ -53,12 +53,16 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     modelo:       [ '',[ Validators.required, Validators.max(this.anio + 1), Validators.min(AnioMin.ANIOMIN_VEHICLE) ] ], // Entre 1900 - 2024
     procedencia:  [ 'NACIONAL', [Validators.required]], // Nacional, Extranjero
     uso_vehiculo: [ '' ], // se infiere que es particular
-    cilindros:    [ '', [ Validators.required, Validators.max(16), Validators.pattern(this.validatorService.numberPattern)] ],
-    centimetros:  [ {value: '', disabled: true}, [Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
+    //cilindros:    [ '', [ Validators.required, Validators.max(16), Validators.pattern(this.validatorService.numberPattern)] ],
+    //centimetros:  [ {value: '', disabled: true}, [Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
+    tonelaje:  [ {value: '', disabled: true}, [Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
     pasajeros:    [ '', [ Validators.required] ],
-    valor_factura:[ '', [ Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
+    //valor_factura:[ '', [ Validators.required, Validators.pattern(this.validatorService.numberPattern)]],
     placa_foranea:[ '', [ Validators.required] ],
     pago_baja_f:  [ '2', [Validators.required] ],
+    //fecha_enajenacion: [new Date(),[Validators.required]],
+    fecha_solicitud: [new Date(),[Validators.required]],
+    fecha_aprobacion: [new Date(),[Validators.required]],
     pagos:        this.fb.array(this.aniosPago.map(x => false))
   });
 
@@ -159,9 +163,11 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
 
 
   updateFiel(event: number): void {
+    console.log(event)
     if (event === 3) {
       this.myForm.get('centimetros')?.enable();
       this.myForm.get('cilindros')?.disable();
+      this.myForm.get('tonelaje')?.enable();
       return;
     }
     if(event === 9) {
@@ -223,10 +229,18 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       return;
     }
     let invoiceDate = moment(this.myForm.get('oficinas')?.get('fecha_factura')?.value).toDate();
+    let solicitudData = moment(this.myForm.get('fecha_solicitud')?.value).toDate();
+    let aprobacionData = moment(this.myForm.get('fecha_aprobacion')?.value).toDate();
+    //let enajenacionDate = moment(this.myForm.get('fecha_enajenacion')?.value).toDate();
+
     localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficinas')?.get('no_serie')?.value).toUpperCase(),"tramite":6,
       "tipoVehiculo":this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
-      "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('valor_factura')?.value,
-      "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase(), "pagoBaja":this.myForm.get('pago_baja_f')?.value,"pagosRealizados":pagosRealizados}));
+      "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('oficinas')?.get('valor_factura')?.value,
+      "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase(), "pagoBaja":this.myForm.get('pago_baja_f')?.value,"pagosRealizados":pagosRealizados,
+      "fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
+      "fechaAprobacion": aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
+      "tonelaje": this.myForm.get('tonelaje')?.value,"capacidadPasajeros":this.myForm.get('pasajeros')?.value
+    }));
 
     localStorage.setItem('vehicle_data_adicional',JSON.stringify({
       "capacidadPasajeros":this.myForm.get('pasajeros')?.value,
@@ -243,7 +257,15 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
         obtenerContribuyente: false,
         fechaFactura:         invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
         modelo:               this.myForm.get('modelo')?.value,
-        valorFactura:         this.myForm.get('valor_factura')?.value
+        valorFactura:         this.myForm.get('oficinas')?.get('valor_factura')?.value,//this.myForm.get('valor_factura')?.value
+        claveVehicular:       "",/* TOTO: NO SE UTILIZA , PERO EN ALGUN MOMENTO SE PODRIA HABILITAR. AGREGAR EL COAMPO EN EL FORM-ALTA-VEHICULO*/
+        tipoMotor:            this.myForm.get('oficinas')?.get('tipo_motor')?.value,
+
+        fechaSolicitud: solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
+        fechaAprobacion: aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
+        tonelaje: this.myForm.get('tonelaje')?.value,
+        capacidadPasajeros: this.myForm.get('pasajeros')?.value,
+        //fechaEnajenacion: enajenacionDate.getDate() + '/' + (enajenacionDate.getMonth() + 1) + '/' + enajenacionDate.getFullYear()
       }
 
       this.smytService.validateVehicle(parameters)

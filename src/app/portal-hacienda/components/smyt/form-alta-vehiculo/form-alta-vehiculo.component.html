@@ -19,11 +19,26 @@
     </mat-form-field>
 
     <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+      <mat-label>Tipo de motor</mat-label>
+      <mat-select formControlName="tipo_motor">
+        <mat-option value="">--- Seleccione Tipo de Motor ---</mat-option>
+        <mat-option *ngFor="let tipo of tipoMotor" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
+      </mat-select>
+      <mat-error class="fontsizeerror" *ngIf="isValidField('tipo_motor')"> Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
       <mat-label>Fecha factura</mat-label>
       <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true" >
       <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
       <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
       <mat-datepicker #dpff disabled="false"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+      <mat-label>Valor de la factura</mat-label>
+      <input matInput formControlName="valor_factura" type="number" >
+      <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Requerido y numérico</mat-error>
     </mat-form-field>
 
 

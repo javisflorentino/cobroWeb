@@ -11,6 +11,48 @@
         <form [formGroup]="myForm">
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
             <form-alta-vehiculo (tipoVehiculoEmit)="updateFiel($event)"></form-alta-vehiculo>
+
+            <!-- AGREGADO EL 15012025 -->
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Modelo</mat-label>
+              <input matInput type="number" formControlName="modelo">
+              <mat-error class="fontsizeerror" *ngIf="isValidField('modelo')"> valor entre 1900 y {{anio +
+                1}}</mat-error>
+            </mat-form-field>
+
+            <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Cilindros</mat-label>
+              <input matInput formControlName="cilindros" type="number">
+              <mat-error class="fontsizeerror" *ngIf="isValidField('cilindros')">Requerido y numérico</mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Centímetros cúbicos</mat-label>
+              <input matInput formControlName="centimetros" type="number">
+              <mat-error class="fontsizeerror" *ngIf="isValidField('centimetros')">Requerido y numérico</mat-error>
+            </mat-form-field>-->
+
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Pasajeros</mat-label>
+              <input matInput formControlName="pasajeros" type="number" name="" id="">
+              <mat-error class="fontsizeerror" *ngIf="isValidField('pasajeros')">Requerido y numérico</mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Fecha solicitud del trámite</mat-label>
+              <input matInput [matDatepicker]="dpfs" formControlName="fecha_solicitud" [readonly]="true" >
+              <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpfs"></mat-datepicker-toggle>
+              <mat-datepicker #dpfs disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Fecha aprobación del trámite</mat-label>
+              <input matInput [matDatepicker]="dpfa" formControlName="fecha_aprobacion" [readonly]="true" >
+              <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpfa"></mat-datepicker-toggle>
+              <mat-datepicker #dpfa disabled="false"></mat-datepicker>
+            </mat-form-field>
           </div>
         </form>
       </mat-card-content>
@@ -26,7 +68,7 @@
           <span class="spacer"></span>
           <button mat-stroked-button color="primary" [disabled]="myForm.invalid" (click)="calcularPago()">
             <mat-icon>calculate</mat-icon>
-              Calcular
+            Calcular
           </button>
         </div>
       </mat-card-actions>
@@ -36,12 +78,3 @@
     <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
   </div>
 </div>
-
-
-
-
-
-
-
-
-

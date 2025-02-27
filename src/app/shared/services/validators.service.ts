@@ -155,8 +155,11 @@ export class ValidatorsService {
           formGroup.get(field)?.setErrors( null );
           return null;
         }
-
-        if (contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)] !==  String(String(formGroup.get(field)?.value).toUpperCase()).trim()) {
+        /*
+          Toma una cadena, la pasa a mayusculas, reemplaza los espacios en blanco, se normaliza y se eliman los diacriticos (acentos, tildes, etc)
+          String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize()
+        */
+        if (String(contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)]).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize() !==  String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize()) {
           formGroup.get(field)?.setErrors( { notEqual: true, error:mssg } );
           return { notEqual: true, error:mssg };
         }

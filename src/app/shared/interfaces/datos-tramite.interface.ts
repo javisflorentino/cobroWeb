@@ -10,4 +10,13 @@ export interface DatosTramite {
   pagoBaja?:            number;
   pagosRealizados?:     string;
   obtenerVehiculo?:     boolean;
+  claveVehicular?:      string;
+  tipoMotor?:           string;
+
+  fechaSolicitud?:     string;
+  fechaAprobacion?:     string;
+  fechaEnajenacion?:    string;
+
+  tonelaje?:             string;
+  capacidadPasajeros?:   string;
 }

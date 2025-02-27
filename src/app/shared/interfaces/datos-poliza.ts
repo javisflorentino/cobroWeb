@@ -1,3 +1,5 @@
+import { VehicleData } from "./vehicle-data";
+
 export interface DatosPoliza {
   sistema:             string;
   movimiento:          string;
@@ -21,6 +23,8 @@ export interface DatosPoliza {
   datosAdicionales:    string;
   detalle:             string;
   fechaVencimiento?:   string;
+
+  datosVehiculo?:      VehicleData;
 
     /*opc:                 string;
     sistema:             string;

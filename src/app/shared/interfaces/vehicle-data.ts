@@ -15,4 +15,7 @@ export interface VehicleData {
     valorFactura?:        number;
 
     pagoBaja?:            number;
+
+    claveVehicular?:      string;
+    tipoMotor?:           string;
 }
