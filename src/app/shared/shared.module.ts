@@ -13,6 +13,8 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
 import { SegmentTextPipe } from './pipes/segment-text.pipe';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
 
+import {MatMenuModule} from '@angular/material/menu';
+
 
 
 
@@ -32,7 +34,8 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
     CommonModule,
     MaterialModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenuModule
   ],
   exports: [
     SidenavConceptosComponent,

@@ -13,5 +13,28 @@
 </head>
 <body class="mat-typography">
   <app-root></app-root>
+
+  <link href="./assets/chat/style.css" rel="stylesheet" />
+  <script type="module">
+    import { createChat } from './assets/chat/chat.bundle.es.js';
+
+    createChat({
+      webhookUrl: 'http://localhost:5678/webhook/da8592d5-3a7d-42e7-bb1b-55bb20a4946a/chat',
+      initialMessages: [
+        'Hola! 👋',
+        'Mi nombre es QuetzalBot. En que puedo asistirte ?'
+      ],
+      i18n: {
+        en: {
+          title: 'Hola ! 👋',
+          subtitle: "Inicia una conversación. Estoy para asistirte 24/7.",
+          footer: '',
+          getStarted: 'New Conversation',
+          inputPlaceholder: 'Type your question..',
+        },
+      }
+    });
+  </script>
+
 </body>
 </html>

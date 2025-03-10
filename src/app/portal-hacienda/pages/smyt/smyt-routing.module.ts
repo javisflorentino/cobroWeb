@@ -11,27 +11,27 @@ import { LicenciaVehiculoComponent } from './licencia-vehiculo/licencia-vehiculo
 
 const routes: Routes = [
   {
-    path: 'smyt-refrendo',
+    path: 'smyt-refrendo/:idConcepto/:tipoForm',
     component: PagoRefrendoPageComponent
   },
   {
-    path: 'smyt-altavehiculo-nuevo',
+    path: 'smyt-altavehiculo-nuevo/:idConcepto/:tipoForm',
     component: AltaVehiculoNuevoPageComponent
   },
   {
-    path: 'smyt-altavehiculo-usado',
+    path: 'smyt-altavehiculo-usado/:idConcepto/:tipoForm',
     component: AltaVehiculoUsadoPageComponent
   },
   {
-    path: 'smyt-baja',
+    path: 'smyt-baja/:idConcepto/:tipoForm',
     component: BajaVehiculoComponent
   },
   {
-    path: 'smyt-tarjeta-duplicada',
+    path: 'smyt-tarjeta-duplicada/:idConcepto/:tipoForm',
     component: TarjetaDuplicadaVehiculoComponent
   },
   {
-    path: 'smyt-sustitucion-placa',
+    path: 'smyt-sustitucion-placa/:idConcepto/:tipoForm',
     component: SustitucionPlacaVehiculoComponent
   },
   {

@@ -280,13 +280,14 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
           if(conceptSelect[0].formulario==8) {
             idConcepto = 4023;
           }
-        this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
-        return;
+        //this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
+        //return;
       }
-      this.router.navigate(['/pagos/' + item]);
-      return;
+      //this.router.navigate(['/pagos/' + item]);
+      //return;
     }
     this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
+    return;
   }
 
 }

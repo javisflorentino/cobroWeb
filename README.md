@@ -32,3 +32,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 2. Ejecutar desde CMD ``` npm run build:github:local ```
 3. Copiamos de la carpeta ``` DIST ``` la carpeta ``` ASSETS ``` Y LA PEGAMOS EN ``` DEPLOY ```   
 3. La carpeta ``` DEPLOY ``` contendra el producto final
+
+
+## DOCKERIZAR PROYECTO
+1. Instalar Docker Desktop
+2. Version de Docker 24.0.6, build ed223bc
+3. Docker Compose version v2.23.0-desktop.1
+4. Crear archivo Dockerfile sin extensión a nivel raiz y agregamos el contenido del archivo de este proyecto. Modificarlo de acuerdo al proyecto
+5. Crear archivo .dockerignore a nivel de Dockerfile y agregamos el contenido del archivo de este proyecto y dependiendo de las necesidades
+6. Crear el archivo nginx.conf Ponemos en escucha el mismo pueto que definimos en el Dockerfile   
+7. Para crear la imagen de docker ejecutamos desde el CMD el siguiente comando ```docker build --no-cache --progress=plain -t portalpagoservicios .```
+8. Para iniciar la imagen creada ejecutamos ```docker run -d -it -p 8080:8080/tcp portalpagoservicios```
+9. Para exportar un contenedor ejecutamos ```docker save -o C:/Users/carlo/Downloads/portalpagoservicios.tar portalpagoservicios```
+10. Para importar un contenedor ```docker load -i C:/Users/carlo/Downloads/portalpagoservicios.tar```
+11. Una vez importado ejecutamos ```docker run -d -it -p 8080:8080/tcp portalpagoservicios```

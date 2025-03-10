@@ -54,6 +54,22 @@ export class MenuService {
 
 
   }
+
+  getConceptsByTitle(title:string){
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    const body = {"titulo":title}
+
+    return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
+      JSON.stringify(body),{headers})
+    .pipe(
+      map(resp => resp.data),
+      catchError(error => of([])),
+    );
+  }
   /*requestConceptos(id: number): Conceptos[] {
     this.deleteLocalStorage();
     let listaC = ListaConceptos;
