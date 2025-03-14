@@ -10,14 +10,14 @@
   <span></span>
 
   <mat-form-field [style]="flagSearchTramite()?'display:inline':'display:none'"
-    [ngClass]="flagSearchTramite()?'fadeinright animation-duration-1000':'fadeinleft animation-duration-1000'">
+    [ngClass]="flagSearchTramite()?'fadeinright animation-duration-1000':'fadeinleft animation-duration-1000'" class="wide-trigger">
     <input matInput type="text" placeholder="Busca el támite" #tagInput />
     <button mat-icon-button matSuffix (click)="searchTramite()" [matMenuTriggerFor]="menu">
       <mat-icon>ads_click</mat-icon>
     </button>
   </mat-form-field>
 
-  <mat-menu #menu="matMenu" xPosition="before">
+  <mat-menu #menu="matMenu" xPosition="before" class="my-menu">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
     <ul class="list-none p-0 m-0 overflow-hidden sidenav-matnav-list">
       <div *ngIf="cardsArr.length>0; else notElement">

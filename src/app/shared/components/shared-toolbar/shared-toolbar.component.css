@@ -2,3 +2,10 @@
   background-color: #dbdace;
   color: #213523;
 }
+.wide-trigger {
+  width: 350px;
+}
+
+::ng-deep .my-menu {
+  max-width: 500px !important
+}
