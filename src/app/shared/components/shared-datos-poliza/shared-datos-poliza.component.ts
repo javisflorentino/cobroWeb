@@ -1,7 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Poliza } from 'src/app/portal-hacienda/interface/portal-datos-poliza.interface';
 import { TopLevel } from '../../interfaces/calculo-conceptos';
+import { Subject, takeUntil } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-shared-datos-poliza',
@@ -9,13 +11,16 @@ import { TopLevel } from '../../interfaces/calculo-conceptos';
   styles: [
   ]
 })
-export class SharedDatosPolizaComponent implements OnInit {
+export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
 
-  public links = ['Depósito Bancario', 'Tarjeta de Crédito o Débito'];
-  public links_icons = ['account_balance','credit_card'];
-  public position: boolean[] = [true,false];
+  public links = ['Pago en Línea','Depósito Bancario','Otros Métodos de Pago'];
+  public links_icons = ['credit_card','account_balance','credit_card'];
+  public position: boolean[] = [true,false,false];
 
   private url = 'https://app.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=';
+  public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+
 
   @ViewChild('formPL', { read: ElementRef })
   private paytmForm!: ElementRef;
@@ -42,7 +47,27 @@ export class SharedDatosPolizaComponent implements OnInit {
     fecha: ['']
   })
 
-  constructor( private fb: FormBuilder ) {}
+  //Controla la visualización del Spinner
+    public isLoading: boolean = false;
+
+    private destroyed = new Subject<void>();
+    /* CONTROLAR LA RESOLUCION DE LA PANTALLA */
+    public sizeDisplay!: string;
+    /* CONTROLAR EL TIPO DE RESOLUCIONES */
+    private displayNameMap = new Map([
+      [Breakpoints.XSmall, 'XSmall'],
+      [Breakpoints.Small, 'Small'],
+      [Breakpoints.Medium, 'Medium'],
+      [Breakpoints.Large, 'Large'],
+      [Breakpoints.XLarge, 'XLarge'],
+    ]);
+    /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
+    private breakpointObserver = inject(BreakpointObserver);
+
+  constructor( private fb: FormBuilder ) {
+    this.mediaQuery();
+  }
+
 
   ngOnInit(): void {
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
@@ -60,7 +85,16 @@ export class SharedDatosPolizaComponent implements OnInit {
       banco: 'Bancomer',
       extra: 'ECONOMIA-',
       fecha: String(new Date().getDate()+4).toString()
-    })
+    });
+
+    this.url_pagolinea += '?lineaCaptura='+this.datosPoliza.lineaCaptura+'&monto='+this.datosPoliza.total.toString()+'&sistema=0';
+    this.url_pagolinea_only += '?lineaCaptura='+this.datosPoliza.lineaCaptura+'&monto='+this.datosPoliza.total.toString();
+
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.unsubscribe();
   }
 
 
@@ -70,8 +104,15 @@ export class SharedDatosPolizaComponent implements OnInit {
   activeLinkFunct(link:number):void {
     console.log('entra = ' + link)
     this.activeLink = this.links[link];
-    this.position[link] = true;
-    this.position[(link>0)?0:1] = false;
+    //this.position[link] = true;
+    //this.position[(link>0)?0:1] = false;
+    this.position.forEach((val,ind) =>{
+      if(ind!==link) {
+        this.position[ind]=false
+      } else {
+        this.position[ind]=true
+      }
+    })
   }
 
   getPoliza() {
@@ -81,5 +122,27 @@ export class SharedDatosPolizaComponent implements OnInit {
   portalPagoLinea() {
     this.paytmForm.nativeElement.submit();
   }
+
+  public mediaQuery() {
+
+      this.breakpointObserver
+        .observe([
+          Breakpoints.XSmall,
+          Breakpoints.Small,
+          Breakpoints.Medium,
+          Breakpoints.Large,
+          Breakpoints.XLarge,
+        ])
+        .pipe(takeUntil(this.destroyed))
+        .subscribe(result => {
+          for (const query of Object.keys(result.breakpoints)) {
+            if (result.breakpoints[query]) {
+              this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
+            }
+          }
+        });
+
+
+    }
 
 }

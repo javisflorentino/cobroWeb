@@ -14,6 +14,7 @@ import { SegmentTextPipe } from './pipes/segment-text.pipe';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
 
 import {MatMenuModule} from '@angular/material/menu';
+import { SanitizeUrlPipe } from './pipes/sanitize-url.pipe';
 
 
 
@@ -28,7 +29,8 @@ import {MatMenuModule} from '@angular/material/menu';
     SharedDatosPolizaComponent,
     LoadSpinnerComponent,
     SegmentTextPipe,
-    SnackBarComponent
+    SnackBarComponent,
+    SanitizeUrlPipe
   ],
   imports: [
     CommonModule,

@@ -23,7 +23,7 @@
       <div *ngIf="cardsArr.length>0; else notElement">
         <li *ngFor="let item of cardsArr"
           class="cursor-pointer p-1 hover:surface-700 transition-duration-150 transition-colors sidenav-matnav-ul-li"
-          routerLinkActive="active" (click)="redirectToTramite(item.url,item.idConcepto,item.formulario)">
+          routerLinkActive="active" (click)="redirectToTramite(item.url,item.idConcepto,item.formulario,item.gestora,item.tipoMovimiento)">
           <div class="grid">
             <div class="col-10">
               <div class="p-1"><span class="text-sm">{{item.titulo}}</span></div>
