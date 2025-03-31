@@ -124,6 +124,35 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   }
 
   ngOnInit(): void {
+     Swal.fire({
+          title: "Términos y Condiciones",
+          html:
+            `<div id="nota_1" style="color:red; margin-left: 20px;">
+              <div class="alert alert-danger">
+                <p><b>Nota: </b>El pago de este trámite no le garantiza la obtención satisfactoria del mismo, si no cumple con los requisitos solicitados por la Coordinación General de Movilidad y Transporte.</p>
+              </div>
+            </div>
+            <br>
+            <div id="nota_3" style="color:red; margin-left: 20px;">
+              <div class="alert alert-danger">
+                <p><b>Nota: </b>La información presentada es una aproximación del costo de los trámites, tomando como referencia la información capturada en el formulario; Esta puede variar según la validación del personal de la Coordinación General de Movilidad y Transporte al momento de realizar su trámite.</p>
+              </div>
+            </div>
+            `,
+
+          showCancelButton: true,
+          confirmButtonText: "De acuerdo",
+          customClass: {
+            confirmButton: 'custom-confirm-button', // Clase personalizada para el botón de confirmación
+          },
+
+          allowOutsideClick: false
+        }).then((result) => {
+          if (!result.isConfirmed) {
+            this.router.navigate(['/pagos/dependencias'])
+          }
+        });
+
     //Obtiene el Nombre del concepto que se requiere procesar
     this.conceptTitle = localStorage.getItem('concept')!;
     let msg: string = '';

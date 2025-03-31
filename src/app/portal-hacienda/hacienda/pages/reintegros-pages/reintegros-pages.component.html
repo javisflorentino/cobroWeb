@@ -30,6 +30,12 @@
               <input matInput formControlName="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
               <mat-error class="fontsizeerror">{{ getMessage(myFormHReintegro.get('monto')?.errors,'monto') }}</mat-error>
             </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Dependencia</mat-label>
+              <input matInput type="text" formControlName="dependencia">
+              <mat-error class="fontsizeerror">{{ getMessage(myFormHReintegro.get('dependencia')?.errors,'dependencia') }}</mat-error>
+            </mat-form-field>
+
             <span *ngIf="enableContFourteen">
               <mat-form-field fxFlex style="margin-right:0.5em;" floatLabel="always" appearance="outline" class="full-width radio-container">
                 <mat-label>Es reintegro por apooyo <br>emergente a transportistas ?</mat-label>

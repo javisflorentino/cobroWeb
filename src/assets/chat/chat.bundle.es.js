@@ -10439,18 +10439,18 @@ function Rr(t, e) {
         continue;
       }
       if ((c & 224) === 192 && s + 3 < o && (i = parseInt(r.slice(s + 4, s + 6), 16), (i & 192) === 128)) {
-        u = c << 6 & 1984 | i & 63, u < 128 ? f += "��" : f += String.fromCharCode(u), s += 3;
+        u = c << 6 & 1984 | i & 63, u < 128 ? f += "<22><>" : f += String.fromCharCode(u), s += 3;
         continue;
       }
       if ((c & 240) === 224 && s + 6 < o && (i = parseInt(r.slice(s + 4, s + 6), 16), a = parseInt(r.slice(s + 7, s + 9), 16), (i & 192) === 128 && (a & 192) === 128)) {
-        u = c << 12 & 61440 | i << 6 & 4032 | a & 63, u < 2048 || u >= 55296 && u <= 57343 ? f += "���" : f += String.fromCharCode(u), s += 6;
+        u = c << 12 & 61440 | i << 6 & 4032 | a & 63, u < 2048 || u >= 55296 && u <= 57343 ? f += "<22><><EFBFBD>" : f += String.fromCharCode(u), s += 6;
         continue;
       }
       if ((c & 248) === 240 && s + 9 < o && (i = parseInt(r.slice(s + 4, s + 6), 16), a = parseInt(r.slice(s + 7, s + 9), 16), l = parseInt(r.slice(s + 10, s + 12), 16), (i & 192) === 128 && (a & 192) === 128 && (l & 192) === 128)) {
-        u = c << 18 & 1835008 | i << 12 & 258048 | a << 6 & 4032 | l & 63, u < 65536 || u > 1114111 ? f += "����" : (u -= 65536, f += String.fromCharCode(55296 + (u >> 10), 56320 + (u & 1023))), s += 9;
+        u = c << 18 & 1835008 | i << 12 & 258048 | a << 6 & 4032 | l & 63, u < 65536 || u > 1114111 ? f += "<22><><EFBFBD><EFBFBD>" : (u -= 65536, f += String.fromCharCode(55296 + (u >> 10), 56320 + (u & 1023))), s += 9;
         continue;
       }
-      f += "�";
+      f += "<22>";
     }
     return f;
   });
@@ -10944,7 +10944,7 @@ je.prototype.getRules = function(t) {
 var so = je, aG = /\r\n?|\n/g, lG = /\0/g, uG = function(e) {
   var n;
   n = e.src.replace(aG, `
-`), n = n.replace(lG, "�"), e.src = n;
+`), n = n.replace(lG, "<22>"), e.src = n;
 }, fG = function(e) {
   var n;
   e.inlineMode ? (n = new e.Token("inline", "", 0), n.content = e.src, n.map = [0, 1], n.children = [], e.tokens.push(n)) : e.md.block.parse(e.src, e.md, e.env, e.tokens);

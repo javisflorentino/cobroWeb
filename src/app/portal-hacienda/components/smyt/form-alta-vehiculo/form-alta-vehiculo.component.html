@@ -1,5 +1,5 @@
 <div class="" [formGroup]="myFormShared" #ChildComponent>
-
+  <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
     <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
       <mat-label>Oficina del trámite</mat-label>
       <mat-select formControlName="oficina_tramite">
@@ -29,15 +29,16 @@
 
     <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
       <mat-label>Fecha factura</mat-label>
-      <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true" >
+      <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true">
       <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
       <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
       <mat-datepicker #dpff disabled="false"></mat-datepicker>
     </mat-form-field>
-
+  </div>
+  <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
     <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
       <mat-label>Valor de la factura</mat-label>
-      <input matInput formControlName="valor_factura" type="number" >
+      <input matInput formControlName="valor_factura" type="number">
       <mat-error class="fontsizeerror" *ngIf="isValidField('valor_factura')">Requerido y numérico</mat-error>
     </mat-form-field>
 
@@ -45,17 +46,15 @@
     <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
       <mat-label>No de serie Vehicular</mat-label>
       <input matInput type="text" formControlName="no_serie">
-      <mat-error class="fontsizeerror"> {{ getMessage(myFormShared.get('no_serie')?.getError('error'),'no_serie') }} </mat-error>
+      <mat-error class="fontsizeerror"> {{ getMessage(myFormShared.get('no_serie')?.getError('error'),'no_serie') }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field fxFlex appearance="outline">
       <mat-label>Confirmar No de serie Vehicular</mat-label>
       <input matInput type="text" onpaste="return false" formControlName="no_serie2">
-      <mat-error class="fontsizeerror"> {{ getMessage(myFormShared.get('no_serie2')?.getError('error'),'no_serie2') }} </mat-error>
+      <mat-error class="fontsizeerror"> {{ getMessage(myFormShared.get('no_serie2')?.getError('error'),'no_serie2') }}
+      </mat-error>
     </mat-form-field>
-
+  </div>
 </div>
-
-
-
-

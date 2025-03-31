@@ -374,6 +374,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
    if(datos) {
     if(datos.tipo_form && (datos.tipo_form==17 || datos.tipo_form==16 || datos.tipo_form==14)) {
+      observaciones += `,${datos.dependencia}`;
       if(datos.tipo_form==17) {
         observaciones += `,${datos.fecha_retencion},${datos.ejercicio_fiscal},${datos.nombre_fondo},${datos.numero_contrato},${datos.objeto_contrato},${datos.fuente_financiamiento},${datos.monto_ejercido},${datos.monto_retenido},${datos.numero_oficio},${datos.numero_factura}`;
       }

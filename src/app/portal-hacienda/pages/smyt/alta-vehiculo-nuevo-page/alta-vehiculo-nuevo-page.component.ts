@@ -18,8 +18,7 @@ import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.inte
 @Component({
   selector: 'smyt-alta-vehiculo-nuevo-page',
   templateUrl: './alta-vehiculo-nuevo-page.component.html',
-  styles: [
-  ]
+  styleUrls: ['./alta-vehiculo-nuevo-page.component.css']
 })
 export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
@@ -35,8 +34,8 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     //cilindros: ['', [Validators.required, Validators.max(16), Validators.pattern(this.validatorsService.numberPattern)]],
     //centimetros: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
     pasajeros: ['', [Validators.required]],
-    fecha_solicitud: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]],
-    fecha_aprobacion: [new Date(),[Validators.required, this.validatorsService.cantBeGreat]],
+    fecha_solicitud: [new Date(), [Validators.required, this.validatorsService.cantBeGreat]],
+    fecha_aprobacion: [new Date(), [Validators.required, this.validatorsService.cantBeGreat]],
   });
 
   public messages: Messages[] = [];
@@ -83,6 +82,39 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    Swal.fire({
+      title: "Términos y Condiciones",
+      html:
+        `<div id="nota_1" style="color:red; margin-left: 20px;">
+          <div class="alert alert-danger">
+            <p><b>Nota: </b>El pago de este trámite no le garantiza la obtención satisfactoria del mismo, si no cumple con los requisitos solicitados por la Coordinación General de Movilidad y Transporte.</p>
+          </div>
+        </div>
+        <br>
+        <div id="nota_3" style="color:red; margin-left: 20px;">
+          <div class="alert alert-danger">
+            <p><b>Nota: </b>La información presentada es una aproximación del costo de los trámites, tomando como referencia la información capturada en el formulario; Esta puede variar según la validación del personal de la Coordinación General de Movilidad y Transporte al momento de realizar su trámite.</p>
+          </div>
+        </div>
+        `,
+
+      showCancelButton: true,
+      confirmButtonText: "De acuerdo",
+      customClass: {
+        confirmButton: 'custom-confirm-button', // Clase personalizada para el botón de confirmación
+      },
+
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+      } else {
+        this.router.navigate(['/pagos/dependencias'])
+      }
+    });
+
+
+
     this.conceptTitle = localStorage.getItem('concept')!;
     let msg: string = '';
     this.smytService.getMessages()
@@ -120,10 +152,10 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     localStorage.setItem('vehicle_data', JSON.stringify({
       "placa": '', "numeroSerie": String(this.myForm.get('oficina_tramite')?.get('no_serie')?.value).toUpperCase(), "tramite": 2,
       "tipoVehiculo": this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value, "fechaFactura": invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear(),
-      "obtenerContribuyente": false, "claveVehicular":'',"tipoMotor": this.myForm.get('oficina_tramite')?.get('tipo_motor')?.value,"fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
+      "obtenerContribuyente": false, "claveVehicular": '', "tipoMotor": this.myForm.get('oficina_tramite')?.get('tipo_motor')?.value, "fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
       "fechaAprobacion": aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
-      "capacidadPasajeros":this.myForm.get('pasajeros')?.value,"modelo":this.myForm.get('modelo')?.value,
-      "valorFactura":this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
+      "capacidadPasajeros": this.myForm.get('pasajeros')?.value, "modelo": this.myForm.get('modelo')?.value,
+      "valorFactura": this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
     }));
 
     let parameters: DatosTramite = {
@@ -139,8 +171,8 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
       fechaSolicitud: solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
       fechaAprobacion: aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
       capacidadPasajeros: this.myForm.get('pasajeros')?.value,
-      modelo:               this.myForm.get('modelo')?.value,
-      valorFactura:this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
+      modelo: this.myForm.get('modelo')?.value,
+      valorFactura: this.myForm.get('oficina_tramite')?.get('valor_factura')?.value
     }
 
     this.smytService.validateVehicle(parameters)
@@ -212,9 +244,9 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     return;
   }
 
-  isValidField( field: string ) {
+  isValidField(field: string) {
     //TODO: Obtener validación desde un servicio
-    return this.validatorsService.isValidField( this.myForm, field );
+    return this.validatorsService.isValidField(this.myForm, field);
   }
 
 }

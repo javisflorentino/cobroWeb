@@ -51,7 +51,8 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       nombre:   ['', [Validators.required, Validators.pattern(this.validatorService.peoplesNamePath)]],
       telefono: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTel)]],
       email:    ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)]],
-      monto:    [1, [Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberPattern)]]
+      monto:    [1, [Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberPattern)]],
+      dependencia:   ['', [Validators.required]],
     }
   );
 
@@ -222,6 +223,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
     datos_cobro.telefono =  this.myFormHReintegro.get('telefono')?.value;
     datos_cobro.email =     String(this.myFormHReintegro.get('email')?.value).toUpperCase();
     datos_cobro.tipo_form = this.tipoForm;
+    datos_cobro.dependencia = String(this.myFormHReintegro.get('dependencia')?.value).toUpperCase();
     if( this.tipoForm == 17 ) {
       const fecha = moment(this.myFormHReintegro.get('fecha_retencion')?.value);
       datos_cobro.fecha_retencion =       fecha.format('YYYY-MM-DD');

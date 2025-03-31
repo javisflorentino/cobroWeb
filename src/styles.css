@@ -44,6 +44,26 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: .50rem;
 }
 
+@font-face {
+  font-family: 'QuetzalSansRegular';
+  src: url('./assets/fonts/QuetzalliSans-Regular.otf');
+}
+
+@font-face {
+  font-family: 'QuetzalSansMedium';
+  src: url('./assets/fonts/QuetzalliSans-Medium.otf');
+}
+
+@font-face {
+  font-family: 'QuetzalSansLight';
+  src: url('./assets/fonts/QuetzalliSans-Light.otf');
+}
+
+@font-face {
+  font-family: 'QuetzalSansThin';
+  src: url('./assets/fonts/QuetzalliSans-Thin.otf');
+}
+
 /*.example-container mat-form-field {
   width: 40%;
 }

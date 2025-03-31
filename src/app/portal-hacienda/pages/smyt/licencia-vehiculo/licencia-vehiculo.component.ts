@@ -123,6 +123,9 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
               this.tieneLicencia(1);
             },1000);
           } else {
+            if(this.idConcepto==5308){
+              this.tieneLicencia(0);
+            }
             this.formLicencias.get('tien_licencia')?.setValue('');
             this.formLicencias.get('tien_licencia')?.enable();
             this.formLicencias.get('no_licencia')?.disable();

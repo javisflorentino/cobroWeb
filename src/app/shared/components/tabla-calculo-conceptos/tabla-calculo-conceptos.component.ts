@@ -17,6 +17,7 @@ import { SoapServiciosConceptosDetalle } from '../../interfaces/soap-servicios_c
 import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
 import { MenuService } from '../../services/menu.service';
 import Swal from 'sweetalert2';
+import { RequestConceptos } from '../../interfaces/request-conceptos.interface';
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
@@ -207,7 +208,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.consultConceptoPago(idConcepto, 1, datos.monto);
             break;
           case 6:
-            this.consultaRezagosActualizacionAdicional(idConcepto);
+            //this.consultaRezagosActualizacionAdicional(idConcepto);
+            this.consultConceptoPago(idConcepto, 1, datos.monto);
             break;
           default:
             if (!this.tipoform) {
@@ -361,11 +363,22 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
 
     this.isLoading = true;
-    const datos = {
+    let datos:RequestConceptos = {
       "idConcepto": idConcepto,
       "monto": (monto) ? monto : null,
       "cantidad": cantidad
-    };
+    }
+    if(idConcepto==2143) {
+      const datos_cobro = JSON.parse(localStorage.getItem('datos_cobro')!);
+      let fecha_vencimiento: Array<any> = [];
+      fecha_vencimiento = String(datos_cobro.fecha).split('-')
+      datos.fechaVencimiento = fecha_vencimiento[2] + '-' + fecha_vencimiento[1] + '-' + fecha_vencimiento[0];
+    }
+    /*const datos = {
+      "idConcepto": idConcepto,
+      "monto": (monto) ? monto : null,
+      "cantidad": cantidad
+    };*/
 
     if (localStorage.getItem('contribuyente')) {//&& this.tipoFormEdit) {
       let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
@@ -551,6 +564,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       this.cantidadPago.removeAt(val);
       contribuyente.data.total = this.total;
       this.conceptos = contribuyente.data.conceptos;
+
+      let arrLineaDetalle = contribuyente.data.lineaDetalle.split('|');
+      arrLineaDetalle.splice(val,1)
+      contribuyente.data.lineaDetalle = arrLineaDetalle.join('|');
+
       if (this.conceptos.length == 0) {
         this.router.navigate(['/pagos/dependencias']);
       }

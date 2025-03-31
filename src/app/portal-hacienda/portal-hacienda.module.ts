@@ -9,7 +9,6 @@ import { MenuImagePipe } from './pipes/menu-image.pipe';
 import { CardsDependenciasComponent } from './components/cards-dependencias/cards-dependencias.component';
 
 
-
 @NgModule({
   declarations: [
     LayoutPortalPagosComponent,

@@ -1,12 +1,16 @@
-<mat-toolbar class="my-toolbar" color="primary" [class.mat-elevation-z10]="true">
-  <button mat-icon-button (click)="redirectPagos()">
+<mat-toolbar class="my-toolbar" color="primary" [class.mat-elevation-z10]="true" style="background-image: url('./assets/backgroud_pleca.png'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;">
+  <button mat-mini-fab color="primary" (click)="redirectPagos()">
     <mat-icon>home</mat-icon>
   </button>
-  <button mat-icon-button (click)="sidenavAction()">
+  <button mat-mini-fab color="primary" (click)="sidenavAction()">
     <mat-icon>menu</mat-icon>
   </button>
   <span [ngStyle]="{'font-size': (viewResolution == 'XSmall' || viewResolution=='Small') ? '13px' : '20px'}"
-    style="margin: auto; white-space: initial; text-align: center;">{{receiveNameDep}}</span><!--{{nameConceptToolbar | titlecase}}</span-->
+    style="margin: auto; white-space: initial; text-align: center; font-family: 'QuetzalSansRegular';">
+    <span style="font-family: 'QuetzalSansRegular';">HACIENDA DIGITAL MORELOS</span>
+    <br>
+    <span class="text-600" style="font-family: 'QuetzalSansThin';">{{receiveNameDep}}</span>
+  </span><!--{{nameConceptToolbar | titlecase}}</span-->
   <span></span>
 
   <mat-form-field [style]="flagSearchTramite()?'display:inline':'display:none'"
@@ -37,7 +41,7 @@
       </ng-template>
     </ul>
   </mat-menu>
-  <button mat-icon-button [style]="flagSearchTramite()" (click)="showAunHideInputSearch()">
+  <button mat-mini-fab color="primary" [style]="flagSearchTramite()" (click)="showAunHideInputSearch()">
     <mat-icon>search</mat-icon>
   </button>
 

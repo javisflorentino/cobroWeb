@@ -28,4 +28,5 @@ export interface ReintegrosStruct {
   certificacion?:         string;
   semestre?:              string;
   concepto?:              string;
+  dependencia?:           string;
 }
