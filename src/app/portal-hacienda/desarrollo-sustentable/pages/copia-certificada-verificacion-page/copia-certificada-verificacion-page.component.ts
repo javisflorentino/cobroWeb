@@ -1,16 +1,15 @@
 import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
-import { ValidatorsService } from 'src/app/shared/services/validators.service';
+import ListMessageDesarrollo from '../../../../../../data/arreglos/desarrolloS_messages.json';
 
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
-
-import ListMessageDesarrollo from '../../../../../../data/arreglos/desarrolloS_messages.json';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ValidatorsService } from 'src/app/shared/services/validators.service';
 
 const moment = _rollupMoment || _moment;
 const MY_FORMATS = {
@@ -26,22 +25,19 @@ const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'desarrollos-certificacion-vehicular-page',
-  templateUrl: './certificacion-vehicular-page.component.html',
-  styles: [],
+  selector: 'app-copia-certificada-verificacion-page',
+  templateUrl: './copia-certificada-verificacion-page.component.html',
+  styleUrls: ['./copia-certificada-verificacion-page.component.css'],
   providers: [ {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS} ]
 })
-export class CertificacionVehicularPageComponent implements OnInit, OnDestroy {
-
+export class CopiaCertificadaVerificacionPageComponent implements OnInit, OnDestroy {
   /* Inyeccion de la depoendencia encargada de formularios */
   private fb = inject( FormBuilder );
   public myForm: FormGroup = this.fb.group({
-    /*folio:         ['', [Validators.required]],
+    folio:         ['', [Validators.required]],
     anio:          [moment(), [Validators.required]],
     semestre:      ['1', [Validators.required]],
-    certificacion: ['', [Validators.required]]*/
-    holograma: ['', [Validators.required]],
-    tipo_holograma: ['',[Validators.required]]
+    certificacion: ['', [Validators.required]]
   });
 
   /* Inyeccion del servicio donde se aplican las validaciones de campos del FORM */
@@ -108,12 +104,10 @@ export class CertificacionVehicularPageComponent implements OnInit, OnDestroy {
         cantidad:           this.myForm.get('holograma')?.value,
         monto:              1,
         idConcepto:         this.idConcepto,
-        /*folio:              this.myForm.get('folio')?.value,
+        folio:              this.myForm.get('folio')?.value,
         anio:               this.myForm.get('anio')?.value,
         semestre:           this.myForm.get('semestre')?.value,
-        certificacion:      this.myForm.get('certificacion')?.value,*/
-        holograma: this.myForm.get('holograma')?.value,
-        tipo_holograma: this.myForm.get('tipo_holograma')?.value,
+        certificacion:      this.myForm.get('certificacion')?.value,
         tipo_form:          this.tipoForm
       })
     )
@@ -145,7 +139,5 @@ export class CertificacionVehicularPageComponent implements OnInit, OnDestroy {
     datepicker.close();
 
   }
-
-
 
 }

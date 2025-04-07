@@ -11,7 +11,7 @@
         <div class="">
           <form action="" fxLayout="column"  [formGroup]="myForm" (ngSubmit)="onSubmit()">
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No de folio</mat-label>
                 <input matInput formControlName="folio" required type="text">
                 <mat-error class="fontsizeerror">{{ getMessage(myForm.get('folio')?.errors,'folio') }}</mat-error>
@@ -47,27 +47,7 @@
                     <span class="wrap-label-text">2o Semestre</span>
                   </mat-radio-button>
                 </mat-radio-group>
-              </mat-form-field>-->
-
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Cantidad de hologramas</mat-label>
-                <input matInput formControlName="holograma" required type="number">
-                <mat-error class="fontsizeerror">{{ getMessage(myForm.get('holograma')?.errors,'holograma') }}</mat-error>
               </mat-form-field>
-
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Tipo de holograma</mat-label>
-                <mat-select formControlName="tipo_holograma" required>
-                  <mat-option value="">Selecciona tipo de holograma</mat-option>
-                  <mat-option value="0">0</mat-option>
-                  <mat-option value="00">00</mat-option>
-                  <mat-option value="1">1</mat-option>
-                  <mat-option value="2">2</mat-option>
-                  <mat-option value="RECHAZO">RECHAZO</mat-option>
-                </mat-select>
-                <mat-error class="fontsizeerror">{{ getMessage(myForm.get('tipo_holograma')?.errors,'tipo_holograma') }}</mat-error>
-              </mat-form-field>
-
 
             </div>
           </form>

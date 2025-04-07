@@ -204,8 +204,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 13:
             this.consultConceptoPago(idConcepto, 1, this.tipoform);
             break;
-          case 16: case 14: case 17: case 12: case 3://case 16: case 14: case 17: case 6: case 12: case 3:
+          case 16: case 14: case 17: case 3: case 18://case 16: case 14: case 17: case 6: case 12: case 3:
             this.consultConceptoPago(idConcepto, 1, datos.monto);
+            break;
+          case 12:
+            this.consultConceptoPago(idConcepto, datos.cantidad, datos.monto);
             break;
           case 6:
             //this.consultaRezagosActualizacionAdicional(idConcepto);

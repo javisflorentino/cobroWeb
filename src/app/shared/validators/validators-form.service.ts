@@ -38,7 +38,7 @@ export class ValidatorsFormService {
     }
     switch(no_licencia.charAt(0)) {
       case 'A' || 'E' || 'P':
-        if ([838,835,830].find(resp => resp==idConcept) === undefined) {
+        if ([838,835,830,5306].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;

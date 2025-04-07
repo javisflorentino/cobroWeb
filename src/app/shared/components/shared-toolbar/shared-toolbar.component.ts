@@ -56,13 +56,11 @@ export class SharedToolbarComponent {
   }
 
   searchTramite(){
-    console.log(this.tagInput.nativeElement.value)
     //this.trigger?.openMenu();
     this.isLoading = true;
     this.generalService.getConceptsByTitle(this.tagInput.nativeElement.value)
      .subscribe({
       next:(res) => {
-          console.log(res)
           this.isLoading = false;
           if (res.length > 0) {
             this.cardsArr = res;

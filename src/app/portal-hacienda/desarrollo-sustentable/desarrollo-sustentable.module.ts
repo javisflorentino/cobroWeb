@@ -7,12 +7,14 @@ import { MultaVerificacionPageComponent } from './pages/multa-verificacion-page/
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CopiaCertificadaVerificacionPageComponent } from './pages/copia-certificada-verificacion-page/copia-certificada-verificacion-page.component';
 
 
 @NgModule({
   declarations: [
     CertificacionVehicularPageComponent,
-    MultaVerificacionPageComponent
+    MultaVerificacionPageComponent,
+    CopiaCertificadaVerificacionPageComponent
   ],
   imports: [
     CommonModule,

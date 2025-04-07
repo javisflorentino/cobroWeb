@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TablaCalculoConceptosComponent } from 'src/app/shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { CertificacionVehicularPageComponent } from './pages/certificacion-vehicular-page/certificacion-vehicular-page.component';
 import { MultaVerificacionPageComponent } from './pages/multa-verificacion-page/multa-verificacion-page.component';
+import { CopiaCertificadaVerificacionPageComponent } from './pages/copia-certificada-verificacion-page/copia-certificada-verificacion-page.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'calidad-aire-certificacionver/:idConcepto/:tipoForm',
     component: CertificacionVehicularPageComponent
+  },
+  {
+    path: 'calidad-aire-copiacertifverif/:idConcepto/:tipoForm',
+    component: CopiaCertificadaVerificacionPageComponent
   },
   {
     path: 'calidad-aire-multaverif/:idConcepto/:tipoForm',

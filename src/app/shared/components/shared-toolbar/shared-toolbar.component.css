@@ -3,9 +3,83 @@
   color: #213523;
 }
 .wide-trigger {
-  width: 350px;
+  width: 400px;
 }
 
 ::ng-deep .my-menu {
   max-width: 500px !important
+}
+
+.containerToolbar {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Ajusta la altura según necesites */
+}
+
+.leftToolbar{
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  z-index: 2; /* Para que estén por encima del div central */
+}
+
+.rightToolbar {
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  z-index: 2; /* Para que estén por encima del div central */
+}
+
+/*.containerRight {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}*/
+
+.rightOne {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.rightTwo {
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.leftToolbar {
+  left: 0;
+}
+
+.rightToolbar {
+  right: 0;
+}
+
+.centerToolbar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Detrás de los extremos */
 }
