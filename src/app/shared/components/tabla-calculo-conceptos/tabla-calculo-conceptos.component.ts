@@ -142,6 +142,11 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.isReposicionLicencia = true;
         }
 
+        if([287].find(resp => resp==idConcepto) !== undefined){
+          this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n https://www.hacienda.morelos.gob.mx/index.php/tramites-y-servicios-en-linea/oficio-de-habilitacion');
+          this.isReposicionLicencia = true;
+        }
+
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch (Number(this.tipoform)) {
           case 0: case 1: case 7:
@@ -552,6 +557,16 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       this.sendNoHoja();
       return;
     }
+
+    /*if(this.cantidadPago.controls[val].value>50 && this.arrConceptos[val]==436){
+      console.log('VALOR HASTA 50::'+ this.arrConceptos[val])
+      this.cantidadPago.controls[val].setValue(1)
+    }
+
+    if(this.cantidadPago.controls[val].value<51 && this.arrConceptos[val]==437){
+      console.log('VALOR HASTA 50::'+ this.arrConceptos[val])
+      this.cantidadPago.controls[val].setValue(51)
+    }*/
 
     let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
     this.total = 0;

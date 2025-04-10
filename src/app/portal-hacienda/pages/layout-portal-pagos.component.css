@@ -3,3 +3,27 @@
   background-size: cover;
   background-color: #cacabf;
 }
+
+.example-footer {
+  background-color: #dbdace;
+  color: #213523;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.centerToolbarFooter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Detrás de los extremos */
+
+  color: #213523;
+}
