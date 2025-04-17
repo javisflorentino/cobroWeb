@@ -106,5 +106,75 @@ mat-form-field{
 .example-full-width {
   width: 100%;
 }*/
+/* payment-dialog.component.scss */
+.dialog-container {
+  padding: 16px;
+  max-width: 400px;
+  border-radius: 20px;
+  background-color: #F3F2EE;
+}
+
+.dialog-titulo {
+  color: #b27c4a !important;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.dialog-subtitle {
+  text-align: center;
+  color: #666;
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin-bottom: 8px;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: -8px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+mat-dialog-actions {
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.search-button {
+  background-color: #4b7e48;
+  color: white;
+  min-width: 120px;
+  border-radius: 20px;
+}
+
+::ng-deep .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+::ng-deep .mat-form-field-outline {
+  background-color: white;
+  border-radius: 4px;
+}
 
 

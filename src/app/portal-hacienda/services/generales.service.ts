@@ -136,6 +136,7 @@ export class GeneralesService {
       redirect: "follow"
     });
   }
+  
   /*async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
     console.log(importe + ' | ' + fecha + ' | ' + idConcepto)
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {

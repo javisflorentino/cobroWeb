@@ -1,5 +1,17 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <div class="grid mb-8 p-3">
+  <div class="menu-container" [@buttonAnimation]="show ? 'show' : 'hide'">
+    <div class="menu-buttons-row">
+      <button *ngFor="let button of menuButtons" 
+              mat-mini-fab 
+              class="menu-button shadow-4 m-1 hover:shadow-4"
+              [matTooltip]="button.label"
+              matTooltipPosition="below"
+              (click)="openDialog(button)">
+        <mat-icon class="custom-icon">{{button.icon}}</mat-icon>
+      </button>
+    </div>
+  </div>
   <!--<div class="col-4 sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">-->
   <div class="col-4 cursor-pointer sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">
     <mat-card class="shadow-4 m-1 hover:shadow-8 " style="background-color: transparent; border-radius: 25px !important;">

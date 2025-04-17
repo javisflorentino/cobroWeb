@@ -5,6 +5,7 @@ import { CardsDependenciasComponent } from './components/cards-dependencias/card
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
+import { HistoricoPagosComponent } from './components/historico-pagos/historico-pagos.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
         component: SharedDatosPolizaComponent
       },
       {
+        path: 'historico-pagos',
+        component: HistoricoPagosComponent
+      },
+      {
         path: 'tabla-conceptos/:idConcepto',
         component: TablaCalculoConceptosComponent
       },
@@ -35,6 +40,7 @@ const routes: Routes = [
         path: 'tabla-conceptos/:idConcepto/:tipoForm',
         component: TablaCalculoConceptosComponent
       },
+      
       {
         path: 'smyt',
         loadChildren: () => import('./pages/smyt/smyt.module').then(m => m.SmytModule)

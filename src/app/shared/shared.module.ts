@@ -15,8 +15,12 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
 
 import {MatMenuModule} from '@angular/material/menu';
 import { SanitizeUrlPipe } from './pipes/sanitize-url.pipe';
+import { ModalPagoLineaComponent } from './components/modal-pago-linea/modal-pago-linea.component';
 
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ModalComprobantePagoComponent } from './components/modal-comprobante-pago/modal-comprobante-pago.component';
+import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos/modal-historico-pagos.component';
 
 
 @NgModule({
@@ -30,7 +34,10 @@ import { SanitizeUrlPipe } from './pipes/sanitize-url.pipe';
     LoadSpinnerComponent,
     SegmentTextPipe,
     SnackBarComponent,
-    SanitizeUrlPipe
+    SanitizeUrlPipe,
+    ModalPagoLineaComponent,
+    ModalComprobantePagoComponent,
+    ModalHistoricoPagosComponent
   ],
   imports: [
     CommonModule,

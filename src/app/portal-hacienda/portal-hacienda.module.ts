@@ -7,19 +7,23 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
 import { CardsDependenciasComponent } from './components/cards-dependencias/cards-dependencias.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { HistoricoPagosComponent } from './components/historico-pagos/historico-pagos.component';
 
 
 @NgModule({
   declarations: [
     LayoutPortalPagosComponent,
     CardsDependenciasComponent,
-    MenuImagePipe
+    MenuImagePipe,
+    HistoricoPagosComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     PortalHaciendaRoutingModule,
-    SharedModule
+    SharedModule,
+    MatTooltipModule
   ]
 })
 export class PortalHaciendaModule { }
