@@ -136,6 +136,7 @@ export class GeneralesService {
       redirect: "follow"
     });
   }
+  
   /*async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
     console.log(importe + ' | ' + fecha + ' | ' + idConcepto)
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
@@ -209,5 +210,18 @@ export class GeneralesService {
       formGroup.get(serie)?.setErrors( null );
       return null;
     }
+  }
+  envioCDFI(title:string, serie: string, folio: string, para: string){
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    const body = {"lineaCaptura":title, "serie": serie, "folio": folio, "destinatario": para}
+
+    return this.http.post<ComboDTO>(`${this.baseUrlApp}/recibo/cfdi/correoCfdi`,body,{headers})
+      .pipe(
+        catchError(error => of(null))
+      );
   }
 }

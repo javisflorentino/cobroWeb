@@ -1,0 +1,170 @@
+<!-- cfdi-printing-dialog.component.html -->
+<div class="dialog-container"
+     style="background-image: url('./assets/fondoLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center">
+  <h2 class="dialog-titulo">IMPRESIÓN DE CFDI</h2>
+  
+  <p class="dialog-subtitle">
+    Proporcione los siguientes datos de su comprobante de pago o de su CFDI para timbrar o consultar, los datos deben coincidir con los de su cédula fiscal.
+  </p>
+
+  <mat-dialog-content>
+    <form [formGroup]="cfdiForm">
+      <div class="form-field">
+        <label>Código de Reimpresión o Línea de Captura</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="codigoReimpresion">
+          <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="grid">
+        <div class="col-6">
+          <div class="form-field">
+            <label>Serie</label>
+            <mat-form-field appearance="outline" class="full-width">
+
+              <mat-select formControlName="serie">
+                <mat-option value="A">A</mat-option>
+                <mat-option value="B">B</mat-option>
+                <mat-option value="C">C</mat-option>
+                <mat-option value="D">D</mat-option>
+                <mat-option value="E">E</mat-option>
+                <mat-option value="F">F</mat-option>
+                <mat-option value="G">G</mat-option> 
+                <mat-option value="H">H</mat-option> 
+                <mat-option value="I">I</mat-option>
+                <mat-option value="J">J</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-field">
+            <label>Folio</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input matInput formControlName="folio">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Correo Electrónico</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="correoElectronico" type="email">
+          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email') && cfdiForm.get('correoElectronico')?.touched">
+            Correo electrónico inválido
+          </mat-error>        
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label>Forma de Pago</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="formaPago">
+            
+            <mat-option value="01">Efectivo</mat-option>
+            <mat-option value="02">Cheque nominativo</mat-option>
+            <mat-option value="03">Transferencia electrónica de fondos</mat-option>
+            <mat-option value="04">Tarjeta de crédito</mat-option>
+            <mat-option value="12">Dación en pago</mat-option>
+            <mat-option value="15">Condonación</mat-option>
+            <mat-option value="17">Compensación</mat-option>
+            <mat-option value="28">Tarjeta de débito</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label>RFC</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="rfc">
+          <mat-error *ngIf="cfdiForm.get('rfc')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label>Nombre o Razón Social</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="nombreRazonSocial">
+          <mat-error *ngIf="cfdiForm.get('nombreRazonSocial')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-note">
+        <p><strong>NOTA:</strong> Se debe registrar el nombre, primer apellido, segundo apellido, según corresponda denominación o razón social registrados en el RFC del contribuyente receptor del comprobante. Ejemplo:</p>
+        <ul>
+          <li>En el caso de una persona física se debe registrar: Nombre Apellido Apellido= Rafaeli Camposorio Ruizo</li>
+          <li>En el caso de una persona moral se debe registrar: Razón social= La Villa Espó</li>
+        </ul>
+      </div>
+
+      <div class="form-field">
+        <label>Régimen Fiscal</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="regimenFiscal">
+            <mat-option value='/'>Seleccionar régimen fiscal</mat-option>
+            <mat-option value='601-G03,S01'>General de Ley Personas Morales</mat-option>
+            <mat-option value='603-G03,S01'>Personas Morales con Fines no Lucrativos</mat-option>
+            <mat-option value='605-D04,S01'>Sueldos y Salarios e Ingresos Asimilados a Salarios</mat-option>
+            <mat-option value='606-G03,D04,S01'>Arrendamiento</mat-option>
+            <mat-option value='607-D04,S01'>Régimen de Enajenación o Adquisición de Bienes</mat-option>
+            <mat-option value='608-D04,S01'>Demás ingresos</mat-option>
+            <mat-option value='610-S01'>Residentes en el Extranjero sin Establecimiento Permanente en México</mat-option>
+            <mat-option value='611-D04,S01'>Ingresos por Dividendos (socios y accionistas)</mat-option>
+            <mat-option value='612-G03,D04,S01'>Personas Físicas con Actividades Empresariales y Profesionales</mat-option>
+            <mat-option value='614-D04,S01'>Ingresos por intereses</mat-option>
+            <mat-option value='615-D04,S01'>Régimen de los ingresos por obtención de premios</mat-option>
+            <mat-option value='616-S01'>Sin obligaciones fiscales</mat-option>
+            <mat-option value='620-G03,S01'>Sociedades Cooperativas de Producción que optan por diferir sus ingresos</mat-option>
+            <mat-option value='621-G03,S01'>Incorporación Fiscal</mat-option>
+            <mat-option value='622-G03,S01'>Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</mat-option>
+            <mat-option value='623-G03,S01'>Opcional para Grupos de Sociedades</mat-option>
+            <mat-option value='624-G03,S01'>Coordinados</mat-option>
+            <mat-option value='625-G03,D04,S01'>Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas</mat-option>
+            <mat-option value='626-G03,S01'>Régimen Simplificado de Confianza</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label>Uso de CFDI</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="usoCfdi">
+            <mat-option value='/'>Seleccionar uso</mat-option>
+            <mat-option value="G03">Gastos en general</mat-option>
+            <mat-option value="D04">Donativos</mat-option>
+            <mat-option value="S01">Sin efectos fiscales</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label>Código Postal</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="codigoPostal">
+        </mat-form-field>
+      </div>
+    </form>
+
+    <div class="warning-message">
+      UNA VEZ REALIZADO EL TIMBRADO NO EXISTE LA POSIBILIDAD DE UNA FE DE ERRATAS
+    </div>
+
+    <div class="note-message text-center mt-3">
+      NOTA: El XML será enviado a su correo.
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-raised-button class="search-button" (click)="obtenerCfdi()">
+      Obtener CFDI
+    </button>
+    <button mat-button class="cancel-button" (click)="close()">
+      Cancelar
+    </button>
+  </mat-dialog-actions>
+</div>

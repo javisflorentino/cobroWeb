@@ -5,9 +5,11 @@ import { CardsDependenciasComponent } from './components/cards-dependencias/card
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
+import { HistoricoPagosComponent } from './components/historico-pagos/historico-pagos.component';
 import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.component';
 import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
+import { ImpuestosPagesComponent } from './hacienda/pages/impuestos-pages/impuestos-pages.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,10 @@ const routes: Routes = [
         component: SharedDatosPolizaComponent
       },
       {
+        path: 'historico-pagos',
+        component: HistoricoPagosComponent
+      },
+      {
         path: 'tabla-conceptos/:idConcepto',
         component: TablaCalculoConceptosComponent
       },
@@ -38,6 +44,7 @@ const routes: Routes = [
         path: 'tabla-conceptos/:idConcepto/:tipoForm',
         component: TablaCalculoConceptosComponent
       },
+
       {
         path: 'registropublico/:idConcepto/:tipoForm',
         component: NotariosComponent

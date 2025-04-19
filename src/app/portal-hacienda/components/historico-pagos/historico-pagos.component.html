@@ -1,0 +1,62 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="mb-8 p-3">
+  <!-- Título de la sección -->
+  <h2 class="section-title">Historico de Pagos</h2>
+  
+  <!-- Icono central -->
+  <div class="icon-container">
+    <img src="./assets/fondo-logo.png" alt="Icono de vehículo" class="custom-icon">
+
+  </div>
+  
+  <!-- Datos del Vehículo -->
+  <div class="mb-4" *ngIf="vehicleData">
+    <div class="header-bg p-3">
+      <h3 class="m-0 text-center">Datos Del Vehículo</h3>
+    </div>
+    
+    <div class="grid">
+      <div class="col-4 table-header p-3">Placa</div>
+      <div class="col-4 table-header p-3">Serie</div>
+      <div class="col-4 table-header p-3">Cilindros</div>
+    </div>
+    
+    <div class="grid table-row">
+      <div class="col-4 data-cell">{{vehicleData.placa['#text']}}</div>
+      <div class="col-4 data-cell">{{vehicleData.noSerie['#text']}}</div>
+      <div class="col-4 data-cell">{{vehicleData.noCilindros['#text']}}</div>
+    </div>
+  </div>
+  
+  <!-- Pagos Realizados -->
+  <div class="mt-4" *ngIf="payments && payments.length > 0">
+    <div class="header-bg p-3">
+      <h3 class="m-0 text-center">Pagos Realizados</h3>
+    </div>
+    
+    <div class="grid">
+      <div class="col-3 table-header p-3">Concepto</div>
+      <div class="col-3 table-header p-3">Ejercicio Fiscal</div>
+      <div class="col-3 table-header p-3">Recibo de Pago</div>
+      <div class="col-3 table-header p-3">Fecha de Pago</div>
+    </div>
+    
+    <div *ngFor="let payment of payments" class="grid table-row">
+      <div class="col-3 data-cell">{{payment.concepto['#text']}}</div>
+      <div class="col-3 data-cell">{{payment.ejercicioFiscal['#text']}}</div>
+      <div class="col-3 data-cell">{{payment.recibo['#text']}}</div>
+      <div class="col-3 data-cell">{{payment.fechaPago['#text']}}</div>
+    </div>
+  </div>
+
+  <!-- Mensaje de no hay registros -->
+  <div class="mt-4 text-center" *ngIf="!payments || payments.length === 0">
+    <p>No se encontraron registros de pagos para este vehículo.</p>
+  </div>
+  
+  <!-- Botones de acción -->
+  <div class="flex justify-content-end mt-4">
+    <button pButton icon="pi pi-arrow-left" label="Volver" class="p-button-outlined mr-2" (click)="volver()"></button>
+    <button pButton icon="pi pi-print" class="p-button-rounded p-button-success" (click)="print()"></button>
+  </div>
+</div>

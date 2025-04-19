@@ -286,7 +286,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       //this.router.navigate(['/pagos/' + item]);
       //return;
     }
-    console.log('/pagos/' + item, idConcepto, conceptSelect[0].formulario)
+
     this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
     return;
   }

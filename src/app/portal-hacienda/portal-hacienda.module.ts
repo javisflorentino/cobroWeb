@@ -7,9 +7,12 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MenuImagePipe } from './pipes/menu-image.pipe';
 import { CardsDependenciasComponent } from './components/cards-dependencias/cards-dependencias.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { HistoricoPagosComponent } from './components/historico-pagos/historico-pagos.component';
+
 import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.component';
-import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
+import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
 
 
 @NgModule({
@@ -17,15 +20,18 @@ import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general
     LayoutPortalPagosComponent,
     CardsDependenciasComponent,
     MenuImagePipe,
+    HistoricoPagosComponent,
+
     NotariosComponent,
-    ImpuestosComponent,
-    PublicoGeneralComponent
+    PublicoGeneralComponent,
+    ImpuestosComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     PortalHaciendaRoutingModule,
-    SharedModule
+    SharedModule,
+    MatTooltipModule
   ]
 })
 export class PortalHaciendaModule { }
