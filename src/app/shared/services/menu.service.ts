@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, pipe, tap, filter, find } from 'rxjs';
+import { Observable, catchError, map, of, pipe, tap, filter, find, throwError } from 'rxjs';
 import { Conceptos, MenuConceptos } from '../interfaces/shared-conceptos.interface';
 
 import ListaConceptos from '../../../../data/arreglos/smyt_conceptos_arr.json'
@@ -48,7 +48,21 @@ export class MenuService {
       JSON.stringify(body),{headers})
     .pipe(
       map(resp => resp.data),
-      catchError(error => of([])),
+      catchError(err =>{
+        let message = '';
+        return throwError( () => {
+          if(err.status==401 || err.status==400) {
+            if(typeof err.error.message == 'object') {
+              Object.keys(err.error.message).map(key => message += err.error.message[key]);
+            } else {
+              message = err.error.message;
+            }
+          } else {
+            message = "Problemas de comunicación con el servidor, reporte el error 500 al CAT e intentelo mas tarde";
+          }
+          return message;
+        });
+      }),
     );
 
 

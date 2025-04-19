@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalComprobantePagoComponent } from 'src/app/shared/components/modal-comprobante-pago/modal-comprobante-pago.component';
 import { ModalHistoricoPagosComponent } from 'src/app/shared/components/modal-historico-pagos/modal-historico-pagos.component';
 import { ModalFacturacionComponent } from 'src/app/shared/components/modal-facturacion/modal-facturacion.component';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -116,7 +117,25 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         this.parentLayout.redirectHome(true);
       }
       this.generalService.requestConceptos(0)
-        .subscribe(conceptos => {
+        .subscribe({
+          next: (conceptos) => {
+            const result = conceptos.filter(resp => resp.rol == 0);
+            if (result.length > 0) {
+              this.cardsArr = result;
+              return;
+            }
+
+            this.cardsArr = [];
+            this.isLoading = false;
+            return;
+          },
+          error: (message) => {
+            this.isLoading = false;
+            Swal.fire({icon: "error", title: `Error !!`, text: `${message}`, allowOutsideClick:false});
+          },
+        }
+
+        /*conceptos => {
           const result = conceptos.filter(resp => resp.rol == 0);
           if (result.length > 0) {
             this.cardsArr = result;
@@ -127,7 +146,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           return;
 
-        });
+        }*/);
     });
 
 
