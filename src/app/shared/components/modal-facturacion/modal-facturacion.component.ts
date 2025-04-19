@@ -6,6 +6,7 @@ import { IngresosService } from 'src/app/portal-hacienda/services/ingresos.servi
 import { Recibo, estadoVehiculo } from '../../interfaces/soap-servicios-ingresos';
 import { ConvertXmlString } from '../../clases/convert-xml-string';
 import Swal from 'sweetalert2';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-modal-facturacion',
@@ -22,15 +23,15 @@ export class ModalFacturacionComponent {
 
   cfdiForm: FormGroup = this.fb.group({
     codigoReimpresion: ['', Validators.required],
-    serie: ['', Validators.required],
-    folio: ['', Validators.required],
+    serie: [''],
+    folio: [''],
     correoElectronico: ['', [Validators.email]],
-    formaPago: ['', Validators.required],
+    formaPago: ['Efectivo'],
     rfc: ['', Validators.required],
     nombreRazonSocial: ['', Validators.required],
-    regimenFiscal: ['', Validators.required],
-    usoCfdi: ['', Validators.required],
-    codigoPostal: ['', Validators.required]
+    regimenFiscal: [''],
+    usoCfdi: [''],
+    codigoPostal: ['']
   });
   
   constructor(
@@ -41,9 +42,17 @@ export class ModalFacturacionComponent {
   ngOnInit(): void {
     
   }
-  async obtenerCfdi(
-   
-  ): Promise<string> {
+  async obtenerCfdi(): Promise<void> {
+    if (this.cfdiForm.invalid) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Formulario inválido',
+        text: 'Por favor complete correctamente todos los campos requeridos.'
+      });
+      return;
+    }
+  
+    // Obtiene los valores del formulario
     const lineaCaptura = this.cfdiForm.get("codigoReimpresion")?.value;
     const serie = this.cfdiForm.get("serie")?.value;
     const folio = this.cfdiForm.get("folio")?.value;
@@ -56,47 +65,122 @@ export class ModalFacturacionComponent {
     const nombre = this.cfdiForm.get("nombreRazonSocial")?.value;
     const lineaCapturaSerieFolio = `${lineaCaptura}/${serie}-${folio}`;
     
-  
     try {
-      // 1. Consultar CFD
+      // 1. Consultar CFD mediante SOAP
       const consultarCFDResponse = await this.ingresosSevice.consultarCFDSoap(lineaCaptura);
+      
+      // Verifica que la respuesta sea válida
+      if (!consultarCFDResponse) {
+        throw new Error(`No se pudo obtener información para la línea de captura ${lineaCaptura}`);
+      }
+      
       this.asJson = this.xmlSring.xmlStringToJson(consultarCFDResponse.toString());
+      
+      // Verifica la estructura de la respuesta
+      if (!this.asJson['soap:Envelope'] || 
+          !this.asJson['soap:Envelope']['soap:Body'] || 
+          !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'] ||
+          !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult) {
+        throw new Error('Formato de respuesta SOAP inválido');
+      }
+      
       const cfd = this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult;
-
-      const rfcCFD = cfd?.RFC['#text'];
-      const serieCFD = cfd?.Serie['#text'];
-      const folioCFD = cfd?.Folio['#text'];
-      console.log(rfcCFD)
-
+  
+      // Verifica que los campos obligatorios existan
+      if (!cfd?.RFC || !cfd?.Serie || !cfd?.Folio) {
+        throw new Error('La información del CFD está incompleta');
+      }
+  
+      const rfcCFD = cfd.RFC['#text'];
+      const serieCFD = cfd.Serie['#text'];
+      const folioCFD = cfd.Folio['#text'];
+  
+      // Validación de RFC
       if (rfcCFD !== rfc) {
-        Swal.fire({
+        await Swal.fire({
           icon: "error", 
-          title: "Error!!", 
-          text:  `El RFC capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`,
+          title: "Error de validación", 
+          text: `El RFC capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`,
           allowOutsideClick: false
         });
+        return;
       }
   
+      // Validación de serie y folio
       if (serieCFD !== serie || folioCFD !== folio) {
-        return `La serie o folio capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`;
+        await Swal.fire({
+          icon: "error", 
+          title: "Error de validación", 
+          text: `La serie o folio capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`,
+          allowOutsideClick: false
+        });
+        return;
       }
   
-      // 2. Timbrar
-      const resultadoTimbre = "1"//await this.ingresosSevice.timbraCP(lineaCapturaSerieFolio, pago, uso, cp, regimen, nombre);
+      // Timbrar el comprobante
+      const resultadoTimbre = await this.ingresosSevice.timbraCP(
+        lineaCapturaSerieFolio, 
+        pago, 
+        uso, 
+        cp, 
+        regimen, 
+        nombre
+      );
   
+      // Verifica el resultado del timbrado
       if (resultadoTimbre.includes('true') || resultadoTimbre.includes('1')) {
-        // 3. Enviar por correo
-       // const resultadoEnvio = await this.generalesService.envioCDFI(lineacaptura, email, serie, folio);
-        return "1"//resultadoEnvio;
+        await Swal.fire({
+          icon: 'success',
+          title: 'Timbrado exitoso',
+          text: 'El CFDI se timbró correctamente.'
+        });
+  
+        try {
+          // Enviar CFDI por correo electrónico
+          const envioResponse = await firstValueFrom(
+            this.generalesService.envioCDFI(lineaCaptura, serie, folio, email)
+          );
+        
+          if (envioResponse?.success) {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Correo enviado',
+              text: 'El CFDI se envió correctamente al destinatario.'
+            });
+          } else {
+            await Swal.fire({
+              icon: 'warning',
+              title: 'Advertencia',
+              text: 'El timbrado fue exitoso, pero no se pudo enviar el correo electrónico.'
+            });
+          }
+        } catch (emailError) {
+          console.error("Error al enviar correo:", emailError);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'El timbrado fue exitoso, pero ocurrió un error al enviar el correo electrónico.'
+          });
+        }
+  
+        // Cierra el diálogo solo si el timbrado fue exitoso
+        this.dialogRef.close();
       } else {
-        return resultadoTimbre;
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error al timbrar',
+          text: 'No se pudo realizar el timbrado del CFDI.'
+        });
       }
     } catch (err) {
-      console.error("Error en timbrado o envío:", err);
-      return 'Error inesperado al timbrar o enviar el comprobante.';
+      console.error("Error en el proceso:", err);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err instanceof Error ? err.message : 'Error inesperado al timbrar o enviar el comprobante.'
+      });
     }
   }
-  
 
   close(): void {
     this.dialogRef.close();

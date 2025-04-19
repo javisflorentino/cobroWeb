@@ -83,7 +83,7 @@ export class SmytService {
               <!--Optional:-->
               <noSerie>${serie}</noSerie>
               <!--Optional:-->
-              <usuario>?</usuario>
+              <usuario></usuario>
           </smyt:obtenEstatusVehiculo>
         </soapenv:Body>
     </soapenv:Envelope>`,
