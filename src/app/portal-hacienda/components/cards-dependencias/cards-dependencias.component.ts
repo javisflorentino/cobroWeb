@@ -90,7 +90,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
   public cardsArr: MenuConceptos[] = [];
 
   /* NOTA: CONTROLA LA VISUALIZACION DEL SPINNER */
-  public isLoading: boolean = false;
+  public isLoading: boolean = true;
 
   private parentLayout = inject(LayoutPortalPagosComponent);
 
@@ -121,6 +121,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
           next: (conceptos) => {
             const result = conceptos.filter(resp => resp.rol == 0);
             if (result.length > 0) {
+              this.isLoading = false;
               this.cardsArr = result;
               return;
             }
