@@ -21,6 +21,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ModalComprobantePagoComponent } from './components/modal-comprobante-pago/modal-comprobante-pago.component';
 import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos/modal-historico-pagos.component';
+import { ModalFacturacionComponent } from './components/modal-facturacion/modal-facturacion.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos
     SanitizeUrlPipe,
     ModalPagoLineaComponent,
     ModalComprobantePagoComponent,
-    ModalHistoricoPagosComponent
+    ModalHistoricoPagosComponent,
+    ModalFacturacionComponent
   ],
   imports: [
     CommonModule,

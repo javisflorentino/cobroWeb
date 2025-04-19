@@ -12,6 +12,7 @@ import { ModalPagoLineaComponent } from 'src/app/shared/components/modal-pago-li
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComprobantePagoComponent } from 'src/app/shared/components/modal-comprobante-pago/modal-comprobante-pago.component';
 import { ModalHistoricoPagosComponent } from 'src/app/shared/components/modal-historico-pagos/modal-historico-pagos.component';
+import { ModalFacturacionComponent } from 'src/app/shared/components/modal-facturacion/modal-facturacion.component';
 
 
 @Component({
@@ -172,6 +173,19 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     if (button.label === 'Histórico') {
       const dialogRef = this.dialog.open(ModalHistoricoPagosComponent, {
         width: '350px',
+        disableClose: false
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Datos del formulario:', result);
+          // Aquí puedes manejar los datos recibidos del diálogo
+        }
+      });
+    }
+    if (button.label === 'Facturación') {
+      const dialogRef = this.dialog.open(ModalFacturacionComponent, {
+        width: '550px',
         disableClose: false
       });
 

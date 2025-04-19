@@ -43,32 +43,49 @@ paymentForm: FormGroup = this.fb.group({
       let s = this.paymentForm.get('numeroSerie')?.value;
       
       this.smytSevice.validateVehicleSoap(p, s)
-        .then(response => response.text())
-        .then(xml => {
-          this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-          const estatusVehiculo = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo;
-          
-          // Si la respuesta es exitosa, cerramos el diálogo y navegamos
-          this.dialogRef.close(estatusVehiculo);
-          
-          // Navegar a la página de histórico con los datos
-          this.router.navigate(['/pagos/historico-pagos'], { 
-            state: { vehicleData: estatusVehiculo } 
-          });
+  .then(response => response.text())
+  .then(xml => {
+    this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+    const estatusVehiculo = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo;
+    const vehiculo = estatusVehiculo.vehiculo;
 
-          this.isLoading = false;
-          this.buttBlock = false;
-        })
-        .catch(err => {
-          Swal.fire({
-            icon: "error", 
-            title: "Error!!", 
-            text: "No se encontró información para la placa y serie indicadas",
-            allowOutsideClick: false
-          });
-          this.isLoading = false;
-          this.buttBlock = false;
-        });
+    // Verificamos si los campos clave están vacíos
+    const vehiculoVacio = 
+    !vehiculo.idVehiculo["#text"] 
+    ;
+    if (vehiculoVacio) {
+      // Mostrar error si no hay coincidencia
+      Swal.fire({
+        icon: "error", 
+        title: "Datos incorrectos", 
+        text: "No se encontró información para la placa y serie indicadas",
+        allowOutsideClick: false
+      });
+      this.isLoading = false;
+      this.buttBlock = false;
+      return;
+    }
+
+    // Si hay datos válidos
+    this.dialogRef.close(estatusVehiculo);
+    this.router.navigate(['/pagos/historico-pagos'], { 
+      state: { vehicleData: estatusVehiculo } 
+    });
+
+    this.isLoading = false;
+    this.buttBlock = false;
+  })
+  .catch(err => {
+    Swal.fire({
+      icon: "error", 
+      title: "Error!!", 
+      text: "No se pudo obtener respuesta del servicio",
+      allowOutsideClick: false
+    });
+    this.isLoading = false;
+    this.buttBlock = false;
+  });
+
     } else {
       // Marcar formulario como inválido
       this.captureLineInvalid = true;

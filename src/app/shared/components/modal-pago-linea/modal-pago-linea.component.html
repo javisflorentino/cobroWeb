@@ -1,33 +1,33 @@
 <!-- payment-dialog.component.html -->
 <div class="dialog-container">
-    <h2 class="dialog-titulo">Pago en Línea</h2>
-    <p class="dialog-subtitle">Introduzca la línea de Captura</p>
-    
-    <mat-dialog-content>
-      <form [formGroup]="paymentForm">
-        <div class="form-field">
-          <label class="text-center">Línea Captura</label>
-          <mat-form-field appearance="outline" class="full-width">
-            <input matInput formControlName="captureLine">
-          </mat-form-field>
-        </div>
-        
-        <div class="form-field">
-          <label class="text-center">Monto</label>
-          <mat-form-field appearance="outline" class="full-width">
-            <input matInput formControlName="amount" type="number">
-          </mat-form-field>
-        </div>
-        
-        <div *ngIf="captureLineInvalid" class="error-message">
-          Línea de captura no válida
-        </div>
-      </form>
-    </mat-dialog-content>
-    
-    <mat-dialog-actions align="center">
-      <button mat-raised-button color="primary" class="search-button" (click)="search()">
-        Buscar
-      </button>
-    </mat-dialog-actions>
-  </div>
+  <h2 class="dialog-titulo">Pago en Línea</h2>
+  <p class="dialog-subtitle">Introduzca la línea de Captura</p>
+  
+  <mat-dialog-content>
+    <form [formGroup]="paymentForm">
+      <div class="form-field">
+        <label class="text-center">Línea Captura</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="captureLine">
+        </mat-form-field>
+      </div>
+      
+      <div class="form-field">
+        <label class="text-center">Monto</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="amount" type="number">
+        </mat-form-field>
+      </div>
+      
+      <div *ngIf="captureLineInvalid" class="error-message">
+        Línea de captura no válida
+      </div>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" class="search-button" (click)="search()">
+      Buscar
+    </button>
+  </mat-dialog-actions>
+</div>
