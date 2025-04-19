@@ -42,23 +42,23 @@ export class IngresosService {
   }
   async timbraCP(lineaCaptura: string, pago: string, uso: string, cp: string, regimen: string, nombre: string): Promise<any> {
     const soapEnvelope = `
-    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tim="http://tempuri.org/">
-       <soapenv:Header/>
-       <soapenv:Body>
-          <tim:TimbraCFD>
-             <tim:lineaCaptura>${lineaCaptura}</tim:lineaCaptura>
-             <tim:usoCfdi>${uso}</tim:usoCfdi>
-             <tim:formaPago>${pago}</tim:formaPago>
-             <tim:metodoPago>PUE</tim:metodoPago>
-             <tim:nombreReceptor>${nombre}</tim:nombreReceptor>
-             <tim:codigoPostalReceptor>${cp}</tim:codigoPostalReceptor>
-             <tim:regimenFiscalReceptor>${regimen}</tim:regimenFiscalReceptor>
-             <tim:serieFolioCfdiRelacionado></tim:serieFolioCfdiRelacionado>
-             <tim:serieFolioCfdiComplemento></tim:serieFolioCfdiComplemento>
-             <tim:fechaPagoComplemento></tim:fechaPagoComplemento>
-          </tim:TimbraCFD>
-       </soapenv:Body>
-    </soapenv:Envelope>`;
+    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+       <soap:Header/>
+       <soap:Body>
+          <tem:TimbraCFD>
+             <tem:lineaCaptura>${lineaCaptura}</tem:lineaCaptura>
+             <tem:usoCfdi>${uso}</tem:usoCfdi>
+             <tem:formaPago>${pago}</tem:formaPago>
+             <tem:metodoPago>PUE</tem:metodoPago>
+             <tem:nombreReceptor>${nombre}</tem:nombreReceptor>
+             <tem:codigoPostalReceptor>${cp}</tem:codigoPostalReceptor>
+             <tem:regimenFiscalReceptor>${regimen}</tem:regimenFiscalReceptor>
+             <tem:serieFolioCfdiRelacionado></tem:serieFolioCfdiRelacionado>
+             <tem:serieFolioCfdiComplemento></tem:serieFolioCfdiComplemento>
+             <tem:fechaPagoComplemento></tem:fechaPagoComplemento>
+          </tem:TimbraCFD>
+       </soap:Body>
+    </soap:Envelope>`;
   
     try {
       const response = await fetch("https://www.ingresos.morelos.gob.mx/wsTimbrado/Timbrado.asmx", {
