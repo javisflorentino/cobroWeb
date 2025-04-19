@@ -26,6 +26,6 @@ export class AppComponent implements OnInit {
 
     localStorage.removeItem('movimiento');
 
-    this.router.navigate(['/pagos/dependencias'])
+    //this.router.navigate(['/pagos/dependencias'])
   }
 }

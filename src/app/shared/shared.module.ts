@@ -45,7 +45,8 @@ import { SanitizeUrlPipe } from './pipes/sanitize-url.pipe';
     TablaCalculoConceptosComponent,
     LoadSpinnerComponent,
     SegmentTextPipe,
-    SnackBarComponent
+    SnackBarComponent,
+    SanitizeUrlPipe
   ]
 })
 export class SharedModule { }

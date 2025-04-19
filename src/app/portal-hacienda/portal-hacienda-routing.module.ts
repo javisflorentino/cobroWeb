@@ -5,6 +5,9 @@ import { CardsDependenciasComponent } from './components/cards-dependencias/card
 import { DatosContribuyenteComponent } from '../shared/components/datos-contribuyente/datos-contribuyente.component';
 import { SharedDatosPolizaComponent } from '../shared/components/shared-datos-poliza/shared-datos-poliza.component';
 import { TablaCalculoConceptosComponent } from '../shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
+import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.component';
+import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
+import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
 
 const routes: Routes = [
   {
@@ -36,6 +39,18 @@ const routes: Routes = [
         component: TablaCalculoConceptosComponent
       },
       {
+        path: 'registropublico/:idConcepto/:tipoForm',
+        component: NotariosComponent
+      },
+      {
+        path: 'impuestos/:idConcepto/:tipoForm',
+        component: ImpuestosComponent
+      },
+      {
+        path: 'publicogeneral/:idConcepto/:tipoForm',
+        component: PublicoGeneralComponent
+      },
+      {
         path: 'smyt',
         loadChildren: () => import('./pages/smyt/smyt.module').then(m => m.SmytModule)
       },
@@ -49,7 +64,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'pagos'
+        redirectTo: 'pagos/dependencias'
       }
     ]
   }

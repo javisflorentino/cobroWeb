@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'pagos',
+    redirectTo: 'pagos/dependencias',
     pathMatch: 'full'
   },
   {

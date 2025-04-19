@@ -18,7 +18,7 @@
 
 .leftToolbar{
   position: absolute;
-  width: 20%;
+  width: 40%;
   height: 100%;
   top: 0;
   display: flex;
@@ -55,14 +55,14 @@
 }
 .rightToolbarSecond {
   position: absolute;
-  width: 300%;
+  width: 132%;
   height: 100%;
   top: 0;
   display: flex;
   justify-content: left;
   align-items: center;
   z-index: 2; /* Para que estén por encima del div central */
-  margin-left: 90px;
+
 }
 .rightOneSecond {
   position: absolute;
@@ -72,6 +72,7 @@
   display: flex;
   justify-content: left;
   align-items: center;
+  color: red;
 }
 .rightTwoSecond {
   position: absolute;
@@ -81,6 +82,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: red;
 }
 .rightTwo {
   position: absolute;

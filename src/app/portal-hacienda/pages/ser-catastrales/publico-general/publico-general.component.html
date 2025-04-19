@@ -1,0 +1,8 @@
+<div class="flex  justify-content-center">
+  <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1300px'}"
+    height="800">
+    <embed [src]="url|sanitizeUrl"
+      [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1300px'}"
+      height="800" />
+  </object>
+</div>
