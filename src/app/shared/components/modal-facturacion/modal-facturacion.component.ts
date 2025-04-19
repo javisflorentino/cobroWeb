@@ -141,7 +141,7 @@ export class ModalFacturacionComponent {
             this.generalesService.envioCDFI(lineaCaptura, serie, folio, email)
           );
         
-          if (envioResponse?.success) {
+          if (envioResponse) {
             await Swal.fire({
               icon: 'success',
               title: 'Correo enviado',

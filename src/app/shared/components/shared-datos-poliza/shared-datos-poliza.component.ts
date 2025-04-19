@@ -71,16 +71,27 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
-    if (!this.contribuyenteArr.data.contribuyente) {
-      this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente_only')!);
+ 
+    const contribuyenteStr = localStorage.getItem('contribuyente');
+    const contribuyenteOnlyStr = localStorage.getItem('contribuyente_only');
+    this.contribuyenteArr = contribuyenteStr ? JSON.parse(contribuyenteStr) : null;
+    if (!this.contribuyenteArr?.data?.contribuyente) {
+      this.contribuyenteArr = contribuyenteOnlyStr ? JSON.parse(contribuyenteOnlyStr) : null;
     }
+    const contribuyente = this.contribuyenteArr?.data?.contribuyente;
+  const nombrePago = contribuyente
+    ? `${contribuyente.nombre} ${contribuyente.primerApellido} ${contribuyente.segundoApellido}`
+    : '';
+
+  const lineaDetalle = this.contribuyenteArr?.data?.lineaDetalle || '';
     this.datosPoliza = JSON.parse(localStorage.getItem('datos_poliza')!);
+    console.log(this.datosPoliza)
     this.myForm.reset({
       numeroPoliza:this.datosPoliza.numeroPoliza,
       lineaCaptura:this.datosPoliza.lineaCaptura,
       monto: this.datosPoliza.total.toString(),
-      nombrePago: this.contribuyenteArr.data.contribuyente.nombre + ' ' + this.contribuyenteArr.data.contribuyente.primerApellido + ' ' + this.contribuyenteArr.data.contribuyente.segundoApellido,
-      lineaDetallePago: this.contribuyenteArr.data.lineaDetalle,
+      nombrePago: nombrePago,
+      lineaDetallePago: lineaDetalle,
       pago2015: '2015',
       banco: 'Bancomer',
       extra: 'ECONOMIA-',
