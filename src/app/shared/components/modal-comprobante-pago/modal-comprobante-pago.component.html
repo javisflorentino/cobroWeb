@@ -18,6 +18,7 @@ style="background-image: url('./assets/fondoLogo.png');
           <label class="text-center">Línea Captura</label>
           <mat-form-field appearance="outline" class="full-width">
             <input matInput formControlName="captureLine">
+            <mat-error *ngIf="paymentForm.get('captureLine')?.invalid">Campo requerido</mat-error>
           </mat-form-field>
         </div>
         

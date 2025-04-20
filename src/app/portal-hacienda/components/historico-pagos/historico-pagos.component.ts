@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ModalHistoricoPagosComponent } from 'src/app/shared/components/modal-historico-pagos/modal-historico-pagos.component';
 import { EstatusVehiculo, RegistroHistorico, Vehiculo } from 'src/app/shared/interfaces/soap-estadoVehivulo';
 
 @Component({
@@ -13,7 +15,7 @@ export class HistoricoPagosComponent {
   vehicleData: Vehiculo | null = null;
   payments: RegistroHistorico[] = [];
   fullData: EstatusVehiculo | null = null;
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
     // Obtener los datos del router state si existen
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
@@ -47,7 +49,17 @@ export class HistoricoPagosComponent {
   }*/
    // Método para volver a la búsqueda
    volver(): void {
-    this.router.navigate(['/pagos/buscar-vehiculo']);
+    const dialogRef = this.dialog.open(ModalHistoricoPagosComponent, {
+            width: '350px',
+            disableClose: false
+          });
+    
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              console.log('Datos del formulario:', result);
+              // Aquí puedes manejar los datos recibidos del diálogo
+            }
+          });
   }
   print(): void {
     window.print();

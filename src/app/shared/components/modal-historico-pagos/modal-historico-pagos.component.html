@@ -13,6 +13,7 @@
           <label class="text-center dialog-label">Número de Serie</label>
           <mat-form-field appearance="outline" class="full-width">
             <input matInput formControlName="numeroSerie">
+            <mat-error *ngIf="paymentForm.get('numeroSerie')?.invalid">Campo requerido</mat-error>
           </mat-form-field>
         </div>
         
@@ -20,12 +21,11 @@
           <label class="text-center dialog-label">Placa</label>
           <mat-form-field appearance="outline" class="full-width">
             <input matInput formControlName="placa" type="text">
+            <mat-error *ngIf="paymentForm.get('placa')?.invalid">Campo requerido</mat-error>
           </mat-form-field>
         </div>
         
-        <div *ngIf="captureLineInvalid" class="dialog-error-message">
-          Campos faltantes
-        </div>
+      
       </form>
     </mat-dialog-content>
     

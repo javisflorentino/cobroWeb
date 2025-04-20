@@ -13,6 +13,7 @@ style="background-image: url('./assets/fondoLogo.png');
         <label class="text-center dialog-label">Línea Captura</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="captureLine">
+          <mat-error *ngIf="paymentForm.get('captureLine')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
       
@@ -20,12 +21,11 @@ style="background-image: url('./assets/fondoLogo.png');
         <label class="text-center dialog-label">Monto</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="amount" type="number">
+          <mat-error *ngIf="paymentForm.get('amount')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
       
-      <div *ngIf="captureLineInvalid" class="dialog-error-message">
-        Línea de captura no válida
-      </div>
+      
     </form>
   </mat-dialog-content>
   

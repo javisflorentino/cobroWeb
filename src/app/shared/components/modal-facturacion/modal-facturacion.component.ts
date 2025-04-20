@@ -23,15 +23,15 @@ export class ModalFacturacionComponent {
 
   cfdiForm: FormGroup = this.fb.group({
     codigoReimpresion: ['', Validators.required],
-    serie: [''],
-    folio: [''],
+    serie: ['', Validators.required],
+    folio: ['', Validators.required],
     correoElectronico: ['', [Validators.email]],
-    formaPago: ['Efectivo'],
+    formaPago: ['', Validators.required],
     rfc: ['', Validators.required],
     nombreRazonSocial: ['', Validators.required],
-    regimenFiscal: [''],
-    usoCfdi: [''],
-    codigoPostal: ['']
+    regimenFiscal: ['', Validators.required],
+    usoCfdi: ['', Validators.required],
+    codigoPostal: ['', Validators.required]
   });
   
   constructor(
@@ -81,7 +81,7 @@ export class ModalFacturacionComponent {
           !this.asJson['soap:Envelope']['soap:Body'] || 
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'] ||
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult) {
-        throw new Error('Formato de respuesta SOAP inválido');
+        throw new Error('La línea de captura no es válida');
       }
       
       const cfd = this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult;

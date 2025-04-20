@@ -29,9 +29,7 @@ export class IngresosService {
         body: soapEnvelope
       });
   
-      if (!response.ok) {
-        throw new Error(`Error SOAP: ${response.status}`);
-      }
+     
   
       const text = await response.text();
       return text; // Si quieres, aquí podrías parsear XML a JSON usando DOMParser o xml2js
