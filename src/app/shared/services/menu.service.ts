@@ -69,6 +69,40 @@ export class MenuService {
 
   }
 
+  requestConceptosByPk(id: number): Observable<MenuConceptos[]> {
+    this.deleteLocalStorage();
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    const body = {"pkPadre":id}
+
+    return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
+      JSON.stringify(body),{headers})
+    .pipe(
+      map(resp => resp.data),
+      catchError(err =>{
+        let message = '';
+        return throwError( () => {
+          if(err.status==401 || err.status==400) {
+            if(typeof err.error.message == 'object') {
+              Object.keys(err.error.message).map(key => message += err.error.message[key]);
+            } else {
+              message = err.error.message;
+            }
+          } else {
+            message = "Problemas de comunicación con el servidor, reporte el error 500 al CAT e intentelo mas tarde";
+          }
+          return message;
+        });
+      }),
+    );
+
+
+
+  }
+
   getConceptsByTitle(title:string){
     let headers = new HttpHeaders();
 
