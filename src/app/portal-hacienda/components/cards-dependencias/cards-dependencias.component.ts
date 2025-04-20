@@ -167,7 +167,8 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     if (button.label === 'Pagar Póliza') {
       const dialogRef = this.dialog.open(ModalPagoLineaComponent, {
         width: '350px',
-        disableClose: false
+        disableClose: false,
+        
       });
 
       dialogRef.afterClosed().subscribe(result => {

@@ -43,3 +43,9 @@
     overflow-y: auto;
     padding: 0;
   }
+  ::ng-deep.mat-mdc-dialog-surface {
+    border-radius: 20px !important;
+  }
+  ::ng-deep.mdc-dialog__surface{
+    border-radius: 20px !important;
+  }

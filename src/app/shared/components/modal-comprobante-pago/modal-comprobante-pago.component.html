@@ -5,6 +5,9 @@ style="background-image: url('./assets/fondoLogo.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center">
+            <button mat-icon-button class="dialog-close-button" (click)="close()">
+              <mat-icon>close</mat-icon>
+            </button>
     <h2  class="dialog-titulo">Comprobante de Pago</h2>
     <p class="dialog-subtitle">Introduzca la línea de captura o 
         código de reimpresión</p>
@@ -27,7 +30,7 @@ style="background-image: url('./assets/fondoLogo.png');
     </mat-dialog-content>
     
     <mat-dialog-actions align="center">
-      <button mat-raised-button color="primary" class="search-button" (click)="search()">
+      <button mat-raised-button color="primary" class="dialog-search-button" (click)="search()">
         Buscar
       </button>
     </mat-dialog-actions>

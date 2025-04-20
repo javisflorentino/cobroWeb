@@ -10,27 +10,27 @@
     <mat-dialog-content>
       <form [formGroup]="paymentForm">
         <div class="form-field">
-          <label class="text-center">Número de Serie</label>
+          <label class="text-center dialog-label">Número de Serie</label>
           <mat-form-field appearance="outline" class="full-width">
             <input matInput formControlName="numeroSerie">
           </mat-form-field>
         </div>
         
         <div class="form-field">
-          <label class="text-center">Placa</label>
+          <label class="text-center dialog-label">Placa</label>
           <mat-form-field appearance="outline" class="full-width">
             <input matInput formControlName="placa" type="text">
           </mat-form-field>
         </div>
         
-        <div *ngIf="captureLineInvalid" class="error-message">
+        <div *ngIf="captureLineInvalid" class="dialog-error-message">
           Campos faltantes
         </div>
       </form>
     </mat-dialog-content>
     
     <mat-dialog-actions align="center">
-      <button mat-raised-button color="primary" class="search-button" (click)="search()">
+      <button mat-raised-button color="primary" class="dialog-search-button" (click)="search()">
         Buscar
       </button>
     </mat-dialog-actions>

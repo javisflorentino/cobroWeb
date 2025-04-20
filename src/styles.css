@@ -132,7 +132,7 @@ mat-form-field{
   margin-bottom: 16px;
 }
 
-label {
+.dialog-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
@@ -146,7 +146,7 @@ mat-form-field {
   margin-bottom: 8px;
 }
 
-.error-message {
+.dialog-error-message {
   color: #f44336;
   font-size: 12px;
   margin-top: -8px;
@@ -159,17 +159,31 @@ mat-dialog-actions {
   padding: 16px 0;
 }
 
-.search-button {
+.dialog-search-button {
   background-color: #4b7e48;
   color: white;
   min-width: 120px;
   border-radius: 20px;
 }
-
+.dialog-close-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
 ::ng-deep .mat-dialog-container {
   padding: 0;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 20px !important;
+}
+::ng-deep.mat-mdc-dialog-surface {
+  border-radius: 20px !important;
+}
+::ng-deep.mdc-dialog__surface{
+  border-radius: 20px !important;
 }
 
 ::ng-deep .mat-form-field-outline {
