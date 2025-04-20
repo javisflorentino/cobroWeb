@@ -219,9 +219,13 @@ export class GeneralesService {
 
     const body = {"lineaCaptura":title, "serie": serie, "folio": folio, "destinatario": para}
 
-    return this.http.post<ComboDTO>(`${this.baseUrlApp}/recibo/cfdi/correoCfdi`,body,{headers})
-      .pipe(
-        catchError(error => of(null))
-      );
+    return this.http.post<{success: boolean}>(`${this.baseUrlApp}/recibo/cfdi/correoCfdi`, body, {headers})
+    .pipe(
+      map(response => response.success), 
+      catchError(error => {
+        console.error('Error al enviar CFDI:', error);
+        return of(false); // Devolvemos false en lugar de null para mantener el mismo tipo de retorno
+      })
+    );
   }
 }
