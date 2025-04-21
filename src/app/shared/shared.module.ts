@@ -22,6 +22,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ModalComprobantePagoComponent } from './components/modal-comprobante-pago/modal-comprobante-pago.component';
 import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos/modal-historico-pagos.component';
 import { ModalFacturacionComponent } from './components/modal-facturacion/modal-facturacion.component';
+import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/shared-toolbar-menu.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { ModalFacturacionComponent } from './components/modal-facturacion/modal-
     ModalPagoLineaComponent,
     ModalComprobantePagoComponent,
     ModalHistoricoPagosComponent,
-    ModalFacturacionComponent
+    ModalFacturacionComponent,
+    SharedToolbarMenuComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +53,7 @@ import { ModalFacturacionComponent } from './components/modal-facturacion/modal-
   exports: [
     SidenavConceptosComponent,
     SharedToolbarComponent,
+    SharedToolbarMenuComponent,
     TablaCalculoConceptosComponent,
     LoadSpinnerComponent,
     SegmentTextPipe,

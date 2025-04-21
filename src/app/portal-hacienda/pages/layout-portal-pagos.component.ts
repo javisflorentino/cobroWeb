@@ -51,6 +51,8 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
+  public flagActivitie = false;
+
   constructor() {
     this.mediaQuery();
   }
@@ -76,6 +78,11 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     /* ACTUALIZA EL VALOR A EMITIR AL HIJO SIDENAV */
     this.sendActionSidenav.next(val);
     return;
+  }
+
+  activeOrInactiveToolbarMenu(val: boolean){
+    console.log('Activar o Desactivar Menu:::' + val)
+    this.flagActivitie = val;
   }
 
   /* NOTA: DISPARA ALERTAS  */

@@ -40,6 +40,11 @@ export class SharedToolbarComponent {
   @Output()
   private closeLocalStor = new EventEmitter<boolean>();
 
+  /* NOTA: ACTIVAR O DESACTIVAR TOOLBARMENU */
+  @Output()
+  private actionOnToolbarMenu = new EventEmitter<boolean>();
+  public flagActivitie = false;
+
   /* CONTROLA EL VALOR DEL EVENTO AL DAR CLICK EN EL ICONO MENU */
   private controlElemnentMenu: boolean = false;
 
@@ -47,6 +52,12 @@ export class SharedToolbarComponent {
 
   redirectPagos(): void{
     this.closeLocalStor.emit(true);
+  }
+
+  activeOrInactiveToolbarMenu(){
+    this.flagActivitie = !this.flagActivitie;
+    console.log(this.flagActivitie)
+    this.actionOnToolbarMenu.emit(this.flagActivitie)
   }
 
   sidenavAction(): void{

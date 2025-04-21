@@ -14,7 +14,10 @@
   (closeLocalStor)="redirectHome($event)"
   [receiveNameDep]="senNameDep"
   [viewResolution]="sizeDisplay"
+  (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)"
     ></shared-toolbar>
+
+  <shared-toolbar-menu *ngIf="flagActivitie"></shared-toolbar-menu>
 
 
   <div class="p-2">
