@@ -136,13 +136,13 @@
 
 
     <div class="centerToolbar">
-      <span [ngStyle]="{'font-size': (viewResolution == 'XSmall' || viewResolution=='Small') ? '13px' : '20px'}"
+      <span [ngStyle]="{'font-size': (viewResolution == 'XSmall' || viewResolution=='Small') ? '13px' : '17px'}"
         style="margin: auto; white-space: initial; text-align: center; font-family: 'QuetzalSansRegular';">
         <span style="font-family: 'QuetzalSansRegular';">HACIENDA DIGITAL MORELOS</span>
         <br>
         <span class="text-600" style="font-family: 'QuetzalSansThin';">{{receiveNameDep}}</span>
         <br>
-        <span><button mat-button (click)="activeOrInactiveToolbarMenu()">
+        <span><button mat-button [matTooltip]="!flagActivitie?'Desplegar opciones':'Ocultar opciones'" (click)="activeOrInactiveToolbarMenu()" style="justify-content: center;">
                 <mat-icon *ngIf="!flagActivitie; else other_icon">keyboard_double_arrow_down</mat-icon>
                 <ng-template #other_icon><mat-icon>keyboard_double_arrow_up</mat-icon></ng-template>
               </button>

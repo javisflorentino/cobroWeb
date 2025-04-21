@@ -51,6 +51,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
+  /* TODO: BANDERA QUE CONTROLA EL ACTIVAR O DESACTIVAR EL TOOLBARMENU */
   public flagActivitie = false;
 
   constructor() {
@@ -80,8 +81,8 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     return;
   }
 
+  /* TODO: RECIBE UN VALOR BOOL DEL HIJO, SHAREDTOOLBAR, Y SE USA VARA HABILITAR O DESHABILITAR EL TOOLBARMENU */
   activeOrInactiveToolbarMenu(val: boolean){
-    console.log('Activar o Desactivar Menu:::' + val)
     this.flagActivitie = val;
   }
 
