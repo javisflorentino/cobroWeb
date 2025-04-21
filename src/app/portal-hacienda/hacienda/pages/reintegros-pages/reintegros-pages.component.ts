@@ -49,7 +49,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
   public myFormHReintegro: FormGroup = this.fb.group(
     {
       nombre:   ['', [Validators.required, Validators.pattern(this.validatorService.peoplesNamePath)]],
-      telefono: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTel)]],
+      telefono: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTelNew)]],
       email:    ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)]],
       monto:    [1, [Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberPattern)]],
       dependencia:   ['', [Validators.required]],
@@ -244,58 +244,3 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
     return
   }
 }
-
-
-/**
- Servicio para obtener el valor de la UMA
-• SH - COPIAS CERTIFICADAS DE RECIBOS DE PAGO URGENTE - No respeta el que si le envia onto 1 mande el valor real
-CUALQUIER OTRA CERTIFICACIÓN DISTINTA A RECIBO DE PAGO: B) POR LA PRIMERA HOJA URGENTE
-
-
-'no_hojas',
-public displayedColumns = ['descripcion','ejercicioFiscal','importe','cantidad','subtotal'];
-public conceptos: Concepto[] = [];
-
-
-public tipoFormEdit: boolean = false;
-public tipoFormEdit_hoja: boolean = false;
-
-private asJson!:IsanCobros;
-
-104 31.2
-
-environments.valor_uma + ((totalHojas-1) * (monto*0.15))
-104 + (49 * 15.6) = 104 + 765.4 = 119.6
-
-lineaDetalle:"0644¬1¬
-COPIA CERTIFICADA DE EXPEDIENTES: B) POR LA PRIMER HOJA Y LAS SIGUIENTES HOJAS HASTA CINCUENTA¬120¬2023¬¬4021¬|"
-
-form 16, 14, 17
-hacienda-reintegros ° /pagos/hacienda-reintegros 1429 16
-
-XAXX010101000
-
-tabla-conceptos
-
-"FAVOR DE LLENAR EL SIGUIENTE FORMULARIO PARA CUALQUIER DUDA O ACLARACION, YA QUE SI SU PAGO NO CUENTA CON LOS DATOS
-CORRECTOS, NO SERA APLICADO CONTABLEMENTE "
-Nombre
-Telefono
-Correo
-** Corresponde a un reintegro por apoyo emergente a transportistas
-*** Fecha en que se realizó la retención
-*** Ejercicio fiscal del fondo o programa
-*** Nombre del fondo o programa
-*** Número de contrato
-***Objeto del contrato
-*** Fuente de financiamiento
-*** Monto ejercido
-*** Monto retenido
-*** Número de oficio de autorización
-*** Número de factura emitida por el proveedor
-Favor de Ingresar el Monto a Pagar
-
-
-ISAN
-	valida email, valida rfc, valida razon social, valida CP, valida telefono
- */
