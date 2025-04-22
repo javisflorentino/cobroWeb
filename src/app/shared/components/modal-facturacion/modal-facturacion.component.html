@@ -38,9 +38,7 @@
                 <mat-option value="I">I</mat-option>
                 <mat-option value="J">J</mat-option>
               </mat-select>
-              <mat-error *ngIf="cfdiForm.get('serie')?.invalid">Campo requerido</mat-error>
             </mat-form-field>
-            
           </div>
         </div>
         <div class="col-6">
@@ -48,7 +46,7 @@
             <label class="dialog-label">Folio</label>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput formControlName="folio">
-              <mat-error *ngIf="cfdiForm.get('folio')?.invalid">Campo requerido</mat-error>
+              <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.invalid">Campo requerido</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -78,7 +76,6 @@
             <mat-option value="17">Compensación</mat-option>
             <mat-option value="28">Tarjeta de débito</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('formaPago')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -131,7 +128,6 @@
             <mat-option value='625-G03,D04,S01'>Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas</mat-option>
             <mat-option value='626-G03,S01'>Régimen Simplificado de Confianza</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('regimenFiscal')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -144,7 +140,6 @@
             <mat-option value="D04">Donativos</mat-option>
             <mat-option value="S01">Sin efectos fiscales</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('usoCfdi')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -152,7 +147,6 @@
         <label class="dialog-label">Código Postal</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="codigoPostal">
-          <mat-error *ngIf="cfdiForm.get('codigoPostal')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
     </form>

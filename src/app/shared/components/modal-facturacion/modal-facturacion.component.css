@@ -1,6 +1,6 @@
 /* cfdi-printing-dialog.component.scss - Only adding custom styles not covered by globals */
 .dialog-container {
-    max-width: 500px !important; /* Override for this specific dialog */
+    max-width: 550px !important; /* Override for this specific dialog */
   }
   
   .form-note {

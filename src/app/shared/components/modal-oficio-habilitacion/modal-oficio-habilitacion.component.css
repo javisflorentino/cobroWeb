@@ -1,0 +1,3 @@
+.dialog-container {
+    max-width: 550px !important; /* Override for this specific dialog */
+  }

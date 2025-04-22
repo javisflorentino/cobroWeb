@@ -14,6 +14,7 @@ import { ModalComprobantePagoComponent } from 'src/app/shared/components/modal-c
 import { ModalHistoricoPagosComponent } from 'src/app/shared/components/modal-historico-pagos/modal-historico-pagos.component';
 import { ModalFacturacionComponent } from 'src/app/shared/components/modal-facturacion/modal-facturacion.component';
 import Swal from 'sweetalert2';
+import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
 
 
 @Component({
@@ -102,7 +103,9 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     { icon: 'receipt_long', label: 'Recibo de Pago' },
     { icon: 'request_quote', label: 'Facturación' },
     { icon: 'history', label: 'Histórico' },
-    { icon: 'payments', label: 'Pagar Póliza' }
+    { icon: 'payments', label: 'Pagar Póliza' },
+    { icon: 'payments', label: 'Oficio de Habilitación' }
+
   ];
   constructor(private dialog: MatDialog) { }
 
@@ -207,6 +210,19 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     if (button.label === 'Facturación') {
       const dialogRef = this.dialog.open(ModalFacturacionComponent, {
         width: '550px',
+        disableClose: false
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Datos del formulario:', result);
+          // Aquí puedes manejar los datos recibidos del diálogo
+        }
+      });
+    }
+    if (button.label === 'Oficio de Habilitación') {
+      const dialogRef = this.dialog.open(ModalValidarReciboOficioComponent, {
+        width: '350px',
         disableClose: false
       });
 
