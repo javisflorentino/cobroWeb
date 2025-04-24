@@ -185,7 +185,7 @@ export class GeneralesService {
     lineaCaptura: string,
     numeroPoliza: string
   ): Promise<any> {
-    return await fetch(`${this.urlSOAP}oficiosHabilitacion/services/personaPago`, {
+    return await fetch(`https://app.hacienda.morelos.gob.mx/oficiosHabilitacion/services/personaPago`, {
       method: "POST",
       body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ofic="http://oficioshabilitacion/">
      <soapenv:Header/>
