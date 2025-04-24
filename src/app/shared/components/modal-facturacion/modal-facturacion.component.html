@@ -1,4 +1,6 @@
 <!-- cfdi-printing-dialog.component.html -->
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+
 <div class="dialog-container"
      style="background-image: url('./assets/fondoLogo.png');
             background-size: contain;
@@ -40,7 +42,6 @@
               </mat-select>
               <mat-error *ngIf="cfdiForm.get('serie')?.invalid">Campo requerido</mat-error>
             </mat-form-field>
-            
           </div>
         </div>
         <div class="col-6">
@@ -48,7 +49,7 @@
             <label class="dialog-label">Folio</label>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput formControlName="folio">
-              <mat-error *ngIf="cfdiForm.get('folio')?.invalid">Campo requerido</mat-error>
+              <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.invalid">Campo requerido</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -58,7 +59,7 @@
         <label class="dialog-label">Correo Electrónico</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="correoElectronico" type="email">
-          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email') && cfdiForm.get('correoElectronico')?.touched">
+          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email') || cfdiForm.get('correoElectronico')?.invalid">
             Correo electrónico inválido
           </mat-error>        
         </mat-form-field>
@@ -110,7 +111,7 @@
         <label class="dialog-label">Régimen Fiscal</label>
         <mat-form-field appearance="outline" class="full-width">
           <mat-select formControlName="regimenFiscal">
-            <mat-option value='/'>Seleccionar régimen fiscal</mat-option>
+            <mat-option value=''>Seleccionar régimen fiscal</mat-option>
             <mat-option value='601-G03,S01'>General de Ley Personas Morales</mat-option>
             <mat-option value='603-G03,S01'>Personas Morales con Fines no Lucrativos</mat-option>
             <mat-option value='605-D04,S01'>Sueldos y Salarios e Ingresos Asimilados a Salarios</mat-option>
@@ -139,21 +140,21 @@
         <label class="dialog-label">Uso de CFDI</label>
         <mat-form-field appearance="outline" class="full-width">
           <mat-select formControlName="usoCfdi">
-            <mat-option value='/'>Seleccionar uso</mat-option>
-            <mat-option value="G03">Gastos en general</mat-option>
-            <mat-option value="D04">Donativos</mat-option>
-            <mat-option value="S01">Sin efectos fiscales</mat-option>
+            <mat-option value=''>Seleccionar uso</mat-option>
+            <mat-option value="G03" *ngIf="includesValue('G03')">Gastos en general</mat-option>
+            <mat-option value="D04" *ngIf="includesValue('D04')">Donativos</mat-option>
+            <mat-option value="S01" *ngIf="includesValue('S01')">Sin efectos fiscales</mat-option>
           </mat-select>
           <mat-error *ngIf="cfdiForm.get('usoCfdi')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
       </div>
-
       <div class="form-field">
         <label class="dialog-label">Código Postal</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="codigoPostal">
           <mat-error *ngIf="cfdiForm.get('codigoPostal')?.invalid">Campo requerido</mat-error>
         </mat-form-field>
+        
       </div>
     </form>
 

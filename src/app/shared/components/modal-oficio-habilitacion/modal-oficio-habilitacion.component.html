@@ -1,0 +1,120 @@
+<!-- cfdi-printing-dialog.component.html -->
+<div class="dialog-container"
+     style="background-image: url('./assets/fondoLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center">
+  <h2 class="dialog-titulo">Oficio de Habilitación</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="habilitacionForm">
+      <div class="form-field">
+        <label class="dialog-label">Nombre(s) *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="nombre">
+          <mat-error *ngIf="habilitacionForm.get('nombre')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      
+
+      <div class="form-field">
+        <label class="dialog-label">Apellido Paterno * </label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="apellidoPaterno" type="text">
+          <mat-error *ngIf="habilitacionForm.get('apellidoPaterno')?.invalid">
+            Campo requerido
+          </mat-error>        
+        </mat-form-field>
+      </div>
+
+     
+
+      <div class="form-field">
+        <label class="dialog-label">Apellido Materno *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="apellidoMaterno">
+          <mat-error *ngIf="habilitacionForm.get('apellidoMaterno')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <label class="dialog-label">Correo Electrónico *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="correoElectronico">
+          <mat-error *ngIf="habilitacionForm.get('correoElectronico')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">CURP *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="curp">
+          <mat-error *ngIf="habilitacionForm.get('curp')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">RFC *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="rfc">
+          <mat-error *ngIf="habilitacionForm.get('rfc')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">Teléfono *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="telefono">
+          <mat-error *ngIf="habilitacionForm.get('telefono')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">Sexo *</label>
+        <mat-radio-group formControlName="sexo">
+          <mat-radio-button value="F">Femenino</mat-radio-button>
+          <mat-radio-button value="M">Masculino</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <h3 class="subtitle mt-4">Dependencias:</h3>
+      <div class="form-field">
+        <label class="dialog-label">Dependencia  *</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput formControlName="dependencia">
+          <mat-error *ngIf="habilitacionForm.get('dependencia')?.invalid">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">Tipo Dependencia *</label>
+        <mat-radio-group formControlName="tipoDependencia">
+            <mat-radio-button value="Secretaría o Dependencia">Secretaría o Dependencia</mat-radio-button>
+            <mat-radio-button value="Organismo u órgano autónomo">Organismo u Órgano Autónomo</mat-radio-button>
+            <mat-radio-button value="Ayuntamiento">Ayuntamiento</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">Nivel de Gobierno *</label>
+        <mat-radio-group formControlName="nivelGobierno">
+            <mat-radio-button value="Federal">Federal</mat-radio-button>
+                <mat-radio-button value="Estatal">Estatal</mat-radio-button>
+                <mat-radio-button value="Municipal">Municipal</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-field">
+        <label class="dialog-label">Tipo Poder *</label>
+        <mat-radio-group formControlName="tipoPoder">
+            <mat-radio-button value="Ejecutivo">Ejecutivo</mat-radio-button>
+            <mat-radio-button value="Legislatativo">Legislatativo</mat-radio-button>
+            <mat-radio-button value="Judicial">Judicial</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </form>
+
+   
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+      <button mat-raised-button color="primary" class="dialog-search-button" (click)="solicitar()">
+        Solicitar
+      </button>
+    
+    
+  </mat-dialog-actions>
+</div>

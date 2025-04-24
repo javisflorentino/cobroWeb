@@ -22,6 +22,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ModalComprobantePagoComponent } from './components/modal-comprobante-pago/modal-comprobante-pago.component';
 import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos/modal-historico-pagos.component';
 import { ModalFacturacionComponent } from './components/modal-facturacion/modal-facturacion.component';
+import { ModalValidarReciboOficioComponent } from './components/modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
+import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habilitacion/modal-oficio-habilitacion.component';
 import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/shared-toolbar-menu.component';
 
 
@@ -41,6 +43,8 @@ import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/sha
     ModalComprobantePagoComponent,
     ModalHistoricoPagosComponent,
     ModalFacturacionComponent,
+    ModalValidarReciboOficioComponent,
+    ModalOficioHabilitacionComponent,
     SharedToolbarMenuComponent
   ],
   imports: [

@@ -1,0 +1,60 @@
+<!-- payment-dialog.component.html -->
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+
+<div class="dialog-container"
+style="background-image: url('./assets/fondoLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center">
+  <h2 class="dialog-titulo">Validar Pago</h2>
+  <p class="dialog-subtitle">
+    Proporcione los siguientes datos de su comprobante de pago o de su CFDI para continuar con el proceso. En caso de no haber realizado aún el pago, favor de realizarlo
+  
+  </p>
+  
+  <mat-dialog-content>
+    <form [formGroup]="oficiosForm">
+        <div class="grid">
+            <div class="col-6">
+              <div class="form-field">
+                <label class="dialog-label">Serie</label>
+                <mat-form-field appearance="outline" class="full-width">
+    
+                  <mat-select formControlName="serie">
+                    <mat-option value="A">A</mat-option>
+                    <mat-option value="B">B</mat-option>
+                    <mat-option value="C">C</mat-option>
+                    <mat-option value="D">D</mat-option>
+                    <mat-option value="E">E</mat-option>
+                    <mat-option value="F">F</mat-option>
+                    <mat-option value="G">G</mat-option> 
+                    <mat-option value="H">H</mat-option> 
+                    <mat-option value="I">I</mat-option>
+                    <mat-option value="J">J</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="oficiosForm.get('serie')?.invalid">Campo requerido</mat-error>
+                </mat-form-field>
+                
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-field">
+                <label class="dialog-label">Folio</label>
+                <mat-form-field appearance="outline" class="full-width">
+                  <input matInput formControlName="folio">
+                  <mat-error *ngIf="oficiosForm.get('folio')?.invalid">Campo requerido</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+      
+      
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" class="dialog-search-button" (click)="search()">
+        Consultar Oficio
+    </button>
+  </mat-dialog-actions>
+</div>

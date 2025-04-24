@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatRadioButton } from '@angular/material/radio';
+
 import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
 import { IngresosService } from 'src/app/portal-hacienda/services/ingresos.service';
 import { Recibo, estadoVehiculo } from '../../interfaces/soap-servicios-ingresos';
@@ -25,20 +27,22 @@ export class ModalFacturacionComponent {
     codigoReimpresion: ['', Validators.required],
     serie: ['', Validators.required],
     folio: ['', Validators.required],
-    correoElectronico: ['', [Validators.email]],
+    correoElectronico: ['', [Validators.email, Validators.required]],
     formaPago: ['', Validators.required],
     rfc: ['', Validators.required],
     nombreRazonSocial: ['', Validators.required],
     regimenFiscal: ['', Validators.required],
     usoCfdi: ['', Validators.required],
-    codigoPostal: ['', Validators.required]
+    codigoPostal: ['', Validators.required, Validators.maxLength(6), Validators.minLength(6)]
   });
   
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ModalFacturacionComponent>
   ) {}
-
+  @HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
   ngOnInit(): void {
     
   }
@@ -51,7 +55,7 @@ export class ModalFacturacionComponent {
       });
       return;
     }
-  
+    
     // Obtiene los valores del formulario
     const lineaCaptura = this.cfdiForm.get("codigoReimpresion")?.value;
     const serie = this.cfdiForm.get("serie")?.value;
@@ -184,5 +188,10 @@ export class ModalFacturacionComponent {
 
   close(): void {
     this.dialogRef.close();
+  }
+  includesValue(value: string): boolean {
+    const regimenFiscal = this.cfdiForm.get('regimenFiscal')?.value;
+    if (!regimenFiscal || regimenFiscal === '/') return false;
+    return regimenFiscal.includes(value);
   }
 }
