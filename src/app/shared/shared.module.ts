@@ -24,6 +24,7 @@ import { ModalHistoricoPagosComponent } from './components/modal-historico-pagos
 import { ModalFacturacionComponent } from './components/modal-facturacion/modal-facturacion.component';
 import { ModalValidarReciboOficioComponent } from './components/modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
 import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habilitacion/modal-oficio-habilitacion.component';
+import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/shared-toolbar-menu.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habi
     ModalHistoricoPagosComponent,
     ModalFacturacionComponent,
     ModalValidarReciboOficioComponent,
-    ModalOficioHabilitacionComponent
+    ModalOficioHabilitacionComponent,
+    SharedToolbarMenuComponent
   ],
   imports: [
     CommonModule,
@@ -55,6 +57,7 @@ import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habi
   exports: [
     SidenavConceptosComponent,
     SharedToolbarComponent,
+    SharedToolbarMenuComponent,
     TablaCalculoConceptosComponent,
     LoadSpinnerComponent,
     SegmentTextPipe,

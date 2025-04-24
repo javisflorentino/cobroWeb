@@ -29,7 +29,7 @@ export class ModalValidarReciboOficioComponent {
       public isLoading: boolean = false;
 oficiosForm: FormGroup = this.fb.group({
   serie: ['', Validators.required],
-  folio: ['', Validators.required],
+  folio: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
   });  captureLineInvalid = false;
 
   constructor(
@@ -83,7 +83,7 @@ oficiosForm: FormGroup = this.fb.group({
           Swal.fire({
             icon: "error", 
             title: "Datos incompletos", 
-            text: "Error: No se pudieron obtener todos los datos necesarios del pago.",
+            text: "No existe el recibo de pago",
             allowOutsideClick: false
           });
           this.isLoading = false;

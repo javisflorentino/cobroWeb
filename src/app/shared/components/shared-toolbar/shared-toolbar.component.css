@@ -1,6 +1,7 @@
 .my-toolbar {
   background-color: #dbdace;
   color: #213523;
+  height: 85px;
 }
 .wide-trigger {
   width: 400px;

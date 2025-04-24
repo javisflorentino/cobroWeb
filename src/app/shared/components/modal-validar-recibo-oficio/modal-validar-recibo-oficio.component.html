@@ -1,11 +1,16 @@
 <!-- payment-dialog.component.html -->
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+
 <div class="dialog-container"
 style="background-image: url('./assets/fondoLogo.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center">
-  <h2 class="dialog-titulo">Pago en Línea</h2>
-  <p class="dialog-subtitle">Introduzca la línea de Captura</p>
+  <h2 class="dialog-titulo">Validar Pago</h2>
+  <p class="dialog-subtitle">
+    Proporcione los siguientes datos de su comprobante de pago o de su CFDI para continuar con el proceso. En caso de no haber realizado aún el pago, favor de realizarlo
+  
+  </p>
   
   <mat-dialog-content>
     <form [formGroup]="oficiosForm">

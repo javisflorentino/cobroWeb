@@ -1,20 +1,17 @@
 <!--<mat-sidenav-container style="background-image: url('./assets/banner-cuernavaca_1.jpg'); background-position: center; background-size: cover;" fullscreen>-->
 <!--<mat-sidenav-container style="background-image: url('./assets/morelos_2024_desenfoque.png'); background-repeat: no-repeat; background-position: center; background-size: 40% 60%" class="layout-container" fullscreen>-->
-  <mat-sidenav-container class="layout-container" fullscreen>
-  <shared-sidenav-conceptos
-  [reciveActionSideNav]="sendActionSidenav"
-  [valDependenciaCard]="valCardSubjectEmitt"
-  [eraseLocalStor]="sendActEraseLocalStor"
-  (fathAlert)="triggerAlert($event)"
-  (nameConcept)="reciveNameConcept($event)"
-    ></shared-sidenav-conceptos>
+<mat-sidenav-container class="layout-container" fullscreen>
+  <shared-sidenav-conceptos [reciveActionSideNav]="sendActionSidenav" [valDependenciaCard]="valCardSubjectEmitt"
+    [eraseLocalStor]="sendActEraseLocalStor" (fathAlert)="triggerAlert($event)"
+    (nameConcept)="reciveNameConcept($event)"></shared-sidenav-conceptos>
 
-  <shared-toolbar
-  (openOrCloseSidenav)="actionOnSidenav($event)"
-  (closeLocalStor)="redirectHome($event)"
-  [receiveNameDep]="senNameDep"
-  [viewResolution]="sizeDisplay"
-    ></shared-toolbar>
+  <shared-toolbar (openOrCloseSidenav)="actionOnSidenav($event)" (closeLocalStor)="redirectHome($event)"
+    [receiveNameDep]="senNameDep" [viewResolution]="sizeDisplay"
+    (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)"></shared-toolbar>
+
+  <shared-toolbar-menu style="position: fixed;  width: 100%; z-index: 2;" class="shadow-8" *ngIf="flagActivitie"></shared-toolbar-menu>
+
+
 
 
   <div class="p-2">
@@ -22,15 +19,14 @@
     <router-outlet></router-outlet>
   </div>
 
-  <mat-toolbar
-    class="example-footer shadow-8 border-round-sm "
+  <mat-toolbar class="example-footer shadow-8 border-round-sm "
     style="background-image: url('./assets/backgroud_pleca.png'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;"
-    [class.mat-elevation-z10]="true"
-  >
+    [class.mat-elevation-z10]="true">
     <div class="centerToolbarFooter">
       <span [ngStyle]="{'font-size': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '13px' : '20px'}"
         style="margin: auto; white-space: initial; text-align: center; font-family: 'QuetzalSansRegular';">
-        <span style="font-family: 'QuetzalSansRegular';">&#169; Dirección General de Gestión de Información Hacendaria</span>
+        <span style="font-family: 'QuetzalSansRegular';">&#169; Dirección General de Gestión de Información
+          Hacendaria</span>
       </span>
     </div>
   </mat-toolbar>

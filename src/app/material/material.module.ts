@@ -28,6 +28,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -55,7 +56,8 @@ import { CUSTOM_DATE_FORMATS } from '../shared/interfaces/custom-date-formats';
     MatTableModule,
     MatTabsModule,
     MatExpansionModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTooltipModule
   ],
   providers: [{
       provide: MAT_RADIO_DEFAULT_OPTIONS,

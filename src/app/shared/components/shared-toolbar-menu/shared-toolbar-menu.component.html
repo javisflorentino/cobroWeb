@@ -1,0 +1,14 @@
+
+  <div
+    class="fadein animation-duration-1000 align-items-center justify-content-center surface-100	 border-round px-5 py-1" style=" height: 60px;">
+    <div class="menu-container"
+      style="position: relative; z-index: inherit;">
+      <div class="menu-buttons-row">
+        <button *ngFor="let button of menuButtons" mat-mini-fab class="menu-button shadow-4 m-1 hover:shadow-4"
+          [matTooltip]="button.label" matTooltipPosition="below" (click)="openDialog(button)">
+          <mat-icon class="custom-icon">{{button.icon}}</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+

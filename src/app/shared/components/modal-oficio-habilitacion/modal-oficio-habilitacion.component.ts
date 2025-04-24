@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidateFolioPago } from '../../interfaces/soap-validate-folio-pago';
 import { ConvertXmlString } from '../../clases/convert-xml-string';
@@ -24,7 +24,9 @@ export class ModalOficioHabilitacionComponent {
   constructor(private fb: FormBuilder,
     private dialogRef: MatDialogRef<ModalOficioHabilitacionComponent>
   ) { }
-
+@HostListener('input', ['$event']) onKeyUp(event:any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
   habilitacionForm: FormGroup = this.fb.group({
     nombre: ['', Validators.required],
     apellidoPaterno: ['', Validators.required],
@@ -49,11 +51,11 @@ export class ModalOficioHabilitacionComponent {
       ]
     ],
     telefono: [''],
-    sexo: ['masculino', Validators.required],
+    sexo: ['M', Validators.required],
     dependencia: ['', Validators.required],
     tipoDependencia: ['secretaria', Validators.required],
-    nivelGobierno: ['estatal', Validators.required],
-    tipoPoder: ['ejecutivo', Validators.required]
+    nivelGobierno: ['Estatal', Validators.required],
+    tipoPoder: ['Ejecutivo', Validators.required]
   });
 
 

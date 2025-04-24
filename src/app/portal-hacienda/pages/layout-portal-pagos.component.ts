@@ -51,6 +51,9 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
+  /* TODO: BANDERA QUE CONTROLA EL ACTIVAR O DESACTIVAR EL TOOLBARMENU */
+  public flagActivitie = false;
+
   constructor() {
     this.mediaQuery();
   }
@@ -76,6 +79,11 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     /* ACTUALIZA EL VALOR A EMITIR AL HIJO SIDENAV */
     this.sendActionSidenav.next(val);
     return;
+  }
+
+  /* TODO: RECIBE UN VALOR BOOL DEL HIJO, SHAREDTOOLBAR, Y SE USA VARA HABILITAR O DESHABILITAR EL TOOLBARMENU */
+  activeOrInactiveToolbarMenu(val: boolean){
+    this.flagActivitie = val;
   }
 
   /* NOTA: DISPARA ALERTAS  */
