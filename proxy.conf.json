@@ -28,5 +28,25 @@
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/ws_recibo/*": {
+    "target": "https://pagos.hacienda.morelos.gob.mx/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+  ,
+  "/wsTimbrado/*": {
+    "target": "https://pagos.hacienda.morelos.gob.mx/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+  ,
+  "/timbrado/*": {
+    "target": "https://app.hacienda.morelos.gob.mx/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }

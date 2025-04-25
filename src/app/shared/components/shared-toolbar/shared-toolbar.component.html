@@ -48,10 +48,10 @@
   </button>-->
   <div class="containerToolbar">
     <div class="leftToolbar">
-      <button mat-mini-fab color="primary" (click)="redirectPagos()">
+      <button mat-mini-fab color="primary" (click)="redirectPagos()" class="mr-2">
         <mat-icon>home</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" (click)="sidenavAction()">
+      <button mat-mini-fab color="primary" (click)="sidenavAction()" class="mr-2">
         <mat-icon>menu</mat-icon>
       </button>
 
@@ -142,11 +142,11 @@
         <br>
         <span class="text-600" style="font-family: 'QuetzalSansThin';">{{receiveNameDep}}</span>
         <br>
-        <span><button mat-button [matTooltip]="!flagActivitie?'Desplegar opciones':'Ocultar opciones'" (click)="activeOrInactiveToolbarMenu()" style="justify-content: center;">
+        <!-- <span><button mat-button [matTooltip]="!flagActivitie?'Desplegar opciones':'Ocultar opciones'" (click)="activeOrInactiveToolbarMenu()" style="justify-content: center;">
                 <mat-icon *ngIf="!flagActivitie; else other_icon">keyboard_double_arrow_down</mat-icon>
                 <ng-template #other_icon><mat-icon>keyboard_double_arrow_up</mat-icon></ng-template>
               </button>
-        </span>
+        </span> -->
       </span>
     </div>
     <div class="rightToolbar">

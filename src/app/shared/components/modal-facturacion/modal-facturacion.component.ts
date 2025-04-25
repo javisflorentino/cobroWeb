@@ -24,16 +24,31 @@ export class ModalFacturacionComponent {
 
 
   cfdiForm: FormGroup = this.fb.group({
-    codigoReimpresion: ['', Validators.required],
+    codigoReimpresion: ['', [
+      Validators.required,
+      Validators.pattern('^[0-9]*$') // Solo números
+    ]],
     serie: ['', Validators.required],
-    folio: ['', Validators.required],
-    correoElectronico: ['', [Validators.email, Validators.required]],
+    folio: ['', [
+      Validators.required,
+      Validators.pattern('^[0-9]*$') // Solo números
+    ]],
+    correoElectronico: ['', [
+      Validators.required,
+      Validators.email // Formato de correo electrónico
+    ]],
     formaPago: ['', Validators.required],
-    rfc: ['', Validators.required],
+    rfc: ['', [
+      Validators.required,
+      Validators.pattern(/^([A-ZÑ&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d]{2})([A\d])$/) // Formato RFC
+    ]],
     nombreRazonSocial: ['', Validators.required],
     regimenFiscal: ['', Validators.required],
     usoCfdi: ['', Validators.required],
-    codigoPostal: ['', Validators.required, Validators.maxLength(6), Validators.minLength(6)]
+    codigoPostal: ['', [
+      Validators.required,
+      Validators.pattern('^[0-9]{5}$') // 5 dígitos, solo números
+    ]]
   });
   
   constructor(
@@ -47,6 +62,7 @@ export class ModalFacturacionComponent {
     
   }
   async obtenerCfdi(): Promise<void> {
+    this.cfdiForm.markAllAsTouched()
     if (this.cfdiForm.invalid) {
       await Swal.fire({
         icon: 'error',
@@ -55,8 +71,9 @@ export class ModalFacturacionComponent {
       });
       return;
     }
-    
-    // Obtiene los valores del formulario
+  
+    this.isLoading = true; // Comienza carga
+  
     const lineaCaptura = this.cfdiForm.get("codigoReimpresion")?.value;
     const serie = this.cfdiForm.get("serie")?.value;
     const folio = this.cfdiForm.get("folio")?.value;
@@ -68,29 +85,25 @@ export class ModalFacturacionComponent {
     const cp = this.cfdiForm.get("codigoPostal")?.value;
     const nombre = this.cfdiForm.get("nombreRazonSocial")?.value;
     const lineaCapturaSerieFolio = `${lineaCaptura}/${serie}-${folio}`;
-    
+  
     try {
-      // 1. Consultar CFD mediante SOAP
       const consultarCFDResponse = await this.ingresosSevice.consultarCFDSoap(lineaCaptura);
-      
-      // Verifica que la respuesta sea válida
+  
       if (!consultarCFDResponse) {
         throw new Error(`No se pudo obtener información para la línea de captura ${lineaCaptura}`);
       }
-      
+  
       this.asJson = this.xmlSring.xmlStringToJson(consultarCFDResponse.toString());
-      
-      // Verifica la estructura de la respuesta
+  
       if (!this.asJson['soap:Envelope'] || 
           !this.asJson['soap:Envelope']['soap:Body'] || 
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'] ||
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult) {
         throw new Error('La línea de captura no es válida');
       }
-      
+  
       const cfd = this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult;
   
-      // Verifica que los campos obligatorios existan
       if (!cfd?.RFC || !cfd?.Serie || !cfd?.Folio) {
         throw new Error('La información del CFD está incompleta');
       }
@@ -99,7 +112,6 @@ export class ModalFacturacionComponent {
       const serieCFD = cfd.Serie['#text'];
       const folioCFD = cfd.Folio['#text'];
   
-      // Validación de RFC
       if (rfcCFD !== rfc) {
         await Swal.fire({
           icon: "error", 
@@ -110,7 +122,6 @@ export class ModalFacturacionComponent {
         return;
       }
   
-      // Validación de serie y folio
       if (serieCFD !== serie || folioCFD !== folio) {
         await Swal.fire({
           icon: "error", 
@@ -121,7 +132,6 @@ export class ModalFacturacionComponent {
         return;
       }
   
-      // Timbrar el comprobante
       const resultadoTimbre = await this.ingresosSevice.timbraCP(
         lineaCapturaSerieFolio, 
         pago, 
@@ -131,7 +141,6 @@ export class ModalFacturacionComponent {
         nombre
       );
   
-      // Verifica el resultado del timbrado
       if (resultadoTimbre.includes('true') || resultadoTimbre.includes('1')) {
         await Swal.fire({
           icon: 'success',
@@ -140,7 +149,6 @@ export class ModalFacturacionComponent {
         });
   
         try {
-          // Enviar CFDI por correo electrónico
           const envioResponse = await firstValueFrom(
             this.generalesService.envioCDFI(lineaCaptura, serie, folio, email)
           );
@@ -166,8 +174,8 @@ export class ModalFacturacionComponent {
             text: 'El timbrado fue exitoso, pero ocurrió un error al enviar el correo electrónico.'
           });
         }
-  
-        // Cierra el diálogo solo si el timbrado fue exitoso
+        const urlPDF = `https://app.hacienda.morelos.gob.mx/recibo/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
+        window.open(urlPDF, '_blank');
         this.dialogRef.close();
       } else {
         await Swal.fire({
@@ -183,9 +191,11 @@ export class ModalFacturacionComponent {
         title: 'Error',
         text: err instanceof Error ? err.message : 'Error inesperado al timbrar o enviar el comprobante.'
       });
+    } finally {
+      this.isLoading = false; // Termina carga en cualquier caso
     }
   }
-
+  
   close(): void {
     this.dialogRef.close();
   }

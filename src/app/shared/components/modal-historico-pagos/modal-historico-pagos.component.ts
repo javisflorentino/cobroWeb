@@ -37,6 +37,7 @@ export class ModalHistoricoPagosComponent implements OnInit {
   }
 
   search(): void {
+    this.paymentForm.markAllAsTouched()
     if (this.paymentForm?.valid) {
       this.isLoading = true;
       this.buttBlock = true;

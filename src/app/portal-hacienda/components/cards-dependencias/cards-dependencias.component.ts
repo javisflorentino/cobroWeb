@@ -104,7 +104,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     { icon: 'request_quote', label: 'Facturación' },
     { icon: 'history', label: 'Histórico' },
     { icon: 'payments', label: 'Pagar Póliza' },
-    { icon: 'payments', label: 'Oficio de Habilitación' }
+    { icon: 'article', label: 'Oficio de Habilitación' }
 
   ];
   constructor(private dialog: MatDialog) { }

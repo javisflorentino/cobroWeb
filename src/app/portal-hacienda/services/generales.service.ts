@@ -301,7 +301,7 @@ export class GeneralesService {
 
     const body = {"lineaCaptura":title, "serie": serie, "folio": folio, "destinatario": para}
 
-    return this.http.post<{success: boolean}>(`${this.baseUrlApp}/recibo/cfdi/correoCfdi`, body, {headers})
+    return this.http.post<{success: boolean}>(`${this.urlSOAP}timbrado/cfdi/correoCfdi`, body, {headers})
     .pipe(
       map(response => response.success), 
       catchError(error => {

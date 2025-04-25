@@ -34,7 +34,7 @@ export class IngresosService {
      
   
       const text = await response.text();
-      return text; // Si quieres, aquí podrías parsear XML a JSON usando DOMParser o xml2js
+      return text; 
     } catch (error) {
       console.error("SOAP Error:", error);
       throw error;

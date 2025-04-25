@@ -41,6 +41,7 @@ export class ModalPagoLineaComponent {
   }
 
   search(): void {
+    this.paymentForm.markAllAsTouched()
     if (this.paymentForm?.valid) {
       this.dataPoliza.lineaCaptura = this.paymentForm.get('captureLine')!.value;
       console.log(this.dataPoliza.lineaCaptura)

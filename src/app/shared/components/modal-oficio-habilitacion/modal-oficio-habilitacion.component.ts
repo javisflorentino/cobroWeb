@@ -28,9 +28,33 @@ export class ModalOficioHabilitacionComponent {
     event.target['value'] = event.target['value'].toUpperCase();
   }
   habilitacionForm: FormGroup = this.fb.group({
-    nombre: ['', Validators.required],
-    apellidoPaterno: ['', Validators.required],
-    apellidoMaterno: ['', Validators.required],
+    nombre: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?! )[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?:[A-Za-zÁÉÍÓÚÑáéíóúñ]){2,}[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?<! )$/
+)
+
+      ]
+    ],
+    apellidoPaterno: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?! )[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?:[A-Za-zÁÉÍÓÚÑáéíóúñ]){2,}[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?<! )$/
+)
+
+      ]
+    ],
+    apellidoMaterno: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?! )[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?:[A-Za-zÁÉÍÓÚÑáéíóúñ]){2,}[A-Za-zÁÉÍÓÚÑáéíóúñ ]*(?<! )$/
+)
+
+      ]
+    ],
     correoElectronico: ['', [Validators.required, Validators.email]],
     curp: [
       '',
@@ -57,9 +81,11 @@ export class ModalOficioHabilitacionComponent {
     nivelGobierno: ['Estatal', Validators.required],
     tipoPoder: ['Ejecutivo', Validators.required]
   });
+  
 
 
   solicitar(): void {
+    this.habilitacionForm.markAllAsTouched()
         if (this.habilitacionForm?.valid) {
           this.isLoading = true;
           this.buttBlock = true;

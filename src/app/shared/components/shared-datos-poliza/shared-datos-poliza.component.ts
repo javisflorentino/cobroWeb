@@ -85,7 +85,6 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
 
   const lineaDetalle = this.contribuyenteArr?.data?.lineaDetalle || '';
     this.datosPoliza = JSON.parse(localStorage.getItem('datos_poliza')!);
-    console.log(this.datosPoliza)
     this.myForm.reset({
       numeroPoliza:this.datosPoliza.numeroPoliza,
       lineaCaptura:this.datosPoliza.lineaCaptura,
@@ -104,6 +103,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    localStorage.removeItem('datos_poliza');
     this.destroyed.next();
     this.destroyed.unsubscribe();
   }

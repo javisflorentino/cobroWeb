@@ -18,7 +18,8 @@
         <label class="dialog-label">Código de Reimpresión o Línea de Captura</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="codigoReimpresion">
-          <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.hasError('pattern')">Solo se permiten números</mat-error>
         </mat-form-field>
       </div>
 
@@ -27,7 +28,6 @@
           <div class="form-field">
             <label class="dialog-label">Serie</label>
             <mat-form-field appearance="outline" class="full-width">
-
               <mat-select formControlName="serie">
                 <mat-option value="A">A</mat-option>
                 <mat-option value="B">B</mat-option>
@@ -40,7 +40,7 @@
                 <mat-option value="I">I</mat-option>
                 <mat-option value="J">J</mat-option>
               </mat-select>
-              <mat-error *ngIf="cfdiForm.get('serie')?.invalid">Campo requerido</mat-error>
+              <mat-error *ngIf="cfdiForm.get('serie')?.hasError('required')">Campo requerido</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -49,7 +49,8 @@
             <label class="dialog-label">Folio</label>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput formControlName="folio">
-              <mat-error *ngIf="cfdiForm.get('codigoReimpresion')?.invalid">Campo requerido</mat-error>
+              <mat-error *ngIf="cfdiForm.get('folio')?.hasError('required')">Campo requerido</mat-error>
+              <mat-error *ngIf="cfdiForm.get('folio')?.hasError('pattern')">Solo se permiten números</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -59,8 +60,9 @@
         <label class="dialog-label">Correo Electrónico</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="correoElectronico" type="email">
-          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email') || cfdiForm.get('correoElectronico')?.invalid">
-            Correo electrónico inválido
+          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email')">
+            Debe ingresar un correo electrónico válido
           </mat-error>        
         </mat-form-field>
       </div>
@@ -69,7 +71,6 @@
         <label class="dialog-label">Forma de Pago</label>
         <mat-form-field appearance="outline" class="full-width">
           <mat-select formControlName="formaPago">
-            
             <mat-option value="01">Efectivo</mat-option>
             <mat-option value="02">Cheque nominativo</mat-option>
             <mat-option value="03">Transferencia electrónica de fondos</mat-option>
@@ -79,7 +80,7 @@
             <mat-option value="17">Compensación</mat-option>
             <mat-option value="28">Tarjeta de débito</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('formaPago')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('formaPago')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -87,7 +88,8 @@
         <label class="dialog-label">RFC</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="rfc">
-          <mat-error *ngIf="cfdiForm.get('rfc')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('rfc')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('rfc')?.hasError('pattern')">RFC con formato inválido</mat-error>
         </mat-form-field>
       </div>
 
@@ -95,7 +97,7 @@
         <label class="dialog-label">Nombre o Razón Social</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="nombreRazonSocial">
-          <mat-error *ngIf="cfdiForm.get('nombreRazonSocial')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('nombreRazonSocial')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -132,7 +134,7 @@
             <mat-option value='625-G03,D04,S01'>Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas</mat-option>
             <mat-option value='626-G03,S01'>Régimen Simplificado de Confianza</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('regimenFiscal')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('regimenFiscal')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
       </div>
 
@@ -145,16 +147,16 @@
             <mat-option value="D04" *ngIf="includesValue('D04')">Donativos</mat-option>
             <mat-option value="S01" *ngIf="includesValue('S01')">Sin efectos fiscales</mat-option>
           </mat-select>
-          <mat-error *ngIf="cfdiForm.get('usoCfdi')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('usoCfdi')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
       </div>
       <div class="form-field">
         <label class="dialog-label">Código Postal</label>
         <mat-form-field appearance="outline" class="full-width">
           <input matInput formControlName="codigoPostal">
-          <mat-error *ngIf="cfdiForm.get('codigoPostal')?.invalid">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('codigoPostal')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="cfdiForm.get('codigoPostal')?.hasError('pattern')">Debe contener 5 dígitos numéricos</mat-error>
         </mat-form-field>
-        
       </div>
     </form>
 
@@ -171,7 +173,5 @@
       <button mat-raised-button color="primary" class="dialog-search-button" (click)="obtenerCfdi()">
         Obtener CFDI
       </button>
-    
-    
   </mat-dialog-actions>
 </div>

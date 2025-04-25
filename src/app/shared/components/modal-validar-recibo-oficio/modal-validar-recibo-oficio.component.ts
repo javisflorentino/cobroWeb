@@ -11,6 +11,7 @@ import { GeneralesService } from 'src/app/portal-hacienda/services/generales.ser
 import { ConvertXmlString } from '../../clases/convert-xml-string';
 import Swal from 'sweetalert2';
 import { ModalOficioHabilitacionComponent } from '../modal-oficio-habilitacion/modal-oficio-habilitacion.component';
+import { ModalComprobantePagoComponent } from '../modal-comprobante-pago/modal-comprobante-pago.component';
 
 @Component({
   selector: 'app-modal-validar-recibo-oficio',
@@ -39,7 +40,18 @@ oficiosForm: FormGroup = this.fb.group({
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<ModalValidarReciboOficioComponent>
   ) { }
+  abrirModalPago(event: Event): void {
+    event.preventDefault();
+    this.dialogRef.close();
+    // Suponiendo que ya tienes un MatDialog o similar
+    this.dialog.open(ModalComprobantePagoComponent, {
+      width: '300px',
+      data: { /* lo que necesites pasar */ }
+    });
+  }
+  
   search(): void {
+    this.oficiosForm.markAllAsTouched()
       if (this.oficiosForm?.valid) {
         this.isLoading = true;
         this.buttBlock = true;
