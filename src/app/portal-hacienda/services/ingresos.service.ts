@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environments } from 'src/environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngresosService {
+  private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
 
   constructor() { }
   async consultarCFDSoap(lineacaptura: string): Promise<any> {
@@ -20,7 +22,7 @@ export class IngresosService {
     </soap:Envelope>`;
   
     try {
-      const response = await fetch("https://www.ingresos.morelos.gob.mx/ws_recibo/recibo.asmx", {
+      const response = await fetch(`${this.urlSOPA}ws_recibo/recibo.asmx`, {
         method: "POST",
         headers: {
           "Content-Type": "text/xml; charset=utf-8",
@@ -59,7 +61,7 @@ export class IngresosService {
     </soap:Envelope>`;
   
     try {
-      const response = await fetch("https://www.ingresos.morelos.gob.mx/wsTimbrado/Timbrado.asmx", {
+      const response = await fetch(`${this.urlSOPA}wsTimbrado/Timbrado.asmx`, {
         method: "POST",
         headers: {
           "Content-Type": "text/xml; charset=utf-8",

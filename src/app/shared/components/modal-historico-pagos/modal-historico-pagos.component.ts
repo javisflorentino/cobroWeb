@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
@@ -12,17 +12,19 @@ import Swal from 'sweetalert2';
   templateUrl: './modal-historico-pagos.component.html',
   styleUrls: ['./modal-historico-pagos.component.css']
 })
-export class ModalHistoricoPagosComponent {
-  private asJson!: estadoVehiculo;//ValidateVehicle;
-    public smytSevice = inject(SmytService);
-    private xmlSring: ConvertXmlString = new ConvertXmlString();
-    public isLoading: boolean = false;
-    /* Bloque el boton de Calcular para evitar acciones duplicadas  */
+export class ModalHistoricoPagosComponent implements OnInit {
+  private asJson!: estadoVehiculo;
+  public smytSevice = inject(SmytService);
+  private xmlSring: ConvertXmlString = new ConvertXmlString();
+  public isLoading: boolean = false;
   public buttBlock = false;
-paymentForm: FormGroup = this.fb.group({
+  
+  paymentForm: FormGroup = this.fb.group({
     placa: ['', Validators.required],
     numeroSerie: ['', Validators.required]
-  });  captureLineInvalid = false;
+  });
+  
+  captureLineInvalid = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +33,7 @@ paymentForm: FormGroup = this.fb.group({
   ) { }
 
   ngOnInit(): void {
-    
+    // Inicialización si es necesaria
   }
 
   search(): void {
@@ -43,49 +45,54 @@ paymentForm: FormGroup = this.fb.group({
       let s = this.paymentForm.get('numeroSerie')?.value;
       
       this.smytSevice.validateVehicleSoap(p, s)
-  .then(response => response.text())
-  .then(xml => {
-    this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-    const estatusVehiculo = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo;
-    const vehiculo = estatusVehiculo.vehiculo;
+        .then(response => response.text())
+        .then(xml => {
+          this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
+          const estatusVehiculo = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo;
+          const vehiculo = estatusVehiculo.vehiculo;
 
-    // Verificamos si los campos clave están vacíos
-    const vehiculoVacio = 
-    !vehiculo.idVehiculo["#text"] 
-    ;
-    if (vehiculoVacio) {
-      // Mostrar error si no hay coincidencia
-      Swal.fire({
-        icon: "error", 
-        title: "Datos incorrectos", 
-        text: "No se encontró información para la placa y serie indicadas",
-        allowOutsideClick: false
-      });
-      this.isLoading = false;
-      this.buttBlock = false;
-      return;
-    }
+          // Verificamos si los campos clave están vacíos
+          const vehiculoVacio = !vehiculo.idVehiculo["#text"];
+          
+          if (vehiculoVacio) {
+            // Mostrar error si no hay coincidencia
+            Swal.fire({
+              icon: "error", 
+              title: "Datos incorrectos", 
+              text: "No se encontró información para la placa y serie indicadas",
+              allowOutsideClick: false
+            });
+            this.isLoading = false;
+            this.buttBlock = false;
+            return;
+          }
 
-    // Si hay datos válidos
-    this.dialogRef.close(estatusVehiculo);
-    this.router.navigate(['/pagos/historico-pagos'], { 
-      state: { vehicleData: estatusVehiculo } 
-    });
+          // Si hay datos válidos, cerrar el diálogo y pasar los datos al componente
+          this.dialogRef.close(estatusVehiculo);
+          
+          // Navegamos a la ruta con los nuevos datos
+          // Añadimos un timestamp para forzar la recarga del componente
+          const timestamp = new Date().getTime();
+          this.router.navigate(['/pagos/historico-pagos'], { 
+            state: { 
+              vehicleData: estatusVehiculo,
+              timestamp: timestamp 
+            } 
+          });
 
-    this.isLoading = false;
-    this.buttBlock = false;
-  })
-  .catch(err => {
-    Swal.fire({
-      icon: "error", 
-      title: "Error!!", 
-      text: "No se pudo obtener respuesta del servicio",
-      allowOutsideClick: false
-    });
-    this.isLoading = false;
-    this.buttBlock = false;
-  });
-
+          this.isLoading = false;
+          this.buttBlock = false;
+        })
+        .catch(err => {
+          Swal.fire({
+            icon: "error", 
+            title: "Error!!", 
+            text: "No se pudo obtener respuesta del servicio",
+            allowOutsideClick: false
+          });
+          this.isLoading = false;
+          this.buttBlock = false;
+        });
     } else {
       // Marcar formulario como inválido
       this.captureLineInvalid = true;
