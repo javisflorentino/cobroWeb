@@ -58,33 +58,30 @@ import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/mod
       transform: translateY(-3px);
       transition: all 0.3s ease;
     }
-      /* 🔵 Aquí agregamos el media query para móviles */
-  @media (max-width: 768px) {
-    .menu-button {
-      width: 40px;
-      height: 40px;
-    }
-  
-    .custom-icon {
-      font-size: 16px;
-      height: 16px;
-      width: 16px;
-    }
-  }
-
-    /* Estilo para los iconos dentro de los botones */
+      /* Estilo para los iconos dentro de los botones */
     .custom-icon {
       color: #FFFFFF; /* Color café más oscuro/rojizo para los iconos */
       font-size: 28px;
       height: 28px;
       width: 28px;
     }
-
-    /* Para imágenes personalizadas si las usas */
-    .custom-icon-img {
-      width: 28px;
-      height: 28px;
+      /* 🔵 Aquí agregamos el media query para móviles */
+  @media (max-width: 768px) {
+    .menu-button {
+      width: 45px;
+      height: 45px;
     }
+  
+    .custom-icon {
+      font-size: 22px;
+      height: 22px;
+      width: 22px;
+    }
+  }
+
+    
+
+    
   `]
 })
 export class CardsDependenciasComponent implements OnInit, OnDestroy {
