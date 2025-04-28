@@ -6,38 +6,64 @@
 .wide-trigger {
   width: 400px;
 }
-
+@media (max-width: 768px) {
+  .wide-trigger {
+    width: 100%; /* Que ocupe solo el espacio disponible */
+    max-width: 200px; /* O el máximo que quieras para que no se vea enorme */
+    
+  }
+}
 ::ng-deep .my-menu {
   max-width: 500px !important
 }
-
 .containerToolbar {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  height: 100%; /* Ajusta la altura según necesites */
+  height: 100%;
 }
 
-.leftToolbar{
-  position: absolute;
-  width: 40%;
-  height: 100%;
-  top: 0;
+.leftToolbar {
   display: flex;
-  justify-content: left;
   align-items: center;
-  z-index: 2; /* Para que estén por encima del div central */
+  flex: 1; /* 1 parte */
+}
+
+.centerToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2; /* más espacio en el centro */
+  text-align: center;
 }
 
 .rightToolbar {
-  position: absolute;
-  width: 30%;
-  height: 100%;
-  top: 0;
   display: flex;
-  justify-content: right;
   align-items: center;
-  z-index: 2; /* Para que estén por encima del div central */
+  justify-content: flex-end;
+  flex: 1; /* 1 parte */
 }
+
+/* Móviles */
+@media (max-width: 768px) {
+  .rightToolbar {
+    display: none;
+  }
+
+  .leftToolbar {
+    width: auto;
+    left: 0;
+    padding-left: 10px;
+  }
+
+  .centerToolbar {
+    width: 100%;
+    left: 0;
+    justify-content: center;
+  }
+}
+
 
 /*.containerRight {
   position: relative;
@@ -106,15 +132,4 @@
   right: 0;
 }
 
-.centerToolbar {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1; /* Detrás de los extremos */
-}

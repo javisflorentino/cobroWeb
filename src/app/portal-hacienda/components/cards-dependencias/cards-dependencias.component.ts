@@ -58,6 +58,19 @@ import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/mod
       transform: translateY(-3px);
       transition: all 0.3s ease;
     }
+      /* 🔵 Aquí agregamos el media query para móviles */
+  @media (max-width: 768px) {
+    .menu-button {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .custom-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
 
     /* Estilo para los iconos dentro de los botones */
     .custom-icon {
@@ -109,8 +122,9 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
   ];
   constructor(private dialog: MatDialog) { }
 
-
+ 
   ngOnInit(): void {
+
     // Activar la animación después de un pequeño retraso
     setTimeout(() => {
       this.show = true;

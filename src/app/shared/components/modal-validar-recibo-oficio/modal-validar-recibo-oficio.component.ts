@@ -42,6 +42,21 @@ oficiosForm: FormGroup = this.fb.group({
   ) { }
   abrirModalPago(event: Event): void {
     event.preventDefault();
+    // this.dialogRef.close();
+    // // Suponiendo que ya tienes un MatDialog o similar
+    // this.dialog.open(ModalComprobantePagoComponent, {
+    //   width: '300px',
+    //   data: { /* lo que necesites pasar */ }
+    // });
+
+
+    const id = 287;
+    const otroParametro = 0;
+    this.router.navigate(['/pagos/tabla-conceptos', id, otroParametro]);
+    this.dialogRef.close();
+  }
+  abrirModalRecibo(event: Event): void {
+    event.preventDefault();
     this.dialogRef.close();
     // Suponiendo que ya tienes un MatDialog o similar
     this.dialog.open(ModalComprobantePagoComponent, {
@@ -49,6 +64,7 @@ oficiosForm: FormGroup = this.fb.group({
       data: { /* lo que necesites pasar */ }
     });
   }
+  
   
   search(): void {
     this.oficiosForm.markAllAsTouched()

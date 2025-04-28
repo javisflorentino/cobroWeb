@@ -6,10 +6,15 @@ style="background-image: url('./assets/fondoLogo.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center">
-  <h2 class="dialog-titulo">Validar Pago</h2>
+  <h2 class="dialog-titulo">Oficios de Habilitación</h2>
+  <p class="">
+    
+Proporcione los siguientes datos de su comprobante de pago o de su CFDI para continuar con el proceso. <br>En caso de no haber realizado aún el pago, favor de realizarlo 
+    <b><a href="#" style="color: #328335;" (click)="abrirModalPago($event)">aquí</a>.</b>
+  </p>
   <p class="">
     Si no cuentas con tu serie y folio puedes obtenerlo
-    <a href="#" (click)="abrirModalPago($event)">aquí</a>.
+    <b><a href="#" style="color: #328335;" (click)="abrirModalRecibo($event)">aquí</a>.</b>
   </p>
   
   <mat-dialog-content>
