@@ -68,14 +68,14 @@ import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/mod
       /* 🔵 Aquí agregamos el media query para móviles */
   @media (max-width: 768px) {
     .menu-button {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
     }
   
     .custom-icon {
       font-size: 22px;
-      height: 22px;
-      width: 22px;
+      height: 21px;
+      width: 21px;
     }
   }
 
