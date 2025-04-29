@@ -27,3 +27,12 @@
 
   color: #213523;
 }
+
+.example-footer_terminos {
+  background-color: #dbdace;
+  color: #213523;
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+}

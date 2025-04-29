@@ -9,15 +9,14 @@
     [receiveNameDep]="senNameDep" [viewResolution]="sizeDisplay"
     (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)"></shared-toolbar>
 
-  <shared-toolbar-menu style="position: fixed;  width: 100%; z-index: 2;" class="shadow-8" *ngIf="flagActivitie"></shared-toolbar-menu>
-
-
-
 
   <div class="p-2">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
     <router-outlet></router-outlet>
   </div>
+
+  <shared-toolbar-menu style="position: fixed;  width: 100%; z-index: 2;" class="example-footer_terminos shadow-8"
+    *ngIf="flagActivitie"></shared-toolbar-menu>
 
   <mat-toolbar class="example-footer shadow-8 border-round-sm "
     style="background-image: url('./assets/backgroud_pleca.png'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;"
@@ -25,6 +24,14 @@
     <div class="centerToolbarFooter">
       <span [ngStyle]="{'font-size': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '13px' : '20px'}"
         style="margin: auto; white-space: initial; text-align: center; font-family: 'QuetzalSansRegular';">
+
+        <span><button mat-button [matTooltip]="!flagActivitie?'Términos y Condiciones':'Ocultar opciones'"
+            (click)="activeOrInactiveToolbarMenu(!flagActivitie)" style="justify-content: center;">
+            <mat-icon *ngIf="!flagActivitie; else other_icon">keyboard_double_arrow_up</mat-icon>
+            <ng-template #other_icon><mat-icon>keyboard_double_arrow_down</mat-icon></ng-template>
+          </button>
+        </span>
+        <br>
         <span style="font-family: 'QuetzalSansRegular';">&#169; Dirección General de Gestión de Información
           Hacendaria</span>
       </span>

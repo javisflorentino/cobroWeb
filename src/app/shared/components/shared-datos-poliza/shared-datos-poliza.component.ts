@@ -71,7 +71,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
- 
+
     const contribuyenteStr = localStorage.getItem('contribuyente');
     const contribuyenteOnlyStr = localStorage.getItem('contribuyente_only');
     this.contribuyenteArr = contribuyenteStr ? JSON.parse(contribuyenteStr) : null;

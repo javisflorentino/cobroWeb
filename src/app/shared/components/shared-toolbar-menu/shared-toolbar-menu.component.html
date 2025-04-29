@@ -1,14 +1,46 @@
-
-  <div
-    class="fadein animation-duration-1000 align-items-center justify-content-center surface-100	 border-round px-5 py-1" style=" height: 60px;">
-    <div class="menu-container"
-      style="position: relative; z-index: inherit;">
-      <div class="menu-buttons-row">
-        <button *ngFor="let button of menuButtons" mat-mini-fab class="menu-button shadow-4 m-1 hover:shadow-4"
-          [matTooltip]="button.label" matTooltipPosition="below" (click)="openDialog(button)">
-          <mat-icon class="custom-icon">{{button.icon}}</mat-icon>
-        </button>
+<div class="fadein animation-duration-1000 align-items-center justify-content-center " style=" height: 60px;">
+  <div class="menu-container" style="position: relative; z-index: inherit; font-family: QuetzalSansRegular">
+    <div class="grid" style="width: 100%;"
+      [ngStyle]="{'font-size': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '10px' : '17px'}">
+      <div class="col-6">
+        <div class="text-center">
+          Terminos y Condiciones
+          <div class="grid" style="width: 100%;">
+            <div class="col-6"><a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf"
+                target="_blank">Avisos de privacidad</a></div>
+            <div class="col-6"><a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf"
+                target="_blank">Términos y Condiciones</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="text-center">
+          Contáctanos
+          <div class="grid" style="width: 100%;">
+            <div class="col-6">
+              <mat-icon>phone_in_talk</mat-icon><span>(777) 310 0921 ext 133</span>
+            </div>
+            <div class="col-6">
+              <mat-icon>mail</mat-icon><span>soporte.csi&#64;morelos.gob.mx</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
+    <!--<div class="menu-buttons-row text-xs">
+        <div class="gbm-footer__section--trans"><div class="gbm_footer--title">Transparencia</div><div class="gbm-footer__list"><div class="gbm-footer__list--link"><a href="/aviso-de-privacidad" class="gbm-footer__list--item">Avisos de privacidad</a></div><div class="gbm-footer__list--link"><a href="https://www.plataformadetransparencia.org.mx/Inicio" class="gbm-footer__list--item">Transparencia</a></div></div></div>
+        <div class="gbm-footer__section--contact">
+          <div class="gbm_footer--title">Contáctanos en</div>
+          <div class="gbm-footer__list">
+            <div class="gbm-footer__list--link">
+              <mat-icon style="transform: scale(0.8);">phone_in_talk</mat-icon><span>(777) 329 2200</span>
+            </div>
+            <div class="gbm-footer__list--link">
+              <mat-icon>mail</mat-icon><span>soporte.csi@morelos.gob.mx</span>
+            </div>
+          </div>
+        </div>
+      </div>-->
+  </div>
+</div>

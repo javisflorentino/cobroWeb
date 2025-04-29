@@ -15,7 +15,7 @@
 .menu-button {
   width: 50px;
   height: 50px;
-  background-color: #C49A6D; 
+  background-color: #C49A6D;
   box-shadow: none;
   border-radius: 50%;
 }
@@ -28,7 +28,7 @@
 
 /* Estilo para los iconos dentro de los botones */
 .custom-icon {
-  color: #FFFFFF; 
+  color: #FFFFFF;
   font-size: 28px;
   height: 28px;
   width: 28px;
