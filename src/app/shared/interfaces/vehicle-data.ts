@@ -18,4 +18,6 @@ export interface VehicleData {
 
     claveVehicular?:      string;
     tipoMotor?:           string;
+
+    tipo?:               number;
 }

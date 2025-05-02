@@ -37,17 +37,21 @@ export class ValidatorsFormService {
       return 'EL PRIMER CARACTER DEBE SER UNA LETRA.';
     }
     switch(no_licencia.charAt(0)) {
-      case 'A' || 'E' || 'P':
+      case 'A':
+      case 'E':
+      case 'P':
         if ([838,835,830,5306].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;
-      case 'C' || 'F':
+      case 'C':
+      case 'F':
         if ([837,834,829].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }
         break;
-      case 'M' || 'R':
+      case 'M':
+      case 'R':
         if ([839,836,831].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }

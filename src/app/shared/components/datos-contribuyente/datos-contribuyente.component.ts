@@ -381,9 +381,9 @@ export class DatosContribuyenteComponent implements OnInit {
       datosAdicionales += `ContribuyenteReintegro: ${datos.nombre},${datos.telefono},${datos.email}`;
     } else {
       this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
-      if(datos.tipo_form && datos.tipo_form==3) {
+      /*if(datos.tipo_form && datos.tipo_form==3) {
         datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
-      }
+      }*/
       /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
       if(datos.tipo_form && datos.tipo_form==12) {
         datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
@@ -396,7 +396,7 @@ export class DatosContribuyenteComponent implements OnInit {
           datosAdicionales = `OBSERVACIONES: ${observaciones} `;
         }
         if(datos.fecha_verificacion) {
-          datosAdicionales += `Fecha proxima verificacion: ${datos.fecha_verificacion},`
+          datosAdicionales += `Fecha próxima verificacion: ${datos.fecha_verificacion},`
         }
         datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
       }
@@ -467,6 +467,12 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
         if(Object.entries(vehicle_data).length > 0) {
           this.dataPoliza.datosVehiculo = vehicle_data;
+        }
+        if(gestora=='53'){
+          this.dataPoliza.observaciones = this.dataPoliza.datosAdicionales;
+        }
+        if(vehicle_data.tramite==9){
+          this.dataPoliza.datosVehiculo!.tipo = 2;
         }
 
           this.smytService.generarPolizaServ(this.dataPoliza)
