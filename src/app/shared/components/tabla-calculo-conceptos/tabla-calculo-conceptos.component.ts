@@ -131,18 +131,18 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
 
-        if(!!!localStorage.getItem('contribuyente')) {
+        if (!!!localStorage.getItem('contribuyente')) {
           this.arrConceptos[0] = idConcepto;
         } else {
           this.arrConceptos.push(idConcepto);
         }
 
-        if([843,842,844].find(resp => resp==idConcepto) !== undefined){
+        if ([843, 842, 844].find(resp => resp == idConcepto) !== undefined) {
           this.openSnackBar('ESTE TRÁMITE SOLO APLICA PARA CASOS DE ROBO O EXTRAVÍO DE LICENCIA Y QUE AÚN TENGAN VIGENCIA.');
           this.isReposicionLicencia = true;
         }
 
-        if([287].find(resp => resp==idConcepto) !== undefined){
+        if ([287].find(resp => resp == idConcepto) !== undefined) {
           this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n https://www.hacienda.morelos.gob.mx/index.php/tramites-y-servicios-en-linea/oficio-de-habilitacion');
           this.isReposicionLicencia = true;
         }
@@ -150,7 +150,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
         switch (Number(this.tipoform)) {
           case 0: case 1: case 7:
-            if(tipoForm==7) {
+            if (tipoForm == 7) {
               this.tipoFormEdit_monto = true;
               //this.displayedColumns.pop();
               //this.displayedColumns.push('monto');
@@ -158,7 +158,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             this.tipoFormEdit = true;
 
             if (this.tipoform == 0) this.tipoFormEdit = false;
-            if(!this.isReposicionLicencia){
+            if (!this.isReposicionLicencia) {
               this.openSnackBar('La cantidad inicial es 1. Si desea agregar mas, cambie el valor en el campo cantidad.');
             }
             this.consultConceptoPago(idConcepto, 1, 0);//this.tipoform);
@@ -230,60 +230,81 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     }
 
     const dataVehicleLs: DatosTramite = JSON.parse(localStorage.getItem('vehicle_data')!);
-    this.smyPagosService.getCalculoPagos(dataVehicleLs)
-      .subscribe(result => {
-        this.isLoading = false;
-        if (result.success && result.data.conceptos.length > 0) {
-          this.conceptos = result.data.conceptos;
-          this.total += result.data.total;
+    if (dataVehicleLs.tramite == 9) {
+      this.smyPagosService.getCalculoPagosPublico(dataVehicleLs)
+        .subscribe(result => {
+          this.isLoading = false;
+          if (result.success && result.data.conceptos.length > 0) {
+            this.conceptos = result.data.conceptos;
+            this.total += result.data.total;
 
-          /*if (!result.data.contribuyente) {
-            // SOAP obtener datos del Contribuyente
-            let datosContibuyente;
-            let datosContibuyenteDomicilio;
-            let contribuyente: Contribuyente = {} as Contribuyente;
-            let contribuyenteDomicilio: Domicilio = {} as Domicilio;
-            let localServContribuyente: TopLevel = result;
 
-            this.smyPagosService.getTaxpayData(dataVehicleLs)
-              .then(response => response.text())
-              .then(xml => {
-                this.asJsonEstadoVehiculo = this.xmlSring.xmlStringToJson(xml.toString());
-                datosContibuyente = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.propietario;
-                datosContibuyenteDomicilio = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.domicilio;
+            localStorage.setItem('contribuyente', JSON.stringify(result));
+            return;
+          }
+          this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
+          setTimeout(() => {
+            this.router.navigate(['pagos/dependencias']);
+          }, 2000)
 
-                contribuyente.nombre = String(datosContibuyente.nombre['#text']);
-                contribuyente.primerApellido = String(datosContibuyente.apellidoPaterno['#text']);
-                contribuyente.segundoApellido = String(datosContibuyente.apellidoMaterno['#text']);
-                contribuyente.rfc = String(datosContibuyente.rfc['#text']);
-                contribuyente.tipoPersona = String((datosContibuyente.tipoPersona['#text']?.includes('Fisica')) ? 'F' : 'M');
-                contribuyente.curp = '';
-                contribuyente.id = Number(datosContibuyente.idContribuyente['#text']);
+        });
+    } else {
 
-                contribuyenteDomicilio.calle = String(datosContibuyenteDomicilio.nombreVialidad['#text']);
-                contribuyenteDomicilio.codigoPostal = String(datosContibuyenteDomicilio.codigoPostal['#text']);
-                contribuyenteDomicilio.colonia = String(datosContibuyenteDomicilio.nombreAsentamiento['#text']);
-                contribuyenteDomicilio.estado = '';
-                contribuyenteDomicilio.municipio = '';
-                contribuyenteDomicilio.numeroExterior = String(datosContibuyenteDomicilio.numeroExterior['#text']);
-                contribuyenteDomicilio.numeroInterior = '';
+      this.smyPagosService.getCalculoPagos(dataVehicleLs)
+        .subscribe(result => {
+          this.isLoading = false;
+          if (result.success && result.data.conceptos.length > 0) {
+            this.conceptos = result.data.conceptos;
+            this.total += result.data.total;
 
-                localServContribuyente.data.contribuyente = contribuyente;
-                localServContribuyente.data.domicilio = contribuyenteDomicilio;
+            /*if (!result.data.contribuyente) {
+              // SOAP obtener datos del Contribuyente
+              let datosContibuyente;
+              let datosContibuyenteDomicilio;
+              let contribuyente: Contribuyente = {} as Contribuyente;
+              let contribuyenteDomicilio: Domicilio = {} as Domicilio;
+              let localServContribuyente: TopLevel = result;
 
-                localStorage.setItem('contribuyente', JSON.stringify(localServContribuyente));
-                return;
-              });
-          }*/
-          localStorage.setItem('contribuyente', JSON.stringify(result));
-          return;
-        }
-        this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
-        setTimeout(() => {
-          this.router.navigate(['pagos/dependencias']);
-        }, 2000)
+              this.smyPagosService.getTaxpayData(dataVehicleLs)
+                .then(response => response.text())
+                .then(xml => {
+                  this.asJsonEstadoVehiculo = this.xmlSring.xmlStringToJson(xml.toString());
+                  datosContibuyente = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.propietario;
+                  datosContibuyenteDomicilio = this.asJsonEstadoVehiculo['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.domicilio;
 
-      });
+                  contribuyente.nombre = String(datosContibuyente.nombre['#text']);
+                  contribuyente.primerApellido = String(datosContibuyente.apellidoPaterno['#text']);
+                  contribuyente.segundoApellido = String(datosContibuyente.apellidoMaterno['#text']);
+                  contribuyente.rfc = String(datosContibuyente.rfc['#text']);
+                  contribuyente.tipoPersona = String((datosContibuyente.tipoPersona['#text']?.includes('Fisica')) ? 'F' : 'M');
+                  contribuyente.curp = '';
+                  contribuyente.id = Number(datosContibuyente.idContribuyente['#text']);
+
+                  contribuyenteDomicilio.calle = String(datosContibuyenteDomicilio.nombreVialidad['#text']);
+                  contribuyenteDomicilio.codigoPostal = String(datosContibuyenteDomicilio.codigoPostal['#text']);
+                  contribuyenteDomicilio.colonia = String(datosContibuyenteDomicilio.nombreAsentamiento['#text']);
+                  contribuyenteDomicilio.estado = '';
+                  contribuyenteDomicilio.municipio = '';
+                  contribuyenteDomicilio.numeroExterior = String(datosContibuyenteDomicilio.numeroExterior['#text']);
+                  contribuyenteDomicilio.numeroInterior = '';
+
+                  localServContribuyente.data.contribuyente = contribuyente;
+                  localServContribuyente.data.domicilio = contribuyenteDomicilio;
+
+                  localStorage.setItem('contribuyente', JSON.stringify(localServContribuyente));
+                  return;
+                });
+            }*/
+            localStorage.setItem('contribuyente', JSON.stringify(result));
+            return;
+          }
+          this.openSnackBar('EL TRÁMITE YA SE HA REALIZADO');
+          setTimeout(() => {
+            this.router.navigate(['pagos/dependencias']);
+          }, 2000)
+
+        });
+    }
   }
 
   onAddElementForm() {
@@ -299,12 +320,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   consultaRezagosActualizacionAdicional(idConcepto: number) {
     const datos_cobro = JSON.parse(localStorage.getItem('datos_cobro')!);
     let conceptos: Concepto = {} as Concepto;
-    this.generalesService.getRezagosActualizaciones(idConcepto,datos_cobro.monto,datos_cobro.fecha)
+    this.generalesService.getRezagosActualizaciones(idConcepto, datos_cobro.monto, datos_cobro.fecha)
       .then(response => response.text())
       .then(xml => {
         this.isLoading = false;
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        if(!!this.asJson) {
+        if (!!this.asJson) {
           const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text']; //estatusVehiculo.vehiculo.noSerie['#text'];
 
           conceptos.descripcion = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'];
@@ -318,17 +339,17 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']), conceptos: this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'], lineaDetalle: String(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['lineaDetalle']['#text']) }, success: true }));//this.conceptoPago));
           this.total += Number(this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['total']['#text']);
           datos_cobro.concepto = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenerRezagosActualizacionAdicionalesResponse']['adeudos']['descripcion']['#text'];
-          localStorage.setItem('datos_cobro',JSON.stringify(datos_cobro));
+          localStorage.setItem('datos_cobro', JSON.stringify(datos_cobro));
           return;
         } else {
-          throw {message:"No se obtuvo informacion con los datos proporcionados",error:"Unauthorized",statusCode:412};
+          throw { message: "No se obtuvo informacion con los datos proporcionados", error: "Unauthorized", statusCode: 412 };
         }
       })
       .catch(err => {
         console.log('ERROR')
         this.isLoading = false;
-        Swal.fire({icon: "error", title: `Error: ${err.statusCode}`, text: `${err.message}`, allowOutsideClick:false})
-          .then(()=>{
+        Swal.fire({ icon: "error", title: `Error: ${err.statusCode}`, text: `${err.message}`, allowOutsideClick: false })
+          .then(() => {
             this.router.navigate(['pagos/dependencias']);
           });
       })
@@ -339,17 +360,17 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     const datos = JSON.parse(localStorage.getItem('datos_cobro')!);
     this.generalesService.getDetalleCobroISAN(datos.monto, datos.ejercicio, datos.periodo, 927)
       .subscribe({
-        next:(resp) => {
+        next: (resp) => {
           this.isLoading = false;
           this.conceptos = resp!.data.conceptos;
           localStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle) }, success: true }));//this.conceptoPago));
           this.total += Number(resp!.data.total);
           datos.concepto = resp?.data.conceptos[0].descripcion;
-          localStorage.setItem('datos_cobro',JSON.stringify(datos));
+          localStorage.setItem('datos_cobro', JSON.stringify(datos));
         },
         error: (err) => {
           this.isLoading = false;
-          Swal.fire({title: "Error !!",text: err.message,icon: "error",allowOutsideClick:false})
+          Swal.fire({ title: "Error !!", text: err.message, icon: "error", allowOutsideClick: false })
             .then((response) => {
               this.router.navigate(['pagos/dependencias']);
             });
@@ -371,12 +392,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
 
     this.isLoading = true;
-    let datos:RequestConceptos = {
+    let datos: RequestConceptos = {
       "idConcepto": idConcepto,
       "monto": (monto) ? monto : null,
       "cantidad": cantidad
     }
-    if(idConcepto==2143) {
+    if (idConcepto == 2143) {
       const datos_cobro = JSON.parse(localStorage.getItem('datos_cobro')!);
       let fecha_vencimiento: Array<any> = [];
       fecha_vencimiento = String(datos_cobro.fecha).split('-')
@@ -390,7 +411,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
     if (localStorage.getItem('contribuyente')) {//&& this.tipoFormEdit) {
       let contribuyente: TopLevel = JSON.parse(localStorage.getItem('contribuyente')!);
-      if(contribuyente.data.conceptos.find(resp => resp.conceptoArea == idConcepto) !== undefined) {
+      if (contribuyente.data.conceptos.find(resp => resp.conceptoArea == idConcepto) !== undefined) {
         this.isLoading = false;
         return;
       }
@@ -584,7 +605,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       this.conceptos = contribuyente.data.conceptos;
 
       let arrLineaDetalle = contribuyente.data.lineaDetalle.split('|');
-      arrLineaDetalle.splice(val,1)
+      arrLineaDetalle.splice(val, 1)
       contribuyente.data.lineaDetalle = arrLineaDetalle.join('|');
 
       if (this.conceptos.length == 0) {
@@ -595,10 +616,10 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       return
     }
     this.isLoading = true;
-    let cantida:number = 1;
-    let monto:number = 1;
-    if(Number(this.tipoform)!==7) {
-      cantida =  this.cantidadPago.controls[val].value;
+    let cantida: number = 1;
+    let monto: number = 1;
+    if (Number(this.tipoform) !== 7) {
+      cantida = this.cantidadPago.controls[val].value;
     } else {
       monto = this.cantidadPago.controls[val].value;
     }
@@ -612,8 +633,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           }
 
           let arrLineaDetalle = contribuyente.data.lineaDetalle.split('|');
-          if(arrLineaDetalle[arrLineaDetalle.length-1].length>1) arrLineaDetalle.pop();
-          arrLineaDetalle[val] = resp.data.lineaDetalle.replaceAll('|','');
+          if (arrLineaDetalle[arrLineaDetalle.length - 1].length > 1) arrLineaDetalle.pop();
+          arrLineaDetalle[val] = resp.data.lineaDetalle.replaceAll('|', '');
 
           contribuyente.data.conceptos[val].importe = resp.data.conceptos[0].importe;
           contribuyente.data.conceptos[val].cantidad = resp.data.conceptos[0].cantidad;

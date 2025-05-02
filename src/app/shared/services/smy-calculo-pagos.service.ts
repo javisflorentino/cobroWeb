@@ -13,6 +13,7 @@ import { environments } from 'src/environments/environments';
 export class SmyCalculoPagosService {
 
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private urlSmyPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
   private pagoLinea = `${environments.baseUrlApp}pagoenlinea`;//'pagoenlinea';
   private otherPages = `${environments.baseUrlApp}serviciosHacienda/concepto/obtenerConcepto`
   private urlSOAP = `${environments.baseUrlServ}`;
@@ -27,6 +28,16 @@ export class SmyCalculoPagosService {
 
     return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers});
   }
+
+  getCalculoPagosPublico(datosTramite:DatosTramite): Observable<TopLevel> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<TopLevel>(`${this.urlSmyPublico}`,JSON.stringify(datosTramite),{headers});
+  }
+
   otherCalculoPagos(datosTramite:object): Observable<TopLevel> {
     let headers = new HttpHeaders();
 

@@ -100,6 +100,41 @@ export class ValidatorsService {
     }
   }
 
+  public existsSeriesPublico( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
+    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+      const fielValue1 = formGroup.get(serie)?.value;
+      const fileValue2 = formGroup.get(placa)?.value;
+
+      let parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false };
+      if(!formGroup.get(serie)?.pristine) {
+        this.smytService.validateVehiclePublico(parameters)
+          .subscribe({
+            next:(resp)=>{
+              if (resp?.success) {
+                formGroup.get(serie)?.setErrors( null );
+                return null;
+              }
+              const codeArr = this.mssgArr.filter(r =>  r.msg == String(resp?.data) )
+              formGroup.get(serie)?.setErrors( { notEqual: true, error:(codeArr.length>0)?((codeArr[0].id==10)?'11':codeArr[0].id):mssg } );
+              return { notEqual: true };
+            },
+            error:(err)=>{
+              if(!!err.code) {
+                formGroup.get(serie)?.setErrors( { notEqual: true, error:err.code } );
+              } else {
+                formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+              }
+              return { notEqual: true };
+            }
+          });
+      }
+
+      formGroup.get(serie)?.markAsTouched();
+      formGroup.get(serie)?.setErrors( null );
+      return null;
+    }
+  }
+
   public existsSeries( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
       let tipo: string = tipoVehiculo;
@@ -113,7 +148,7 @@ export class ValidatorsService {
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
 
-      let parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo":Number.parseInt(tipo), fechaFactura:dateForm, "obtenerContribuyente":false };
+      let parameters = { "modelo":2019, "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo":Number.parseInt(tipo), fechaFactura:dateForm, "obtenerContribuyente":false };
       if(!formGroup.get(serie)?.pristine) {
         this.smytService.validateVehicle(parameters)
           .subscribe({

@@ -15,6 +15,7 @@ import { BajaVehiculoComponent } from './baja-vehiculo/baja-vehiculo.component';
 import { TarjetaDuplicadaVehiculoComponent } from './tarjeta-duplicada-vehiculo/tarjeta-duplicada-vehiculo.component';
 import { SustitucionPlacaVehiculoComponent } from './sustitucion-placa-vehiculo/sustitucion-placa-vehiculo.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PagoRevistaMecanicaComponent } from './pago-revista-mecanica/pago-revista-mecanica.component';
 
 
 
@@ -28,7 +29,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     LicenciaVehiculoComponent,
     BajaVehiculoComponent,
     TarjetaDuplicadaVehiculoComponent,
-    SustitucionPlacaVehiculoComponent
+    SustitucionPlacaVehiculoComponent,
+    PagoRevistaMecanicaComponent
   ],
   imports: [
     CommonModule,

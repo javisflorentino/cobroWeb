@@ -8,6 +8,7 @@ import { TarjetaDuplicadaVehiculoComponent } from './tarjeta-duplicada-vehiculo/
 import { SustitucionPlacaVehiculoComponent } from './sustitucion-placa-vehiculo/sustitucion-placa-vehiculo.component';
 import { TablaCalculoConceptosComponent } from 'src/app/shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { LicenciaVehiculoComponent } from './licencia-vehiculo/licencia-vehiculo.component';
+import { PagoRevistaMecanicaComponent } from './pago-revista-mecanica/pago-revista-mecanica.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
   {
     path: 'portalhacienda-proteccion-civil/:idConcepto/:tipoForm',
     component: TablaCalculoConceptosComponent
+  },
+  {
+    path: 'smyt-revista-mecanica/:idConcepto/:tipoForm',
+    component: PagoRevistaMecanicaComponent
   },
   {
     path: '**',

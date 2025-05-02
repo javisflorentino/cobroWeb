@@ -8,7 +8,7 @@ import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface'
 import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 
-import { environments} from 'src/environments/environments';
+import { environments } from 'src/environments/environments';
 /* MODIF: 12/12/2023 */
 import ListMessage from '../../../../data/arreglos/alertas.json'
 
@@ -21,8 +21,9 @@ export class SmytService {
   private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
   private urlSmytGenerarPoliza = `${environments.baseUrlApp}serviciosHacienda/poliza/generar`;//'serviciosHacienda/poliza/generar';
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private urlSmytParticularPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
 
-  constructor( private http: HttpClient ) { }
+  constructor(private http: HttpClient) { }
 
   getMessages(): Observable<Messages[]> {
     return of(ListMessage.messages);
@@ -53,24 +54,42 @@ export class SmytService {
     })
 
   }*/
-  validateVehicle(datosTramite:DatosTramite): Observable<TopLevel | null> {
+  validateVehiclePublico(datosTramite: DatosTramite): Observable<TopLevel | null> {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<TopLevel>(`${this.urlSmytParticular}`,JSON.stringify(datosTramite),{headers})
+    return this.http.post<TopLevel>(`${this.urlSmytParticularPublico}`, JSON.stringify(datosTramite), { headers })
       .pipe(
-        catchError(err =>{
+        catchError(err => {
           let message = '';
-          return throwError( () => {
+          return throwError(() => {
             message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
-            return {message: message, code: `${err.status}`};
+            return { message: message, code: `${err.status}` };
           });
         })
       );
   }
-  async validateVehicleSoap(placa:string,serie:string): Promise<any> {
+
+  validateVehicle(datosTramite: DatosTramite): Observable<TopLevel | null> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<TopLevel>(`${this.urlSmytParticular}`, JSON.stringify(datosTramite), { headers })
+      .pipe(
+        catchError(err => {
+          let message = '';
+          return throwError(() => {
+            message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
+            return { message: message, code: `${err.status}` };
+          });
+        })
+      );
+  }
+  async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {
       const response = await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
         method: "POST",
@@ -87,7 +106,7 @@ export class SmytService {
           </smyt:obtenEstatusVehiculo>
         </soapenv:Body>
     </soapenv:Envelope>`,
-        headers: { "Content-type": "text/xml; charset=utf-8"},
+        headers: { "Content-type": "text/xml; charset=utf-8" },
         redirect: "follow"
       });
       if (response.ok) {
@@ -99,28 +118,28 @@ export class SmytService {
         // For any other server error
         throw new Error(`${response.status}, Error desconocido. Repórtelo al CAT e intentelo mas tarde`);
       }
-    }catch(err) {
+    } catch (err) {
       throw err
     }
   }
 
-  calcularCostoConcepto(idConcepto:number, cantida:number): Observable<CalculoConcepto[]>{
+  calcularCostoConcepto(idConcepto: number, cantida: number): Observable<CalculoConcepto[]> {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<CalculoConcepto[]>(`serviciosHacienda/concepto/obtenerConcepto`,JSON.stringify(''),{headers});
+    return this.http.post<CalculoConcepto[]>(`serviciosHacienda/concepto/obtenerConcepto`, JSON.stringify(''), { headers });
 
   }
 
-  generarPolizaServ(datosTramite:DatosPoliza): Observable<PolizaRecive> {
+  generarPolizaServ(datosTramite: DatosPoliza): Observable<PolizaRecive> {
     let headers = new HttpHeaders();
 
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
-    return this.http.post<PolizaRecive>(`${this.urlSmytGenerarPoliza}`,JSON.stringify(datosTramite),{headers});
+    return this.http.post<PolizaRecive>(`${this.urlSmytGenerarPoliza}`, JSON.stringify(datosTramite), { headers });
   }
 
 

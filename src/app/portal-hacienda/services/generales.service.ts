@@ -136,7 +136,7 @@ export class GeneralesService {
       redirect: "follow"
     });
   }
-  
+
   /*async getDetalleCobroISAN(importe:number, fecha:string, idConcepto:number): Promise<any> {
     console.log(importe + ' | ' + fecha + ' | ' + idConcepto)
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
@@ -232,7 +232,7 @@ export class GeneralesService {
     });
   }
   async validateVahicleOnDb(placa:string, no_serie:string): Promise<any> {
-    return await fetch(`${this.urlSOAP}oficiosHabilitacion/services/PersonaPago`,{
+    return await fetch(`${this.urlSOAP}tramitesSMyT/services/SMyT`,{
       method: "POST",
       body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
       <soapenv:Header/>
@@ -303,7 +303,7 @@ export class GeneralesService {
 
     return this.http.post<{success: boolean}>(`${this.urlSOAP}timbrado/cfdi/correoCfdi`, body, {headers})
     .pipe(
-      map(response => response.success), 
+      map(response => response.success),
       catchError(error => {
         console.error('Error al enviar CFDI:', error);
         return of(false); // Devolvemos false en lugar de null para mantener el mismo tipo de retorno
