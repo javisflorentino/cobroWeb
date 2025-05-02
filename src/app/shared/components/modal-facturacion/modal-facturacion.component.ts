@@ -81,7 +81,8 @@ export class ModalFacturacionComponent {
     const pago = this.cfdiForm.get("formaPago")?.value;
     const uso = this.cfdiForm.get("usoCfdi")?.value;
     const rfc = this.cfdiForm.get("rfc")?.value;
-    const regimen = this.cfdiForm.get("regimenFiscal")?.value;
+    let reg=this.cfdiForm.get("regimenFiscal")?.value;
+    const regimen = reg.substring(0, 3);
     const cp = this.cfdiForm.get("codigoPostal")?.value;
     const nombre = this.cfdiForm.get("nombreRazonSocial")?.value;
     const lineaCapturaSerieFolio = `${lineaCaptura}/${serie}-${folio}`;
