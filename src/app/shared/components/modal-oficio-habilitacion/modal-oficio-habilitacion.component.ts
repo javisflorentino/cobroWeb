@@ -6,6 +6,7 @@ import { GeneralesService } from 'src/app/portal-hacienda/services/generales.ser
 import Swal from 'sweetalert2';
 import { MatDialogRef } from '@angular/material/dialog';
 import { InsertarPersonaOficio } from '../../interfaces/soap-insertar-persona-oficio';
+import { ValidatorsService } from '../../services/validators.service';
 
 @Component({
   selector: 'app-modal-oficio-habilitacion',
@@ -16,6 +17,7 @@ export class ModalOficioHabilitacionComponent {
   private asJson!: InsertarPersonaOficio;//ValidateVehicle;
       private xmlSring: ConvertXmlString = new ConvertXmlString();
       public generalesService = inject(GeneralesService);
+      public validatorsService = inject(ValidatorsService);
         /* Bloque el boton de Calcular para evitar acciones duplicadas  */
         public buttBlock = false;
     
@@ -69,9 +71,7 @@ export class ModalOficioHabilitacionComponent {
       '',
       [
         Validators.required,
-        Validators.pattern(
-          /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/
-        )
+        Validators.pattern(this.validatorsService.rfcPath)
       ]
     ],
     telefono: [''],

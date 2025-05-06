@@ -9,6 +9,7 @@ import { Recibo, estadoVehiculo } from '../../interfaces/soap-servicios-ingresos
 import { ConvertXmlString } from '../../clases/convert-xml-string';
 import Swal from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
+import { ValidatorsService } from '../../services/validators.service';
 
 @Component({
   selector: 'app-modal-facturacion',
@@ -40,7 +41,9 @@ export class ModalFacturacionComponent {
     formaPago: ['', Validators.required],
     rfc: ['', [
       Validators.required,
-      Validators.pattern(/^([A-ZÑ&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d]{2})([A\d])$/) // Formato RFC
+      Validators.pattern(this.validatorsService.rfcPath),
+      Validators.minLength(12),
+      Validators.maxLength(13)
     ]],
     nombreRazonSocial: ['', Validators.required],
     regimenFiscal: ['', Validators.required],
@@ -53,7 +56,8 @@ export class ModalFacturacionComponent {
   
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<ModalFacturacionComponent>
+    private dialogRef: MatDialogRef<ModalFacturacionComponent>,
+    private validatorsService:ValidatorsService
   ) {}
   @HostListener('input', ['$event']) onKeyUp(event:any) {
     event.target['value'] = event.target['value'].toUpperCase();
@@ -113,7 +117,7 @@ export class ModalFacturacionComponent {
       const serieCFD = cfd.Serie['#text'];
       const folioCFD = cfd.Folio['#text'];
   
-      if (rfcCFD !== rfc) {
+      if (rfcCFD?.toUpperCase() !== rfc.toUpperCase()) {
         await Swal.fire({
           icon: "error", 
           title: "Error de validación", 
@@ -123,7 +127,7 @@ export class ModalFacturacionComponent {
         return;
       }
   
-      if (serieCFD !== serie || folioCFD !== folio) {
+      if (serieCFD?.toUpperCase() !== serie.toUpperCase() || folioCFD !== folio) {
         await Swal.fire({
           icon: "error", 
           title: "Error de validación", 
@@ -142,7 +146,7 @@ export class ModalFacturacionComponent {
         nombre
       );
   
-      if (resultadoTimbre.includes('true') || resultadoTimbre.includes('1')) {
+      if (resultadoTimbre.includes('<TimbraCFDResult>true</TimbraCFDResult>') || resultadoTimbre.includes('<TimbraCFDResult>1</TimbraCFDResult>')) {
         await Swal.fire({
           icon: 'success',
           title: 'Timbrado exitoso',
