@@ -199,10 +199,15 @@ export class DatosContribuyenteComponent implements OnInit {
       const message = this.mssgArr.filter(({id}) => id == idMssg )
       return message[0].msg;
     }
-    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' || nameField === 'razonSocial') {
+    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
       touched = this.myFormContribuyente.get(nameField)?.touched;
       nameFileValue = this.myFormContribuyente.get(nameField)?.value;
       pathSelect = this.validatosService.peoplesNamePath;
+    }
+    if( nameField === 'razonSocial') {
+      touched = this.myFormContribuyente.get(nameField)?.touched;
+      nameFileValue = this.myFormContribuyente.get(nameField)?.value;
+      pathSelect = this.validatosService.peoplesNamePathWithNumbers;
     }
 
     if( touched ) {
@@ -369,7 +374,7 @@ export class DatosContribuyenteComponent implements OnInit {
         datosAdicionales = observaciones;
       }
     }
-
+    observaciones=observaciones.trim()
 
 
    if(datos) {
@@ -392,14 +397,28 @@ export class DatosContribuyenteComponent implements OnInit {
       }
       /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
       if(datos.tipo_form && datos.tipo_form==3) {
-        if (observaciones!=='') {
-          datosAdicionales = `OBSERVACIONES: ${observaciones} `;
-        }
+         if (observaciones!=='') {
+          //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+          datosAdicionales = `${observaciones} `;
+
+        } 
         if(datos.fecha_verificacion) {
           datosAdicionales += `Fecha próxima verificacion: ${datos.fecha_verificacion},`
         }
         datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
       }
+
+      if(datos.tipo_form && datos.tipo_form==6) {
+        if (observaciones!=='') {
+         //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+         //datosAdicionales = `${observaciones} `;
+
+       } 
+         datosAdicionales += `Escritura: ${datos.escritura}, Fecha escritura: ${datos.fecha_verificacion_escritura}, Contribuyente: ${datos.contribuyente}`
+         observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
+
+
+     }
       /* HACIENDA - IMPUESTOS - ISAN */
       if(datos.tipo_form && datos.tipo_form==4) {
         datosAdicionales = `${datos.concepto!}-${this.monthDescription(Number(datos.periodo))}-${datos.ejercicio}`;

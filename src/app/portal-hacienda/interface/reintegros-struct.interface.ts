@@ -29,4 +29,8 @@ export interface ReintegrosStruct {
   semestre?:              string;
   concepto?:              string;
   dependencia?:           string;
+  escritura?:             string;
+  contribuyente?:         string;
+  fecha_verificacion_escritura?:    string;
+
 }

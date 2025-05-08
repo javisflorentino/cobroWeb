@@ -134,8 +134,12 @@ export class EnajenacionBienesPagesComponent implements OnInit, OnDestroy {
       {
         cantidad:      1,
         monto:         Number(this.myFormHEnajenacion.get('monto')?.value),
-        fecha:         formatDate(this.myFormHEnajenacion.get('fecha_escritura')?.value,'yyyy-MM-dd','en-US'),
-        tipo_form:     this.tipoForm
+        fecha_verificacion_escritura:   formatDate(this.myFormHEnajenacion.get('fecha_escritura')?.value,'yyyy-MM-dd','en-US'),
+        fecha:   formatDate(this.myFormHEnajenacion.get('fecha_escritura')?.value,'yyyy-MM-dd','en-US'),
+
+        tipo_form:     this.tipoForm,
+        contribuyente: this.myFormHEnajenacion.get('contribuyente')?.value,
+        escritura:     this.myFormHEnajenacion.get('escritura')?.value
       })
     )
 
