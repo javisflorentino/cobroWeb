@@ -473,7 +473,7 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
         this.dataPoliza.razonSocial = String(this.myFormContribuyente.get('razonSocial')?.value).toUpperCase();
         this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
-        this.dataPoliza.origen = 'VU';
+        this.dataPoliza.origen = 'PH';
         this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
         this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value)?this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value:0;
         this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
