@@ -30,7 +30,7 @@ export class BajaVehiculoComponent implements OnInit {
     no_serie: ['', [Validators.required]]
   },
   {
-    validators: [this.validatorsService.existsSeries('no_serie','placa',1, 1, '1','')]
+    validators: [this.validatorsService.existsSeries('no_serie','placa',1, 3, '1','')]
   });
 
   public messages: Messages[] = [];
