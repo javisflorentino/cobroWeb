@@ -442,7 +442,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.total = resp.data.total;//this.total += resp.data.total;
           if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable == 1).length > 0) {
             setTimeout(() => {
-              this.openSnackBar('Para agregagar otro concepto, seleccionelo en el menu lateral');
+              this.openSnackBar('Para agregar otro concepto, seleccionelo en el menu lateral');
             }, 3000)
           }
 
