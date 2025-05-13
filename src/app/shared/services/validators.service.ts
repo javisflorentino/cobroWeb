@@ -181,7 +181,7 @@ export class ValidatorsService {
   }
   validateDataInput(field: string, mssg: number, route:string) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
-      const contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
+      const contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);
 
       if ( contribuyenteArr.data[route] !== undefined ) {// && contribuyenteArr.data[route]['razonSocial']=='F') {
         if (contribuyenteArr.data[route]['tipoPersona']=='M' && (field == 'primerApellido' || field == 'segundoApellido')) {

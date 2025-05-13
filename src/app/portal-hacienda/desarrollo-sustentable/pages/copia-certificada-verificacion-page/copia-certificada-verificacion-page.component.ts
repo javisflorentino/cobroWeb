@@ -81,7 +81,7 @@ export class CopiaCertificadaVerificacionPageComponent implements OnInit, OnDest
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
       this.tipoForm = tipoForm;
-      this.conceptTitle = localStorage.getItem('concept')!;
+      this.conceptTitle = sessionStorage.getItem('concept')!;
     });
   }
 
@@ -98,8 +98,8 @@ export class CopiaCertificadaVerificacionPageComponent implements OnInit, OnDest
       this.buttBlock = false;
       return;
     }
-    localStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-certificacionver/${this.idConcepto}/${this.tipoForm}`);
-    localStorage.setItem('datos_cobro',JSON.stringify(
+    sessionStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-certificacionver/${this.idConcepto}/${this.tipoForm}`);
+    sessionStorage.setItem('datos_cobro',JSON.stringify(
       {
         cantidad:           this.myForm.get('holograma')?.value,
         monto:              1,

@@ -70,10 +70,10 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
+    this.contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);
 
-    const contribuyenteStr = localStorage.getItem('contribuyente');
-    const contribuyenteOnlyStr = localStorage.getItem('contribuyente_only');
+    const contribuyenteStr = sessionStorage.getItem('contribuyente');
+    const contribuyenteOnlyStr = sessionStorage.getItem('contribuyente_only');
     this.contribuyenteArr = contribuyenteStr ? JSON.parse(contribuyenteStr) : null;
     if (!this.contribuyenteArr?.data?.contribuyente) {
       this.contribuyenteArr = contribuyenteOnlyStr ? JSON.parse(contribuyenteOnlyStr) : null;
@@ -84,7 +84,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
     : '';
 
   const lineaDetalle = this.contribuyenteArr?.data?.lineaDetalle || '';
-    this.datosPoliza = JSON.parse(localStorage.getItem('datos_poliza')!);
+    this.datosPoliza = JSON.parse(sessionStorage.getItem('datos_poliza')!);
     this.myForm.reset({
       numeroPoliza:this.datosPoliza.numeroPoliza,
       lineaCaptura:this.datosPoliza.lineaCaptura,
@@ -103,7 +103,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('datos_poliza');
+    sessionStorage.removeItem('datos_poliza');
     this.destroyed.next();
     this.destroyed.unsubscribe();
   }

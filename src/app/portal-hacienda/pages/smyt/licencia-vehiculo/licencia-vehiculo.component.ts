@@ -95,7 +95,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let msg: string = '';
 
-    //localStorage.removeItem('contribuyente');
+    //sessionStorage.removeItem('contribuyente');
     this.smytService.getMessages_licencia()
       .subscribe( message => {
         this.messages = message;
@@ -109,7 +109,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
       //Observable que se mantiene vivo mientras no se abandone el componente. Ejemplo cuando se cambia en el meni de 5 a 3 años por ejemplo
       this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
-        this.conceptTitle = localStorage.getItem('concept')!;
+        this.conceptTitle = sessionStorage.getItem('concept')!;
 
         this.tipoform = tipoForm;
         this.idConcepto = idConcepto;
@@ -126,14 +126,26 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
             if(this.idConcepto==5308){
               this.tieneLicencia(0);
             }
+            
             this.formLicencias.get('tien_licencia')?.setValue('');
             this.formLicencias.get('tien_licencia')?.enable();
             this.formLicencias.get('no_licencia')?.disable();
             this.formLicencias.get('fecha_vencimiento')?.disable();
           }
         },500);
-
-        localStorage.setItem('route_origen','smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
+        if (this.idConcepto == 5306) {
+          // Quita los validadores
+          this.formLicencias.get('fecha_vencimiento')?.clearValidators();
+          this.formLicencias.get('fecha_vencimiento')?.setValidators([
+            Validators.required
+            
+          ]);
+        } 
+        
+        // Actualiza el estado del control
+        this.formLicencias.get('fecha_vencimiento')?.updateValueAndValidity();
+        
+        sessionStorage.setItem('route_origen','smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
       });
 
       this.debouncerSubscription = this.debounce
@@ -173,7 +185,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
     if ( this.formLicencias.valid ) {
       if ( this.idConcepto && this.idConcepto !== 0 ) {
         let invoiceDate = moment(this.formLicencias.get('fecha_vencimiento')?.value).toDate();
-        localStorage.setItem('vehicle_data_adicional',JSON.stringify({"licencia":this.formLicencias.get('no_licencia')?.value,"fecha_vencimiento":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()}));
+        sessionStorage.setItem('vehicle_data_adicional',JSON.stringify({"licencia":this.formLicencias.get('no_licencia')?.value,"fecha_vencimiento":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()}));
         this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
         return;
       }

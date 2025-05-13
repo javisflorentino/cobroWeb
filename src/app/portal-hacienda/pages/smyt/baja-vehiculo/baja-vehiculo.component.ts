@@ -64,7 +64,7 @@ export class BajaVehiculoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.conceptTitle = localStorage.getItem('concept')!;
+    this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
     this.smytService.getMessages()
       .subscribe( message => {
@@ -141,11 +141,11 @@ export class BajaVehiculoComponent implements OnInit {
     let s = this.myForm.get('no_serie')?.value;
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"numeroSerie":s,"tramite":3,"obtenerContribuyente":true}));
+    sessionStorage.setItem('vehicle_data', JSON.stringify({"placa":p,"numeroSerie":s,"tramite":3,"obtenerContribuyente":true}));
     this.smytService.validateVehicle({ "tramite": 3, "placa": p, "numeroSerie": s, "obtenerContribuyente":false, "obtenerVehiculo":true })
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('vehicle_data_adicional', JSON.stringify({
+          sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
             "vMarca":        resp.data.adicional?.vMarca,
             "vSubmarca":     resp.data.adicional?.vSubmarca,
             "noCilindros":   resp.data.adicional?.noCilindros,

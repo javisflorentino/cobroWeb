@@ -40,6 +40,8 @@ export class ValidatorsFormService {
       case 'A':
       case 'E':
       case 'P':
+      case 'C':
+
         if ([838,835,830,5306].find(resp => resp==idConcept) === undefined) {
           flag = true;
         }

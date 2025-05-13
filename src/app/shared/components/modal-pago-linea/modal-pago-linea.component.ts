@@ -46,14 +46,14 @@ export class ModalPagoLineaComponent {
       this.dataPoliza.lineaCaptura = this.paymentForm.get('captureLine')!.value;
       console.log(this.dataPoliza.lineaCaptura)
       this.dataPoliza.total = this.paymentForm.get('amount')!.value;
-      localStorage.setItem('datos_poliza',JSON.stringify(this.dataPoliza));
+      sessionStorage.setItem('datos_poliza',JSON.stringify(this.dataPoliza));
 
     /*  this.smytService.generarPolizaServ(this.dataPoliza)
       .subscribe(resp => {
         this.isLoading = false;
         this.buttBlock = false;
         if ( resp.success) {
-          localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
+          sessionStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
           this.router.navigate(['pagos/generar_poliza']);
           return; 
         }

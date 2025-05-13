@@ -129,8 +129,8 @@ export class EnajenacionBienesPagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    localStorage.setItem('route_origen',`hacienda/hacienda-enajenacion/${this.idConcepto}/${this.tipoForm}`);
-    localStorage.setItem('datos_cobro',JSON.stringify(
+    sessionStorage.setItem('route_origen',`hacienda/hacienda-enajenacion/${this.idConcepto}/${this.tipoForm}`);
+    sessionStorage.setItem('datos_cobro',JSON.stringify(
       {
         cantidad:      1,
         monto:         Number(this.myFormHEnajenacion.get('monto')?.value),

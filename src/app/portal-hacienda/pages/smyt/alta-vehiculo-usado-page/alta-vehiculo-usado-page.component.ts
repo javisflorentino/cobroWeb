@@ -154,7 +154,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
         });
 
     //Obtiene el Nombre del concepto que se requiere procesar
-    this.conceptTitle = localStorage.getItem('concept')!;
+    this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
     //Llamado al sevico para obtener los mensajes a mostrar
     this.smytService.getMessages()
@@ -262,7 +262,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     let aprobacionData = moment(this.myForm.get('fecha_aprobacion')?.value).toDate();
     //let enajenacionDate = moment(this.myForm.get('fecha_enajenacion')?.value).toDate();
 
-    localStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficinas')?.get('no_serie')?.value).toUpperCase(),"tramite":6,
+    sessionStorage.setItem('vehicle_data', JSON.stringify({"placa":'',"numeroSerie":String(this.myForm.get('oficinas')?.get('no_serie')?.value).toUpperCase(),"tramite":6,
       "tipoVehiculo":this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value, "fechaFactura":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear(),
       "obtenerContribuyente":false,"modelo":this.myForm.get('modelo')?.value,"valorFactura":this.myForm.get('oficinas')?.get('valor_factura')?.value,
       "placaAnterior":String(this.myForm.get('placa_foranea')?.value).toUpperCase(), "pagoBaja":this.myForm.get('pago_baja_f')?.value,"pagosRealizados":pagosRealizados,
@@ -271,7 +271,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       "tonelaje": this.myForm.get('tonelaje')?.value,"capacidadPasajeros":this.myForm.get('pasajeros')?.value
     }));
 
-    localStorage.setItem('vehicle_data_adicional',JSON.stringify({
+    sessionStorage.setItem('vehicle_data_adicional',JSON.stringify({
       "capacidadPasajeros":this.myForm.get('pasajeros')?.value,
       "centimetrosCubicos":this.myForm.get('centimetros')?.value,
       "noCilindros":this.myForm.get('cilindros')?.value,

@@ -77,7 +77,7 @@ export class SustitucionPlacaVehiculoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.conceptTitle = localStorage.getItem('concept')!;
+    this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
     this.smytService.getMessages()
       .subscribe( message => {
@@ -185,11 +185,11 @@ export class SustitucionPlacaVehiculoComponent implements OnInit {
     }
 
     //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
-    localStorage.setItem('vehicle_data', JSON.stringify(parameters));
+    sessionStorage.setItem('vehicle_data', JSON.stringify(parameters));
     this.smytService.validateVehicle(parameters)
       .subscribe(resp => {
         if (resp?.success) {
-          localStorage.setItem('vehicle_data_adicional', JSON.stringify({
+          sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
             "vMarca":        resp.data.adicional?.vMarca,
             "vSubmarca":     resp.data.adicional?.vSubmarca,
             "noCilindros":   resp.data.adicional?.noCilindros,

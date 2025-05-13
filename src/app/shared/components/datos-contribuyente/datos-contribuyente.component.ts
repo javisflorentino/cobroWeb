@@ -108,7 +108,7 @@ export class DatosContribuyenteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!localStorage.getItem('contribuyente')) {
+    if(!sessionStorage.getItem('contribuyente')) {
       this.openSnackBar('No se cuenta con información para continuar con el proceso')
       setTimeout(()=>{
         this.router.navigate(['pagos']);
@@ -123,7 +123,7 @@ export class DatosContribuyenteComponent implements OnInit {
       if(!resp){
         this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
       } else {
-        let route_origen:string = localStorage.getItem('route_origen')!;
+        let route_origen:string = sessionStorage.getItem('route_origen')!;
         if (route_origen.includes('smyt-licencia')){
           this.openSnackBar('Si ya cuenta con una licencia expedida por el Gobierno del Estado de Morelos, favor de anotar el número en observaciones')
         }
@@ -132,7 +132,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
         this.arrEstados = resp?.data;
         this.myFormContribuyente.get('domicilio')?.get('estados')?.setValue(17);
-        if(localStorage.getItem('gestora') !== '64') {
+        if(sessionStorage.getItem('gestora') !== '64') {
           this.myFormContribuyente.get('domicilio')?.get('estados')?.enable();
         } else {
           this.myFormContribuyente.get('domicilio')?.get('observaciones')?.disable();
@@ -141,7 +141,7 @@ export class DatosContribuyenteComponent implements OnInit {
       }
     });
 
-    this.contribuyenteArr = JSON.parse(localStorage.getItem('contribuyente')!);
+    this.contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);
 
 
     /* Si es una persona Moral se deshabilita datos de Persona fisica y habilita RazonSocial */
@@ -151,7 +151,7 @@ export class DatosContribuyenteComponent implements OnInit {
     }*/
 
     /* MODIF: 12/12/2023 */
-    if(localStorage.getItem('gestora') !== '64') {
+    if(sessionStorage.getItem('gestora') !== '64') {
       this.TaxDataControl = false;
     }
   }
@@ -299,8 +299,8 @@ export class DatosContribuyenteComponent implements OnInit {
       this.buttBlock = false;
       return;
     }
-    const datos:ReintegrosStruct = JSON.parse(localStorage.getItem('datos_cobro')!);
-    const gestora = localStorage.getItem('gestora')!;
+    const datos:ReintegrosStruct = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    const gestora = sessionStorage.getItem('gestora')!;
     if (!this.contribuyenteArr.data.contribuyente) {
       this.contribuyenteArr.data.contribuyente = {
         nombre:          '',
@@ -315,7 +315,7 @@ export class DatosContribuyenteComponent implements OnInit {
       this.contribuyenteArr.data.contribuyente.nombre = String( this.myFormContribuyente.get('nombre')?.value ).toUpperCase();
       this.contribuyenteArr.data.contribuyente.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
       this.contribuyenteArr.data.contribuyente.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
-      localStorage.setItem('contribuyente_only',JSON.stringify(this.contribuyenteArr));
+      sessionStorage.setItem('contribuyente_only',JSON.stringify(this.contribuyenteArr));
     }
 
     this.isLoading = true;
@@ -326,8 +326,8 @@ export class DatosContribuyenteComponent implements OnInit {
     let servicio = '';
     let tipoSer = [];
     let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
-    const dataVehicle_adit = JSON.parse(localStorage.getItem('vehicle_data_adicional')!);
-    let route_origen:string = localStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
+    const dataVehicle_adit = JSON.parse(sessionStorage.getItem('vehicle_data_adicional')!);
+    let route_origen:string = sessionStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
 
     Object.entries(TipoServicio).forEach((v,k) => {
       tipoSer = v.toString().split(',');
@@ -336,9 +336,9 @@ export class DatosContribuyenteComponent implements OnInit {
       }
     });
 
-    const concept = (localStorage.getItem('concept'))?localStorage.getItem('concept')?.toString():'';
-    if (localStorage.getItem('vehicle_data')) {
-      vehicle_data = JSON.parse(localStorage.getItem('vehicle_data')!);
+    const concept = (sessionStorage.getItem('concept'))?sessionStorage.getItem('concept')?.toString():'';
+    if (sessionStorage.getItem('vehicle_data')) {
+      vehicle_data = JSON.parse(sessionStorage.getItem('vehicle_data')!);
       let fecha_factura = '';
       let fecha_factura_array: Array<any> = [];
 
@@ -460,7 +460,7 @@ export class DatosContribuyenteComponent implements OnInit {
       if(estadoPeticion) {
         let razonSocial:string = this.myFormContribuyente.get('razonSocial')?.value;
 
-        const movimiento = localStorage.getItem('movimiento')!;
+        const movimiento = sessionStorage.getItem('movimiento')!;
 
         //observaciones += (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?' OBSERVACIONES: ' + String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():'';
 
@@ -499,7 +499,7 @@ export class DatosContribuyenteComponent implements OnInit {
               this.isLoading = false;
               this.buttBlock = false;
               if ( resp.success) {
-                localStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
+                sessionStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
                 this.router.navigate(['pagos/generar_poliza']);
                 return;
               }

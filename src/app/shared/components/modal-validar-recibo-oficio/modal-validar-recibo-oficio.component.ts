@@ -121,7 +121,7 @@ oficiosForm: FormGroup = this.fb.group({
       if (idConcepto === '14683' || idConcepto === '10348' || idConcepto === '14684') {
         // Si hay datos válidos
         this.dialogRef.close();
-        localStorage.setItem('oficio_data', JSON.stringify({ "lineaCaptura": lineaCaptura, "numeroPoliza": numeroPoliza, "FolioPago": folioPago, "IdConcepto": idConcepto }));
+        sessionStorage.setItem('oficio_data', JSON.stringify({ "lineaCaptura": lineaCaptura, "numeroPoliza": numeroPoliza, "FolioPago": folioPago, "IdConcepto": idConcepto }));
         const dialogRef = this.dialog.open(ModalOficioHabilitacionComponent, {
             width: '550px',
             disableClose: false

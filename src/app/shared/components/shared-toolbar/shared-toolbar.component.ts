@@ -93,9 +93,9 @@ export class SharedToolbarComponent {
   redirectToTramite(url:string,idConcepto:number,formulario:number,gestora:number,tipoMov:number){
     console.log(url)
     let redirect = url;
-    localStorage.setItem('gestora',gestora.toString());
-    localStorage.setItem('route_origen',url);
-    localStorage.setItem('movimiento',tipoMov.toString())
+    sessionStorage.setItem('gestora',gestora.toString());
+    sessionStorage.setItem('route_origen',url);
+    sessionStorage.setItem('movimiento',tipoMov.toString())
     /*if(url=='tabla-conceptos') {
       redirect += '/' + idConcepto + '/' + formulario;
     }*/

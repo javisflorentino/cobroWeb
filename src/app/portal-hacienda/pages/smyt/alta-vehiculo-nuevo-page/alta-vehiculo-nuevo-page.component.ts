@@ -115,7 +115,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
 
 
 
-    this.conceptTitle = localStorage.getItem('concept')!;
+    this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
     this.smytService.getMessages()
       .subscribe(message => {
@@ -149,7 +149,7 @@ export class AltaVehiculoNuevoPageComponent implements OnInit, AfterViewInit {
     let aprobacionData = moment(this.myForm.get('fecha_aprobacion')?.value).toDate();
 
     /* TODO: 16012025 .- SE AGREGA LOS DOS ULTIMOS PARAMETROS CLAVEVEHICULA Y TIPOMOTOR */
-    localStorage.setItem('vehicle_data', JSON.stringify({
+    sessionStorage.setItem('vehicle_data', JSON.stringify({
       "placa": '', "numeroSerie": String(this.myForm.get('oficina_tramite')?.get('no_serie')?.value).toUpperCase(), "tramite": 2,
       "tipoVehiculo": this.myForm.get('oficina_tramite')?.get('tipo_vehiculo')?.value, "fechaFactura": invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear(),
       "obtenerContribuyente": false, "claveVehicular": '', "tipoMotor": this.myForm.get('oficina_tramite')?.get('tipo_motor')?.value, "fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),

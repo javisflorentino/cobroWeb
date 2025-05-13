@@ -49,7 +49,7 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
       this.tipoForm = tipoForm;
-      this.conceptTitle = localStorage.getItem('concept')!;
+      this.conceptTitle = sessionStorage.getItem('concept')!;
     });
   }
 
@@ -76,8 +76,8 @@ export class ImpuestosPagesComponent implements OnInit, AfterViewInit, OnDestroy
     }*/
     //if(this.myForm.get('impuestos')?.get('recargo'))
 
-    localStorage.setItem('route_origen',`hacienda/hacienda-impuestos/${this.idConcepto}/${this.tipoForm}`);
-    localStorage.setItem('datos_cobro',JSON.stringify(
+    sessionStorage.setItem('route_origen',`hacienda/hacienda-impuestos/${this.idConcepto}/${this.tipoForm}`);
+    sessionStorage.setItem('datos_cobro',JSON.stringify(
       {
         cantidad:      1,
         monto:         Number(this.myForm.get('impuestos')?.get('impuesto')?.value),

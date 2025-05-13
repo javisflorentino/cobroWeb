@@ -75,7 +75,7 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
       this.tipoForm = tipoForm;
-      this.conceptTitle = localStorage.getItem('concept')!;
+      this.conceptTitle = sessionStorage.getItem('concept')!;
     });
   }
 
@@ -99,8 +99,8 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
       const response = this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'];
       if(response.includes('EXITO')) {
         const fecha = moment(this.myForm.get('fecha_verificacion')?.value);
-        localStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-multaverif/${this.idConcepto}/${this.tipoForm}`);
-        localStorage.setItem('datos_cobro',JSON.stringify(
+        sessionStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-multaverif/${this.idConcepto}/${this.tipoForm}`);
+        sessionStorage.setItem('datos_cobro',JSON.stringify(
           {
             cantidad:           1,
             monto:              1,

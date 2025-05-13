@@ -73,21 +73,21 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
 
     /* NOTA: SE EJECUTA CUANDO EN EL TOOLBAR SE PRECIONA HOME  */
     this.eraseLocalStor.subscribe(() => {
-      //localStorage.clear();
-      localStorage.removeItem('contribuyente_only');
-      localStorage.removeItem('vehicle_data');
-      localStorage.removeItem('vehicle_data_adicional');
-      localStorage.removeItem('datos_poliza');
-      localStorage.removeItem('datos_cobro');
-      localStorage.removeItem('idParent');
-      localStorage.removeItem('gestora');
-      localStorage.removeItem('route_origen');
-      localStorage.removeItem('concept');
-      localStorage.removeItem('contribuyente');
-      localStorage.removeItem('datos_poliza');
-      localStorage.removeItem('repetir_concepto');
-      localStorage.removeItem('cachestore');
-      localStorage.removeItem('movimiento');
+      //sessionStorage.clear();
+      sessionStorage.removeItem('contribuyente_only');
+      sessionStorage.removeItem('vehicle_data');
+      sessionStorage.removeItem('vehicle_data_adicional');
+      sessionStorage.removeItem('datos_poliza');
+      sessionStorage.removeItem('datos_cobro');
+      sessionStorage.removeItem('idParent');
+      sessionStorage.removeItem('gestora');
+      sessionStorage.removeItem('route_origen');
+      sessionStorage.removeItem('concept');
+      sessionStorage.removeItem('contribuyente');
+      sessionStorage.removeItem('datos_poliza');
+      sessionStorage.removeItem('repetir_concepto');
+      sessionStorage.removeItem('cachestore');
+      sessionStorage.removeItem('movimiento');
 
       this.itemsConceptos = [];
       //this.changSidenav.toggle();
@@ -105,7 +105,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
     */
     this.valDependenciaCard.subscribe(resp => {
       //this.processChangeOnView(resp[0].padreId);
-      localStorage.removeItem('idParent');
+      sessionStorage.removeItem('idParent');
       this.activeIdParent(resp[0].pk, "0", resp[0].pk);
     });
   }
@@ -123,7 +123,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
 
   buildMenu(padreId: number) {
     this.isLoading = true;
-    if (!localStorage.getItem('idParent') || JSON.parse(localStorage.getItem('idParent')!).length <= 1) {
+    if (!sessionStorage.getItem('idParent') || JSON.parse(sessionStorage.getItem('idParent')!).length <= 1) {
       this.showBack = false;
     }
     this.generalService.requestConceptos(padreId)
@@ -155,16 +155,16 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   }
 
   backMenu() {
-    if (localStorage.getItem('idParent')) {
-      localStorage.removeItem('contribuyente');
-      let idParent: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
+    if (sessionStorage.getItem('idParent')) {
+      sessionStorage.removeItem('contribuyente');
+      let idParent: IdPadre[] = JSON.parse(sessionStorage.getItem('idParent')!);
       const idControl = idParent[idParent.length - 2].padreId;
       idParent.pop();
       if (idParent.length === 0) {
-        localStorage.removeItem('idParent');
+        sessionStorage.removeItem('idParent');
         this.showBack = false;
       }
-      localStorage.setItem('idParent', JSON.stringify(idParent))
+      sessionStorage.setItem('idParent', JSON.stringify(idParent))
       this.buildMenu(idControl);
       this.router.navigate(['/pagos/dependencias', true]);
       return;
@@ -172,16 +172,16 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
   }
 
   dellLocalStore() {
-    if (localStorage.getItem('contribuyente_only'))
-      localStorage.removeItem('contribuyente_only');
-    if (localStorage.getItem('vehicle_data'))
-      localStorage.removeItem('vehicle_data');
-    if (localStorage.getItem('vehicle_data_adicional'))
-      localStorage.removeItem('vehicle_data_adicional');
-    if (localStorage.getItem('datos_poliza'))
-      localStorage.removeItem('datos_poliza');
-    if (localStorage.getItem('datos_cobro'))
-      localStorage.removeItem('datos_cobro');
+    if (sessionStorage.getItem('contribuyente_only'))
+      sessionStorage.removeItem('contribuyente_only');
+    if (sessionStorage.getItem('vehicle_data'))
+      sessionStorage.removeItem('vehicle_data');
+    if (sessionStorage.getItem('vehicle_data_adicional'))
+      sessionStorage.removeItem('vehicle_data_adicional');
+    if (sessionStorage.getItem('datos_poliza'))
+      sessionStorage.removeItem('datos_poliza');
+    if (sessionStorage.getItem('datos_cobro'))
+      sessionStorage.removeItem('datos_cobro');
   }
 
   /*
@@ -193,33 +193,33 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
     Object.keys(this.listaConceptos).forEach((k, v) => {
       this.listaConceptos[k as keyof MoreConcept].filter(resp => {
         if (resp.concepto == idConcepto) {
-          localStorage.setItem('repetir_concepto', JSON.stringify(this.listaConceptos[k as keyof MoreConcept]));
+          sessionStorage.setItem('repetir_concepto', JSON.stringify(this.listaConceptos[k as keyof MoreConcept]));
           flat = true;
         }
       });
     });
     if (flat) return;
 
-    localStorage.removeItem('contribuyente');
-    localStorage.removeItem('repetir_concepto');
+    sessionStorage.removeItem('contribuyente');
+    sessionStorage.removeItem('repetir_concepto');
   }
 
   buildTitle(concept: string) {
-    localStorage.setItem('concept', concept);
+    sessionStorage.setItem('concept', concept);
     this.nameConcept.emit(concept);
   }
 
   activeIdParent(padreId: number, idConcepto: string, id: number) {
-    let x: IdPadre[] = JSON.parse(localStorage.getItem('idParent')!);
+    let x: IdPadre[] = JSON.parse(sessionStorage.getItem('idParent')!);
     if (x) {
       x.push({ 'padreId': padreId });//x.forEach(() => x.push({ 'padreId': padreId }))
-      localStorage.setItem('idParent', JSON.stringify(x));
+      sessionStorage.setItem('idParent', JSON.stringify(x));
     } else {
-      localStorage.setItem('idParent', JSON.stringify([{ padreId: padreId }]));
+      sessionStorage.setItem('idParent', JSON.stringify([{ padreId: padreId }]));
     }
 
     this.buildMenu((Number(idConcepto) > 0) ? Number(idConcepto) : id);
-    if (JSON.parse(localStorage.getItem('idParent')!).length > 1)
+    if (JSON.parse(sessionStorage.getItem('idParent')!).length > 1)
       this.showBack = true;
     return;
   }
@@ -230,15 +230,15 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       NOTA:  DETERMINA SI EL CONCEPTO PERMITE AGREGAR MAS CONCEPTOS DE SU SECCION
       MODIF: 12/12/2023
     */
-    localStorage.setItem('movimiento',String(tipoMovimiento))
+    sessionStorage.setItem('movimiento',String(tipoMovimiento))
     if (Number(gestora) > 0) {
       if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable == 1).length == 0) {
-        (localStorage.getItem('contribuyente')) ? localStorage.removeItem('contribuyente') : '';
+        (sessionStorage.getItem('contribuyente')) ? sessionStorage.removeItem('contribuyente') : '';
       }
-      /*if (!localStorage.getItem('repetir_concepto')) {
+      /*if (!sessionStorage.getItem('repetir_concepto')) {
         this.generalLocalStorRepetirConcept(idConcepto);
       } else {
-        const repetir_concepto = JSON.parse(localStorage.getItem('repetir_concepto')!);
+        const repetir_concepto = JSON.parse(sessionStorage.getItem('repetir_concepto')!);
         const resp = Object.keys(repetir_concepto).filter(k => repetir_concepto[k].concepto == idConcepto)
         if (resp.length == 0) {
           this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
@@ -254,8 +254,8 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
 
     this.dellLocalStore();
 
-    localStorage.setItem('gestora', String(gestora));
-    localStorage.setItem('route_origen', item);
+    sessionStorage.setItem('gestora', String(gestora));
+    sessionStorage.setItem('route_origen', item);
 
     idConcepto = idConcepto.toString();
     if (idConcepto === "0" && gestora === 0) {

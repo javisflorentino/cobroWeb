@@ -103,7 +103,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     //this.sendActionSidenav = val;
     //this.sendValCardSidenav.next(val);
     this.senNameDep = valCard[0].titulo;
-    //localStorage.removeItem('idParent');
+    //sessionStorage.removeItem('idParent');
   }
 
   /* NOTA: RECIBE NOMBRE DEL CONCEPTO CELECCIONADO EN SIDENAV */

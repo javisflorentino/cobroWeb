@@ -47,9 +47,9 @@ export class AppComponent implements OnInit {
               .subscribe({
                 next: (concepto) => {
                   if (concepto.length > 0) {
-                    localStorage.setItem('gestora', concepto[0].gestora.toString());
-                    localStorage.setItem('route_origen', concepto[0].url.toString());
-                    localStorage.setItem('movimiento', concepto[0].tipoMovimiento.toString())
+                    sessionStorage.setItem('gestora', concepto[0].gestora.toString());
+                    sessionStorage.setItem('route_origen', concepto[0].url.toString());
+                    sessionStorage.setItem('movimiento', concepto[0].tipoMovimiento.toString())
                   } else {
                     Swal.fire({ icon: "error", title: `Error !!`, text: 'No se encontro registro con los parámetros enviados, favor de reportarlo al CAT', allowOutsideClick: false });
                   }
@@ -63,22 +63,22 @@ export class AppComponent implements OnInit {
       });
 
 
-    //localStorage.clear();
-    localStorage.removeItem('contribuyente_only');
-    localStorage.removeItem('vehicle_data');
-    localStorage.removeItem('vehicle_data_adicional');
-    localStorage.removeItem('datos_poliza');
-    localStorage.removeItem('datos_cobro');
-    localStorage.removeItem('idParent');
-    localStorage.removeItem('gestora');
-    localStorage.removeItem('route_origen');
-    localStorage.removeItem('concept');
-    localStorage.removeItem('contribuyente');
-    localStorage.removeItem('datos_poliza');
-    localStorage.removeItem('repetir_concepto');
-    localStorage.removeItem('cachestore');
+    //sessionStorage.clear();
+    sessionStorage.removeItem('contribuyente_only');
+    sessionStorage.removeItem('vehicle_data');
+    sessionStorage.removeItem('vehicle_data_adicional');
+    sessionStorage.removeItem('datos_poliza');
+    sessionStorage.removeItem('datos_cobro');
+    sessionStorage.removeItem('idParent');
+    sessionStorage.removeItem('gestora');
+    sessionStorage.removeItem('route_origen');
+    sessionStorage.removeItem('concept');
+    sessionStorage.removeItem('contribuyente');
+    sessionStorage.removeItem('datos_poliza');
+    sessionStorage.removeItem('repetir_concepto');
+    sessionStorage.removeItem('cachestore');
 
-    localStorage.removeItem('movimiento');
+    sessionStorage.removeItem('movimiento');
     if (pkSearch == 0) {
       this.router.navigate(['/pagos/dependencias'])
     }

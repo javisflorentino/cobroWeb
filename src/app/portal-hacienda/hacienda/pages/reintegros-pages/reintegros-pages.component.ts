@@ -102,7 +102,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       this.tipoForm = tipoForm;
       this.enableContFourteen = false;
       this.enableContSeventeen = false;
-      this.conceptTitle = localStorage.getItem('concept')!;
+      this.conceptTitle = sessionStorage.getItem('concept')!;
       if( this.tipoForm==14 ) {
         this.enableContFourteen = true;
         this.myFormHReintegro.addControl('reintegro', new FormControl('0',[Validators.required, Validators.max(0)]));
@@ -215,7 +215,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    localStorage.setItem('route_origen',`hacienda/hacienda-reintegros/${this.idConcepto}/${this.tipoForm}`);
+    sessionStorage.setItem('route_origen',`hacienda/hacienda-reintegros/${this.idConcepto}/${this.tipoForm}`);
     let datos_cobro: ReintegrosStruct = {} as ReintegrosStruct;
     datos_cobro.cantidad =  1;
     datos_cobro.monto =     Number(this.myFormHReintegro.get('monto')?.value);
@@ -238,7 +238,7 @@ export class ReintegrosPagesComponent implements OnInit, OnDestroy {
       datos_cobro.numero_factura =        this.myFormHReintegro.get('numero_factura')?.value;
     }
 
-    localStorage.setItem('datos_cobro',JSON.stringify(datos_cobro));
+    sessionStorage.setItem('datos_cobro',JSON.stringify(datos_cobro));
 
     this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
     return

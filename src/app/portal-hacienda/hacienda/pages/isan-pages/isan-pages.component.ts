@@ -120,7 +120,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
                private router: Router ) {}
 
   ngOnInit(): void {
-    this.conceptTitle = localStorage.getItem('concept')!;
+    this.conceptTitle = sessionStorage.getItem('concept')!;
 
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({idConcepto,tipoForm}) => {
       this.idConcepto = idConcepto;
@@ -226,7 +226,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
       return;
     }
     if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
-      localStorage.setItem('datos_cobro',JSON.stringify(
+      sessionStorage.setItem('datos_cobro',JSON.stringify(
         {
           cantidad:         1,
           monto:            Number(this.myForm.get('monto')?.value),
@@ -236,7 +236,7 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
           tipo_form:         this.tipoForm
         })
       );
-      localStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
+      sessionStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
       this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
     } else {
       Swal.fire({title: "Error !!",text: 'No puede pagar un periodo o ejercicio fiscal que no ha pasado.',icon: "error",allowOutsideClick:false})

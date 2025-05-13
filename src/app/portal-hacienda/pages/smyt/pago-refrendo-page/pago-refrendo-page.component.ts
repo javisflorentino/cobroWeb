@@ -67,7 +67,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nameConcept = localStorage.getItem('concept')!;
+    this.nameConcept = sessionStorage.getItem('concept')!;
     //this.refrendoForm.markAllAsTouched();
   }
 
@@ -93,12 +93,12 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
       .then(xml => {
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
         const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
-        localStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
+        sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
         this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false, "obtenerVehiculo":true })
           .subscribe({
             next: (resp) =>{
               if (resp?.success) {
-                localStorage.setItem('vehicle_data_adicional', JSON.stringify({
+                sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
                   "vMarca":        resp.data.adicional?.vMarca,
                   "vSubmarca":     resp.data.adicional?.vSubmarca,
                   "noCilindros":   resp.data.adicional?.noCilindros,
@@ -135,7 +135,7 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
       .then(xml => {
         this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
         if(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] === 'EXITO') {
-          localStorage.setItem('route_origen','smyt-refrendo')
+          sessionStorage.setItem('route_origen','smyt-refrendo')
           this.router.navigate(['/pagos/tabla-conceptos',1]);
           return
         }

@@ -109,7 +109,7 @@ export class ModalOficioHabilitacionComponent {
           const anio = hoy.getFullYear();
           
           const fecha = `${dia}/${mes}/${anio}`;
-          const valores = localStorage.getItem('oficio_data');
+          const valores = sessionStorage.getItem('oficio_data');
 
           const { folioPago, lineaCaptura, numeroPoliza, IdConcepto } = JSON.parse(valores!);
 

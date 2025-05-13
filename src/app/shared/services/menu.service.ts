@@ -23,15 +23,15 @@ export class MenuService {
   //private urlSubConceptos: string = 'http://localhost:3002/menu';
 
   saveToLocalStorage(): void {
-    localStorage.setItem( 'cachestore', JSON.stringify(this.conceptoStorage));
+    sessionStorage.setItem( 'cachestore', JSON.stringify(this.conceptoStorage));
   }
   deleteLocalStorage(): void {
     this.conceptoStorage = [];
   }
 
   loadFromLocalStorage(): void {
-    if ( !localStorage.getItem('cachestore') ) return ;
-    this.conceptoStorage = JSON.parse(localStorage.getItem('cachestore')!);
+    if ( !sessionStorage.getItem('cachestore') ) return ;
+    this.conceptoStorage = JSON.parse(sessionStorage.getItem('cachestore')!);
   }
 
   /* DESCOMENTAR ESTE METODO SI SE VA A CONSUMIR POR SERVICIO Y COMENTAR SU COPIA */

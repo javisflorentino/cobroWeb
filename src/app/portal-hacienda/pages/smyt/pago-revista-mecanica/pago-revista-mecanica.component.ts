@@ -53,7 +53,7 @@ export class PagoRevistaMecanicaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.nameConcept = localStorage.getItem('concept')!;
+    this.nameConcept = sessionStorage.getItem('concept')!;
   }
 
   onSubmit(): void {
@@ -72,8 +72,8 @@ export class PagoRevistaMecanicaComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           if (resp?.success) {
-            localStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true }));
-            localStorage.setItem('vehicle_data_adicional', JSON.stringify({
+            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true }));
+            sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
               "vMarca": resp.data.adicional?.vMarca,
               "vSubmarca": resp.data.adicional?.vSubmarca,
               "noCilindros": resp.data.adicional?.noCilindros,
