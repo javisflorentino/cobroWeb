@@ -31,9 +31,17 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
     placa:              ['', [Validators.required, Validators.minLength(4)]],
     fecha_verificacion: [new Date, [Validators.required]],
     serie:              ['', [Validators.required, Validators.minLength(5)]]
-  },{
-    validators: [this.generalService.validateVahicle('serie','placa',1, 1, '1','')]
-  });
+  },
+   {
+    validators: [this.generalService.validateVehicle('serie','placa',1, 1, '1','')]
+  } 
+  /*{
+    asyncValidators: [
+      this.generalService.validateVehicle('serie', 'placa', 1, 1, 'A', '2024-01-01')
+    ],
+    updateOn: 'change' // o 'change' si lo deseas más inmediato
+  }*/
+);
 
   /* ACCEDER A LAS REDIRECCIONES */
   private router = inject( Router );

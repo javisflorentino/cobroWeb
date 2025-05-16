@@ -249,6 +249,23 @@ export class GeneralesService {
       redirect: "follow"
     });
   }
+  validateVehicleRest(placa:string, serie: string){
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    const body = {"placa":placa, "numeroSerie": serie}
+
+    return this.http.post<{data: boolean}>(`${this.urlSOAP}serviciosHacienda/smyt/validarVehiculo`, body, {headers})
+    .pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error('Error al validar vehiculo:', error);
+        return of(false); // Devolvemos false en lugar de null para mantener el mismo tipo de retorno
+      })
+    );
+  }
   async validateFolioPago(serie:string, folio:string): Promise<any> {
     return await fetch(`${this.urlSOAP}tramitesSMyT/services/pagos`,{
       method: "POST",
@@ -268,7 +285,7 @@ export class GeneralesService {
     });
   }
 
-  public validateVahicle( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
+  public validateVehicle( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
@@ -293,6 +310,53 @@ export class GeneralesService {
       return null;
     }
   }
+  /*validateVehicle(
+    serieControlName: string,
+    placaControlName: string,
+    mssg: number,
+    tramite: number,
+    tipoVehiculo: string,
+    fechaFactura: string
+  ) {
+    return (formGroup: AbstractControl): Promise<ValidationErrors | null> => {
+      const serieControl = formGroup.get(serieControlName);
+      const placaControl = formGroup.get(placaControlName);
+      
+      const serie = serieControl?.value;
+      const placa = placaControl?.value;
+  
+      return new Promise((resolve) => {
+        // If either field is empty, resolve with null (no validation error)
+        if (!serie || !placa) {
+          // Only mark as touched if the control exists
+          if (serieControl) serieControl.markAsTouched();
+          resolve(null);
+          return;
+        }
+  
+        this.validateVehicleRest(placa, serie).subscribe(
+          (isValid) => {
+            if (isValid) {
+              if (serieControl) serieControl.setErrors(null);
+              resolve(null);
+            } else {
+              if (serieControl) serieControl.setErrors({ notEqual: true, error: 1 });
+              resolve({ notEqual: true });
+            }
+          },
+          (error) => {
+            console.error("Error validando vehículo", error);
+            if (serieControl) serieControl.setErrors({ notEqual: true, error: 1 });
+            resolve({ notEqual: true });
+          }
+        );
+        formGroup.get(serie)?.markAsTouched();
+        formGroup.get(serie)?.setErrors( null );
+        resolve(null);
+      });
+     
+    };
+  }*/
   envioCDFI(title:string, serie: string, folio: string, para: string){
     let headers = new HttpHeaders();
 

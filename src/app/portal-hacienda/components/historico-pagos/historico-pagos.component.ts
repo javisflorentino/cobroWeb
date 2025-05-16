@@ -34,7 +34,11 @@ export class HistoricoPagosComponent implements OnInit {
         this.vehicleData = state.vehicleData.vehiculo;
         console.log('vehicleData:', this.vehicleData);
 
-        this.payments = state.vehicleData.registroHistorico;
+        const rawHistorico = state.vehicleData.registroHistorico;
+        this.payments = Array.isArray(rawHistorico) ? rawHistorico : [rawHistorico];
+        
+        //console.log('PAYMENTS:', this.payments);
+
       } else {
         // Si no hay datos, redirigir a alguna página de búsqueda o mostrar error
         this.router.navigate(['/pagos/dependencias']);
