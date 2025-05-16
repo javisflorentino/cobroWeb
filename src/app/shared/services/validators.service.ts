@@ -21,7 +21,7 @@ export class ValidatorsService {
   public expNoTelNew = '^(?!0+$)[\(]?[0-9]{2,3}[\)]?[\ -]?[0-9]{7,8}$'; // Expresión para validar No Telefónico
   //[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$
   public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
-  public peoplesNamePathWithNumbers: string = '^(?=.*[a-zA-ZÑÁÉÍÓÚ])[a-zA-ZÑÁÉÍÓÚ0-9.]+([\ a-zA-ZÑÁÉÍÓÚ0-9.]+)*$';
+  public peoplesNamePathWithNumbers: string = '^(?=.*[a-zA-ZÑÁÉÍÓÚ])[a-zA-ZÑÁÉÍÓÚ0-9.,&\-\s]+([\ a-zA-ZÑÁÉÍÓÚ0-9.,&\-\s]+)*$';
 
   public streetNamePath: string = '^(?![*_:]*$)[a-zA-ZÑÁÉÍÓÚ.#0-9\ ]+$';
   public alfaPath: string = '^[a-zA-ZÑ0-9]+$';
@@ -29,7 +29,7 @@ export class ValidatorsService {
   public rfcPath = /^[a-zA-Z&Ñ]{3,4}[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[a-zA-Z0-9]{2}[0-9A]$/i;
   public rfcFisica = /^([a-z&ñ]{4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01]))([a-z0-9]{2}[0-9a])?$/i;
   public rfcMoral = /^([a-z&ñ]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01]))([a-z0-9]{2}[0-9a])$/i;
-  
+
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt_refrendo;
 
   private asJson!:ValidateVehicle;
