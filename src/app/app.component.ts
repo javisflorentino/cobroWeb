@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     console.log(document.location.href);
     let pkSearch = 0;
-    ['smyt-refrendo', 'smyt-licencia-vehiculo', 'registropublico', 'calidad-aire-multaverif', 'tabla-conceptos/287'].
+    ['smyt-refrendo', 'smyt-licencia-vehiculo', 'registropublico', 'calidad-aire-multaverif', 'tabla-conceptos/287','dependencias/pagopoliza'].
       forEach(ruta => {
         if (new RegExp(`\\b${ruta}\\b`, "i").test(document.location.href)) {
           switch (ruta) {
@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
             case 'registropublico':
               pkSearch = 999;
               break;
+            case 'dependencias/pagopoliza':
+              console.log("Entroooo")
+              pkSearch = 1000;
+              break;
           }
           if (pkSearch > 0 && pkSearch < 999) {
             this.generalService.requestConceptosByPk(pkSearch)
@@ -58,6 +62,13 @@ export class AppComponent implements OnInit {
                   Swal.fire({ icon: "error", title: `Error !!`, text: `${message}`, allowOutsideClick: false });
                 },
               });
+          } else {
+            switch(pkSearch) {
+              case 1000:
+              this.router.navigate(['/pagos/dependencias','pagopoliza']);
+              break;
+            }
+
           }
         }
       });

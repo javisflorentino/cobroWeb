@@ -71,7 +71,7 @@ import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/mod
       width: 40px;
       height: 40px;
     }
-  
+
     .custom-icon {
       font-size: 22px;
       height: 21px;
@@ -79,9 +79,9 @@ import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/mod
     }
   }
 
-    
 
-    
+
+
   `]
 })
 export class CardsDependenciasComponent implements OnInit, OnDestroy {
@@ -119,7 +119,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
   ];
   constructor(private dialog: MatDialog) { }
 
- 
+
   ngOnInit(): void {
 
     // Activar la animación después de un pequeño retraso
@@ -127,9 +127,9 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
       this.show = true;
     }, 300);
     this.activRouteSubs = this.activRoute.params.subscribe(({ flag }) => {
-      if (!flag) {
+      /*if (!flag) {
         this.parentLayout.redirectHome(true);
-      }
+      }*/
       this.generalService.requestConceptos(0)
         .subscribe({
           next: (conceptos) => {
@@ -162,6 +162,16 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
           return;
 
         }*/);
+
+        if (!!flag) {
+          if(flag=='pagopoliza') {
+            console.log("Existe Subtramite:::" + flag)
+            this.openDialog({'label':'Pagar Póliza'});
+          } else {
+            this.parentLayout.redirectHome(true);
+          }
+
+        }
     });
 
 
@@ -182,7 +192,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
       const dialogRef = this.dialog.open(ModalPagoLineaComponent, {
         width: '350px',
         disableClose: false,
-        
+
       });
 
       dialogRef.afterClosed().subscribe(result => {
