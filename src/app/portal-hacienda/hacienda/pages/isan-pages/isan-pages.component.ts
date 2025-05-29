@@ -225,27 +225,40 @@ export class IsanPagesComponent implements OnInit, OnDestroy{
       this.buttBlock = false;
       return;
     }
-    if((year <= new Date().getFullYear()) && ((month+1) <= (new Date().getMonth()+1))) {
-      sessionStorage.setItem('datos_cobro',JSON.stringify(
-        {
-          cantidad:         1,
-          monto:            Number(this.myForm.get('monto')?.value),
-          periodo:          month+1,
-          ejercicio:        year,
-          sistema:          40,
-          tipo_form:         this.tipoForm
-        })
-      );
-      sessionStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
-      this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
+    if((year <= new Date().getFullYear())) {
+      let control: boolean = true;
+      if((year == new Date().getFullYear()) && ((month+1) > (new Date().getMonth()+1))) {
+        control=false;
+      }
+      if(control) {
+        sessionStorage.setItem('datos_cobro',JSON.stringify(
+          {
+            cantidad:         1,
+            monto:            Number(this.myForm.get('monto')?.value),
+            periodo:          month+1,
+            ejercicio:        year,
+            sistema:          40,
+            tipo_form:         this.tipoForm
+          })
+        );
+        sessionStorage.setItem('route_origen',`hacienda/hacienda-isan/${this.idConcepto}/${this.tipoForm}`);
+        this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
+      } else {
+        this.emitRestrictionMessage();
+      }
     } else {
-      Swal.fire({title: "Error !!",text: 'No puede pagar un periodo o ejercicio fiscal que no ha pasado.',icon: "error",allowOutsideClick:false})
-            .then(() => {
-              this.isLoading = false;
-            });
+      this.emitRestrictionMessage();
     }
 
   }
+
+  emitRestrictionMessage(): void {
+    Swal.fire({title: "Error !!",text: 'No puede pagar un periodo o ejercicio fiscal que no ha pasado.',icon: "error",allowOutsideClick:false})
+            .then(() => {
+              this.isLoading = false;
+            });
+  }
+
   onSubmitNewTaxtPay(): void {
     this.isLoading = true;
     this.buttBlock = true;
