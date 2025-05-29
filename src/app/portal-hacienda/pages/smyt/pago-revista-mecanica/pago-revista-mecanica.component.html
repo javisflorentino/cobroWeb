@@ -16,12 +16,23 @@
                 <input matInput formControlName="placa" required type="text" maxlength="8">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('placa')"> Campo requerido </mat-error>
               </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Confirmar No Placa</mat-label>
+                <input matInput onpaste="return false" formControlName="placa2" required type="text" maxlength="8">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('placa2')"> Campo requerido </mat-error>
+              </mat-form-field>
 
-              <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
-                <mat-label>Serie Vehicular <span style="font-size: 10px;"><br>(5 últimos caracteres)</span></mat-label>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" hintLabel="">
+                <mat-label>Serie Vehicular</mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="" maxlength="20">
-                <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint>
-                <mat-error class="fontsizeerror"> {{ getMessage(revistaMecanicaForm.get('serie')?.getError('error'),'serie') }} </mat-error>
+                <!-- <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint> -->
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class=""  appearance="outline" hintLabel="">
+                <mat-label>Confirmar serie Vehicular</mat-label>
+                <input #serie matInput onpaste="return false" formControlName="serie2" required #serieV type="text" name="" maxlength="20">
+                <!-- <mat-hint align="end">{{serieV.value.length}} / 5</mat-hint> -->
+                <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
             </div>
           </form>

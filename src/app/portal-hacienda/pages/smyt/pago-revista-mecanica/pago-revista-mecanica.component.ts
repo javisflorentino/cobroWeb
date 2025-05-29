@@ -36,10 +36,20 @@ export class PagoRevistaMecanicaComponent implements OnInit {
   public revistaMecanicaForm: FormGroup = this.fb.group({
     id: [''],
     placa: ['', [Validators.required, Validators.minLength(4)]],
-    serie: ['', [Validators.required, Validators.minLength(5)]]
-  }, {
-    validators: [this.validatorsService.existsSeriesPublico('serie', 'placa', 1, 9, '1', '')]
-  });
+    placa2: ['', [Validators.required, Validators.minLength(4)]],
+    serie: ['', [Validators.required, Validators.minLength(5)]],
+    serie2: ['', [Validators.required, Validators.minLength(5)]]
+  }, 
+  
+    {
+      validators: [
+        this.validatorsService.isFieldOneEqualFielTwo('serie', 'serie2',4),
+        this.validatorsService.isFieldOneEqualFielTwo('placa', 'placa2',4)/*,
+        this.validatorsService.existsSeriesPublico('serie', 'placa', 1, 9, '1', '')*/
+      ]
+    }
+  
+ );
 
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
   //public subscription: Subscription;
@@ -68,7 +78,7 @@ export class PagoRevistaMecanicaComponent implements OnInit {
     let p = this.revistaMecanicaForm.get('placa')!.value;
     let s = this.revistaMecanicaForm.get('serie')?.value;
 
-    this.smytService.validateVehiclePublico({ "tramite": 9, "placa": p, "numeroSerie": String(s), "obtenerContribuyente": false, "obtenerVehiculo": true })
+   /* this.smytService.validateVehiclePublico({ "tramite": 9, "placa": p, "numeroSerie": String(s), "obtenerContribuyente": false, "obtenerVehiculo": true })
       .subscribe({
         next: (resp) => {
           if (resp?.success) {
@@ -92,7 +102,10 @@ export class PagoRevistaMecanicaComponent implements OnInit {
           this.isLoading = false;
         },
         complete: () => { }
-      });
+      });*/
+      sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true }));
+           
+      this.router.navigate(['/pagos/tabla-conceptos', 916]);
 
   }
 
