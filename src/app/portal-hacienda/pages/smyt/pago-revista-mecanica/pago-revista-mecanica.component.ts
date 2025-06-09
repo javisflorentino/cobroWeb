@@ -103,7 +103,17 @@ export class PagoRevistaMecanicaComponent implements OnInit {
         },
         complete: () => { }
       });*/
-      sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true }));
+      let ejercicioFiscal;
+      if (this.nameConcept.includes("2024")) {
+          ejercicioFiscal = 2024;
+      } else if (this.nameConcept.includes("2025")) {
+          ejercicioFiscal = 2025;
+      } else {
+          ejercicioFiscal = new Date().getFullYear(); // Asigna el año actual
+      }
+
+
+      sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true, "ejercicioCobrar":ejercicioFiscal }));
            
       this.router.navigate(['/pagos/tabla-conceptos', 916]);
 
