@@ -6,6 +6,7 @@ import { ConvertXmlString } from '../../clases/convert-xml-string';
 import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DatosTramite } from '../../interfaces/datos-tramite.interface';
 
 @Component({
   selector: 'app-modal-historico-pagos',
@@ -36,7 +37,7 @@ export class ModalHistoricoPagosComponent implements OnInit {
     // Inicialización si es necesaria
   }
 
-  search(): void {
+   search(): void {
     this.paymentForm.markAllAsTouched()
     if (this.paymentForm?.valid) {
       this.isLoading = true;
@@ -98,7 +99,63 @@ export class ModalHistoricoPagosComponent implements OnInit {
       // Marcar formulario como inválido
       this.captureLineInvalid = true;
     }
+  } 
+/*search(): void {
+  this.paymentForm.markAllAsTouched();
+  
+  if (this.paymentForm?.valid) {
+    this.isLoading = true;
+    this.buttBlock = true;
+
+    const datosTramite = {
+      tramite: 1,
+      placa: this.paymentForm.get('placa')!.value,
+      numeroSerie: this.paymentForm.get('numeroSerie')!.value
+    };
+     const dataVehicleLs: DatosTramite = JSON.parse(JSON.stringify(datosTramite)!);
+    
+
+    this.smytSevice.ExisteVehiculo(dataVehicleLs).subscribe({
+      next: res => {
+        if (res.success && res.data) {
+          // Si el vehículo es válido, continuar flujo
+          this.dialogRef.close(datosTramite);  // Puedes reemplazar por datos completos si el nuevo endpoint lo ofrece
+
+          const timestamp = new Date().getTime();
+          this.router.navigate(['/pagos/historico-pagos'], { 
+            state: { 
+              vehicleData: datosTramite,  // Reemplaza con datos reales si los obtienes de otro endpoint
+              timestamp: timestamp 
+            } 
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Datos incorrectos",
+            text: "No se encontró información para la placa y serie indicadas",
+            allowOutsideClick: false
+          });
+        }
+
+        this.isLoading = false;
+        this.buttBlock = false;
+      },
+      error: err => {
+        Swal.fire({
+          icon: "error",
+          title: "Error!!",
+          text: err.message || "No se pudo obtener respuesta del servicio",
+          allowOutsideClick: false
+        });
+        this.isLoading = false;
+        this.buttBlock = false;
+      }
+    });
+
+  } else {
+    this.captureLineInvalid = true;
   }
+}*/
 
   close(): void {
     this.dialogRef.close();

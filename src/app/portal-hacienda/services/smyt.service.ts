@@ -22,6 +22,7 @@ export class SmytService {
   private urlSmytGenerarPoliza = `${environments.baseUrlApp}serviciosHacienda/poliza/generar`;//'serviciosHacienda/poliza/generar';
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
   private urlSmytParticularPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
+  private urlValidarCehiculo = `${environments.baseUrlApp}serviciosHacienda/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
 
   constructor(private http: HttpClient) { }
 
@@ -89,6 +90,27 @@ export class SmytService {
         })
       );
   }
+  ExisteVehiculo(datosTramite: DatosTramite): Observable<{ data: boolean, success: boolean }> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic ' + btoa(`${environments.user_server}:${environments.pass_server}`)
+  });
+
+  return this.http.post<{ data: boolean, success: boolean }>(
+    `${this.urlValidarCehiculo}`,
+    datosTramite,
+    { headers }
+  ).pipe(
+    catchError(err => {
+      const message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e inténtelo más tarde`;
+      return throwError(() => ({
+        message,
+        code: `${err.status}`
+      }));
+    })
+  );
+}
+
   async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {
       const response = await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
