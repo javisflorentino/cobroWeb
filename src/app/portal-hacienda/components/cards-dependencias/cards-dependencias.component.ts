@@ -126,6 +126,14 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.show = true;
     }, 300);
+    this.activRoute.queryParams.subscribe(params => {
+      const opc = params['opc'];
+      const opcNum = parseInt(opc, 10); // base 10
+
+      if (!isNaN(opcNum)) {
+        this.openDialog({ label: '' }, opcNum);
+      }
+    });
     this.activRouteSubs = this.activRoute.params.subscribe(({ flag }) => {
       /*if (!flag) {
         this.parentLayout.redirectHome(true);
@@ -166,7 +174,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         if (!!flag) {
           if(flag=='pagopoliza') {
             console.log("Existe Subtramite:::" + flag)
-            this.openDialog({'label':'Pagar Póliza'});
+            this.openDialog({'label':'Pagar Póliza'}, 0);
           } else {
             this.parentLayout.redirectHome(true);
           }
@@ -186,9 +194,9 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     //this.valCardDep.emit(this.cardsArr.filter(({pk}) => pk===id))
     this.parentLayout.reciveValCard(this.cardsArr.filter(({ pk }) => pk === id));
   }
-  openDialog(button: any): void {
+ openDialog(button: any, valor:number): void {
     // Solo abrimos el diálogo si es el botón de "Pagar Póliza"
-    if (button.label === 'Pagar Póliza') {
+    if (button.label === 'Pagar Póliza' || valor==1) {
       const dialogRef = this.dialog.open(ModalPagoLineaComponent, {
         width: '350px',
         disableClose: false,
@@ -202,7 +210,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
-    if (button.label === 'Recibo de Pago') {
+    if (button.label === 'Recibo de Pago' || valor==2) {
       const dialogRef = this.dialog.open(ModalComprobantePagoComponent, {
         width: '350px',
         disableClose: false
@@ -215,7 +223,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
-    if (button.label === 'Histórico') {
+    if (button.label === 'Histórico' || valor==3) {
       const dialogRef = this.dialog.open(ModalHistoricoPagosComponent, {
         width: '350px',
         disableClose: false
@@ -228,7 +236,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
-    if (button.label === 'Facturación') {
+    if (button.label === 'Facturación' || valor==4) {
       const dialogRef = this.dialog.open(ModalFacturacionComponent, {
         width: '550px',
         disableClose: false
@@ -241,7 +249,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
-    if (button.label === 'Oficio de Habilitación') {
+    if (button.label === 'Oficio de Habilitación' || valor==5) {
       const dialogRef = this.dialog.open(ModalValidarReciboOficioComponent, {
         width: '350px',
         disableClose: false

@@ -70,6 +70,7 @@ export class SharedToolbarComponent {
 
   searchTramite(){
     //this.trigger?.openMenu();
+    
     this.isLoading = true;
     this.generalService.getConceptsByTitle(this.tagInput.nativeElement.value)
      .subscribe({

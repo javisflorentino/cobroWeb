@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from './shared/services/menu.service';
 import Swal from 'sweetalert2';
 
@@ -16,10 +16,24 @@ export interface PkArray {
 export class AppComponent implements OnInit {
 
   private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
   private generalService = inject(MenuService);
 
   constructor(@Inject(DOCUMENT) document: any) { }
   ngOnInit(): void {
+    const fullUrl = window.location.href;
+
+    // Buscar el parámetro opc en la URL (puede o no venir)
+    const match = fullUrl.match(/[\?&]opc=([^&]+)/);
+    const opc = match ? decodeURIComponent(match[1]) : null;
+
+    if (opc) {
+      this.router.navigate(['/pagos/dependencias'], {
+        queryParams: { opc }
+      });
+      return;
+    }
     console.log(document.location.href);
     let pkSearch = 0;
     ['smyt-refrendo', 'smyt-licencia-vehiculo', 'registropublico', 'calidad-aire-multaverif', 'tabla-conceptos/287','dependencias/pagopoliza'].
@@ -63,6 +77,7 @@ export class AppComponent implements OnInit {
                 },
               });
           } else {
+            
             switch(pkSearch) {
               case 1000:
               this.router.navigate(['/pagos/dependencias','pagopoliza']);

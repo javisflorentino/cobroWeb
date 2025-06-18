@@ -13,6 +13,7 @@ import { HistoricoPagosComponent } from './components/historico-pagos/historico-
 import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.component';
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
 import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuest
     MaterialModule,
     PortalHaciendaRoutingModule,
     SharedModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ReactiveFormsModule
   ]
 })
 export class PortalHaciendaModule { }

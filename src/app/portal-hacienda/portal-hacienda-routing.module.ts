@@ -24,6 +24,7 @@ const routes: Routes = [
         path: 'dependencias/:flag',
         component: CardsDependenciasComponent
       },
+     
       {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path: 'smyt',
         loadChildren: () => import('./pages/smyt/smyt.module').then(m => m.SmytModule)
+      },
+      {
+        path: 'predial-municipal',
+        loadChildren: () => import('./pages/predial-municipal/predial-municipal.module').then(m => m.PredialMunicipalModule)
       },
       {
         path: 'hacienda',

@@ -62,7 +62,7 @@ export class DatosContribuyenteComponent implements OnInit {
     tipoPersona: ['F',[Validators.required]],
     nombre: ['',[Validators.required]],
     primerApellido: ['', [Validators.required]],
-    segundoApellido: ['', [Validators.required]],
+    segundoApellido: [''], /* TODO: 10/06/2025 Carlos A. se quito la condicion de requerido  */
     razonSocial: [{value: '', disabled: true},[Validators.required]],
     rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatosService.rfcFisica)]],
     curp: [''],
@@ -195,11 +195,19 @@ export class DatosContribuyenteComponent implements OnInit {
     let nameFileValue = this.myFormContribuyente.get('domicilio')?.get(nameField)?.value;
     let pathSelect = this.validatosService.streetNamePath;
 
-    if(idMssg !== null) {
+    /* TODO: 10/06/2025 Carlos A. mientras no se evalue apellido materno entra a la condicion  */
+    if(idMssg !== null && nameField !== 'segundoApellido') {
       const message = this.mssgArr.filter(({id}) => id == idMssg )
       return message[0].msg;
     }
     if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
+      /* TODO: 10/06/2025 Carlos A. Si apellido materno esta vacio, se elima la validacion  */
+      if(nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
+        console.log("Aqui entrooooo")
+        this.myFormContribuyente.get('segundoApellido')?.clearValidators();
+        this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
+        return '';
+      }
       touched = this.myFormContribuyente.get(nameField)?.touched;
       nameFileValue = this.myFormContribuyente.get(nameField)?.value;
       pathSelect = this.validatosService.peoplesNamePath;
@@ -401,7 +409,7 @@ export class DatosContribuyenteComponent implements OnInit {
           //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
           datosAdicionales = `${observaciones} `;
 
-        } 
+        }
         if(datos.fecha_verificacion) {
           datosAdicionales += `Fecha próxima verificacion: ${datos.fecha_verificacion},`
         }
@@ -413,7 +421,7 @@ export class DatosContribuyenteComponent implements OnInit {
          //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
          //datosAdicionales = `${observaciones} `;
 
-       } 
+       }
          datosAdicionales += `Escritura: ${datos.escritura}, Fecha escritura: ${datos.fecha_verificacion_escritura}, Contribuyente: ${datos.contribuyente}`
          observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
 
