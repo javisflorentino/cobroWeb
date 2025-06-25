@@ -1,9 +1,9 @@
 export interface DatosTramite {
-  tramite:              number;
-  placa:                string;
-  numeroSerie:          string;
+  tramite?:              number;
+  placa?:                string;
+  numeroSerie?:          string;
   tipoVehiculo?:        number;
-  obtenerContribuyente: boolean;
+  obtenerContribuyente?: boolean;
   fechaFactura?:        string;
   modelo?:              number;
   valorFactura?:        number;
@@ -12,6 +12,8 @@ export interface DatosTramite {
   obtenerVehiculo?:     boolean;
   claveVehicular?:      string;
   tipoMotor?:           string;
+  valorVenta?:          number;
+
 
   fechaSolicitud?:     string;
   fechaAprobacion?:     string;

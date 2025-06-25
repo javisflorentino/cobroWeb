@@ -1,0 +1,42 @@
+<div class="grid flex">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle>{{conceptTitle() | titlecase}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content>
+        <form [formGroup]="myForm">
+          <smyt-data-vehicle
+            [disablesSerie]="false"
+            [disablesValorVenta]="false"
+            [disabledPlaca]="false"
+            [disabledTipoV]="true"
+            [disablesSerieSec]="true"
+            [disableDate]="true"
+            [disableTipoMotor]="true"
+            [disablesValorFactura]="true"
+          />
+        </form>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions align="end">
+        <button mat-stroked-button color="warn" routerLink="/dashboard">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <span class="px-2"></span>
+        <button mat-stroked-button color="primary" [disabled]="myForm.invalid" (click)="onSubmit()">
+          <mat-icon>calculate</mat-icon>
+          Calcular
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+    <smyt-messages [messageArr]="messages" [messageArr_other]="messages_other"></smyt-messages>
+  </div>
+
+</div>

@@ -14,6 +14,7 @@ import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.com
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
 import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
 import { ReactiveFormsModule } from '@angular/forms';
+//import { DataVehicleComponent } from './components/smyt/data-vehicle/data-vehicle.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
     NotariosComponent,
     PublicoGeneralComponent,
-    ImpuestosComponent
+    ImpuestosComponent,
+    //DataVehicleComponent
   ],
   imports: [
     CommonModule,

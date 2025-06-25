@@ -9,6 +9,11 @@ import { SustitucionPlacaVehiculoComponent } from './sustitucion-placa-vehiculo/
 import { TablaCalculoConceptosComponent } from 'src/app/shared/components/tabla-calculo-conceptos/tabla-calculo-conceptos.component';
 import { LicenciaVehiculoComponent } from './licencia-vehiculo/licencia-vehiculo.component';
 import { PagoRevistaMecanicaComponent } from './pago-revista-mecanica/pago-revista-mecanica.component';
+import { AltaVehiculoSinRegistroComponent } from './alta-vehiculo-sin-registro/alta-vehiculo-sin-registro.component';
+import { CambioPropietarioComponent } from './cambio-propietario/cambio-propietario.component';
+import { CambioPropietarioBajaComponent } from './cambio-propietario-baja/cambio-propietario-baja.component';
+import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-propietario/alta-vehiculo-cambio-propietario.component';
+import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
 
 const routes: Routes = [
   {
@@ -19,6 +24,34 @@ const routes: Routes = [
     path: 'smyt-altavehiculo-nuevo/:idConcepto/:tipoForm',
     component: AltaVehiculoNuevoPageComponent
   },
+
+  /* TODO: 24/06/2025 Carlos A.  Se agregaron las siguientes seis rutas*/
+  {
+    path: 'alta-vehiculo-sin_registro/:idConcepto/:formulario',
+    component: AltaVehiculoSinRegistroComponent
+  },
+  {
+    path: 'sustitucion-placa-cambio-propietario/:idConcepto/:formulario',
+    component: SustitucionPlacaVehiculoComponent
+  },
+  {
+    path: 'cambio-propietario/:idConcepto/:formulario',
+    component: CambioPropietarioComponent
+  },
+  {
+    path: 'cambio-propietario-baja/:idConcepto/:formulario',
+    component: CambioPropietarioBajaComponent
+  },
+  {
+    path: 'alta-vehiculo-cambio-propietario/:idConcepto/:formulario',
+    component: AltaVehiculoCambioPropietarioComponent
+  },
+  {
+    path: 'refrendo-cambio-propietario/:idConcepto/:formulario',
+    component: RefrendoCambioPropietarioComponent
+  },
+
+
   {
     path: 'smyt-altavehiculo-usado/:idConcepto/:tipoForm',
     component: AltaVehiculoUsadoPageComponent

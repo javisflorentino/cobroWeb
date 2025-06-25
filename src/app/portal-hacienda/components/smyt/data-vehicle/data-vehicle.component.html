@@ -1,0 +1,82 @@
+<div [formGroup]="myFormSmyt">
+
+  <mat-form-field class="col-12" appearance="outline" *ngIf="disablesOffice">
+    <mat-label>Oficina de Trámite</mat-label>
+    <mat-select formControlName="oficina">
+
+      <mat-option *ngFor="let office of officeList()" [value]="office.pkdmgCOficina">{{office.descripcion}}</mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline" *ngIf="!disabledTipoV">
+    <mat-label>Tipo de vehículo</mat-label>
+    <mat-select formControlName="tipo_vehiculo" (valueChange)="changeFielVehicleType($event)">
+
+      <mat-option *ngFor="let tipo of tipoVehiculoArr()" [value]="tipo.pkdmgCTipovehiculo">{{tipo.descripcion}}</mat-option>
+
+    </mat-select>
+    <mat-error> Campo requerido</mat-error>
+  </mat-form-field>
+
+
+
+  <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline" *ngIf="!disableTipoMotor">
+    <mat-label>Tipo de motor</mat-label>
+    <mat-select formControlName="tipo_motor">
+      <mat-option value="">--- Seleccione Tipo de Motor ---</mat-option>
+
+      <mat-option *ngFor="let tipo of tipoMotor()" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
+
+    </mat-select>
+    <mat-error> {{ getMessage(myFormSmyt.get('tipo_motor')?.getError('error'),'tipo_motor') }} </mat-error>
+  </mat-form-field>
+
+
+
+  <mat-form-field class="col" appearance="outline" *ngIf="!disabledPlaca">
+    <mat-label>Placa</mat-label>
+    <input matInput type="text" formControlName="placa">
+    <mat-error>{{ getMessage(myFormSmyt.get('placa')?.getError('error'),'placa') }}</mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field class="col" appearance="outline" *ngIf="!disablesSerie">
+    <mat-label>No de Serie</mat-label>
+    <input matInput type="text" formControlName="serie">
+    <mat-error>{{ getMessage(myFormSmyt.get('serie')?.getError('error'),'serie') }}</mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field class="col" appearance="outline" *ngIf="!disablesSerieSec">
+    <mat-label>Confirmar No de Serie</mat-label>
+    <input matInput type="text" onpaste="return false" formControlName="seriesec">
+    <mat-error>{{ getMessage(myFormSmyt.get('seriesec')?.getError('error'),'seriesec') }}</mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field class="col" appearance="outline" *ngIf="!disablesValorVenta">
+    <mat-label>Valor de Venta</mat-label>
+    <input matInput type="number" formControlName="valor_venta"
+      onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+  </mat-form-field>
+
+
+  <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline" *ngIf="!disableDate">
+    <mat-label>Fecha factura</mat-label>
+    <input matInput [matDatepicker]="dpff" formControlName="fecha_factura" [readonly]="true">
+    <mat-error>No puede ser mayor a la fecha actual</mat-error>
+    <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+    <mat-datepicker #dpff disabled="false"></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" *ngIf="!disablesValorFactura">
+    <mat-label>Valor de la factura</mat-label>
+    <input matInput formControlName="valor_factura" type="number">
+    <mat-error class="fontsizeerror">Requerido y numérico</mat-error>
+  </mat-form-field>
+
+
+
+</div>

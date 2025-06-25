@@ -6,8 +6,11 @@ import { ComboConcept, ComboDTO, DefinArrEstMun } from '../interface/datos-combo
 import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
+import ListMessage from '../../../../data//arreglos/alertas.json';
+
 import { ValidateVehicle } from 'src/app/shared/interfaces/soap-valid-vehicle.interface';
 import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
+import { Messages } from '../interface/portal-message.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -321,10 +324,10 @@ export class GeneralesService {
     return (formGroup: AbstractControl): Promise<ValidationErrors | null> => {
       const serieControl = formGroup.get(serieControlName);
       const placaControl = formGroup.get(placaControlName);
-      
+
       const serie = serieControl?.value;
       const placa = placaControl?.value;
-  
+
       return new Promise((resolve) => {
         // If either field is empty, resolve with null (no validation error)
         if (!serie || !placa) {
@@ -333,7 +336,7 @@ export class GeneralesService {
           resolve(null);
           return;
         }
-  
+
         this.validateVehicleRest(placa, serie).subscribe(
           (isValid) => {
             if (isValid) {
@@ -354,7 +357,7 @@ export class GeneralesService {
         formGroup.get(serie)?.setErrors( null );
         resolve(null);
       });
-     
+
     };
   }*/
   envioCDFI(title:string, serie: string, folio: string, para: string){
@@ -373,5 +376,11 @@ export class GeneralesService {
         return of(false); // Devolvemos false en lugar de null para mantener el mismo tipo de retorno
       })
     );
+  }
+
+  getMessages(): Observable<Messages[]> {
+    return of(ListMessage.messages);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(this.urlMessage);
   }
 }

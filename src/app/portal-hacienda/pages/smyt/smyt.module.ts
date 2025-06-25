@@ -17,6 +17,15 @@ import { SustitucionPlacaVehiculoComponent } from './sustitucion-placa-vehiculo/
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PagoRevistaMecanicaComponent } from './pago-revista-mecanica/pago-revista-mecanica.component';
 
+/* TODO: 24/06/2025 Carlos A.  Se generaron las siguientes siete controllers*/
+import { AltaVehiculoSinRegistroComponent } from './alta-vehiculo-sin-registro/alta-vehiculo-sin-registro.component';
+import { DataVehicleComponent } from 'src/app/portal-hacienda/components/smyt/data-vehicle/data-vehicle.component';
+import { SustitucionPlacaCambioPropietarioComponent } from './sustitucion-placa-cambio-propietario/sustitucion-placa-cambio-propietario.component';
+import { CambioPropietarioComponent } from './cambio-propietario/cambio-propietario.component';
+import { CambioPropietarioBajaComponent } from './cambio-propietario-baja/cambio-propietario-baja.component';
+import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-propietario/alta-vehiculo-cambio-propietario.component';
+import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
+
 
 
 @NgModule({
@@ -30,7 +39,14 @@ import { PagoRevistaMecanicaComponent } from './pago-revista-mecanica/pago-revis
     BajaVehiculoComponent,
     TarjetaDuplicadaVehiculoComponent,
     SustitucionPlacaVehiculoComponent,
-    PagoRevistaMecanicaComponent
+    PagoRevistaMecanicaComponent,
+    AltaVehiculoSinRegistroComponent,
+    DataVehicleComponent,
+    SustitucionPlacaCambioPropietarioComponent,
+    CambioPropietarioComponent,
+    CambioPropietarioBajaComponent,
+    AltaVehiculoCambioPropietarioComponent,
+    RefrendoCambioPropietarioComponent
   ],
   imports: [
     CommonModule,

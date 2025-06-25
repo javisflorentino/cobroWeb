@@ -10,7 +10,14 @@ import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface'
 
 import { environments } from 'src/environments/environments';
 /* MODIF: 12/12/2023 */
-import ListMessage from '../../../../data/arreglos/alertas.json'
+import ListMessage from '../../../../data/arreglos/alertas.json';
+import OficinasTramite from '../../../../data/arreglos/oficinas_tramite.json';
+import TipoVehiculo from '../../../../data/arreglos/tipo_vehiculo.json';
+import TipoMotor from '../../../../data/arreglos/tipo_motor.json';
+
+import { StructOffice } from '../interface/struct-oficina.interface';
+import { StructTipoVehiculo } from '../interface/struct-tipovehiculo.interface';
+import { StructTipoMotor } from '../interface/struct-tipomotor.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +52,18 @@ export class SmytService {
     return of(ListMessage.messages_hacienda_reintegros);
     /* MODIF: 12/12/2023 */
     //this.http.get<Messages[]>(`${this.urlMessage}_hacienda_reintegros`);
+  }
+
+  /* TODO: 24/06/2025 Carlos A.  Se agregaron los siguientes 3 metodos que generar y retornan un observable, simulando una peticion HTTP*/
+  getOficinas(): Observable<StructOffice>{
+    return of({success:true,data:OficinasTramite});
+  }
+
+   getTipoVahiculo(): Observable<StructTipoVehiculo> {
+    return of({success:true,data:TipoVehiculo});
+  }
+  getTipoMotor(): Observable<StructTipoMotor> {
+    return of({success:true,data:TipoMotor});
   }
 
   /*async validateVehicle(placa:string,serie:string): Promise<any> {

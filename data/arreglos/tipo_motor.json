@@ -1,0 +1,14 @@
+[
+  {
+    "id":"COMBUSTION",
+    "descripcion":"Combustión"
+  },
+  {
+    "id":"HIBRIDO",
+    "descripcion":"Híbrido"
+  },
+  {
+    "id":"ELCTRICO",
+    "descripcion":"Eléctrico"
+  }
+]

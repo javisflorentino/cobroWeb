@@ -1,0 +1,52 @@
+[
+  {
+    "pkdmgCTipovehiculo": 1,
+    "descripcion": "Automóvil",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 2,
+    "descripcion": "Camión",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 4,
+    "descripcion": "Minusválidos",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 5,
+    "descripcion": "Remolque",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 6,
+    "descripcion": "Demostración",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 7,
+    "descripcion": "Auto antiguo",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 8,
+    "descripcion": "Motocicletas",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 9,
+    "descripcion": "Patrulla",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 13,
+    "descripcion": "Ambulancia",
+    "status":1
+  },
+  {
+    "pkdmgCTipovehiculo": 23,
+    "descripcion": "Bomberos",
+    "status":1
+  }
+]
