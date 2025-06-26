@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterContentInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit, inject, LOCALE_ID } from '@angular/core';
 import { SmyCalculoPagosService } from '../../services/smy-calculo-pagos.service';
 import { Concepto, TopLevel, Contribuyente, Domicilio } from '../../interfaces/calculo-conceptos';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,11 +18,18 @@ import { estadoVehiculo } from '../../interfaces/soap-estadoVehivulo';
 import { MenuService } from '../../services/menu.service';
 import Swal from 'sweetalert2';
 import { RequestConceptos } from '../../interfaces/request-conceptos.interface';
+import localeEs from '@angular/common/locales/es-MX';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs);
+
 
 @Component({
   selector: 'shared-tabla-calculo-conceptos',
   templateUrl: './tabla-calculo-conceptos.component.html',
-  styleUrls: ['./tabla-calculo-conceptos.component.css']
+  styleUrls: ['./tabla-calculo-conceptos.component.css'],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-MX' }
+  ]
 })
 export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterContentInit {
 
@@ -230,7 +237,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
     }
 
     const dataVehicleLs: DatosTramite = JSON.parse(sessionStorage.getItem('vehicle_data')!);
-    if (dataVehicleLs.tramite == 9) {
+    if (dataVehicleLs.tramite == 9 && dataVehicleLs.valorVenta==null) {
       this.smyPagosService.getCalculoPagosPublico(dataVehicleLs)
         .subscribe(result => {
           this.isLoading = false;

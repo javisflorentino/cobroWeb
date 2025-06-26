@@ -14,6 +14,7 @@ import { CambioPropietarioComponent } from './cambio-propietario/cambio-propieta
 import { CambioPropietarioBajaComponent } from './cambio-propietario-baja/cambio-propietario-baja.component';
 import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-propietario/alta-vehiculo-cambio-propietario.component';
 import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
+import { SustitucionPlacaCambioPropietarioComponent } from './sustitucion-placa-cambio-propietario/sustitucion-placa-cambio-propietario.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'sustitucion-placa-cambio-propietario/:idConcepto/:formulario',
-    component: SustitucionPlacaVehiculoComponent
+    component: SustitucionPlacaCambioPropietarioComponent
   },
   {
     path: 'cambio-propietario/:idConcepto/:formulario',

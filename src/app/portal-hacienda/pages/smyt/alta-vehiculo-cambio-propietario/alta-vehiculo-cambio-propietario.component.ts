@@ -60,6 +60,7 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     //cilindros: ['', [Validators.required, Validators.max(16), Validators.pattern(this.validatorsService.numberPattern)]],
     //centimetros: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
     pasajeros: ['', [Validators.required]],
+    tonelaje: ['', [Validators.required]],
     //valor_factura: ['', [Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
     placa_foranea: ['', [Validators.required]],
     pago_baja_f: ['1', [Validators.required]],
@@ -67,6 +68,7 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     fecha_enajenacion: [new Date(),[Validators.required]],
     fecha_solicitud: [new Date(),[Validators.required]],
     fecha_aprobacion: [new Date(),[Validators.required]],
+    
   });
 
   public sizeDisplay!: string;
@@ -203,8 +205,15 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     let aprobacionData = moment(this.myForm.get('fecha_aprobacion')?.value).toDate();
     let enajenacionDate = moment(this.myForm.get('fecha_enajenacion')?.value).toDate();
 
-    let pagos: any[] = this.myForm.get('pagos')?.value;
-    pagos = pagos.filter(r => r !== false );
+    //let pagos: any[] = this.myForm.get('pagos')?.value;
+    //pagos = pagos.filter(r => r !== false );
+
+    let pagosRealizados: string = '';
+    this.ordersFormArray.value.map((value: string, i:any)  =>{
+      if(!!value) {
+        pagosRealizados += value.substring(1) + ','
+      }
+    })
     //this.fb.array(this.aniosPago.map(x => false))
     let parameters: DatosTramite = {
       tramite: 8,
@@ -217,19 +226,22 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
       valorFactura: this.myForm.get('primary_form')?.get('valor_factura')?.value,
       valorVenta: this.myForm.get('primary_form')?.get('valor_venta')?.value,
       pagoBaja: this.myForm.get('pago_baja_f')?.value,
-      pagosRealizados: pagos.toLocaleString(),
+      pagosRealizados: pagosRealizados,
       claveVehicular: "",/* TOTO: NO SE UTILIZA , PERO EN ALGUN MOMENTO SE PODRIA HABILITAR. AGREGAR EL COAMPO EN EL FORM-ALTA-VEHICULO*/
       tipoMotor: this.myForm.get('primary_form')?.get('tipo_motor')?.value,
 
       fechaSolicitud: solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
       fechaAprobacion: aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
       fechaEnajenacion: enajenacionDate.getDate() + '/' + (enajenacionDate.getMonth() + 1) + '/' + enajenacionDate.getFullYear(),
-      capacidadPasajeros: this.myForm.get('pasajeros')?.value
+      capacidadPasajeros: this.myForm.get('pasajeros')?.value,
+      tonelaje: this.myForm.get('tonelaje')?.value,
+      
     }
     sessionStorage.setItem('vehicle_data', JSON.stringify(parameters));
 
     sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
       "capacidadPasajeros": this.myForm.get('pasajeros')?.value,
+      "tonelaje": this.myForm.get('tonelaje')?.value,
       "centimetrosCubicos": this.myForm.get('centimetros')?.value,
       "noCilindros": this.myForm.get('cilindros')?.value,
       "procedencia": this.myForm.get('procedencia')?.value

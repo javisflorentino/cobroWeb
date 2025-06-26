@@ -95,6 +95,11 @@
                 <input matInput formControlName="pasajeros" type="number" name="" id="">
                 <mat-error *ngIf="isValidField('pasajeros')">Requerido y numérico</mat-error>
               </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Tonelaje</mat-label>
+                <input matInput formControlName="tonelaje" type="number" name="" id="">
+                <mat-error *ngIf="isValidField('tonelaje')">Requerido y numérico</mat-error>
+              </mat-form-field>
 
               <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Valor de la factura</mat-label>
