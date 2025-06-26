@@ -12,10 +12,14 @@
 
   <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline" *ngIf="!disabledTipoV">
     <mat-label>Tipo de vehículo</mat-label>
-    <mat-select formControlName="tipo_vehiculo" (valueChange)="changeFielVehicleType($event)">
+    <!-- <mat-select formControlName="tipo_vehiculo" (valueChange)="changeFielVehicleType($event)">
 
       <mat-option *ngFor="let tipo of tipoVehiculoArr()" [value]="tipo.pkdmgCTipovehiculo">{{tipo.descripcion}}</mat-option>
 
+    </mat-select> -->
+    <mat-select formControlName="tipo_vehiculo" (valueChange)="changeFielVehicleType($event)">
+      <mat-option value="">--- Seleccione Tipo de Vehículo ---</mat-option>
+      <mat-option *ngFor="let tipo of tipoVehiculoArr" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
     </mat-select>
     <mat-error> Campo requerido</mat-error>
   </mat-form-field>

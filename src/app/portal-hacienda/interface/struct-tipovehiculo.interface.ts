@@ -4,7 +4,7 @@ export interface StructTipoVehiculo {
 }
 
 export interface TipoVehiculo {
-  pkdmgCTipovehiculo: number;
-  descripcion:   string;
-  status:        number;
+  pkdmgCTipovehiculo?: number;
+  descripcion?:   string;
+  status?:        number;
 }

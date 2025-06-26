@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DataVehicleComponent } from 'src/app/portal-hacienda/components/smyt/data-vehicle/data-vehicle.component';
+import ListaTipoVehiculo from '../../../../../../data/arreglos/smyt_tipo_vehiculo.json';
+import { TipoVehiculo } from 'src/app/portal-hacienda/interface/portal-tipovehiculo.interface';
 
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { AnioMin } from 'src/app/portal-hacienda/interface/portal_genericas.interfacce';
@@ -25,6 +27,7 @@ export class AltaVehiculoSinRegistroComponent implements OnInit, AfterContentIni
   //Controla la visualización del Spinner
   public isLoading = signal<boolean>(false);
   public conceptTitle = signal<string>('');
+  public tipoVehiculoArr: TipoVehiculo[] = ListaTipoVehiculo;
 
   public aniosPago = [
     { name: '2020', value: '2020' },

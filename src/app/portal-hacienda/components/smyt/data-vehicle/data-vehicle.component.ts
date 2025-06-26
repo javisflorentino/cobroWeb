@@ -4,13 +4,16 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import moment from 'moment';
 import { TipoMotor } from 'src/app/portal-hacienda/interface/portal-tipomotor.interface';
-import { TipoVehiculo } from 'src/app/portal-hacienda/interface/struct-tipovehiculo.interface';
+import { TipoVehiculo } from 'src/app/portal-hacienda/interface/portal-tipovehiculo.interface';
+//import { TipoVehiculo } from 'src/app/portal-hacienda/interface/struct-tipovehiculo.interface';
+
 import { office } from 'src/app/portal-hacienda/interface/struct-oficina.interface';
 import { SmytValidatorService } from 'src/app/portal-hacienda/services/smyt-validator.service';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { MessageSmyt } from 'src/app/shared/interfaces/message-smyt.interface';
 
 import MessagesLists from '../../../../../../data/arreglos/smyt_mensajes.json'
+import ListaTipoVehiculo from '../../../../../../data/arreglos/smyt_tipo_vehiculo.json';
 
 
 @Component({
@@ -25,7 +28,9 @@ export class DataVehicleComponent implements OnInit {
 
   private validatorsService = inject(SmytValidatorService);
 
-  public tipoVehiculoArr = signal<TipoVehiculo[]>([]);
+  //public tipoVehiculoArr = signal<TipoVehiculo[]>([]);
+  public tipoVehiculoArr: TipoVehiculo[] = ListaTipoVehiculo;
+
 
   //declaracion de variable de tipo de motor
   public tipoMotor = signal<TipoMotor[]>([]);
@@ -110,7 +115,7 @@ export class DataVehicleComponent implements OnInit {
         }
       });
 
-    this.smytService.getTipoVahiculo()
+    /*this.smytService.getTipoVahiculo()
       .subscribe({
         next:(resp) => {
           this.tipoVehiculoArr.set(resp.data);
@@ -118,7 +123,8 @@ export class DataVehicleComponent implements OnInit {
         error: (err) => {
           console.log(err);
         }
-      });
+      });*/
+
 
     this.smytService.getTipoMotor()
     .subscribe({

@@ -12,7 +12,9 @@ import { environments } from 'src/environments/environments';
 /* MODIF: 12/12/2023 */
 import ListMessage from '../../../../data/arreglos/alertas.json';
 import OficinasTramite from '../../../../data/arreglos/oficinas_tramite.json';
-import TipoVehiculo from '../../../../data/arreglos/tipo_vehiculo.json';
+//import TipoVehiculo from '../../../../data/arreglos/tipo_vehiculo.json';
+import TipoVehiculo from '../../../../data/arreglos/smyt_tipo_vehiculo.json';
+
 import TipoMotor from '../../../../data/arreglos/tipo_motor.json';
 
 import { StructOffice } from '../interface/struct-oficina.interface';
