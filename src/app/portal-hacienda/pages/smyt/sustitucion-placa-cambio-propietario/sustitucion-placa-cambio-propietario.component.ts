@@ -104,7 +104,7 @@ export class SustitucionPlacaCambioPropietarioComponent implements OnInit, After
       "numeroSerie": this.myForm.get('primary_form')?.get('serie')?.value,
       "valorVenta": this.myForm.get('primary_form')?.get('valor_venta')?.value,
       "fechaFactura": invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear(),
-      "obtenerContribuyente": true
+      "obtenerContribuyente": false
     }
     sessionStorage.setItem('vehicle_data', JSON.stringify(reqData));
     //console.log(reqData)
