@@ -99,7 +99,7 @@ export class CambioPropietarioBajaComponent implements OnInit, AfterContentInit,
       "tramite": 10,
       "numeroSerie": this.myForm.get('primary_form')?.get('serie')?.value,
       "valorVenta": this.myForm.get('primary_form')?.get('valor_venta')?.value,
-      "obtenerContribuyente": true
+      "obtenerContribuyente": false
     }
     sessionStorage.setItem('vehicle_data', JSON.stringify(reqData));
     this.smytService.validateVehicle(reqData)

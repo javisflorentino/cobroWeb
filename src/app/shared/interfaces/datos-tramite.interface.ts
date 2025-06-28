@@ -1,6 +1,7 @@
 export interface DatosTramite {
   tramite?:              number;
   placa?:                string;
+  placaAnterior?:        string;
   numeroSerie?:          string;
   tipoVehiculo?:        number;
   obtenerContribuyente?: boolean;

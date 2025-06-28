@@ -203,7 +203,7 @@ export class DatosContribuyenteComponent implements OnInit {
     if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
       /* TODO: 10/06/2025 Carlos A. Si apellido materno esta vacio, se elima la validacion  */
       if(nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
-        console.log("Aqui entrooooo")
+        //console.log("Aqui entrooooo")
         this.myFormContribuyente.get('segundoApellido')?.clearValidators();
         this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
         return '';
@@ -498,7 +498,7 @@ export class DatosContribuyenteComponent implements OnInit {
         if(gestora=='53'){
           this.dataPoliza.observaciones = this.dataPoliza.datosAdicionales;
         }
-        if(vehicle_data.tramite==9){
+        if(vehicle_data.tramite==9 && vehicle_data.valorVenta==null){
           this.dataPoliza.datosVehiculo!.tipo = 2;
         }
 

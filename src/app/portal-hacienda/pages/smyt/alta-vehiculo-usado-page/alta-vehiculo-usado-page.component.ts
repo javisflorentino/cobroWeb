@@ -281,6 +281,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       let parameters: DatosTramite = {
         tramite:              2,
         placa:                '',
+        placaAnterior:                this.myForm.get('placa_foranea')?.value,
         numeroSerie:          this.myForm.get('oficinas')?.get('no_serie')?.value,
         tipoVehiculo:         this.myForm.get('oficinas')?.get('tipo_vehiculo')?.value,
         obtenerContribuyente: false,

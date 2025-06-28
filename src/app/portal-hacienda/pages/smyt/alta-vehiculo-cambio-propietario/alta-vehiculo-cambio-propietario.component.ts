@@ -218,6 +218,7 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     let parameters: DatosTramite = {
       tramite: 8,
       placa: '',
+      placaAnterior: this.myForm.get('placa_foranea')?.value,
       numeroSerie: this.myForm.get('primary_form')?.get('serie')?.value,
       tipoVehiculo: this.myForm.get('primary_form')?.get('tipo_vehiculo')?.value,
       obtenerContribuyente: false,

@@ -100,6 +100,7 @@ export class SustitucionPlacaCambioPropietarioComponent implements OnInit, After
     const reqData = {
       "placa": this.myForm.get('primary_form')?.get('placa')?.value,
       "tramite": 9,
+      "tipo":1,
       "tipoVehiculo": this.myForm.get('primary_form')?.get('tipo_vehiculo')?.value,
       "numeroSerie": this.myForm.get('primary_form')?.get('serie')?.value,
       "valorVenta": this.myForm.get('primary_form')?.get('valor_venta')?.value,
