@@ -22,4 +22,8 @@ export interface DatosTramite {
 
   tonelaje?:             string;
   capacidadPasajeros?:   string;
+  /*TODO: Carlos A 17/07/2025 */
+  numeroConcesion?:     string;
+  tipoConcesion?:       string;
+
 }

@@ -32,6 +32,9 @@ export class SmytService {
   private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
   private urlSmytParticularPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
   private urlValidarCehiculo = `${environments.baseUrlApp}serviciosHacienda/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+  /*TODO: Carlos A 17/07/2025 */
+  private urlSmytValidVehiculo = `${environments.baseUrlApp}serviciosHacienda/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+
 
   constructor(private http: HttpClient) { }
 
@@ -57,15 +60,15 @@ export class SmytService {
   }
 
   /* TODO: 24/06/2025 Carlos A.  Se agregaron los siguientes 3 metodos que generar y retornan un observable, simulando una peticion HTTP*/
-  getOficinas(): Observable<StructOffice>{
-    return of({success:true,data:OficinasTramite});
+  getOficinas(): Observable<StructOffice> {
+    return of({ success: true, data: OficinasTramite });
   }
 
-   getTipoVahiculo(): Observable<StructTipoVehiculo> {
-    return of({success:true,data:TipoVehiculo});
+  getTipoVahiculo(): Observable<StructTipoVehiculo> {
+    return of({ success: true, data: TipoVehiculo });
   }
   getTipoMotor(): Observable<StructTipoMotor> {
-    return of({success:true,data:TipoMotor});
+    return of({ success: true, data: TipoMotor });
   }
 
   /*async validateVehicle(placa:string,serie:string): Promise<any> {
@@ -112,25 +115,45 @@ export class SmytService {
       );
   }
   ExisteVehiculo(datosTramite: DatosTramite): Observable<{ data: boolean, success: boolean }> {
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'Basic ' + btoa(`${environments.user_server}:${environments.pass_server}`)
-  });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + btoa(`${environments.user_server}:${environments.pass_server}`)
+    });
 
-  return this.http.post<{ data: boolean, success: boolean }>(
-    `${this.urlValidarCehiculo}`,
-    datosTramite,
-    { headers }
-  ).pipe(
-    catchError(err => {
-      const message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e inténtelo más tarde`;
-      return throwError(() => ({
-        message,
-        code: `${err.status}`
-      }));
-    })
-  );
-}
+    return this.http.post<{ data: boolean, success: boolean }>(
+      `${this.urlValidarCehiculo}`,
+      datosTramite,
+      { headers }
+    ).pipe(
+      catchError(err => {
+        const message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e inténtelo más tarde`;
+        return throwError(() => ({
+          message,
+          code: `${err.status}`
+        }));
+      })
+    );
+  }
+
+  /*TODO: Carlos A 17/07/2025 */
+  validarVehiculo(datosTramite: DatosTramite): Observable<TopLevel | null> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<TopLevel>(`${this.urlSmytValidVehiculo}`, JSON.stringify(datosTramite), { headers })
+      .pipe(
+        catchError(err => {
+          let message = '';
+          return throwError(() => {
+            message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
+            return { message: message, code: `${err.status}` };
+          });
+        })
+      );
+  }
+
 
   async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {

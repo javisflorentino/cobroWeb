@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import ListMessageSmyt from '../../../../data/arreglos/smyt_mensajes.json'
 import { MessageSmyt } from '../interfaces/message-smyt.interface';
+import { DatosTramite } from '../interfaces/datos-tramite.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -102,12 +103,19 @@ export class ValidatorsService {
     }
   }
 
-  public existsSeriesPublico( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
+  public existsSeriesPublico( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, numeroConcesion:string ) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
+      const fileValue3 = formGroup.get(numeroConcesion)?.value;
 
-      let parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false };
+      let parameters:DatosTramite;
+
+      if(!!tipoVehiculo) {
+        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoConcesion":tipoVehiculo, "numeroConcesion":fileValue3, "obtenerContribuyente":false };
+      } else {
+        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false };
+      }
       if(!formGroup.get(serie)?.pristine) {
         this.smytService.validateVehiclePublico(parameters)
           .subscribe({
@@ -179,6 +187,7 @@ export class ValidatorsService {
       return null;
     }
   }
+
   validateDataInput(field: string, mssg: number, route:string) {
     return ( formGroup: AbstractControl ): ValidationErrors | null => {
       const contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);

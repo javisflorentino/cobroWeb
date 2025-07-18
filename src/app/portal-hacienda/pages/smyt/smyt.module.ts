@@ -25,6 +25,7 @@ import { CambioPropietarioComponent } from './cambio-propietario/cambio-propieta
 import { CambioPropietarioBajaComponent } from './cambio-propietario-baja/cambio-propietario-baja.component';
 import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-propietario/alta-vehiculo-cambio-propietario.component';
 import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
+import { PagoRefrendoServicioPublicoComponent } from './pago-refrendo-servicio-publico/pago-refrendo-servicio-publico.component';
 
 
 
@@ -46,7 +47,8 @@ import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietari
     CambioPropietarioComponent,
     CambioPropietarioBajaComponent,
     AltaVehiculoCambioPropietarioComponent,
-    RefrendoCambioPropietarioComponent
+    RefrendoCambioPropietarioComponent,
+    PagoRefrendoServicioPublicoComponent
   ],
   imports: [
     CommonModule,

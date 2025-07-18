@@ -15,6 +15,7 @@ import { CambioPropietarioBajaComponent } from './cambio-propietario-baja/cambio
 import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-propietario/alta-vehiculo-cambio-propietario.component';
 import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
 import { SustitucionPlacaCambioPropietarioComponent } from './sustitucion-placa-cambio-propietario/sustitucion-placa-cambio-propietario.component';
+import { PagoRefrendoServicioPublicoComponent } from './pago-refrendo-servicio-publico/pago-refrendo-servicio-publico.component';
 
 const routes: Routes = [
   {
@@ -89,6 +90,12 @@ const routes: Routes = [
     path: 'smyt-revista-mecanica/:idConcepto/:tipoForm',
     component: PagoRevistaMecanicaComponent
   },
+  /* TODO: Carlos A 17/07/2025  Nueva ruta Refrendo Anual Servicio Publico*/
+  {
+    path: 'smyt-refrendo-serv-pub/:idConcepto/:tipoForm',
+    component: PagoRefrendoServicioPublicoComponent
+  },
+
   {
     path: '**',
     redirectTo: 'pagos'
