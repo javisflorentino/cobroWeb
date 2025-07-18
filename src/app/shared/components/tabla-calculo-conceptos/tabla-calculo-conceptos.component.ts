@@ -238,7 +238,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
     const dataVehicleLs: DatosTramite = JSON.parse(sessionStorage.getItem('vehicle_data')!);
     /* TODO: Carlos A 17/07/2025  se agrego dataVehicleLs.tramite == 3*/
-    if ((dataVehicleLs.tramite == 9 || dataVehicleLs.tramite == 3) && dataVehicleLs.valorVenta==null) {
+    if ((dataVehicleLs.tramite == 9 || (dataVehicleLs.tramite == 3 && !!dataVehicleLs.numeroConcesion)) && dataVehicleLs.valorVenta==null) {
       this.smyPagosService.getCalculoPagosPublico(dataVehicleLs)
         .subscribe(result => {
           this.isLoading = false;

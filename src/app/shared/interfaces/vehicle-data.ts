@@ -20,4 +20,6 @@ export interface VehicleData {
     tipoMotor?:           string;
 
     tipo?:               number;
+
+    numeroConcesion?:   string;
 }

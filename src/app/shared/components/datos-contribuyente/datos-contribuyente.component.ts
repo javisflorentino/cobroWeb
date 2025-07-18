@@ -489,8 +489,10 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
         this.dataPoliza.estado = (estado)?estado:'MORELOS';
         this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
-        this.dataPoliza.observaciones = (gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
-        this.dataPoliza.datosAdicionales = datosAdicionales;
+        /*TODO: Carlos A 18/04/2025 inicio*/
+        this.dataPoliza.observaciones = (gestora=='64' || gestora=='40')?this.contribuyenteArr.data.observaciones!:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;////(gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
+        this.dataPoliza.datosAdicionales = (gestora=='64' || gestora=='40')?this.contribuyenteArr.data.observaciones!:datosAdicionales;//datosAdicionales;
+        /*TODO: Carlos A 18/04/2025 fin*/
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
         if(Object.entries(vehicle_data).length > 0) {
           this.dataPoliza.datosVehiculo = vehicle_data;
@@ -498,7 +500,8 @@ export class DatosContribuyenteComponent implements OnInit {
         if(gestora=='53'){
           this.dataPoliza.observaciones = this.dataPoliza.datosAdicionales;
         }
-        if(vehicle_data.tramite==9 && vehicle_data.valorVenta==null){
+        /*TODO: Carlos A 18/04/2025 */
+        if(vehicle_data.tramite==9 || (vehicle_data.tramite==3 && !!vehicle_data.numeroConcesion) && vehicle_data.valorVenta==null){
           this.dataPoliza.datosVehiculo!.tipo = 2;
         }
 

@@ -13,6 +13,7 @@ export interface Data {
   domicilio:     Domicilio;
   lineaDetalle:  string;
   adicional?:    Adicionales;
+  observaciones?:string;
 }
 
 export interface Adicionales {
