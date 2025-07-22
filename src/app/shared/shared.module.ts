@@ -25,6 +25,7 @@ import { ModalFacturacionComponent } from './components/modal-facturacion/modal-
 import { ModalValidarReciboOficioComponent } from './components/modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
 import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habilitacion/modal-oficio-habilitacion.component';
 import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/shared-toolbar-menu.component';
+import { PdfViewerComponentComponent } from './components/pdf-viewer-component/pdf-viewer-component.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/sha
     ModalFacturacionComponent,
     ModalValidarReciboOficioComponent,
     ModalOficioHabilitacionComponent,
-    SharedToolbarMenuComponent
+    SharedToolbarMenuComponent,
+    PdfViewerComponentComponent
   ],
   imports: [
     CommonModule,

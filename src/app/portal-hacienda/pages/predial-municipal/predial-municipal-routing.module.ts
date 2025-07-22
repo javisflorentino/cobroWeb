@@ -9,12 +9,11 @@ import { MaterialModule } from 'src/app/material/material.module';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'buscar-estado-cuenta',
-    pathMatch: 'full'
+    path: 'buscar-estado-cuenta',
+    component: BusquedaEstadoCuentaComponent
   },
   {
-    path: 'buscar-estado-cuenta',
+    path: 'buscar-estado-cuenta/:idConcepto/:tipoForm',
     component: BusquedaEstadoCuentaComponent
   },
   {

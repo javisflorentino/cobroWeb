@@ -1,0 +1,46 @@
+.pdf-viewer-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    .pdf-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      background-color: #f5f5f5;
+    }
+
+    .pdf-header h2 {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .pdf-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-pago {
+      margin-right: 8px;
+    }
+
+    .pdf-content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .pdf-content iframe {
+      border: none;
+      background: white;
+    }
+
+    ::ng-deep .mat-dialog-container {
+      padding: 0 !important;
+      overflow: hidden;
+    }
