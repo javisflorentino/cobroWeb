@@ -95,7 +95,7 @@ export class PagoRefrendoServicioPublicoComponent {
     let s = this.refrendoSerPubForm.get('serie')?.value;
     let fc = this.refrendoSerPubForm.get('folio_concesion')?.value;
 
-    this.smytService.validarVehiculo({ "placa": p, "numeroSerie": String(s), "numeroConcesion": String(fc) })
+    this.smytService.validarVehiculo({ "placa": p.toUpperCase(), "numeroSerie": String(s.toUpperCase()), "numeroConcesion": String(fc.toUpperCase()) })
       .subscribe({
         next: (resp) => {
           if(resp?.success && resp.data) {

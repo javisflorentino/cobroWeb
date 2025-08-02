@@ -41,6 +41,10 @@ export class BusquedaEstadoCuentaComponent {
   private predialService = inject(PredialMunicipalService);
     private authSiigemService = inject(AuthSiigemService);
 
+  public validadorLabel: string = 'Identificador'; // Valor por defecto
+  public claveLabel: string = 'Clave Catastral'; // Valor por defecto
+
+
 
   constructor(
       private fb: FormBuilder,
@@ -61,6 +65,8 @@ export class BusquedaEstadoCuentaComponent {
         this.openSnackBar('No se pudo obtener el municipio de la URL');
         //this.router.navigate(['/']);
       }
+      // Cambia el label según el municipio
+      this.setValidadorLabel();
     });
     this.conceptTitle = sessionStorage.getItem('concept')!;
 
@@ -68,6 +74,30 @@ export class BusquedaEstadoCuentaComponent {
     next: (res) => console.log('Login exitoso', res),
     error: (err) => console.error('Error al autenticar', err)
   });
+}
+
+setValidadorLabel() {
+  switch (this.pkMunicipio) {
+    case 4:
+      this.validadorLabel = 'Importe de Último Pago';
+      break;
+    case 6:
+      this.validadorLabel = 'Importe de Último Pago';
+      break;
+    case 7:
+      this.validadorLabel = 'Importe de Último Pago';
+      break;
+    case 20:
+      this.validadorLabel = 'Importe de Último Pago';
+      break;
+    case 27:
+      this.claveLabel = 'Clave Catastral/Cuenta Predial';
+      this.validadorLabel = 'Iniciales Nombre';
+      break;
+    // Agrega más casos según tus necesidades
+    default:
+      this.validadorLabel = 'Iniciales Nombre';
+  }
 }
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
@@ -112,8 +142,8 @@ export class BusquedaEstadoCuentaComponent {
 
           if (response && response.data) {
             if(response.data.cobrable){
-              // Abrir el PDF en una ventana modal
-              this.abrirPDF(response.data.archivo, response.data);
+              // Mostrar la ventanita con los datos antes de mostrar el PDF
+              this.mostrarInformacionEstadoCuenta(response.data, response.data.archivo);
             }else{
               this.openSnackBar(response.data.mensaje || 'No existe la clave catastral');
 
@@ -145,27 +175,28 @@ export class BusquedaEstadoCuentaComponent {
      
   
     }
-    private mostrarInformacionEstadoCuenta(data: any): void {
+
+  
+  private mostrarInformacionEstadoCuenta(data: any, archivoBase64: string): void {
     Swal.fire({
       title: 'Estado de Cuenta Consultado',
       html: `
         <div style="text-align: left;">
           <p><strong>Clave:</strong> ${data.clave}</p>
           <p><strong>Referencia:</strong> ${data.referencia}</p>
-          <p><strong>Importe:</strong> ${data.importe.toFixed(2)}</p>
-          <p><strong>Municipio:</strong> ${data.pkMunicipio}</p>
+          <p><strong>Importe:</strong> ${data.importeTotal.toFixed(2)}</p>
         </div>
       `,
       icon: 'success',
       showCancelButton: true,
-      confirmButtonText: 'Proceder al Pago',
+      confirmButtonText: 'Ver PDF',
       cancelButtonText: 'Solo Consultar',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#6c757d',
+      confirmButtonColor: 'var(--primary-color)',
       width: '450px'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.navegarAPago(data);
+        // Ahora sí, mostrar el PDF y continuar el flujo normal
+        this.abrirPDF(archivoBase64, data);
       }
     });
   }
