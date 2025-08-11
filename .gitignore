@@ -6,6 +6,8 @@
 /tmp
 /out-tsc
 /bazel-out
+/docs
+/docs_sin_actualizar
 
 # Node
 /node_modules
