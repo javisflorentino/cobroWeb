@@ -145,6 +145,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
             if (result.length > 0) {
               this.isLoading = false;
               this.cardsArr = result;
+              //this.cardsArr.push({pk: 830, titulo: 'recaudaciondelimpuestopredialporconveniodecolaboracionadministrativa', idConcepto: 100, combinable: 0, formulario: 0, rol: 0, tipoMovimiento: 0, gestora: 0, url: '', costo: 0});
               return;
             }
 

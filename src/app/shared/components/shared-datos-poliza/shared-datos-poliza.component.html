@@ -22,10 +22,10 @@
   </mat-card-header>
   <mat-divider class=""></mat-divider>
   <mat-card-content>
-    <div class="mt-3 flex  justify-content-center">
+    <div class="mt-3 flex  justify-content-center" *ngIf="!mostrarEmbedBanorte">
       <button mat-raised-button color="primary" (click)="getPoliza()">Obtener Póliza de Pago</button>
     </div>
-    <mat-tab-nav-panel #0 *ngIf="position[0]" class="mt-5">
+    <mat-tab-nav-panel #0 *ngIf="position[0] && !mostrarEmbedBanorte" class="mt-5">
       <!--<p>
         Tu pago será confirmado al momento de terminar la transacción y obtendrás tu comprobante o podrás consultar tu comprobante de pago en www.hacienda.morelos.gob.mx, utilizando la línea de captura de tu póliza.
         </p>
@@ -81,7 +81,7 @@
           </div>
         </div>-->
     </mat-tab-nav-panel>
-    <div #1 *ngIf="position[1]">
+    <div #1 *ngIf="position[1] && !mostrarEmbedBanorte">
       <!--<div class="mt-3 mb-3  flex  justify-content-center">
         <button mat-raised-button color="warn" (click)="portalPagoLinea()" *ngIf="position[1]" >pago en Línea</button>
       </div>-->
@@ -149,7 +149,7 @@
         </p>
       </mat-tab-nav-panel>
     </div>
-    <div #2 *ngIf="position[2]">
+    <div #2 *ngIf="position[2] && !mostrarEmbedBanorte">
       <mat-tab-nav-panel class="mt-5">
         <div class="flex  justify-content-center">
           <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
@@ -158,6 +158,33 @@
               [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
               height="800" />
           </object>
+        </div>
+      </mat-tab-nav-panel>
+    </div>
+    
+    <!-- <div #3 *ngIf="position[3] && mostrarEmbedBanorte">
+      <mat-tab-nav-panel class="mt-5">
+        
+        <div class="flex  justify-content-center">
+          <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
+            height="800">
+            <embed [src]="url_pagolineaBanorte|sanitizeUrl"
+              [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
+              height="800" />
+          </object>
+        </div>
+      </mat-tab-nav-panel>
+    </div> -->
+    <div *ngIf="position[3] && mostrarEmbedBanorte">
+      <mat-tab-nav-panel class="mt-5">
+        <div class="flex justify-content-center">
+          <iframe name="pagoFrame" 
+                  [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
+                  height="800">
+          </iframe>
+          <button #miBoton hidden (click)="enviarDatosClientePorPost()" class="btn btn-primary">
+            Iniciar Pago
+          </button>
         </div>
       </mat-tab-nav-panel>
     </div>

@@ -243,7 +243,7 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
         if (resp.length == 0) {
           this.fathAlert.emit('El concepto seleccionado no perteneceal mismo grupo, <br>Se borrarán los conceptos previamente seleccionados.  ');
           this.generalLocalStorRepetirConcept(idConcepto);
-        }
+        }      
       }*/
     }
 

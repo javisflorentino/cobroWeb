@@ -4,38 +4,85 @@
     <mat-card class="shadow-8">
       <mat-card-header>
         <mat-card-title>Busqueda Estado de Cuenta</mat-card-title>
+        <mat-card-subtitle><small>{{conceptTitle | titlecase}}</small></mat-card-subtitle>
+
       </mat-card-header>
       <mat-divider class="mt-2 mb-2"></mat-divider>
       <mat-card-content>
         <div class="">
           <form action="" fxLayout="column"  [formGroup]="predialMunicipal" (ngSubmit)="onSubmit()">
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-              <mat-label>Municipio</mat-label>
-              <mat-select formControlName="municipio" >
-                <mat-option value="">--- Seleccione municipio ---</mat-option>
-                <mat-option *ngFor="let municipio of municipiosArr" [value]="municipio.pk">
-                  {{municipio.descripcion}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
               
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Clave Catastral</mat-label>
-                <input matInput formControlName="claveCatastral" required type="text" maxlength="8">
+                <mat-label>{{ claveLabel }}</mat-label>
+                <input matInput formControlName="claveCatastral" required type="text" maxlength="13">
                 <mat-error class="fontsizeerror"> Campo requerido </mat-error>
               </mat-form-field>
 
-              <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
-                <mat-label>Identificador</mat-label>
-                <input #serie matInput formControlName="validador" required #serieV type="text" name="" maxlength="5">
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" hintLabel="">
+                <mat-label>{{ validadorLabel }}</mat-label>
+                <input #serie matInput formControlName="validador" required type="text" name="" maxlength="100">
                 <mat-error class="fontsizeerror"> Campo requerido </mat-error>
 
               </mat-form-field>
+              <mat-form-field *ngIf="pkMunicipio == 17" fxFlex style="margin-right:0.5em;"  floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+                <mat-label>Tipo de Persona</mat-label>
+                <input matInput style="display:none" required>
+                <mat-radio-group #group_c_tp formControlName="tipoPersona" class="flex-wrap">
+                  <mat-radio-button #buttons_c_tp value="2">
+                    <span class="wrap-label-text">Física</span>
+                  </mat-radio-button>
+                  <mat-radio-button #buttons_c_tp value="1">
+                    <span class="wrap-label-text">Moral</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput formControlName="correo" type="text" required>
+                <mat-error class="fontsizeerror">El campo no puede ir vacío</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="telefono" type="tel" required>
+              <mat-error class="fontsizeerror">El campo no puede ir vacío</mat-error>
+          </mat-form-field>
             </div>
           </form>
         </div>
       </mat-card-content>
+      
+      <div class="mx-2 alert d-flex align-items-start">
+        <div>
+          <h3 class="mb-3">⚠️ Atención: Notas Importantes</h3>
+          <div class="alert-content">
+            <ul class="ps-3">
+              <li class="mb-2">
+                Únicamente se encuentran disponibles aquellos municipios con los que el Gobierno del Estado ha suscrito Convenio de Colaboración para el cobro coordinado del Impuesto Predial, y que han habilitado esta forma de pago para sus contribuyentes.
+              </li>
+              <li class="mb-2">
+                El municipio es responsable exclusivo de los datos proporcionados, incluyendo cálculos, conceptos y montos.
+              </li>
+              <li class="mb-2">
+                Si su Clave Catastral no aparece, favor de comunicarse o acudir al Municipio que le corresponda.
+              </li>
+              <li class="mb-2">
+                Si requiere factura, ésta deberá solicitarse al Municipio que le corresponda con el recibo de pago expedido por el sistema.
+              </li>
+              <li class="mb-2">
+                El pago lo podrá realizar por Internet usando su Tarjeta de Crédito o Débito.
+              </li>
+              <li class="mb-2">
+                Si desconoce el número de su Clave Catastral, este puede obtenerlo de su último pago de Impuesto Predial o comunicarse al municipio correspondiente.
+              </li>
+              <li class="mb-2">
+                Si usted es pensionado o jubilado y desea solicitar el descuento correspondiente, deberá acudir directamente al municipio que le corresponda.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <mat-divider></mat-divider>
 
@@ -52,6 +99,11 @@
           </button>
         </div>
       </mat-card-actions>
+
+      
     </mat-card>
+    
+    
+   
   </div>
 </div>
