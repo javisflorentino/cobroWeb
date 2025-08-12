@@ -3,12 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthSiigemService } from 'src/app/shared/services/auth-siigem.service';
 import { environments } from 'src/environments/environments';
+import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PredialMunicipalService {
   private urlBusquedaEstadoCuenta = `${environments.baseUrlApp}siigemWeb/predial/consulta`;//'serviciosHacienda/poliza/generar';
+  private urlIinformacionMunicipio = `${environments.baseUrlApp}siigemWeb/predial/detalleMunicicpio`;//'serviciosHacienda/poliza/generar';
+
 
   constructor(private http: HttpClient, private authSiigemService: AuthSiigemService) {}
   consultarEstadoCuenta(request: EstadoCuentaRequest): Observable<EstadoCuentaResponse> {
@@ -27,7 +30,20 @@ export class PredialMunicipalService {
     );
   }
 
+  getDetalleMunicipio(pkMunicipio: number): Observable<EstadoCuentaResponse> {
+    const token = this.authSiigemService.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<EstadoCuentaResponse>(
+      `${this.urlIinformacionMunicipio}`,
+      { pkMunicipio },
+      { headers }
+    );
+  }
 }
+
 export interface EstadoCuentaRequest {
   pkMunicipio: number;
   clave: string;
@@ -38,7 +54,7 @@ export interface EstadoCuentaRequest {
 }
 
 export interface EstadoCuentaResponse {
-  data: EstadoCuenta;
+  data: any;
   success: boolean;
 
 }

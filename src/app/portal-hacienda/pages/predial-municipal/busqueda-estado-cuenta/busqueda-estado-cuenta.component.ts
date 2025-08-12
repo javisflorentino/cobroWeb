@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PdfViewerComponentComponent } from 'src/app/shared/components/pdf-viewer-component/pdf-viewer-component.component';
 import { AuthSiigemService } from 'src/app/shared/services/auth-siigem.service';
+import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
 @Component({
   selector: 'app-busqueda-estado-cuenta',
   templateUrl: './busqueda-estado-cuenta.component.html',
@@ -30,6 +31,7 @@ export class BusquedaEstadoCuentaComponent {
   public buttBlock = false;
   public municipiosArr: ComboConcept[] = [];
   public conceptTitle: string = '';
+  public detalleMunicipio: DetalleMunicipio | null = null;
   
   public predialMunicipal: FormGroup = this.fb.group({
     claveCatastral: [''],
@@ -67,6 +69,24 @@ export class BusquedaEstadoCuentaComponent {
       }
       // Cambia el label según el municipio
       this.setValidadorLabel();
+      // Obtener detalle del municipio
+      this.predialService.getDetalleMunicipio(this.pkMunicipio).subscribe({
+      
+        next: (response) => {
+          if (response && response.data) {
+              this.detalleMunicipio = response.data;
+
+       
+            
+            
+          } else {
+            this.openSnackBar('No se encontró información para los datos proporcionados');
+          }
+        },
+        error: (err) => {
+          this.detalleMunicipio = null;
+        }
+      });
     });
     this.conceptTitle = sessionStorage.getItem('concept')!;
 

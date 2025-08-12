@@ -27,7 +27,9 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
   public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
   public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
-  authSiigemService = inject(AuthSiigemService);
+  
+  
+    authSiigemService = inject(AuthSiigemService);
   @ViewChild('miBoton') miBoton!: ElementRef<HTMLButtonElement>;
 
   @ViewChild('formPL', { read: ElementRef })
