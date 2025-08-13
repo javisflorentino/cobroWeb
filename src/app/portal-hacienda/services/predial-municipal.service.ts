@@ -42,6 +42,7 @@ export class PredialMunicipalService {
       { headers }
     );
   }
+  
 }
 
 export interface EstadoCuentaRequest {
