@@ -10,6 +10,7 @@ export interface Data {
   total:        number;
   conceptos:    Concepto[];
   lineaDetalle: string;
+  observaciones?:string;
 }
 
 export interface Concepto {

@@ -371,7 +371,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         next: (resp) => {
           this.isLoading = false;
           this.conceptos = resp!.data.conceptos;
-          sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle) }, success: true }));//this.conceptoPago));
+          sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));//this.conceptoPago));
           this.total += Number(resp!.data.total);
           datos.concepto = resp?.data.conceptos[0].descripcion;
           sessionStorage.setItem('datos_cobro', JSON.stringify(datos));
