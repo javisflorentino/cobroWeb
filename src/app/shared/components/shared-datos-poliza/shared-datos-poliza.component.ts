@@ -177,15 +177,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   // Agregar campos ocultos
   const campos : any= {
     referencia: datos.referencia,
-    referencia2: datos.referencia2,
-    sistema: 106,
-    banco: '86',
-    importeTotal: datos.importeTotal,
-    pkPago: datos.pkPago,
-    clave: datos.clave,
-    pkMunicipio: datos.pkMunicipio,
-    correo: datos.correo,
-    pkCuenta: datos.pkCuenta,
+    importeTotal: datos.importeTotal,  
     token: this.authSiigemService.getToken()
   };
   
