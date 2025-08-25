@@ -10,6 +10,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthSiigemService } from '../../services/auth-siigem.service';
 
+import { environments } from 'src/environments/environments';
+
 @Component({
   selector: 'app-shared-datos-poliza',
   templateUrl: './shared-datos-poliza.component.html',
@@ -17,18 +19,21 @@ import { AuthSiigemService } from '../../services/auth-siigem.service';
   ]
 })
 export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  public environment = environments.URL_PAGO_EN_LINEA + '/';
+
   public soloMostrarPost: boolean = false;
   public links = ['Pago en Línea','Depósito Bancario','Otros Métodos de Pago', 'Banorte'];
   public links_icons = ['credit_card','account_balance','credit_card', 'credit_card'];
   public position: boolean[] = [true,false,false, false];
   public mostrarEmbedBanorte: boolean = true;
 
-  private url = 'https://app.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=';
-  public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
-  public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
-  public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
-  
-  
+  private url = environments.URL_PAGO_EN_LINEA_RECIBO + '/poliza/imprimirPoliza?lineaCaptura=';
+  public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  public url_pagolinea_only: string =  environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  public url_pagolineaBanorte: string =  environments.URL_PAGO_EN_LINEA + '/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+
+
     authSiigemService = inject(AuthSiigemService);
   @ViewChild('miBoton') miBoton!: ElementRef<HTMLButtonElement>;
 
@@ -83,7 +88,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.miBoton.nativeElement.click();
-    });  
+    });
   }
 
 
@@ -105,7 +110,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     this.datosPoliza = JSON.parse(sessionStorage.getItem('datos_poliza')!);
       this.estadoCuenta = JSON.parse(sessionStorage.getItem('datosPago')!);
 
-      
+
 
      // Si viene estado de cuenta → solo usar flujo POST personalizado
   if (this.estadoCuenta) {
@@ -142,7 +147,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   enviarDatosCliente(): void {
     var datos = JSON.parse(sessionStorage.getItem('datosPago')!);
   this.url_pagolineaBanorte =
-  'http://localhost:8090/pagoenlinea/reqByGetOnlyBanorte' +
+  environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyBanorte' +
   '?referencia=' + datos.referencia +
   '&referencia2=' + datos.referencia2 +
   '&sistema=' + 106 +
@@ -167,13 +172,13 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     }
     enviarDatosClientePorPost(): void {
   const datos = JSON.parse(sessionStorage.getItem('datosPago')!);
-  
+
   // Crear formulario dinámicamente
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = this.url_pagolineaBanorte;
   form.target = 'pagoFrame'; // Nombre del iframe
-  
+
   // Agregar campos ocultos
   const campos : any= {
     referencia: datos.referencia,
@@ -188,7 +193,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     pkCuenta: datos.pkCuenta,
     token: this.authSiigemService.getToken()
   };
-  
+
   Object.keys(campos).forEach(key => {
     const input = document.createElement('input');
     input.type = 'hidden';
@@ -196,7 +201,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     input.value = campos[key];
     form.appendChild(input);
   });
-  
+
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);

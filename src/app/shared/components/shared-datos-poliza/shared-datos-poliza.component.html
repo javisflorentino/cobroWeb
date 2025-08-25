@@ -38,7 +38,7 @@
           <li class="list-group-item"><strong>Monto total:</strong> {{datosPoliza.total | currency:'MXN':'symbol-narrow':'1.2-2'}}</li>
         </ul>-->
 
-      <form [formGroup]="myForm" id="formPagoEnLinea" method="post" action="https://app.hacienda.morelos.gob.mx/pagoenlinea/" style="display:none;" target="_blank" #formPL>
+      <form [formGroup]="myForm" id="formPagoEnLinea" method="post" [action]="environment" style="display:none;" target="_blank" #formPL>
       <!--<form [formGroup]="myForm" id="formPagoEnLinea" method="post" action="http://localhost:8080/pagoenlinea/" style="display:none;" target="_blank" #formPL>-->
         <input formControlName="numeroPoliza" id="numeroPoliza" name="numeroPoliza" type="hidden">
         <input formControlName="lineaCaptura" id="lineaCaptura" name="lineaCaptura" type="hidden">
@@ -161,10 +161,10 @@
         </div>
       </mat-tab-nav-panel>
     </div>
-    
+
     <!-- <div #3 *ngIf="position[3] && mostrarEmbedBanorte">
       <mat-tab-nav-panel class="mt-5">
-        
+
         <div class="flex  justify-content-center">
           <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
             height="800">
@@ -178,7 +178,7 @@
     <div *ngIf="position[3] && mostrarEmbedBanorte">
       <mat-tab-nav-panel class="mt-5">
         <div class="flex justify-content-center">
-          <iframe name="pagoFrame" 
+          <iframe name="pagoFrame"
                   [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
                   height="800">
           </iframe>

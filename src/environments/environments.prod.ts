@@ -3,7 +3,10 @@ export const environments = {
   baseUrlServ: 'https://pagos.hacienda.morelos.gob.mx/',//'https://servicioshacienda.morelos.gob.mx:8080/',
   user_server: 'WS_SH1',
   pass_server: 'Hdes22G*_106',
-  valor_uma: 104
+  valor_uma: 104,
+
+  URL_PAGO_EN_LINEA: 'https://app.hacienda.morelos.gob.mx/pagoenlinea',
+  URL_PAGO_EN_LINEA_RECIBO: 'https://app.hacienda.morelos.gob.mx/recibo'
 }
 
 

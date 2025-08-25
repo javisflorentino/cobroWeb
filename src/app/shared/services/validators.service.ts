@@ -91,8 +91,8 @@ export class ValidatorsService {
 
       const fielValue1 = formGroup.get(field1)?.value;
       const fielValue2 = formGroup.get(field2)?.value;
-
-      if ( fielValue1 !== fielValue2) {
+      console.log(String(fielValue1).toUpperCase() + '!==' + String(fielValue2).toUpperCase())
+      if ( String(fielValue1).toUpperCase() !== String(fielValue2).toUpperCase()) {
         formGroup.get(field2)?.setErrors( { notEqual: true, error:mssg } );
         return { notEqual: true, error:mssg };
       }
