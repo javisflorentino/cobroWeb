@@ -12,7 +12,7 @@
     "changeOrigin": true
   },
     "/siigemWeb/*": {
-    "target": "https://app.hacienda.morelos.gob.mx",  
+    "target": "https://app.hacienda.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
