@@ -28,6 +28,12 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
   public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoenlinea/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
   
+  //QA
+  //private url = 'https://qa.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=';
+  //public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  //public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  //public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  
   
     authSiigemService = inject(AuthSiigemService);
   @ViewChild('miBoton') miBoton!: ElementRef<HTMLButtonElement>;
