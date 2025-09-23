@@ -11,8 +11,7 @@ import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
 export class PredialMunicipalService {
   private urlBusquedaEstadoCuenta = `${environments.baseUrlApp}siigemWeb/predial/consulta`;//'serviciosHacienda/poliza/generar';
   private urlIinformacionMunicipio = `${environments.baseUrlApp}siigemWeb/predial/detalleMunicicpio`;//'serviciosHacienda/poliza/generar';
-generar';
-private http: HttpClient, private authSiigemService: AuthSiigemService) {}
+  constructor(private http: HttpClient, private authSiigemService: AuthSiigemService) {}
   consultarEstadoCuenta(request: EstadoCuentaRequest): Observable<EstadoCuentaResponse> {
       const token = this.authSiigemService.getToken(); // idealmente lo sacas de localStorage o un servicio
 
@@ -28,7 +27,6 @@ private http: HttpClient, private authSiigemService: AuthSiigemService) {}
       { headers }
     );
   }
-
   getDetalleMunicipio(pkMunicipio: number): Observable<EstadoCuentaResponse> {
     const token = this.authSiigemService.getToken();
     const headers = new HttpHeaders({
