@@ -5,7 +5,7 @@ import ListaDependencias from '../../../../../data/arreglos/portal_pago_menu.jso
 import { MenuService } from 'src/app/shared/services/menu.service';
 import { MenuConceptos } from 'src/app/shared/interfaces/shared-conceptos.interface';
 import { LayoutPortalPagosComponent } from '../../pages/layout-portal-pagos.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { ModalPagoLineaComponent } from 'src/app/shared/components/modal-pago-linea/modal-pago-linea.component';
@@ -96,6 +96,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
   //public cardsArr: PortalMenu[] = ListaDependencias;
 
   private generalService = inject(MenuService);
+  private router =inject(Router);
 
   /*NOTA: LISTA DE CONCEPTOS DE LA DEPENDENCIA SELECCIONADA */
   public cardsArr: MenuConceptos[] = [];
@@ -121,7 +122,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    let op=0;
     // Activar la animación después de un pequeño retraso
     setTimeout(() => {
       this.show = true;
@@ -129,7 +130,7 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     this.activRoute.queryParams.subscribe(params => {
       const opc = params['opc'];
       const opcNum = parseInt(opc, 10); // base 10
-
+      op=opc;
       if (!isNaN(opcNum)) {
         this.openDialog({ label: '' }, opcNum);
       }
@@ -145,7 +146,10 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
             if (result.length > 0) {
               this.isLoading = false;
               this.cardsArr = result;
-              //this.cardsArr.push({pk: 830, titulo: 'recaudaciondelimpuestopredialporconveniodecolaboracionadministrativa', idConcepto: 100, combinable: 0, formulario: 0, rol: 0, tipoMovimiento: 0, gestora: 0, url: '', costo: 0});
+              if(op==6){
+                this.cardsArr.push({pk: 830, titulo: 'recaudaciondelimpuestopredial', idConcepto: 100, combinable: 0, formulario: 0, rol: 0, tipoMovimiento: 0, gestora: 0, url: '', costo: 0});
+
+              }
               return;
             }
 
@@ -263,5 +267,6 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
+    
   }
 }

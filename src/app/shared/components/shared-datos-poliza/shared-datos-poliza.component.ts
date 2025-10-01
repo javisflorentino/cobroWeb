@@ -28,6 +28,12 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   public position: boolean[] = [true,false,false, false];
   public mostrarEmbedBanorte: boolean = true;
 
+   //QA
+  //private url = 'https://qa.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=';
+  //public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  //public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  //public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  
   private url = environments.URL_PAGO_EN_LINEA_RECIBO + '/poliza/imprimirPoliza?lineaCaptura=';
   public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
   public url_pagolinea_only: string =  environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
@@ -182,15 +188,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   // Agregar campos ocultos
   const campos : any= {
     referencia: datos.referencia,
-    referencia2: datos.referencia2,
-    sistema: 106,
-    banco: '86',
-    importeTotal: datos.importeTotal,
-    pkPago: datos.pkPago,
-    clave: datos.clave,
-    pkMunicipio: datos.pkMunicipio,
-    correo: datos.correo,
-    pkCuenta: datos.pkCuenta,
+    importeTotal: datos.importeTotal,  
     token: this.authSiigemService.getToken()
   };
 

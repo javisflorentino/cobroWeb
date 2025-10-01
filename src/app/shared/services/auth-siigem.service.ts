@@ -8,7 +8,7 @@ import { environments } from 'src/environments/environments';
   providedIn: 'root'
 })
 export class AuthSiigemService {
-  private loginURL = `${environments.baseUrlApp}siigemWeb/auth/login`;//'serviciosHacienda/poliza/generar';
+  private loginURL = `https://pagos.hacienda.morelos.gob.mx/siigemWeb/auth/login`;//'serviciosHacienda/poliza/generar';
 
   constructor(private http: HttpClient) { }
   // Login fijo, sin intervención de usuario
