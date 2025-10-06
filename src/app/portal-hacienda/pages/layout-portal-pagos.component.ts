@@ -27,7 +27,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
   public receiveNameConcept!: string;
 
   /* se envia a shared-toolbar */
-  public senNameDep: string = 'SECRETARÍA DE HACIENDA';
+  public senNameDep: string = 'SECRETARÍA DE ADMINISTRACIÓN Y FINANZAS';
 
   // Envia un valor numerico aleatorio mayot a 0 para indicar que se quiere ir al home. Se envia al Sidenav que limpiara variables al recibir
   public sendActEraseLocalStor: Subject<boolean> = new Subject<boolean>();//: boolean = false;
@@ -114,7 +114,7 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
 
   redirectHome(event: boolean): void {
     this.controlView = false;
-    this.senNameDep = 'SECRETARÍA DE HACIENDA';
+    this.senNameDep = 'SECRETARÍA DE ADMINISTRACIÓN Y FINANZAS';
     this.receiveNameConcept = '';
     //this.sendActEraseLocalStor = true;
     this.sendActEraseLocalStor.next(true);
