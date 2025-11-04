@@ -22,7 +22,7 @@ export class ValidatorsService {
   public expNoTelNew = '^(?!0+$)[\(]?[0-9]{2,3}[\)]?[\ -]?[0-9]{7,8}$'; // Expresión para validar No Telefónico
   //[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$
   public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚÜáéíóúü.\\-]+([\\sa-zA-ZÑÁÉÍÓÚÜáéíóúü.\\-]+)*$';//'^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
-  public peoplesNamePathWithNumbers: string = '^(?=.*[a-zA-ZÑÁÉÍÓÚ])[a-zA-ZÑÁÉÍÓÚ0-9.,&\-\s]+([\ a-zA-ZÑÁÉÍÓÚ0-9.,&\-\s]+)*$';
+  public peoplesNamePathWithNumbers: string = '^(?=.*[a-zA-ZÑÁÉÍÓÚÜü])[a-zA-ZÑÁÉÍÓÚÜü0-9.,&\-\s]+([\ a-zA-ZÑÁÉÍÓÚÜü0-9.,&\-\s]+)*$';
 
   public streetNamePath: string = '^(?![*_:]*$)[a-zA-ZÑÁÉÍÓÚ.#0-9\ ]+$';
   public alfaPath: string = '^[a-zA-ZÑ0-9]+$';
