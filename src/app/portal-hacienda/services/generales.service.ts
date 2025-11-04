@@ -288,18 +288,22 @@ export class GeneralesService {
     });
   }
 
-  public validateVehicle( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
-      const fielValue1 = formGroup.get(serie)?.value;
-      const fileValue2 = formGroup.get(placa)?.value;
-
-      if(!formGroup.get(serie)?.pristine) {
-        this.validateVahicleOnDb(fileValue2,fielValue1)
-        .then(response => response.text())
-        .then(xml => {
-          this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-          const response = this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'];
-          if(response.includes('EXITO')) {
+  public validateVehicle(
+    serie: string,
+    placa: string,
+    mssg: number,
+    tramite: number,
+    tipoVehiculo: string,
+    fechaFactura: string
+  ) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const serieValue = formGroup.get(serie)?.value;
+      const placaValue = formGroup.get(placa)?.value;
+  
+      if (!formGroup.get(serie)?.pristine) {
+        this.validateVehicleRest(placaValue, serieValue).subscribe(isValid => {
+          
+          if(isValid) {
             formGroup.get(serie)?.setErrors( null );
             return null;
           }
@@ -307,12 +311,12 @@ export class GeneralesService {
             return { notEqual: true };
         });
       }
-
       formGroup.get(serie)?.markAsTouched();
       formGroup.get(serie)?.setErrors( null );
       return null;
-    }
+    };
   }
+  
   /*validateVehicle(
     serieControlName: string,
     placaControlName: string,

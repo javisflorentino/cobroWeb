@@ -100,12 +100,15 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
       this.buttBlock = false;
       return;
     }
-    this.generalService.validateVahicleOnDb(this.myForm.get('placa')?.value, this.myForm.get('serie')?.value)
-    .then(response => response.text())
-    .then(xml => {
-      this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-      const response = this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'];
-      if(response.includes('EXITO')) {
+    this.generalService.validateVehicleRest(this.myForm.get('placa')?.value, this.myForm.get('serie')?.value)
+    .subscribe(result => {
+      if (result === false) {
+        this.openSnackBar("El vehiculo no existe");
+      this.isLoading = false;
+      this.buttBlock = false;
+      } else {
+
+
         const fecha = moment(this.myForm.get('fecha_verificacion')?.value);
         sessionStorage.setItem('route_origen',`desarrollo-sustentable/calidad-aire-multaverif/${this.idConcepto}/${this.tipoForm}`);
         sessionStorage.setItem('datos_cobro',JSON.stringify(
@@ -123,13 +126,12 @@ export class MultaVerificacionPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/pagos/tabla-conceptos',this.idConcepto,this.tipoForm]);
         return;
       }
-      this.openSnackBar(response);
-      this.isLoading = false;
-      this.buttBlock = false;
     });
+    
 
     //return;
   }
+
 
   getMessage(idMssg:ValidationErrors|null|undefined, nameField:string) {
     if ( !idMssg ) {

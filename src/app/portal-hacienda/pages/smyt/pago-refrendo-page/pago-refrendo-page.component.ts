@@ -87,68 +87,70 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let p = this.refrendoForm.get('placa')!.value;
-    let s = this.refrendoForm.get('serie')?.value;
-    this.smytSevice.validateVehicleSoap(p, s)
-      .then(response => response.text())
-      .then(xml => {
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
-        sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
-        this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false, "obtenerVehiculo":true })
-          .subscribe({
-            next: (resp) =>{
-              if (resp?.success) {
-                sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
-                  "vMarca":        resp.data.adicional?.vMarca,
-                  "vSubmarca":     resp.data.adicional?.vSubmarca,
-                  "noCilindros":   resp.data.adicional?.noCilindros,
-                  "placaAnterior": resp.data.adicional?.placaAnterior,
-                  "modelo":        resp.data.adicional?.modelo,
-                  "tipoVehiculo":  resp.data.adicional?.tipoVehiculo
-                }));
-                this.router.navigate(['/pagos/tabla-conceptos', 1]);
-                return
-              }
-              Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
-              this.isLoading = false;
-              this.buttBlock = false;
-            },
-            error: (err) =>{
-              Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
-              this.isLoading = false;
-              this.buttBlock = false;
-            },
-            complete: () => {}
+    let placa = this.refrendoForm.get('placa')!.value;
+    let serie = this.refrendoForm.get('serie')?.value;
+    
+    this.isLoading = true;
+    this.buttBlock = true;
+    
+    this.smytService.validateVehicle({
+      tramite: 1,
+      placa,
+      numeroSerie: serie,
+      obtenerContribuyente: false,
+      obtenerVehiculo: true
+    }).subscribe({
+      next: (resp) => {
+        if (resp?.success && resp.data) {
+          const adicional = resp.data.adicional;
+    
+          // Guarda los datos principales del vehículo
+          sessionStorage.setItem('vehicle_data', JSON.stringify({
+            placa,
+            numeroSerie: adicional?.noSerie,
+            tramite: 1,
+            obtenerContribuyente: true
+          }));
+    
+          // Guarda los datos adicionales
+          sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
+            vMarca:        adicional?.vMarca,
+            vSubmarca:     adicional?.vSubmarca,
+            noCilindros:   adicional?.noCilindros,
+            placaAnterior: adicional?.placaAnterior,
+            modelo:        adicional?.modelo,
+            tipoVehiculo:  adicional?.tipoVehiculo
+          }));
+    
+          // Redirige a la siguiente vista
+          this.router.navigate(['/pagos/tabla-conceptos', 1]);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error!!",
+            text:  "No se encontró información del vehículo.",
+            allowOutsideClick: false
           });
-      })
-      .catch(err => {
-        Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
-        this.isLoading = false;
-        this.buttBlock = false;
-      });
-
-
-    //Llamar Servicio para ovtener datos del vehiculo y almacenarlo en LocalStor
-
-    /*this.smytService.validateVehicle(p!,s!)
-      .then(response => response.text())
-      .then(xml => {
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        if(this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'] === 'EXITO') {
-          sessionStorage.setItem('route_origen','smyt-refrendo')
-          this.router.navigate(['/pagos/tabla-conceptos',1]);
-          return
+          this.isLoading = false;
+          this.buttBlock = false;
         }
-
-        this._snackBar.openFromComponent(SnackBarComponent, {
-          data: this.asJson['soap:Envelope']['soap:Body']['ns2:validarVehiculoResponse'].validarVehiculo['#text'],
-          duration: 3000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error!!",
+          text: err.message,
+          allowOutsideClick: false
         });
-
         this.isLoading = false;
         this.buttBlock = false;
-      }).catch (err => console.log(err));*/
+      },
+      complete: () => {
+        this.isLoading = false;
+        this.buttBlock = false;
+      }
+    });
+    
 
   }
 
