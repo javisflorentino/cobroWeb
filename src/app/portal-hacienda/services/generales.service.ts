@@ -260,7 +260,7 @@ export class GeneralesService {
 
     const body = {"placa":placa, "numeroSerie": serie}
 
-    return this.http.post<{data: boolean}>(`${this.urlSOAP}serviciosHacienda/smyt/validarVehiculo`, body, {headers})
+    return this.http.post<{data: boolean}>(`${this.baseUrlApp}/smyt/validarVehiculo`, body, {headers})
     .pipe(
       map(response => response.data),
       catchError(error => {

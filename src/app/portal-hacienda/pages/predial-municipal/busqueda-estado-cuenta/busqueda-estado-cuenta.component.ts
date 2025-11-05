@@ -15,6 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PdfViewerComponentComponent } from 'src/app/shared/components/pdf-viewer-component/pdf-viewer-component.component';
 import { AuthSiigemService } from 'src/app/shared/services/auth-siigem.service';
 import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
+import { map, switchMap, tap } from 'rxjs';
 @Component({
   selector: 'app-busqueda-estado-cuenta',
   templateUrl: './busqueda-estado-cuenta.component.html',
@@ -58,43 +59,47 @@ export class BusquedaEstadoCuentaComponent {
     private dialog: MatDialog,
     private sanitizer: DomSanitizer
     ) { }
-  ngOnInit(): void {
-   sessionStorage.removeItem('datosPago');
-    this.route.paramMap.subscribe(params => {
-      this.pkMunicipio = parseInt(params.get('idConcepto') || '0');
-    ;
-      if (this.pkMunicipio === 0) {
-        this.openSnackBar('No se pudo obtener el municipio de la URL');
-        //this.router.navigate(['/']);
-      }
-      // Cambia el label según el municipio
-      this.setValidadorLabel();
-      // Obtener detalle del municipio
-      this.predialService.getDetalleMunicipio(this.pkMunicipio).subscribe({
-      
+    ngOnInit(): void {
+      sessionStorage.removeItem('datosPago');
+    
+      this.route.paramMap.pipe(
+        // Mapeamos el parámetro idConcepto
+        map(params => parseInt(params.get('idConcepto') || '0')),
+        tap(pk => {
+          this.pkMunicipio = pk;
+    
+          if (pk === 0) {
+            this.openSnackBar('No se pudo obtener el municipio de la URL');
+            // this.router.navigate(['/']);
+          }
+    
+          // Cambia el label según el municipio
+          this.setValidadorLabel();
+        }),
+        // Llamamos al servicio una vez que pkMunicipio está definido
+        switchMap(pk => this.predialService.getDetalleMunicipio(pk))
+      ).subscribe({
         next: (response) => {
-          if (response && response.data) {
-              this.detalleMunicipio = response.data;
-
-       
-            
-            
+          if (response.success && response.data) {
+            this.detalleMunicipio = response.data;
           } else {
             this.openSnackBar('No se encontró información para los datos proporcionados');
           }
         },
         error: (err) => {
+          console.error('Error al obtener detalle del municipio', err);
           this.detalleMunicipio = null;
         }
       });
-    });
-    this.conceptTitle = sessionStorage.getItem('concept')!;
-
-    this.authSiigemService.login().subscribe({
-    next: (res) => console.log('Login exitoso', res),
-    error: (err) => console.error('Error al autenticar', err)
-  });
-}
+    
+      this.conceptTitle = sessionStorage.getItem('concept')!;
+    
+      this.authSiigemService.login().subscribe({
+        next: (res) => console.log('Login exitoso', res),
+        error: (err) => console.error('Error al autenticar', err)
+      });
+    }
+    
 
 setValidadorLabel() {
   switch (this.pkMunicipio) {
