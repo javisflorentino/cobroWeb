@@ -42,9 +42,9 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   public conceptTitle: string = '';
 
   public formLicencias: FormGroup = this.fb.group({
-    no_licencia:       [{value:'',disabled:this.formBlock}, [Validators.required,Validators.minLength(7), Validators.maxLength(20)] ],
-    fecha_vencimiento: [{value:new Date(),disabled:this.formBlock}, [Validators.required, this.validatorFormService.noOlderDay] ],
-    tien_licencia:     ['', [Validators.required] ]
+    no_licencia: [{ value: '', disabled: this.formBlock }, [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
+    fecha_vencimiento: [{ value: new Date(), disabled: this.formBlock }, [Validators.required, this.validatorFormService.noOlderDay]],
+    tien_licencia: ['', [Validators.required]]
   });
 
   public messages: Messages[] = [];
@@ -62,7 +62,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-  @HostListener('input', ['$event']) onKeyUp(event:any) {
+  @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
   }
 
@@ -71,18 +71,18 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-      private fb: FormBuilder,
-      private router: Router,
-      private _snackBar: MatSnackBar,
-      private validatorsService: ValidatorsService,
-      private validatorFormService: ValidatorsFormService,
-      private smytService: SmytService,
-      private breakpointObserver: BreakpointObserver,
-      private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private validatorsService: ValidatorsService,
+    private validatorFormService: ValidatorsFormService,
+    private smytService: SmytService,
+    private breakpointObserver: BreakpointObserver,
+    private activatedRoute: ActivatedRoute,
   ) {
     const currentYear = moment().year();
     const currentMonth = moment().month() + 1;
-    this.maxDate = moment([currentYear , 10, 30]);
+    this.maxDate = moment([currentYear, 10, 30]);
 
     this.mediaQuery();
   }
@@ -97,95 +97,114 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
     //sessionStorage.removeItem('contribuyente');
     this.smytService.getMessages_licencia()
-      .subscribe( message => {
+      .subscribe(message => {
         this.messages = message;
         if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
-          this.messages.forEach(mss=> {
+          this.messages.forEach(mss => {
             msg += mss.message + "<br><br>";
           });
           this.openSnackBar(msg);
         }
       });
 
-      //Observable que se mantiene vivo mientras no se abandone el componente. Ejemplo cuando se cambia en el meni de 5 a 3 años por ejemplo
-      this.activatedRoute.params.subscribe(({idConcepto,tipoForm}) => {
-        this.conceptTitle = sessionStorage.getItem('concept')!;
+    //Observable que se mantiene vivo mientras no se abandone el componente. Ejemplo cuando se cambia en el meni de 5 a 3 años por ejemplo
+    this.activatedRoute.params.subscribe(({ idConcepto, tipoForm }) => {
+      this.conceptTitle = sessionStorage.getItem('concept')!;
 
-        this.tipoform = tipoForm;
-        this.idConcepto = idConcepto;
+      this.tipoform = tipoForm;
+      this.idConcepto = idConcepto;
+      const control = this.formLicencias.get('fecha_vencimiento');
 
-        setTimeout(()=>{
-          if([837,834,829].find(resp => resp==this.idConcepto) !== undefined) {
-            setTimeout(()=>{
-              this.openSnackBar("Para este trámite debe contar con una licencia de CHOFER emitida por el GOBIERNO DEL ESTADO DE MORELOS");
-              this.formLicencias.get('tien_licencia')?.setValue('1');
-              this.formLicencias.get('tien_licencia')?.disable();
-              this.tieneLicencia(1);
-            },1000);
-          } else {
-            if(this.idConcepto==5308){
-              this.tieneLicencia(0);
-            }
-            
-            this.formLicencias.get('tien_licencia')?.setValue('');
-            this.formLicencias.get('tien_licencia')?.enable();
-            this.formLicencias.get('no_licencia')?.disable();
-            this.formLicencias.get('fecha_vencimiento')?.disable();
-          }
-        },500);
-        if (this.idConcepto == 5306) {
-          // Quita los validadores
-          this.formLicencias.get('fecha_vencimiento')?.clearValidators();
-          this.formLicencias.get('fecha_vencimiento')?.setValidators([
-            Validators.required
-            
+      setTimeout(() => {
+        if ([837, 834, 829].find(resp => resp == this.idConcepto) !== undefined) {
+          // Reemplazar noOlderDay por noOlderDay_tmp, manteniendo required
+          control?.setValidators([
+            Validators.required,
+            this.validatorFormService.noOlderDay
           ]);
-        } 
-        
-        // Actualiza el estado del control
-        this.formLicencias.get('fecha_vencimiento')?.updateValueAndValidity();
-        
-        sessionStorage.setItem('route_origen','smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
-      });
 
-      this.debouncerSubscription = this.debounce
+          setTimeout(() => {
+            this.openSnackBar("Para este trámite debe contar con una licencia de CHOFER emitida por el GOBIERNO DEL ESTADO DE MORELOS");
+            this.formLicencias.get('tien_licencia')?.setValue('1');
+            this.formLicencias.get('tien_licencia')?.disable();
+            this.tieneLicencia(1);
+          }, 1000);
+        } else if (this.idConcepto == 839 || this.idConcepto == 838) {
+          // Reemplazar noOlderDay por noOlderDay_tmp, manteniendo required
+          control?.setValidators([
+            Validators.required,
+            this.validatorFormService.noOlderDay_tmp
+          ]);
+        } else {
+          if (this.idConcepto == 5308) {
+            this.tieneLicencia(0);
+          }
+
+          // Reemplazar noOlderDay por noOlderDay_tmp, manteniendo required
+          control?.setValidators([
+            Validators.required,
+            this.validatorFormService.noOlderDay
+          ]);
+
+          this.formLicencias.get('tien_licencia')?.setValue('');
+          this.formLicencias.get('tien_licencia')?.enable();
+          this.formLicencias.get('no_licencia')?.disable();
+          this.formLicencias.get('fecha_vencimiento')?.disable();
+        }
+      }, 500);
+      if (this.idConcepto == 5306) {
+        // Quita los validadores
+        this.formLicencias.get('fecha_vencimiento')?.clearValidators();
+        this.formLicencias.get('fecha_vencimiento')?.setValidators([
+          Validators.required
+
+        ]);
+      }
+
+      // Actualiza el estado del control
+      this.formLicencias.get('fecha_vencimiento')?.updateValueAndValidity();
+
+      sessionStorage.setItem('route_origen', 'smyt/smyt-licencia-vehiculo/' + this.idConcepto + '/' + this.tipoform)
+    });
+
+    this.debouncerSubscription = this.debounce
       .pipe(
         debounceTime(500)
       )
-      .subscribe( value => {
-        const resp = this.validatorFormService.licenseValidate(value,this.idConcepto);
+      .subscribe(value => {
+        const resp = this.validatorFormService.licenseValidate(value, this.idConcepto);
         if (resp) {
-          this.formLicencias.get('no_licencia')?.setErrors({notUnique:true});
+          this.formLicencias.get('no_licencia')?.setErrors({ notUnique: true });
           this.openSnackBar(resp);
         }
       });
 
-      if ([838,835,830].find(resp => resp == this.idConcepto ) ) {
-        this.tipoLic = 'AUTOMOVILISTA';
-      }
-      if ([837,834,829].find(resp => resp == this.idConcepto ) ) {
-        this.tipoLic = 'CHOFER';
-      }
-      if ([839,836,831].find(resp => resp == this.idConcepto ) ) {
-        this.tipoLic = 'MOTOCICLISTA';
-      }
-      if (this.idConcepto == 832) {
-        this.tipoLic = 'TURISTA';
-      }
+    if ([838, 835, 830].find(resp => resp == this.idConcepto)) {
+      this.tipoLic = 'AUTOMOVILISTA';
+    }
+    if ([837, 834, 829].find(resp => resp == this.idConcepto)) {
+      this.tipoLic = 'CHOFER';
+    }
+    if ([839, 836, 831].find(resp => resp == this.idConcepto)) {
+      this.tipoLic = 'MOTOCICLISTA';
+    }
+    if (this.idConcepto == 832) {
+      this.tipoLic = 'TURISTA';
+    }
   }
 
-  onKeyPress( searchTerm: string ) {
-    this.debounce.next( searchTerm );
+  onKeyPress(searchTerm: string) {
+    this.debounce.next(searchTerm);
   }
 
   onSubmit() {
     this.isLoading = true;
     this.buttBlock = true;
 
-    if ( this.formLicencias.valid ) {
-      if ( this.idConcepto && this.idConcepto !== 0 ) {
+    if (this.formLicencias.valid) {
+      if (this.idConcepto && this.idConcepto !== 0) {
         let invoiceDate = moment(this.formLicencias.get('fecha_vencimiento')?.value).toDate();
-        sessionStorage.setItem('vehicle_data_adicional',JSON.stringify({"licencia":this.formLicencias.get('no_licencia')?.value,"fecha_vencimiento":invoiceDate.getDate() + '/' + (invoiceDate.getMonth()+1) + '/' + invoiceDate.getFullYear()}));
+        sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({ "licencia": this.formLicencias.get('no_licencia')?.value, "fecha_vencimiento": invoiceDate.getDate() + '/' + (invoiceDate.getMonth() + 1) + '/' + invoiceDate.getFullYear() }));
         this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
         return;
       }
@@ -197,16 +216,16 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
     this.buttBlock = false;
   }
 
-  tieneLicencia(event:number) {
+  tieneLicencia(event: number) {
 
-    if ( event == 1 ) {
+    if (event == 1) {
       this.formBlock = false;
       this.formLicencias.get('no_licencia')?.enable();
       this.formLicencias.get('fecha_vencimiento')?.enable();
       this.no_licencia.nativeElement.focus();
       return;
     }
-    if ( this.idConcepto > 0 ) {
+    if (this.idConcepto > 0) {
       this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoform]);
       return;
     }
@@ -216,13 +235,13 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
 
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
-      data: message,duration: 15000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+      data: message, duration: 15000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
     });
   }
 
-  isValidField( field: string ) {
+  isValidField(field: string) {
     //TODO: Obtener validación desde un servicio
-    return this.validatorsService.isValidField( this.formLicencias, field );
+    return this.validatorsService.isValidField(this.formLicencias, field);
   }
   public mediaQuery() {
 
