@@ -157,7 +157,7 @@ export class SmytService {
 
   async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {
-      const response = await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
+      const response = await fetch(`https://app.hacienda.morelos.gob.mx/tramitesSMyT/services/SMyT?wsdl`, {
         method: "POST",
         body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
         <soapenv:Header/>

@@ -209,7 +209,10 @@ setValidadorLabel() {
         <div style="text-align: left;">
           <p><strong>Clave:</strong> ${data.clave}</p>
           <p><strong>Referencia:</strong> ${data.referencia}</p>
-          <p><strong>Importe:</strong> ${data.importeTotal.toFixed(2)}</p>
+          <p><strong>Importe:</strong> ${data.importeTotal.toLocaleString('es-MX', { 
+  style: 'currency', 
+  currency: 'MXN' 
+})}</p>
         </div>
       `,
       icon: 'success',
