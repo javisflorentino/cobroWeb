@@ -31,6 +31,17 @@ export class ValidatorsFormService {
     return null
   }
 
+  public noOlderDay_tmp = (control: FormControl): ValidationErrors | null => {
+    /*let date:string = control.value;
+    console.log(date)
+    return null;*/
+    let value = moment(moment(control.value).toDate(),'LL').diff(moment(new Date(),'LL'),'days');//.toDate().getTime();
+    if( value >= 47) {
+      return {dateGrate:true}
+    }
+    return null
+  }
+
   licenseValidate(no_licencia:string, idConcept:number) {
     let flag:boolean = false;
     if (!no_licencia.charAt(0).match('^[a-zA-Z]$')) {
