@@ -1,0 +1,24 @@
+/* Estilos específicos para el componente Cesión de Derechos */
+.card {
+  padding: 1rem;
+}
+
+.fontsizeerror {
+  font-size: 12px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Ajustes para responsividad */
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}

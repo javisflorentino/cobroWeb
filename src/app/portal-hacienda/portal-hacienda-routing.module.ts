@@ -10,6 +10,7 @@ import { NotariosComponent } from './pages/ser-catastrales/notarios/notarios.com
 import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuestos.component';
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
 import { ImpuestosPagesComponent } from './hacienda/pages/impuestos-pages/impuestos-pages.component';
+import { CesionDerechosComponent } from './pages/cesion-derechos/cesion-derechos/cesion-derechos.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'publicogeneral/:idConcepto/:tipoForm',
         component: PublicoGeneralComponent
+      },
+      {
+        path: 'cesionderechos/:idConcepto/:tipoForm',
+        component: CesionDerechosComponent
       },
       {
         path: 'smyt',

@@ -1,0 +1,66 @@
+<shared-load-spinner *ngIf="isLoading()"></shared-load-spinner>
+<div class="card">
+  <div class="flex justify-content-center flex-wrap">
+    <mat-card class="shadow-8">
+      <mat-card-header>
+        <mat-card-title>Cesión de Derechos</mat-card-title>
+        <mat-card-subtitle><small>{{nameConcept | titlecase}}</small></mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content>
+        <div class="">
+          <form action="" fxLayout="column" [formGroup]="cesionForm" (ngSubmit)="onSubmit()">
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+              
+              <!-- Campo: Tipo de Placa -->
+              <mat-form-field fxFlex class="col-10" appearance="outline">
+                <mat-label>Tipo de Placa</mat-label>
+                <mat-select formControlName="tipoPlaca" required>
+                  <mat-option *ngFor="let tipo of tiposPlaca" [value]="tipo.id">{{tipo.nombre}}</mat-option>
+                </mat-select>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('tipoPlaca')">
+                  Campo requerido
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Campo: Número de Concesión -->
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Número de Concesión</mat-label>
+                <input matInput formControlName="numeroConcesion" required type="text" maxlength="20" (input)="onKeyUp($event)">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('numeroConcesion')">
+                  Campo requerido
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Campo: Confirmación Número de Concesión -->
+              <mat-form-field fxFlex class="" appearance="outline">
+                <mat-label>Confirmar Número de Concesión</mat-label>
+                <input matInput formControlName="numeroConcesionConfirmacion" required type="text" maxlength="20" (input)="onKeyUp($event)">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('numeroConcesionConfirmacion')">
+                  {{ cesionForm.get('numeroConcesionConfirmacion')?.hasError('notEqual') ? 'Los números de concesión no coinciden' : 'Campo requerido' }}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <div class="flex justify-content-between">
+          <button mat-stroked-button color="warn" type="button" (click)="redirectHome()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" type="submit" [disabled]="cesionForm.invalid || isLoading()" (click)="onSubmit()">
+            <mat-icon>send</mat-icon>
+            Enviar
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

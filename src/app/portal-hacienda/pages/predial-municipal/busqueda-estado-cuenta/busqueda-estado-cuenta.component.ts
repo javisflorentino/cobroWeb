@@ -39,8 +39,11 @@ export class BusquedaEstadoCuentaComponent {
     validador: ['', [Validators.required]],
     tipoPersona: ['1', [Validators.required]],
     correo: ['', [Validators.required, Validators.email]],
+    confirmarCorreo: [''],
     telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
-  }, );
+  }, {
+    validators: []
+  });
   private predialService = inject(PredialMunicipalService);
     private authSiigemService = inject(AuthSiigemService);
 
@@ -75,6 +78,19 @@ export class BusquedaEstadoCuentaComponent {
     
           // Cambia el label según el municipio
           this.setValidadorLabel();
+          
+          // Agregar validación de confirmación de correo solo para municipio 17
+          if (pk === 17) {
+            this.predialMunicipal.get('confirmarCorreo')?.setValidators([Validators.required, Validators.email]);
+            this.predialMunicipal.setValidators([
+              this.validatorsService.isFieldOneEqualFielTwo('correo', 'confirmarCorreo', 1)
+            ]);
+          } else {
+            this.predialMunicipal.get('confirmarCorreo')?.clearValidators();
+            this.predialMunicipal.clearValidators();
+          }
+          this.predialMunicipal.get('confirmarCorreo')?.updateValueAndValidity();
+          this.predialMunicipal.updateValueAndValidity();
         }),
         // Llamamos al servicio una vez que pkMunicipio está definido
         switchMap(pk => this.predialService.getDetalleMunicipio(pk))
