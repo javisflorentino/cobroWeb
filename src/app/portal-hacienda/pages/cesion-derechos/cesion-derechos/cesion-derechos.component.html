@@ -12,6 +12,15 @@
           <form action="" fxLayout="column" [formGroup]="cesionForm" (ngSubmit)="onSubmit()">
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
               
+              <!-- Campo: Placa -->
+              <mat-form-field fxFlex class="" appearance="outline">
+                <mat-label>Placa</mat-label>
+                <input matInput formControlName="placa" required type="text" maxlength="20" (input)="onKeyUp($event)">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('placa')">
+                  Campo requerido
+                </mat-error>
+              </mat-form-field>
+
               <!-- Campo: Tipo de Placa -->
               <mat-form-field fxFlex class="col-10" appearance="outline">
                 <mat-label>Tipo de Placa</mat-label>

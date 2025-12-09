@@ -16,6 +16,7 @@ import { AltaVehiculoCambioPropietarioComponent } from './alta-vehiculo-cambio-p
 import { RefrendoCambioPropietarioComponent } from './refrendo-cambio-propietario/refrendo-cambio-propietario.component';
 import { SustitucionPlacaCambioPropietarioComponent } from './sustitucion-placa-cambio-propietario/sustitucion-placa-cambio-propietario.component';
 import { PagoRefrendoServicioPublicoComponent } from './pago-refrendo-servicio-publico/pago-refrendo-servicio-publico.component';
+import { CesionDerechosComponent } from '../cesion-derechos/cesion-derechos/cesion-derechos.component';
 
 const routes: Routes = [
   {
@@ -95,7 +96,10 @@ const routes: Routes = [
     path: 'smyt-refrendo-serv-pub/:idConcepto/:tipoForm',
     component: PagoRefrendoServicioPublicoComponent
   },
-
+  {
+    path: 'smyt-cesion-derechos/:idConcepto/:tipoForm',
+    component: CesionDerechosComponent
+  },
   {
     path: '**',
     redirectTo: 'pagos'
