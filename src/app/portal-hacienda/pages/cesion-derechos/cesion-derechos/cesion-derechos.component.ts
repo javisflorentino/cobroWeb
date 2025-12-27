@@ -26,7 +26,8 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
   
   // Arreglo de tipos de placa pública
   public tiposPlaca: TipoPlaca[] = tipoPlacaPublico;
-  
+  public route_origen: string = 'dependencias';
+
   // Formulario reactivo
   public cesionForm!: FormGroup;
 
@@ -45,7 +46,7 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nameConcept = sessionStorage.getItem('concept') || 'Cesión de Derechos';
+    this.nameConcept = sessionStorage.getItem('concept')!;
   }
 
   ngOnDestroy(): void {
@@ -54,13 +55,13 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.cesionForm = this.fb.group({
+      placa: ['', [Validators.required, Validators.minLength(4)]],
       numeroConcesion: ['', [Validators.required, Validators.minLength(3)]],
-      numeroConcesionConfirmacion: ['', [Validators.required, Validators.minLength(3)]],
-      tipoPlaca: ['', [Validators.required]]
+      numeroConcesionConfirmacion: ['', [Validators.required, Validators.minLength(3)]]
+      //tipoPlaca: ['', [Validators.required]]
     }, {
       validators: [
-        this.validatorsService.isFieldOneEqualFielTwo('numeroConcesion', 'numeroConcesionConfirmacion', 100),
-        this.validatorsService.existsSeriesPublico('numeroConcesion', 'numeroConcesion', 101, 1, 'tipoPlaca', 'numeroConcesion')
+        this.validatorsService.isFieldOneEqualFielTwo('numeroConcesion', 'numeroConcesionConfirmacion', 100)
       ]
     });
   }
@@ -72,6 +73,8 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
       this.showError('Por favor, complete todos los campos correctamente.');
       return;
     }
+    //sessionStorage.setItem('route_origen', '')
+
 
     // Validar que los números de concesión coincidan
     const numConcesion = this.cesionForm.get('numeroConcesion')?.value;
@@ -84,10 +87,12 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
 
     // Preparar datos para el backend
     const datosTramite: DatosTramite = {
+      tipoConcesion:"1",
       tramite: 1, // ID del trámite según requerimientos
-      placa: '', // No aplica para cesión de derechos
-      tipoVehiculo: this.cesionForm.get('tipoPlaca')?.value,
-      numeroConcesion: numConcesion
+      placa: this.cesionForm.get('placa')?.value,
+      //tipoVehiculo: this.cesionForm.get('tipoPlaca')?.value,
+      numeroConcesion: numConcesion,
+      obtenerContribuyente: true
     };
 
     // Activar loading
@@ -97,20 +102,16 @@ export class CesionDerechosComponent implements OnInit, OnDestroy {
     this.smytService.validateVehiclePublico(datosTramite).subscribe({
       next: (resp) => {
         if (resp?.success) {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: 'La validación de cesión de derechos se realizó correctamente.',
-            allowOutsideClick: false,
-            confirmButtonText: 'Continuar'
-          }).then((result) => {
-            if (result.isConfirmed) {
+       
+              sessionStorage.setItem('route_origen',this.route_origen);
+
+              sessionStorage.setItem('vehicle_data', JSON.stringify(datosTramite));
+
               // Redirigir a la siguiente vista o realizar acción correspondiente
-              this.router.navigate(['/pagos/tabla-conceptos', 1]);
-            }
-          });
+              this.router.navigate(['/pagos/tabla-conceptos', 916]);
+            
         } else {
-          this.showError(resp?.mensaje || 'No se pudo procesar la cesión de derechos.');
+          this.showError(resp?.mensaje || 'No existe la concesión.');
         }
       },
       error: (err) => {

@@ -501,7 +501,7 @@ export class DatosContribuyenteComponent implements OnInit {
           this.dataPoliza.observaciones = this.dataPoliza.datosAdicionales;
         }
         /*TODO: Carlos A 18/04/2025 */
-        if(vehicle_data.tramite==9 || (vehicle_data.tramite==3 && !!vehicle_data.numeroConcesion) && vehicle_data.valorVenta==null){
+        if(vehicle_data.tramite==9 || (vehicle_data.tramite==1 && !!vehicle_data.numeroConcesion) || (vehicle_data.tramite==3 && !!vehicle_data.numeroConcesion) && vehicle_data.valorVenta==null){
           this.dataPoliza.datosVehiculo!.tipo = 2;
         }
 

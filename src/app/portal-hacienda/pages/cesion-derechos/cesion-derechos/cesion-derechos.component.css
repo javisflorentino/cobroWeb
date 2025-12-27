@@ -11,6 +11,11 @@
   flex: 1 1 auto;
 }
 
+/* Mejoras para el layout de filas */
+.input-row {
+  margin-bottom: 10px;
+}
+
 /* Ajustes para responsividad */
 @media (max-width: 768px) {
   .input-row {
@@ -19,6 +24,6 @@
   
   mat-form-field {
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 }

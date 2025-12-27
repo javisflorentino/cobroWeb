@@ -10,10 +10,11 @@
       <mat-card-content>
         <div class="">
           <form action="" fxLayout="column" [formGroup]="cesionForm" (ngSubmit)="onSubmit()">
-            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <!-- Todos los campos en una sola fila -->
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0px">
               
               <!-- Campo: Placa -->
-              <mat-form-field fxFlex class="" appearance="outline">
+              <mat-form-field fxFlex class="" style="margin-right:1em;" appearance="outline">
                 <mat-label>Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="20" (input)="onKeyUp($event)">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('placa')">
@@ -22,7 +23,7 @@
               </mat-form-field>
 
               <!-- Campo: Tipo de Placa -->
-              <mat-form-field fxFlex class="col-10" appearance="outline">
+             <!--  <mat-form-field fxFlex class="" style="margin-right:1em;" appearance="outline">
                 <mat-label>Tipo de Placa</mat-label>
                 <mat-select formControlName="tipoPlaca" required>
                   <mat-option *ngFor="let tipo of tiposPlaca" [value]="tipo.id">{{tipo.nombre}}</mat-option>
@@ -30,21 +31,21 @@
                 <mat-error class="fontsizeerror" *ngIf="isValidField('tipoPlaca')">
                   Campo requerido
                 </mat-error>
-              </mat-form-field>
+              </mat-form-field> -->
 
               <!-- Campo: Número de Concesión -->
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-form-field fxFlex class="" style="margin-right:1em;" appearance="outline">
                 <mat-label>Número de Concesión</mat-label>
-                <input matInput formControlName="numeroConcesion" required type="text" maxlength="20" (input)="onKeyUp($event)">
+                <input matInput formControlName="numeroConcesion" required type="text" (input)="onKeyUp($event)">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('numeroConcesion')">
                   Campo requerido
                 </mat-error>
               </mat-form-field>
 
               <!-- Campo: Confirmación Número de Concesión -->
-              <mat-form-field fxFlex class="" appearance="outline">
+              <mat-form-field fxFlex class="" style="margin-right:1em;" appearance="outline">
                 <mat-label>Confirmar Número de Concesión</mat-label>
-                <input matInput formControlName="numeroConcesionConfirmacion" required type="text" maxlength="20" (input)="onKeyUp($event)">
+                <input matInput formControlName="numeroConcesionConfirmacion" onpaste="return false" required type="text"  (input)="onKeyUp($event)">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('numeroConcesionConfirmacion')">
                   {{ cesionForm.get('numeroConcesionConfirmacion')?.hasError('notEqual') ? 'Los números de concesión no coinciden' : 'Campo requerido' }}
                 </mat-error>
