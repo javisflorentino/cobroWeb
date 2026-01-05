@@ -150,7 +150,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         }
 
         if ([287].find(resp => resp == idConcepto) !== undefined) {
-          this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n https://www.hacienda.morelos.gob.mx/index.php/tramites-y-servicios-en-linea/oficio-de-habilitacion');
+          this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n <a href="https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5" target="_blank">https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5</a>');
           this.isReposicionLicencia = true;
         }
 
