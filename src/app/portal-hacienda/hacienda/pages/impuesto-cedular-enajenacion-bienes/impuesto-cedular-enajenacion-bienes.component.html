@@ -1,0 +1,204 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<!--<div class="card mb-7">
+  <div class="flex justify-content-center flex-wrap">-->
+<div class="grid flex">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
+    <mat-card class="shadow-8">
+      <mat-card-header class="mb-3">
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle>{{conceptTitle | titlecase }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content class="mt-5">
+        <form fxLayout="column" [formGroup]="formHEnajenacionBienes">
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="radio-container">
+              <mat-label>Cuenta con escritura</mat-label>
+              <input matInput style="display:none" required>
+              <mat-radio-group #group_c_tp formControlName="tiene_escritura" class="flex-wrap"
+                (change)="changeRadioTP($event.value)">
+                <mat-radio-button #buttons_c_tp value="0">
+                  <span class="wrap-label-text">No</span>
+                </mat-radio-button>
+                <mat-radio-button #buttons_c_tp value="1">
+                  <span class="wrap-label-text">Sí</span>
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-form-field>
+
+            <mat-form-field fxFlex class="col-6" appearance="outline">
+              <mat-label>Tipo de ingreso por enajenación</mat-label>
+              <mat-select formControlName="tipo_ingresos" required>
+                <mat-option *ngFor="let listaIng of tipoIngEnajenacionArr; let i = index"
+                  [ngClass]="{'blanco': i % 2 === 0, 'gris': i % 2 !== 0}"
+                  [value]="listaIng.id">{{listaIng.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error class="fontsizeerror" *ngIf="isValidField('tipo_ingresos')"> Campo requerido </mat-error>
+            </mat-form-field>
+          </div>
+
+
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Escritura</mat-label>
+            <input matInput type="text" formControlName="escritura">
+            <mat-error class="fontsizeerror">{{
+              getMessage(formHEnajenacionBienes.get('escritura')?.errors,'escritura')
+              }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Fecha de enajenación</mat-label>
+            <input matInput [matDatepicker]="dpff" formControlName="fecha_enajenacion" [readonly]="true">
+            <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+            <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+            <mat-datepicker #dpff disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+              <mat-label>Datos del enajenante</mat-label>
+              <input matInput style="display:none" required>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Teléfono de contacto</mat-label>
+                <input matInput type="text" formControlName="noPhone">
+                <mat-hint>Ej: (777) 1234567</mat-hint>
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('noPhone')?.errors,'noPhone')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput type="text" formControlName="email">
+                <mat-error>{{getMessage(formHEnajenacionBienes.get('email')?.errors,'email')}}</mat-error>
+              </mat-form-field>
+
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+              <mat-label>Domicilio del bien a enajenar</mat-label>
+              <input matInput style="display:none" required>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Referencia del inmueble</mat-label>
+                <input matInput formControlName="referencia_inmueble" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('referencia_inmueble')?.errors,'referencia_inmueble')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Monto del avaluo</mat-label>
+                <input matInput formControlName="monto_avaluo" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('monto_avaluo')?.errors,'monto_avaluo')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Ingreso por enajenación</mat-label>
+                <input matInput formControlName="ingreso_enajenacion" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('ingreso_enajenacion')?.errors,'ingreso_enajenacion')
+                  }}</mat-error>
+              </mat-form-field>
+
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+              <mat-label>Determinar deducciones</mat-label>
+              <input matInput style="display:none" required>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Costo Comprobado</mat-label>
+                <input matInput formControlName="costo_comprobado" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('costo_comprobado')?.errors,'costo_comprobado')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Importe de las inversión</mat-label>
+                <input matInput formControlName="importe_inversion" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('importe_inversion')?.errors,'importe_inversion')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Gastos notariales</mat-label>
+                <input matInput formControlName="gastos_notariales" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('gastos_notariales')?.errors,'gastos_notariales')
+                  }}</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Comisiones y mediaciones pagadas</mat-label>
+                <input matInput formControlName="comisiones_mediaciones" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('comisiones_mediaciones')?.errors,'comisiones_mediaciones')
+                  }}</mat-error>
+              </mat-form-field>
+
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+              <mat-label>Cálculo base del impuesto</mat-label>
+              <input matInput style="display:none" required>
+              <mat-radio-group #group_c_tp formControlName="calcula_base_impuesto" class="flex-wrap">
+                <mat-radio-button #buttons_c_tp value="1">
+                  <span class="wrap-label-text">Venta</span>
+                </mat-radio-button>
+                <mat-radio-button #buttons_c_tp value="2">
+                  <span class="wrap-label-text">Permuta</span>
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-form-field>
+          </div>
+
+
+          <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Contribuyente</mat-label>
+            <input matInput type="text" formControlName="contribuyente">
+            <mat-error class="fontsizeerror">{{
+              getMessage(formHEnajenacionBienes.get('contribuyente')?.errors,'contribuyente') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Monto</mat-label>
+            <input matInput formControlName="monto" type="number"
+              onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+            <mat-error class="fontsizeerror">{{ getMessage(formHEnajenacionBienes.get('monto')?.errors,'monto')
+              }}</mat-error>
+          </mat-form-field>-->
+        </form>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos/dependencias']">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <span class=""></span>
+        <button [disabled]="formHEnajenacionBienes.invalid" mat-stroked-button mat-raised color="primary"
+          (click)="onSubmit()">
+          <mat-icon>calculate</mat-icon>
+          Calcular
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+
+  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+    <messages-hacienda [messageArr]="messages" [messageArr_other]="messages_other"></messages-hacienda>
+  </div>
+
+</div>

@@ -4,6 +4,7 @@ import { ImpuestosPagesComponent } from './pages/impuestos-pages/impuestos-pages
 import { IsanPagesComponent } from './pages/isan-pages/isan-pages.component';
 import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pages.component';
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
+import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
 
 
 const routes: Routes = [
@@ -22,7 +23,13 @@ const routes: Routes = [
   {
     path: 'hacienda-enajenacion/:idConcept/:tipoForm',
     component: EnajenacionBienesPagesComponent
+  },
+  /* 02/01/2025 */
+  {
+    path: 'hacienda-impuesto-cedular/:idConcept/:tipoForm',
+    component: ImpuestoCedularEnajenacionBienesComponent
   }
+
 ];
 
 @NgModule({

@@ -12,10 +12,10 @@ import { environments } from 'src/environments/environments';
 })
 export class SmyCalculoPagosService {
 
-  private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
-  private urlSmyPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
+  private urlSmytParticular = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private urlSmyPublico = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
   private pagoLinea = `${environments.baseUrlApp}pagoenlinea`;//'pagoenlinea';
-  private otherPages = `${environments.baseUrlApp}serviciosHacienda/concepto/obtenerConcepto`
+  private otherPages = `${environments.baseUrlApp}${environments.appEnviroment}/concepto/obtenerConcepto`
   private urlSOAP = `${environments.baseUrlServ}`;
 
   constructor(private http: HttpClient, private activetedRouter: ActivatedRoute ) { }

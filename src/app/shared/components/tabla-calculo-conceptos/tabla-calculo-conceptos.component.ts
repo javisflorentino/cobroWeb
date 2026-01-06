@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 import { RequestConceptos } from '../../interfaces/request-conceptos.interface';
 import localeEs from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
+import { SnackBarWhitLinkComponent } from '../snack-bar-whit-link/snack-bar-whit-link.component';
 registerLocaleData(localeEs);
 
 
@@ -150,7 +151,12 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         }
 
         if ([287].find(resp => resp == idConcepto) !== undefined) {
-          this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n <a href="https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5" target="_blank">https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5</a>');
+          //this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n <a href="https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5" target="_blank">https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5</a>');
+          this.openSnackBarWhitLink({
+            message: 'UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:',
+            linkText: 'https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5',
+            linkUrl: 'https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5'
+          })
           this.isReposicionLicencia = true;
         }
 
@@ -226,6 +232,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             //this.consultaRezagosActualizacionAdicional(idConcepto);
             this.consultConceptoPago(idConcepto, 1, datos.monto);
             break;
+          case 9:
+            this.consultConceptoPagoImpuestoCedular(this.idConcepto);
+            break;
           default:
             if (!this.tipoform) {
               this.consultConceptoPago(idConcepto, 1, this.tipoform);
@@ -238,7 +247,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
     const dataVehicleLs: DatosTramite = JSON.parse(sessionStorage.getItem('vehicle_data')!);
     /* TODO: Carlos A 17/07/2025  se agrego dataVehicleLs.tramite == 3*/
-    if ((dataVehicleLs.tramite == 9 || (dataVehicleLs.tramite == 3 && !!dataVehicleLs.numeroConcesion) || (dataVehicleLs.tramite == 1 && !!dataVehicleLs.numeroConcesion)) && dataVehicleLs.valorVenta==null) {
+    if ((dataVehicleLs.tramite == 9 || (dataVehicleLs.tramite == 3 && !!dataVehicleLs.numeroConcesion) || (dataVehicleLs.tramite == 1 && !!dataVehicleLs.numeroConcesion)) && dataVehicleLs.valorVenta == null) {
       this.smyPagosService.getCalculoPagosPublico(dataVehicleLs)
         .subscribe(result => {
           this.isLoading = false;
@@ -385,6 +394,30 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
         }
       })
   }
+
+  consultConceptoPagoImpuestoCedular(idConcepto: number) {
+    const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    this.generalesService.getDetalleCobroImpuestoCedular(datos.fecha_enajenacion, datos.base_impuesto, 6673)
+      .subscribe({
+        next: (resp) => {
+          console.log(resp);
+          this.isLoading = false;
+          this.conceptos = resp!.data.conceptos;
+          sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));//this.conceptoPago));
+          this.total += Number(resp!.data.total);
+          datos.concepto = resp?.data.conceptos[0].descripcion;
+          sessionStorage.setItem('datos_cobro', JSON.stringify(datos));
+        },
+        error: (err) => {
+          this.isLoading = false;
+          Swal.fire({ title: "Error !!", text: err.message, icon: "error", allowOutsideClick: false })
+            .then((response) => {
+              this.router.navigate(['pagos/dependencias']);
+            });
+        }
+      })
+  }
+
   consultConceptoPago(idConcepto: number, cantidad: number, monto?: number) {
     monto = (monto == 0) ? 1 : monto;
     //Si esta definido el Local-Stor, y dependiendo de los conceptos se agregan los elementos al form
@@ -466,6 +499,16 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
       data: message, duration: 5500, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
+    });
+  }
+
+  openSnackBarWhitLink({ message, linkText, linkUrl }: { message: string; linkText: string; linkUrl: string }) {
+    this._snackBar.openFromComponent(SnackBarWhitLinkComponent, {
+      data: { message, linkText, linkUrl }, // 👈 aquí va el objeto completo
+      duration: 5500,
+      panelClass: ["snack-notification"],
+      horizontalPosition: "center",
+      verticalPosition: "top"
     });
   }
 

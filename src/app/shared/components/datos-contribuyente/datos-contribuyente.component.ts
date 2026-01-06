@@ -22,6 +22,8 @@ import { GeneralesService } from 'src/app/portal-hacienda/services/generales.ser
 import { ComboConcept } from 'src/app/portal-hacienda/interface/datos-combo.interface';
 import { ReintegrosStruct } from 'src/app/portal-hacienda/interface/reintegros-struct.interface';
 
+import ListaIngresoEnajenacion from '../../../../../data/arreglos/tipo_ingresos_enajenacion.json';
+
 @Component({
   selector: 'shared-datos-contribuyente',
   templateUrl: './datos-contribuyente.component.html',
@@ -432,9 +434,17 @@ export class DatosContribuyenteComponent implements OnInit {
         datosAdicionales = `${datos.concepto!}-${this.monthDescription(Number(datos.periodo))}-${datos.ejercicio}`;
         observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
       }
+
+
+      /* HACIENDA - IMPUESTOS - CEDULAR POR LA ENAJENACION DE BIENES INMUEBLES */
+      if(datos.tipo_form && datos.tipo_form==9) {
+        const tipo_ingreso = ListaIngresoEnajenacion.find( ingreso => ingreso.id == Number(datos.tipo_ingresos));
+        datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}`:'';
+        observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura=='1'?datos.escritura:'SIN ESCRITURA'},Fecha de enajenación: ${datos.fecha_enajenacion},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Evaluo: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.calcula_base_impuesto == '1'?'VENTA':'PERMUTA'},`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+      }
     }
    }
-
+   console.log('IMPUETO CEDULAR::: '+datosAdicionales+'---'+observaciones);
    let estado: string = '';
    let municipio: string = '';
    let estadoPeticion: boolean = false;

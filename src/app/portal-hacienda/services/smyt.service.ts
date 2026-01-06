@@ -28,12 +28,12 @@ export class SmytService {
 
   private urlMessage = 'http://localhost:3001/messages';
   private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
-  private urlSmytGenerarPoliza = `${environments.baseUrlApp}serviciosHacienda/poliza/generar`;//'serviciosHacienda/poliza/generar';
-  private urlSmytParticular = `${environments.baseUrlApp}serviciosHacienda/smyt/particular`;//'serviciosHacienda/smyt/particular';
-  private urlSmytParticularPublico = `${environments.baseUrlApp}serviciosHacienda/smyt/publico`;//'serviciosHacienda/smyt/particular';
-  private urlValidarCehiculo = `${environments.baseUrlApp}serviciosHacienda/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+  private urlSmytGenerarPoliza = `${environments.baseUrlApp}${environments.appEnviroment}/poliza/generar`;//'serviciosHacienda/poliza/generar';
+  private urlSmytParticular = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private urlSmytParticularPublico = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
+  private urlValidarCehiculo = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
   /*TODO: Carlos A 17/07/2025 */
-  private urlSmytValidVehiculo = `${environments.baseUrlApp}serviciosHacienda/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+  private urlSmytValidVehiculo = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
 
 
   constructor(private http: HttpClient) { }
@@ -57,6 +57,12 @@ export class SmytService {
     return of(ListMessage.messages_hacienda_reintegros);
     /* MODIF: 12/12/2023 */
     //this.http.get<Messages[]>(`${this.urlMessage}_hacienda_reintegros`);
+  }
+
+  getMesages_hacienda_exencion(): Observable<Messages[]> {
+    return of(ListMessage.messages_hacienda_exencion);
+    /* MODIF: 12/12/2023 */
+    //this.http.get<Messages[]>(`${this.urlMessage}_hacienda_exencion`);
   }
 
   /* TODO: 24/06/2025 Carlos A.  Se agregaron los siguientes 3 metodos que generar y retornan un observable, simulando una peticion HTTP*/

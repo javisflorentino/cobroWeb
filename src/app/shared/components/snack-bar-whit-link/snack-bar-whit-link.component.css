@@ -1,0 +1,14 @@
+.snack-content {
+  display: flex;
+  flex-direction: column;
+  white-space: pre-line; /* respeta saltos de línea si los hay */
+}
+
+.link-blanco,
+.link-blanco:link,
+.link-blanco:visited,
+.link-blanco:hover,
+.link-blanco:active {
+  color: white !important;
+  text-decoration: underline;
+}

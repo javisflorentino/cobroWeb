@@ -17,7 +17,7 @@ import { Messages } from '../interface/portal-message.interface';
 })
 export class GeneralesService {
 
-  private baseUrlApp = `${environments.baseUrlApp}serviciosHacienda`;
+  private baseUrlApp = `${environments.baseUrlApp}${environments.appEnviroment}`;
   private urlSOAP = `${environments.baseUrlServ}`;
 
   private asJson!:ValidateVehicle;
@@ -119,6 +119,24 @@ export class GeneralesService {
       catchError(error => { throw error; })
     );
   }
+
+  getDetalleCobroImpuestoCedular(fecha:string, importe:number, idConcepto:number): Observable<CalculoConcepto|null> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    //console.log([{"id": "sh-form-16","idConcepto": idConcepto,"data": [{"id": "sh-input-monto","value": importe},{"id": "sh-input-periodo","value": periodo},{"id": "sh-input-ejercicioFiscal","value": fecha}]}])
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`,JSON.stringify([{"id": "sh-form-19","idConcepto": idConcepto,"data": [{"id": "sh-input-fecha","value": fecha},{"id": "sh-input-monto","value": 10000 }]}]),{headers})
+    .pipe(
+      map(resp => {
+        if(resp.success) {
+          return resp;
+        }
+        throw {message:resp.mensaje,error:"Unauthorized",statusCode:401};
+      }),
+      catchError(error => { throw error; })
+    );
+  }
+
   async getRezagosActualizaciones(idConcepto:number, monto:number, fecha:string): Promise<any> {
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",
@@ -299,10 +317,10 @@ export class GeneralesService {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const serieValue = formGroup.get(serie)?.value;
       const placaValue = formGroup.get(placa)?.value;
-  
+
       if (!formGroup.get(serie)?.pristine) {
         this.validateVehicleRest(placaValue, serieValue).subscribe(isValid => {
-          
+
           if(isValid) {
             formGroup.get(serie)?.setErrors( null );
             return null;
@@ -316,7 +334,7 @@ export class GeneralesService {
       return null;
     };
   }
-  
+
   /*validateVehicle(
     serieControlName: string,
     placaControlName: string,

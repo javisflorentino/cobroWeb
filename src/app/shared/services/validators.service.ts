@@ -17,6 +17,7 @@ export class ValidatorsService {
   public firstNameAndLastnamePattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   public emailPattern: string = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
   public numberPattern: string = "^[0-9]+$";
+  public numberIntFloatPattern: string = "^\\d+(\\.\\d{1,2})?$";
   public exprCp = '^[0-9]{5}$';//Expresión para validar el código postal
   public expNoTel = '^[\(]([1-9]{2,3})[\)][\ ][0-9]{7,8}$'; // Expresión para validar No Telefónico
   public expNoTelNew = '^(?!0+$)[\(]?[0-9]{2,3}[\)]?[\ -]?[0-9]{7,8}$'; // Expresión para validar No Telefónico
@@ -33,40 +34,40 @@ export class ValidatorsService {
 
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt_refrendo;
 
-  private asJson!:ValidateVehicle;
+  private asJson!: ValidateVehicle;
 
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
   constructor(private smytService: SmytService) { }
 
-  public isValidField( form: FormGroup, field: string ) {
+  public isValidField(form: FormGroup, field: string) {
     return form.controls[field].errors
       && form.controls[field].touched;
   }
   /* validar fecha mayor a  */
-  public cantBeGreat = ( control: FormControl ): ValidationErrors | null => {
+  public cantBeGreat = (control: FormControl): ValidationErrors | null => {
 
     let value = moment(control.value).toDate();
     let toDate = new Date()
-    if( value > toDate) {
-      return {dateGrate:true}
+    if (value > toDate) {
+      return { dateGrate: true }
     }
     return null
   }
 
   /* VALIDAR FECHA DE RETENCIÓN */
-  public validateRetencion = ( control: FormControl): ValidationErrors | null =>{
+  public validateRetencion = (control: FormControl): ValidationErrors | null => {
     let retencionDate = moment(control.value).toDate();
     let toDate = new Date()
     const f1 = new Date(new Date().getFullYear(), 0, 20);
 
-    if(toDate > f1){
-      if(retencionDate.getFullYear() < toDate.getFullYear() || retencionDate.getFullYear() > toDate.getFullYear()){
-        return { fechaFueraRango: true}
+    if (toDate > f1) {
+      if (retencionDate.getFullYear() < toDate.getFullYear() || retencionDate.getFullYear() > toDate.getFullYear()) {
+        return { fechaFueraRango: true }
       }
     } else {
-      if(retencionDate.getFullYear() > toDate.getFullYear()){
-        return { fechaFueraRango: true}
+      if (retencionDate.getFullYear() > toDate.getFullYear()) {
+        return { fechaFueraRango: true }
       }
     }
     return null;
@@ -74,65 +75,65 @@ export class ValidatorsService {
 
   public validateDateGreat(currentDate: Date, date: string, mssg: number) {
 
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
-      const dateForm = moment(formGroup.get(date)?.value ).toDate();
-      if(dateForm > currentDate) {
-        formGroup.get(date)?.setErrors( { notEqual: true, error:mssg } );
-        return { notEqual: true, error:mssg };
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const dateForm = moment(formGroup.get(date)?.value).toDate();
+      if (dateForm > currentDate) {
+        formGroup.get(date)?.setErrors({ notEqual: true, error: mssg });
+        return { notEqual: true, error: mssg };
       }
       //formGroup.get(date)?.markAsTouched();
-      formGroup.get(date)?.setErrors( null );
+      formGroup.get(date)?.setErrors(null);
       return null;
     }
   }
 
-  public isFieldOneEqualFielTwo( field1: string, field2: string, mssg: number) {
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+  public isFieldOneEqualFielTwo(field1: string, field2: string, mssg: number) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
 
       const fielValue1 = formGroup.get(field1)?.value;
       const fielValue2 = formGroup.get(field2)?.value;
       console.log(String(fielValue1).toUpperCase() + '!==' + String(fielValue2).toUpperCase())
-      if ( String(fielValue1).toUpperCase() !== String(fielValue2).toUpperCase()) {
-        formGroup.get(field2)?.setErrors( { notEqual: true, error:mssg } );
-        return { notEqual: true, error:mssg };
+      if (String(fielValue1).toUpperCase() !== String(fielValue2).toUpperCase()) {
+        formGroup.get(field2)?.setErrors({ notEqual: true, error: mssg });
+        return { notEqual: true, error: mssg };
       }
       formGroup.get(field2)?.markAsTouched();
-      formGroup.get(field2)?.setErrors( null );
+      formGroup.get(field2)?.setErrors(null);
       return null;
 
     }
   }
 
-  public existsSeriesPublico( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, numeroConcesion:string ) {
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+  public existsSeriesPublico(serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, numeroConcesion: string) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
       const fileValue3 = formGroup.get(numeroConcesion)?.value;
 
-      let parameters:DatosTramite;
+      let parameters: DatosTramite;
 
-      if(!!tipoVehiculo) {
-        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoConcesion":tipoVehiculo, "numeroConcesion":fileValue3, "obtenerContribuyente":false };
+      if (!!tipoVehiculo) {
+        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoConcesion": tipoVehiculo, "numeroConcesion": fileValue3, "obtenerContribuyente": false };
       } else {
-        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente":false };
+        parameters = { "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "obtenerContribuyente": false };
       }
-      if(!formGroup.get(serie)?.pristine) {
+      if (!formGroup.get(serie)?.pristine) {
         this.smytService.validateVehiclePublico(parameters)
           .subscribe({
-            next:(resp)=>{
+            next: (resp) => {
               if (resp?.success) {
-                formGroup.get(serie)?.setErrors( null );
+                formGroup.get(serie)?.setErrors(null);
                 return null;
               }
-              const codeArr = this.mssgArr.filter(r =>  r.msg == String(resp?.data) )
-              formGroup.get(serie)?.setErrors( { notEqual: true, error:(codeArr.length>0)?((codeArr[0].id==10)?'11':codeArr[0].id):mssg } );
+              const codeArr = this.mssgArr.filter(r => r.msg == String(resp?.data))
+              formGroup.get(serie)?.setErrors({ notEqual: true, error: (codeArr.length > 0) ? ((codeArr[0].id == 10) ? '11' : codeArr[0].id) : mssg });
               return { notEqual: true };
             },
-            error:(err)=>{
-              if(!!err.code) {
-                formGroup.get(serie)?.setErrors( { notEqual: true, error:err.code } );
+            error: (err) => {
+              if (!!err.code) {
+                formGroup.get(serie)?.setErrors({ notEqual: true, error: err.code });
               } else {
-                formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+                formGroup.get(serie)?.setErrors({ notEqual: true, error: mssg });
               }
               return { notEqual: true };
             }
@@ -140,42 +141,42 @@ export class ValidatorsService {
       }
 
       formGroup.get(serie)?.markAsTouched();
-      formGroup.get(serie)?.setErrors( null );
+      formGroup.get(serie)?.setErrors(null);
       return null;
     }
   }
 
-  public existsSeries( serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura:string ) {
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+  public existsSeries(serie: string, placa: string, mssg: number, tramite: number, tipoVehiculo: string, fechaFactura: string) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
       let tipo: string = tipoVehiculo;
       let dateForm;
       if (tipoVehiculo === 'tipo_vehiculo')
         tipo = formGroup.get(tipoVehiculo)?.value;
-      if(fechaFactura !== null) {
-        dateForm = moment(formGroup.get(fechaFactura)?.value ).toDate();
-        dateForm = dateForm.getDate() + '/' + (dateForm.getMonth()+1) + '/' + dateForm.getFullYear();
+      if (fechaFactura !== null) {
+        dateForm = moment(formGroup.get(fechaFactura)?.value).toDate();
+        dateForm = dateForm.getDate() + '/' + (dateForm.getMonth() + 1) + '/' + dateForm.getFullYear();
       }
       const fielValue1 = formGroup.get(serie)?.value;
       const fileValue2 = formGroup.get(placa)?.value;
 
-      let parameters = { "modelo":2019, "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo":Number.parseInt(tipo), fechaFactura:dateForm, "obtenerContribuyente":false };
-      if(!formGroup.get(serie)?.pristine) {
+      let parameters = { "modelo": 2019, "tramite": tramite, "placa": fileValue2, "numeroSerie": fielValue1, "tipoVehiculo": Number.parseInt(tipo), fechaFactura: dateForm, "obtenerContribuyente": false };
+      if (!formGroup.get(serie)?.pristine) {
         this.smytService.validateVehicle(parameters)
           .subscribe({
-            next:(resp)=>{
+            next: (resp) => {
               if (resp?.success) {
-                formGroup.get(serie)?.setErrors( null );
+                formGroup.get(serie)?.setErrors(null);
                 return null;
               }
-              const codeArr = this.mssgArr.filter(r =>  r.msg == String(resp?.data) )
-              formGroup.get(serie)?.setErrors( { notEqual: true, error:(codeArr.length>0)?((codeArr[0].id==10)?'11':codeArr[0].id):mssg } );
+              const codeArr = this.mssgArr.filter(r => r.msg == String(resp?.data))
+              formGroup.get(serie)?.setErrors({ notEqual: true, error: (codeArr.length > 0) ? ((codeArr[0].id == 10) ? '11' : codeArr[0].id) : mssg });
               return { notEqual: true };
             },
-            error:(err)=>{
-              if(!!err.code) {
-                formGroup.get(serie)?.setErrors( { notEqual: true, error:err.code } );
+            error: (err) => {
+              if (!!err.code) {
+                formGroup.get(serie)?.setErrors({ notEqual: true, error: err.code });
               } else {
-                formGroup.get(serie)?.setErrors( { notEqual: true, error:mssg } );
+                formGroup.get(serie)?.setErrors({ notEqual: true, error: mssg });
               }
               return { notEqual: true };
             }
@@ -183,41 +184,41 @@ export class ValidatorsService {
       }
 
       formGroup.get(serie)?.markAsTouched();
-      formGroup.get(serie)?.setErrors( null );
+      formGroup.get(serie)?.setErrors(null);
       return null;
     }
   }
 
-  validateDataInput(field: string, mssg: number, route:string) {
-    return ( formGroup: AbstractControl ): ValidationErrors | null => {
+  validateDataInput(field: string, mssg: number, route: string) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
       const contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);
 
-      if ( contribuyenteArr.data[route] !== undefined ) {// && contribuyenteArr.data[route]['razonSocial']=='F') {
-        if (contribuyenteArr.data[route]['tipoPersona']=='M' && (field == 'primerApellido' || field == 'segundoApellido')) {
-          formGroup.get(field)?.setErrors( null );
+      if (contribuyenteArr.data[route] !== undefined) {// && contribuyenteArr.data[route]['razonSocial']=='F') {
+        if (contribuyenteArr.data[route]['tipoPersona'] == 'M' && (field == 'primerApellido' || field == 'segundoApellido')) {
+          formGroup.get(field)?.setErrors(null);
           return null;
         }
 
-        if (contribuyenteArr.data[route]['tipoPersona']=='F' && field == 'razonSocial') {
-          formGroup.get(field)?.setErrors( null );
+        if (contribuyenteArr.data[route]['tipoPersona'] == 'F' && field == 'razonSocial') {
+          formGroup.get(field)?.setErrors(null);
           return null;
         }
         /*
           Toma una cadena, la pasa a mayusculas, reemplaza los espacios en blanco, se normaliza y se eliman los diacriticos (acentos, tildes, etc)
           String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize()
         */
-        if (String(contribuyenteArr.data[route][((field=='razonSocial')?'nombre':field)]).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize() !==  String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g,"").normalize()) {
+        if (String(contribuyenteArr.data[route][((field == 'razonSocial') ? 'nombre' : field)]).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize() !== String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize()) {
           /* TODO: 10/06/2025 Carlos A. Si se evalua apellido materno y su valor es vacio se ejecuta la sentencia  */
-          if(field == 'segundoApellido' && formGroup.get(field)?.value.trim() == '') {
-            formGroup.get(field)?.setErrors( null );
+          if (field == 'segundoApellido' && formGroup.get(field)?.value.trim() == '') {
+            formGroup.get(field)?.setErrors(null);
             return null;
           }
-          formGroup.get(field)?.setErrors( { notEqual: true, error:mssg } );
-          return { notEqual: true, error:mssg };
+          formGroup.get(field)?.setErrors({ notEqual: true, error: mssg });
+          return { notEqual: true, error: mssg };
         }
       }
       formGroup.get(field)?.markAsTouched();
-      formGroup.get(field)?.setErrors( null );
+      formGroup.get(field)?.setErrors(null);
       return null;
     }
   }

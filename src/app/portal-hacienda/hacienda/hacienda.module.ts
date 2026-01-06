@@ -11,6 +11,7 @@ import { IsanPagesComponent } from './pages/isan-pages/isan-pages.component';
 import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pages.component';
 import { MessagesHaciendaComponent } from '../components/hacienda/messages-hacienda/messages-hacienda.component';
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
+import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-page
     IsanPagesComponent,
     ReintegrosPagesComponent,
     MessagesHaciendaComponent,
-    EnajenacionBienesPagesComponent
+    EnajenacionBienesPagesComponent,
+    ImpuestoCedularEnajenacionBienesComponent
   ],
   imports: [
     CommonModule,

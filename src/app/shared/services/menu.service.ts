@@ -44,7 +44,7 @@ export class MenuService {
 
     const body = {"pk":id}
 
-    return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
+    return this.http.post<Conceptos>(`${this.urlConceptos}${environments.appEnviroment}/concepto/menuConceptos`,
       JSON.stringify(body),{headers})
     .pipe(
       map(resp => resp.data),
@@ -78,7 +78,7 @@ export class MenuService {
 
     const body = {"pkPadre":id}
 
-    return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
+    return this.http.post<Conceptos>(`${this.urlConceptos}${environments.appEnviroment}/concepto/menuConceptos`,
       JSON.stringify(body),{headers})
     .pipe(
       map(resp => resp.data),
@@ -111,7 +111,7 @@ export class MenuService {
 
     const body = {"titulo":title}
 
-    return this.http.post<Conceptos>(`${this.urlConceptos}serviciosHacienda/concepto/menuConceptos`,
+    return this.http.post<Conceptos>(`${this.urlConceptos}${environments.appEnviroment}/concepto/menuConceptos`,
       JSON.stringify(body),{headers})
     .pipe(
       map(resp => resp.data),

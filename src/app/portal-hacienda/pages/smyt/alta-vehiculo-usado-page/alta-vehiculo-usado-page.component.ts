@@ -34,11 +34,11 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
   public step: number = 0;
 
   aniosPago = [
-    {name: '2020', value:'p2020'},
     {name: '2021', value:'p2021'},
     {name: '2022', value:'p2022'},
     {name: '2023', value:'p2023'},
-    {name: '2024', value:'p2024'}
+    {name: '2024', value:'p2024'},
+    {name: '2025', value:'p2025'}
   ]
 
   public anio: number = new Date().getFullYear();

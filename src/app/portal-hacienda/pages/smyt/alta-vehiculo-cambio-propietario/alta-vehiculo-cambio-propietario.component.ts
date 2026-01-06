@@ -27,11 +27,11 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
   public conceptTitle = signal<string>('');
 
   public aniosPago = [
-    {name: '2020', value:'p2020'},
     {name: '2021', value:'p2021'},
     {name: '2022', value:'p2022'},
     {name: '2023', value:'p2023'},
     {name: '2024', value:'p2024'},
+    {name: '2025', value:'p2025'}
   ]//: Array<any> = [];
 
   public anio = signal<number>(new Date().getFullYear());
@@ -68,7 +68,7 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     fecha_enajenacion: [new Date(),[Validators.required]],
     fecha_solicitud: [new Date(),[Validators.required]],
     fecha_aprobacion: [new Date(),[Validators.required]],
-    
+
   });
 
   public sizeDisplay!: string;
@@ -236,7 +236,7 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
       fechaEnajenacion: enajenacionDate.getDate() + '/' + (enajenacionDate.getMonth() + 1) + '/' + enajenacionDate.getFullYear(),
       capacidadPasajeros: this.myForm.get('pasajeros')?.value,
       tonelaje: this.myForm.get('tonelaje')?.value,
-      
+
     }
     sessionStorage.setItem('vehicle_data', JSON.stringify(parameters));
 

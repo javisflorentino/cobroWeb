@@ -21,5 +21,10 @@
     {
       "message": "<b>Nota: </b> Favor de llenar el siguiente formulario para cualquier duda o aclaración, ya que si su pago no cuenta con los datos correctos, no será aplicado contablemante. "
     }
+  ],
+  "messages_hacienda_exencion": [
+    {
+      "message": "<b>SUJETO A EXENCIÓN: </b> Para acreditar la exención, deberá presentar su solicitud mediante escrito libre ante la Dirección General de Recaudación  anexando la documentación que acredite el supuesto contemplado en el artículo 58 Sexies-15 de la Ley General de Hacienda del Estado de Morelos Vigente"
+    }
   ]
 }
