@@ -15,6 +15,11 @@ import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 
+interface AnioOpcion {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-alta-vehiculo-cambio-propietario',
   templateUrl: './alta-vehiculo-cambio-propietario.component.html',
@@ -26,13 +31,14 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
   public isLoading = signal<boolean>(false);
   public conceptTitle = signal<string>('');
 
-  public aniosPago = [
+  /*public aniosPago = [
     {name: '2021', value:'p2021'},
     {name: '2022', value:'p2022'},
     {name: '2023', value:'p2023'},
     {name: '2024', value:'p2024'},
     {name: '2025', value:'p2025'}
-  ]//: Array<any> = [];
+  ]*/
+  public aniosPago: AnioOpcion[] = [];
 
   public anio = signal<number>(new Date().getFullYear());
 
@@ -65,9 +71,9 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     placa_foranea: ['', [Validators.required]],
     pago_baja_f: ['1', [Validators.required]],
     pagos: this.fb.array(this.aniosPago.map(x => false)),
-    fecha_enajenacion: [new Date(),[Validators.required]],
-    fecha_solicitud: [new Date(),[Validators.required]],
-    fecha_aprobacion: [new Date(),[Validators.required]],
+    fecha_enajenacion: [new Date(), [Validators.required]],
+    fecha_solicitud: [new Date(), [Validators.required]],
+    fecha_aprobacion: [new Date(), [Validators.required]],
 
   });
 
@@ -106,6 +112,15 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
   }
 
   ngOnInit(): void {
+    this.aniosPago = this.getAniosPago();
+    // Obtenemos el FormArray
+    const pagosArray = this.myForm.get('pagos') as FormArray;
+    // Limpiamos (opcional, si ya tiene controles)
+    pagosArray.clear();
+    // Agregamos un FormControl por cada año, inicializado en false
+    this.aniosPago.forEach(() => {
+      pagosArray.push(this.fb.control(false));
+    });
 
     //Obtiene el Nombre del concepto que se requiere procesar
     this.conceptTitle.set(sessionStorage.getItem('concept')!);
@@ -209,8 +224,8 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     //pagos = pagos.filter(r => r !== false );
 
     let pagosRealizados: string = '';
-    this.ordersFormArray.value.map((value: string, i:any)  =>{
-      if(!!value) {
+    this.ordersFormArray.value.map((value: string, i: any) => {
+      if (!!value) {
         pagosRealizados += value.substring(1) + ','
       }
     })
@@ -287,5 +302,21 @@ export class AltaVehiculoCambioPropietarioComponent implements OnInit, AfterCont
     this._snackBar.openFromComponent(SnackBarComponent, {
       data: message, duration: 15000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
     });
+  }
+
+  getAniosPago(): { name: string; value: string }[] {
+    const anioActual = new Date().getFullYear() - 1;
+    const anios: { name: string; value: string }[] = [];
+
+    // Generar los últimos 5 años
+    for (let i = 0; i < 5; i++) {
+      const anio = anioActual - i;
+      anios.push({
+        name: anio.toString(),
+        value: `p${anio}`
+      });
+    }
+
+    return anios.reverse();
   }
 }

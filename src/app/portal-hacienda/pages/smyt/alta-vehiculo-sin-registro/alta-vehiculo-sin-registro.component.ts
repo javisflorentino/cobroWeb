@@ -18,6 +18,11 @@ import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 
+interface AnioOpcion {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'alta-vehiculo-sin-registro',
   templateUrl: './alta-vehiculo-sin-registro.component.html',
@@ -29,13 +34,14 @@ export class AltaVehiculoSinRegistroComponent implements OnInit, AfterContentIni
   public conceptTitle = signal<string>('');
   public tipoVehiculoArr: TipoVehiculo[] = ListaTipoVehiculo;
 
-  public aniosPago = [
+  /*public aniosPago = [
     { name: '2020', value: '2020' },
     { name: '2021', value: '2021' },
     { name: '2022', value: '2022' },
     { name: '2023', value: '2023' },
     { name: '2024', value: '2024' },
-  ]
+  ]*/
+  public aniosPago: AnioOpcion[] = [];
 
   public anio = signal<number>(new Date().getFullYear());
 
@@ -63,8 +69,8 @@ export class AltaVehiculoSinRegistroComponent implements OnInit, AfterContentIni
     //valor_factura: ['', [Validators.required, Validators.pattern(this.validatorsService.numberPattern)]],
     //placa_foranea: ['', [Validators.required]],
     pago_baja_f: ['1', [Validators.required]],
-    fecha_solicitud: [new Date(),[Validators.required]],
-    fecha_aprobacion: [new Date(),[Validators.required]],
+    fecha_solicitud: [new Date(), [Validators.required]],
+    fecha_aprobacion: [new Date(), [Validators.required]],
   });
 
   public sizeDisplay!: string;
@@ -198,7 +204,7 @@ export class AltaVehiculoSinRegistroComponent implements OnInit, AfterContentIni
       capacidadPasajeros: this.myForm.get('pasajeros')?.value
     }
     //localStorage.setItem('vehicle_data_admin', JSON.stringify(parameters));
-    sessionStorage.setItem('vehicle_data',JSON.stringify(parameters))
+    sessionStorage.setItem('vehicle_data', JSON.stringify(parameters))
 
     sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
       "capacidadPasajeros": this.myForm.get('pasajeros')?.value,
@@ -248,5 +254,21 @@ export class AltaVehiculoSinRegistroComponent implements OnInit, AfterContentIni
     this._snackBar.openFromComponent(SnackBarComponent, {
       data: message, duration: 15000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
     });
+  }
+
+  getAniosPago(): { name: string; value: string }[] {
+    const anioActual = new Date().getFullYear() - 1;
+    const anios: { name: string; value: string }[] = [];
+
+    // Generar los últimos 5 años
+    for (let i = 0; i < 5; i++) {
+      const anio = anioActual - i;
+      anios.push({
+        name: anio.toString(),
+        value: `p${anio}`
+      });
+    }
+
+    return anios.reverse();
   }
 }
