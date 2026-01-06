@@ -39,8 +39,8 @@ export class PagoRevistaMecanicaComponent implements OnInit {
     placa2: ['', [Validators.required, Validators.minLength(4)]],
     serie: ['', [Validators.required, Validators.minLength(5)]],
     serie2: ['', [Validators.required, Validators.minLength(5)]]
-  }, 
-  
+  },
+
     {
       validators: [
         this.validatorsService.isFieldOneEqualFielTwo('serie', 'serie2',4),
@@ -48,7 +48,7 @@ export class PagoRevistaMecanicaComponent implements OnInit {
         this.validatorsService.existsSeriesPublico('serie', 'placa', 1, 9, '1', '')*/
       ]
     }
-  
+
  );
 
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
@@ -103,18 +103,19 @@ export class PagoRevistaMecanicaComponent implements OnInit {
         },
         complete: () => { }
       });*/
-      let ejercicioFiscal;
-      if (this.nameConcept.includes("2024")) {
+      let ejercicioFiscal = this.nameConcept.trim().slice(-4);
+
+      /*if (this.nameConcept.includes("2024")) {
           ejercicioFiscal = 2024;
       } else if (this.nameConcept.includes("2025")) {
           ejercicioFiscal = 2025;
       } else {
           ejercicioFiscal = new Date().getFullYear(); // Asigna el año actual
-      }
+      }*/
 
 
       sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tramite": 9, "obtenerContribuyente": true, "ejercicioCobrar":ejercicioFiscal }));
-           
+
       this.router.navigate(['/pagos/tabla-conceptos', 916]);
 
   }
