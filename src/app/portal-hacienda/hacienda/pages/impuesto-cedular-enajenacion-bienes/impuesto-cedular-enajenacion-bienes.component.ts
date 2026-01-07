@@ -78,6 +78,12 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
       ingreso_enajenacion: [0, [Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
 
       calcula_base_impuesto: ['1', [Validators.required]],
+
+      rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcFisica)]],
+      nombre: ['',[Validators.required]],
+      notaria: ['',[Validators.required]],
+      entidad: ['',[Validators.required]],
+      demarcacion: ['',[Validators.required]],
     }
   );
 
@@ -232,7 +238,13 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
         gastos_notariales: Number(this.formHEnajenacionBienes.get('gastos_notariales')?.value),
         comisiones_mediaciones: Number(this.formHEnajenacionBienes.get('comisiones_mediaciones')?.value),
 
-        calcula_base_impuesto: this.formHEnajenacionBienes.get('calcula_base_impuesto')?.value
+        calcula_base_impuesto: this.formHEnajenacionBienes.get('calcula_base_impuesto')?.value,
+
+        nombre: String(this.formHEnajenacionBienes.get('nombre')?.value).toUpperCase(),
+        rfc: String(this.formHEnajenacionBienes.get('rfc')?.value).toUpperCase(),
+        notaria: String(this.formHEnajenacionBienes.get('notaria')?.value).toUpperCase(),
+        entidad: String(this.formHEnajenacionBienes.get('entidad')?.value).toUpperCase(),
+        demarcacion: String(this.formHEnajenacionBienes.get('demarcacion')?.value).toUpperCase(),
       })
     )
 

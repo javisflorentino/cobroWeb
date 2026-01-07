@@ -33,6 +33,7 @@ export interface ReintegrosStruct {
   contribuyente?: string;
   fecha_verificacion_escritura?: string;
 
+  base_impuesto?: number;
   comisiones_mediaciones?: number;
   costo_comprobado?: number;
   gastos_notariales?: number;
@@ -45,5 +46,9 @@ export interface ReintegrosStruct {
   calcula_base_impuesto?: string;
   noPhone?: string;
   fecha_enajenacion?: string;
+  rfc: string;
+  notaria:  string;
+  entidad:  string;
+  demarcacion:  string;
 
 }

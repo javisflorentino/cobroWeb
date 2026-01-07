@@ -440,7 +440,7 @@ export class DatosContribuyenteComponent implements OnInit {
       if(datos.tipo_form && datos.tipo_form==9) {
         const tipo_ingreso = ListaIngresoEnajenacion.find( ingreso => ingreso.id == Number(datos.tipo_ingresos));
         datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}`:'';
-        observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura=='1'?datos.escritura:'SIN ESCRITURA'},Fecha de enajenación: ${datos.fecha_enajenacion},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Evaluo: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.calcula_base_impuesto == '1'?'VENTA':'PERMUTA'},`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+        observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura=='1'?datos.escritura:'SIN ESCRITURA'},Fecha de enajenación: ${datos.fecha_enajenacion},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: ${datos.calcula_base_impuesto == '1'?'VENTA':'PERMUTA'},Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
       }
     }
    }
