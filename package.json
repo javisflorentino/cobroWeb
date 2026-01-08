@@ -10,6 +10,7 @@
     "start:proxy": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "build:github:local": "del deploy && ng build  --base-href ./ && copyfiles dist/portal_pagos_gob/* ./deploy -f",
+    "build:github:local-dev": "del deploy && ng build --configuration=dev --base-href ./ && copyfiles dist/portal_pagos_gob/* ./deploy -f",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
