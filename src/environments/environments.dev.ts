@@ -1,6 +1,6 @@
 export const environments = {
-  baseUrlApp: 'https://app.hacienda.morelos.gob.mx/',
-  baseUrlServ: 'https://pagos.hacienda.morelos.gob.mx/',
+  baseUrlApp: 'https://qa.hacienda.morelos.gob.mx/',
+  baseUrlServ: 'https://qa.hacienda.morelos.gob.mx/',
 
   appEnviroment: 'serviciosHaciendaQA',
 
