@@ -534,71 +534,76 @@ export class DatosContribuyenteComponent implements OnInit {
             this.isLoading = false;
             this.buttBlock = false;
             if (resp.success) {
-              if (datos.tipo_form && datos.tipo_form == 9 && datos.tiene_exencion == '1') {
-                const formValue = this.myFormContribuyente.value
-                let formData = new FormData();
-                // Agregar datos del formulario
-                formData.append('cantidad', '1');
-                formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
-                formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
-                formData.append('escritura', datos.escritura || '');
-                formData.append('rfcPerito', datos.rfc_perito || '');
-                formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
-                formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
-                formData.append('tipoIngresos', datos.tipo_ingresos || '');
-                formData.append('tipoForm', datos.tipo_form?.toString() || '');
-                formData.append('noPhone', datos.noPhone || '');
-                formData.append('email', datos.email || '');
-                formData.append('referenciaInmueble', datos.referencia_inmueble || '');
-                formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
-                formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
-                formData.append('tieneEscritura', datos.tiene_escritura || '');
-                formData.append('tieneExencion', datos.tiene_exencion || '');
-                formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
-                formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
-                formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
-                formData.append('importeInversion', datos.importe_inversion?.toString() || '');
-                formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
-                formData.append('nombre', datos.nombre || '');
-                formData.append('rfc', datos.rfc || '');
-                formData.append('notaria', datos.notaria || '');
-                formData.append('entidad', datos.entidad || '');
-                formData.append('demarcacion', datos.demarcacion || '');
-                formData.append('nombrePerito', datos.nombre_perito || '');
-                formData.append('domicilioPerito', datos.domicilio_perito || '');
-                formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
-                formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
-                formData.append('archivo', this.serviceFileTransfer.getFile()!);
+              /* SI EXCISTE UN IMPUESTO QUE USE datos_cobro*/
+              if (datos !== null) {
+                /* SI ES EL IMPUESTO DE ENAJENACION  Y TIENE EXENCIONES*/
+                if (datos.tipo_form && datos.tipo_form == 9 && datos.tiene_exencion == '1') {
+                  console.log('NUEVO IMPUESTO CON EXCEPCION');
+                  const formValue = this.myFormContribuyente.value
+                  let formData = new FormData();
+                  // Agregar datos del formulario
+                  formData.append('cantidad', '1');
+                  formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
+                  formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
+                  formData.append('escritura', datos.escritura || '');
+                  formData.append('rfcPerito', datos.rfc_perito || '');
+                  formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
+                  formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
+                  formData.append('tipoIngresos', datos.tipo_ingresos || '');
+                  formData.append('tipoForm', datos.tipo_form?.toString() || '');
+                  formData.append('noPhone', datos.noPhone || '');
+                  formData.append('email', datos.email || '');
+                  formData.append('referenciaInmueble', datos.referencia_inmueble || '');
+                  formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
+                  formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
+                  formData.append('tieneEscritura', datos.tiene_escritura || '');
+                  formData.append('tieneExencion', datos.tiene_exencion || '');
+                  formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
+                  formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
+                  formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
+                  formData.append('importeInversion', datos.importe_inversion?.toString() || '');
+                  formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
+                  formData.append('nombre', datos.nombre || '');
+                  formData.append('rfc', datos.rfc || '');
+                  formData.append('notaria', datos.notaria || '');
+                  formData.append('entidad', datos.entidad || '');
+                  formData.append('demarcacion', datos.demarcacion || '');
+                  formData.append('nombrePerito', datos.nombre_perito || '');
+                  formData.append('domicilioPerito', datos.domicilio_perito || '');
+                  formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
+                  formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
+                  formData.append('archivo', this.serviceFileTransfer.getFile()!);
 
-                this.serviciosGenerales.uploadFile(formData).subscribe({
-                  next: (response) => {
-                    console
-                    Swal.fire(
-                      {
-                        icon: "success",
-                        title: "Operación realizada con éxito!!!",
-                        text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
-                      }).then((result) => {
-                        this.router.navigate(['pagos/dependencias']);
-                        return;
+                  this.serviciosGenerales.uploadFile(formData).subscribe({
+                    next: (response) => {
+                      console
+                      Swal.fire(
+                        {
+                          icon: "success",
+                          title: "Operación realizada con éxito!!!",
+                          text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
+                        }).then((result) => {
+                          this.router.navigate(['pagos/dependencias']);
+                          return;
+                        });
+                    },
+                    error: (err) => {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Error !!!!",
+                        text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
+                        showConfirmButton: false,
+                        timer: 2500
                       });
-                  },
-                  error: (err) => {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Error !!!!",
-                      text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
-                      showConfirmButton: false,
-                      timer: 2500
-                    });
-                  }
-                });
-                return;
-              } else {
-                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
-                this.router.navigate(['pagos/generar_poliza']);
-                return;
+                    }
+                  });
+                  return;
+                }
               }
+              sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+              this.router.navigate(['pagos/generar_poliza']);
+              return;
+
             }
             this.openSnackBar(resp.data!);
             return;
