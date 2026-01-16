@@ -78,7 +78,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
       otras_deducciones: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
 
       tiene_escritura: ['1', [Validators.required]],
-      noPhone: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTel)]],
+      noPhone: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTelNew)]],
       email: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)]],
 
       referencia_inmueble: ['', [Validators.required]],
