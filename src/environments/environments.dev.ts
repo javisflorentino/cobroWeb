@@ -2,7 +2,10 @@ export const environments = {
   baseUrlApp: 'https://qa.hacienda.morelos.gob.mx/',
   baseUrlServ: 'https://qa.hacienda.morelos.gob.mx/',
 
+  baseUrlSiigem: 'https://app.hacienda.morelos.gob.mx/',
+
   appEnviroment: 'serviciosHaciendaQA',
+  siigemEnviroment: 'siigemWebQA',
 
 
   user_server: 'WS_SH1',

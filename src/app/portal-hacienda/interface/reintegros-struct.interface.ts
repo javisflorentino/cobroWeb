@@ -42,13 +42,20 @@ export interface ReintegrosStruct {
   monto_avaluo?: number;
   referencia_inmueble?: string;
   tiene_escritura?: string;
+  tiene_exencion?: string;
   tipo_ingresos?: string;
   calcula_base_impuesto?: string;
   noPhone?: string;
   fecha_enajenacion?: string;
-  rfc: string;
-  notaria:  string;
-  entidad:  string;
-  demarcacion:  string;
+  fecha_provisional_escritura?: string;
+  rfc?: string;
+  notaria?:  string;
+  entidad?:  string;
+  demarcacion?:  string;
+  nombre_perito?: string;
+  rfc_perito?: string;
+  domicilio_perito?: string;
+  percent_base_impuesto?: number;
+  otras_deducciones?: number;
 
 }

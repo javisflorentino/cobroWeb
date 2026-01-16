@@ -23,6 +23,9 @@ import { ComboConcept } from 'src/app/portal-hacienda/interface/datos-combo.inte
 import { ReintegrosStruct } from 'src/app/portal-hacienda/interface/reintegros-struct.interface';
 
 import ListaIngresoEnajenacion from '../../../../../data/arreglos/tipo_ingresos_enajenacion.json';
+import { formatDate } from '@angular/common';
+import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -61,11 +64,11 @@ export class DatosContribuyenteComponent implements OnInit {
   private movimiento: number = 100
 
   public myFormContribuyente: FormGroup = this.fb.group({
-    tipoPersona: ['F',[Validators.required]],
-    nombre: ['',[Validators.required]],
+    tipoPersona: ['F', [Validators.required]],
+    nombre: ['', [Validators.required]],
     primerApellido: ['', [Validators.required]],
     segundoApellido: [''], /* TODO: 10/06/2025 Carlos A. se quito la condicion de requerido  */
-    razonSocial: [{value: '', disabled: true},[Validators.required]],
+    razonSocial: [{ value: '', disabled: true }, [Validators.required]],
     rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatosService.rfcFisica)]],
     curp: [''],
     domicilio: this.fb.group({
@@ -74,8 +77,8 @@ export class DatosContribuyenteComponent implements OnInit {
       numeroInterior: [],
       colonia: ['', [Validators.required]],
       codigoPostal: ['', [Validators.required, Validators.pattern(this.validatosService.exprCp)]],
-      estados: [{value: '17', disabled: true},[Validators.required, Validators.min(1)]],
-      municipio: ['',[Validators.required, Validators.min(1)]],
+      estados: [{ value: '17', disabled: true }, [Validators.required, Validators.min(1)]],
+      municipio: ['', [Validators.required, Validators.min(1)]],
       observaciones: []
     }/*,
     {
@@ -87,34 +90,35 @@ export class DatosContribuyenteComponent implements OnInit {
     }*/
     )
   },
-  {
-    validators:[this.validatosService.validateDataInput('nombre',1,'contribuyente'),
-      this.validatosService.validateDataInput('primerApellido',2,'contribuyente'),
-      this.validatosService.validateDataInput('segundoApellido',3,'contribuyente'),
-      this.validatosService.validateDataInput('razonSocial',8,'contribuyente')
-    ],
-  }
+    {
+      validators: [this.validatosService.validateDataInput('nombre', 1, 'contribuyente'),
+      this.validatosService.validateDataInput('primerApellido', 2, 'contribuyente'),
+      this.validatosService.validateDataInput('segundoApellido', 3, 'contribuyente'),
+      this.validatosService.validateDataInput('razonSocial', 8, 'contribuyente')
+      ],
+    }
   );
 
   constructor(
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
     private _snackBar: MatSnackBar,
     private smytService: SmytService,
     private validatosService: ValidatorsService,
-    private serviciosGenerales: GeneralesService
+    private serviciosGenerales: GeneralesService,
+    private serviceFileTransfer: FileTransferService
   ) { }
 
-  @HostListener('input', ['$event']) onKeyUp(event:any) {
+  @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
   }
 
   ngOnInit(): void {
-    if(!sessionStorage.getItem('contribuyente')) {
+    if (!sessionStorage.getItem('contribuyente')) {
       this.openSnackBar('No se cuenta con información para continuar con el proceso')
-      setTimeout(()=>{
+      setTimeout(() => {
         this.router.navigate(['pagos']);
-      },2500);
+      }, 2500);
 
     }
     /*
@@ -122,11 +126,11 @@ export class DatosContribuyenteComponent implements OnInit {
       MODIF: 12/12/2023
     */
     this.serviciosGenerales.getEntidadesFederativas().subscribe(resp => {
-      if(!resp){
+      if (!resp) {
         this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
       } else {
-        let route_origen:string = sessionStorage.getItem('route_origen')!;
-        if (route_origen.includes('smyt-licencia')){
+        let route_origen: string = sessionStorage.getItem('route_origen')!;
+        if (route_origen.includes('smyt-licencia')) {
           this.openSnackBar('Si ya cuenta con una licencia expedida por el Gobierno del Estado de Morelos, favor de anotar el número en observaciones')
         }
 
@@ -134,7 +138,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
         this.arrEstados = resp?.data;
         this.myFormContribuyente.get('domicilio')?.get('estados')?.setValue(17);
-        if(sessionStorage.getItem('gestora') !== '64') {
+        if (sessionStorage.getItem('gestora') !== '64') {
           this.myFormContribuyente.get('domicilio')?.get('estados')?.enable();
         } else {
           this.myFormContribuyente.get('domicilio')?.get('observaciones')?.disable();
@@ -153,8 +157,13 @@ export class DatosContribuyenteComponent implements OnInit {
     }*/
 
     /* MODIF: 12/12/2023 */
-    if(sessionStorage.getItem('gestora') !== '64') {
+    const datos: ReintegrosStruct = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    if (sessionStorage.getItem('gestora') !== '64') {
       this.TaxDataControl = false;
+    }
+    if (sessionStorage.getItem('gestora') == '90' && datos !== null && datos.tipo_form == 9) {
+      this.TaxDataControl = true;
+      this.myFormContribuyente.get('tipoPersona')?.disable();
     }
   }
 
@@ -165,7 +174,7 @@ export class DatosContribuyenteComponent implements OnInit {
   changeEstado(event: string): void {
     this.serviciosGenerales.getMunicipios(Number(event))
       .subscribe(resp => {
-        if(!resp || resp.data.length==0){
+        if (!resp || resp.data.length == 0) {
           this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
         } else {
           this.arrMunicipios = resp.data;
@@ -174,37 +183,37 @@ export class DatosContribuyenteComponent implements OnInit {
       });
   }
 
-  changeTaxData(event:boolean) {
-    if(event) {
+  changeTaxData(event: boolean) {
+    if (event) {
       this.myFormContribuyente.get('tipoPersona')?.setValue('F');
       this.myFormContribuyente.get('tipoPersona')?.disable();
       this.changeRadioTP('F');
-      this.disabledEnabledElement(['razonSocial','rfc','curp','domicilio'],[]);
+      this.disabledEnabledElement(['razonSocial', 'rfc', 'curp', 'domicilio'], []);
       this.myFormContribuyente.get('domicilio')?.get('observaciones')?.enable();
       return;
     }
-    this.disabledEnabledElement([],['rfc','curp','domicilio']);
+    this.disabledEnabledElement([], ['rfc', 'curp', 'domicilio']);
     this.myFormContribuyente.get('tipoPersona')?.enable()
     return;
   }
 
-  onKeyPress( stringTag: string ) {
+  onKeyPress(stringTag: string) {
     this.myFormContribuyente.get('nombre')?.setValue(stringTag);
   }
 
-  getMessage(idMssg:number, nameField:string) {
+  getMessage(idMssg: number, nameField: string) {
     let touched = this.myFormContribuyente.get('domicilio')?.get(nameField)?.touched;
     let nameFileValue = this.myFormContribuyente.get('domicilio')?.get(nameField)?.value;
     let pathSelect = this.validatosService.streetNamePath;
 
     /* TODO: 10/06/2025 Carlos A. mientras no se evalue apellido materno entra a la condicion  */
-    if(idMssg !== null && nameField !== 'segundoApellido') {
-      const message = this.mssgArr.filter(({id}) => id == idMssg )
+    if (idMssg !== null && nameField !== 'segundoApellido') {
+      const message = this.mssgArr.filter(({ id }) => id == idMssg)
       return message[0].msg;
     }
-    if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
+    if (nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
       /* TODO: 10/06/2025 Carlos A. Si apellido materno esta vacio, se elima la validacion  */
-      if(nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
+      if (nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
         //console.log("Aqui entrooooo")
         this.myFormContribuyente.get('segundoApellido')?.clearValidators();
         this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
@@ -214,24 +223,24 @@ export class DatosContribuyenteComponent implements OnInit {
       nameFileValue = this.myFormContribuyente.get(nameField)?.value;
       pathSelect = this.validatosService.peoplesNamePath;
     }
-    if( nameField === 'razonSocial') {
+    if (nameField === 'razonSocial') {
       touched = this.myFormContribuyente.get(nameField)?.touched;
       nameFileValue = this.myFormContribuyente.get(nameField)?.value;
       pathSelect = this.validatosService.peoplesNamePathWithNumbers;
     }
 
-    if( touched ) {
-      let idMessage=101;
+    if (touched) {
+      let idMessage = 101;
 
       let pattern = new RegExp(pathSelect);
-      if(!pattern.test(nameFileValue) || nameFileValue == null) {
+      if (!pattern.test(nameFileValue) || nameFileValue == null) {
         if (nameFileValue === null) {
           idMessage = 100;
         }
-        const message = this.mssgArr.filter(({id}) => id == idMessage );
-        this.myFormContribuyente.get('domicilio')?.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
-        if(nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' || nameField === 'razonSocial')
-          this.myFormContribuyente.get(nameField)?.setErrors( { notEqual: true, error:idMessage } );
+        const message = this.mssgArr.filter(({ id }) => id == idMessage);
+        this.myFormContribuyente.get('domicilio')?.get(nameField)?.setErrors({ notEqual: true, error: idMessage });
+        if (nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' || nameField === 'razonSocial')
+          this.myFormContribuyente.get(nameField)?.setErrors({ notEqual: true, error: idMessage });
 
         return message[0].msg;
       }
@@ -240,7 +249,7 @@ export class DatosContribuyenteComponent implements OnInit {
     return '';
   }
 
-  disabledEnabledElement(element:string[],enabledElement:string[]) {
+  disabledEnabledElement(element: string[], enabledElement: string[]) {
     element.forEach(element => {
       this.myFormContribuyente.get(element)?.disable();
     });
@@ -249,17 +258,17 @@ export class DatosContribuyenteComponent implements OnInit {
     });
   }
 
-  changeRadioTP(evento:string): void {
+  changeRadioTP(evento: string): void {
     this.tipoPersona = evento;
-    if (evento==='M') {
-      this.disabledEnabledElement(['nombre','primerApellido','segundoApellido','curp'],['razonSocial']);
+    if (evento === 'M') {
+      this.disabledEnabledElement(['nombre', 'primerApellido', 'segundoApellido', 'curp'], ['razonSocial']);
       this.myFormContribuyente.get('rfc')?.setValue('');
       this.myFormContribuyente.get('rfc')?.clearValidators();
       this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
       this.myFormContribuyente.updateValueAndValidity();
       return;
     }
-    this.disabledEnabledElement(['razonSocial'], ['nombre','primerApellido','segundoApellido','curp']);
+    this.disabledEnabledElement(['razonSocial'], ['nombre', 'primerApellido', 'segundoApellido', 'curp']);
     this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
     this.myFormContribuyente.get('rfc')?.clearValidators();
     this.myFormContribuyente.get('rfc')?.setValue('XAXX010101000');
@@ -268,38 +277,38 @@ export class DatosContribuyenteComponent implements OnInit {
     return;
   }
 
-  monthDescription(valor:number): string {
+  monthDescription(valor: number): string {
 
-        switch (valor) {
-            case 1:
-                return "Enero";
-            case 2:
-                return "Febrero";
-            case 3:
-                return "Marzo";
-            case 4:
-                return "Abril";
-            case 5:
-                return "Mayo";
-            case 6:
-                return "Junio";
-            case 7:
-                return "Julio";
-            case 8:
-                return "Agosto";
-            case 9:
-                return "Septiembre";
-            case 10:
-                return "Octubre";
-            case 11:
-                return "Noviembre";
-            case 12:
-                return "Diciembre";
-            default:
-                return "Error";
-        }
+    switch (valor) {
+      case 1:
+        return "Enero";
+      case 2:
+        return "Febrero";
+      case 3:
+        return "Marzo";
+      case 4:
+        return "Abril";
+      case 5:
+        return "Mayo";
+      case 6:
+        return "Junio";
+      case 7:
+        return "Julio";
+      case 8:
+        return "Agosto";
+      case 9:
+        return "Septiembre";
+      case 10:
+        return "Octubre";
+      case 11:
+        return "Noviembre";
+      case 12:
+        return "Diciembre";
+      default:
+        return "Error";
+    }
 
-}
+  }
 
   generarPoliza(): void {
 
@@ -309,23 +318,23 @@ export class DatosContribuyenteComponent implements OnInit {
       this.buttBlock = false;
       return;
     }
-    const datos:ReintegrosStruct = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    const datos: ReintegrosStruct = JSON.parse(sessionStorage.getItem('datos_cobro')!);
     const gestora = sessionStorage.getItem('gestora')!;
     if (!this.contribuyenteArr.data.contribuyente) {
       this.contribuyenteArr.data.contribuyente = {
-        nombre:          '',
-        tipoPersona:     '',
-        razonSocial:     '',
-        primerApellido:  '',
+        nombre: '',
+        tipoPersona: '',
+        razonSocial: '',
+        primerApellido: '',
         segundoApellido: '',
-        rfc:             '',
-        curp:            '',
-        id:              0,
+        rfc: '',
+        curp: '',
+        id: 0,
       };
-      this.contribuyenteArr.data.contribuyente.nombre = String( this.myFormContribuyente.get('nombre')?.value ).toUpperCase();
+      this.contribuyenteArr.data.contribuyente.nombre = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase();
       this.contribuyenteArr.data.contribuyente.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
       this.contribuyenteArr.data.contribuyente.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
-      sessionStorage.setItem('contribuyente_only',JSON.stringify(this.contribuyenteArr));
+      sessionStorage.setItem('contribuyente_only', JSON.stringify(this.contribuyenteArr));
     }
 
     this.isLoading = true;
@@ -335,148 +344,152 @@ export class DatosContribuyenteComponent implements OnInit {
     let datosAdicionales_adic: string = '';
     let servicio = '';
     let tipoSer = [];
-    let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase():"";
+    let observaciones = (this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value) ? String(this.myFormContribuyente.get('domicilio')?.get('observaciones')?.value).toUpperCase() : "";
     const dataVehicle_adit = JSON.parse(sessionStorage.getItem('vehicle_data_adicional')!);
-    let route_origen:string = sessionStorage.getItem('route_origen')?.replaceAll('-','').toUpperCase()!;
+    let route_origen: string = sessionStorage.getItem('route_origen')?.replaceAll('-', '').toUpperCase()!;
 
-    Object.entries(TipoServicio).forEach((v,k) => {
+    Object.entries(TipoServicio).forEach((v, k) => {
       tipoSer = v.toString().split(',');
-      if (tipoSer[0]==route_origen.split('/').find((v,k) => k == 1 )){
+      if (tipoSer[0] == route_origen.split('/').find((v, k) => k == 1)) {
         servicio = tipoSer[1];//',' + tipoSer[1];
       }
     });
 
-    const concept = (sessionStorage.getItem('concept'))?sessionStorage.getItem('concept')?.toString():'';
+    const concept = (sessionStorage.getItem('concept')) ? sessionStorage.getItem('concept')?.toString() : '';
     if (sessionStorage.getItem('vehicle_data')) {
       vehicle_data = JSON.parse(sessionStorage.getItem('vehicle_data')!);
       let fecha_factura = '';
       let fecha_factura_array: Array<any> = [];
 
-      if(vehicle_data.fechaFactura) {
+      if (vehicle_data.fechaFactura) {
         fecha_factura_array = String(vehicle_data.fechaFactura).split('/')
-        fecha_factura = String(fecha_factura_array[2]) + '-' + String(fecha_factura_array[1]).padStart(2,'0') + '-' + String(fecha_factura_array[0]).padStart(2,'0');
+        fecha_factura = String(fecha_factura_array[2]) + '-' + String(fecha_factura_array[1]).padStart(2, '0') + '-' + String(fecha_factura_array[0]).padStart(2, '0');
       }
 
-      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior)?vehicle_data.placaAnterior.toUpperCase():(dataVehicle_adit && dataVehicle_adit.placaAnterior)?dataVehicle_adit.placaAnterior:''},,,,,MODELO: ${(vehicle_data.modelo)?vehicle_data.modelo.toString():''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},VALOR FACTURA: ${(vehicle_data.valorFactura)?vehicle_data.valorFactura.toString():''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia)?dataVehicle_adit.procedencia:''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13')?' PARTICULAR':' ');// +
-        if(servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
-          datosAdicionales_adic += ",T: 10";
-        } else {
-          datosAdicionales_adic += `,${servicio}`;
-        }
-        datosAdicionales_adic += ((servicio == 'T: 13' || servicio == 'T: 01')?',TRAMITE: ALTA':'');
+      datosAdicionales_adic = datosAdicionales = `PLACA: ${vehicle_data.placa.toUpperCase()},PLACA ANTERIOR: ${(vehicle_data.placaAnterior) ? vehicle_data.placaAnterior.toUpperCase() : (dataVehicle_adit && dataVehicle_adit.placaAnterior) ? dataVehicle_adit.placaAnterior : ''},,,,,MODELO: ${(vehicle_data.modelo) ? vehicle_data.modelo.toString() : ''},,,,MOTOR: ,FECHA FACTURA: ${fecha_factura},VALOR FACTURA: ${(vehicle_data.valorFactura) ? vehicle_data.valorFactura.toString() : ''},PROCEDENCIA: ${(dataVehicle_adit && dataVehicle_adit.procedencia) ? dataVehicle_adit.procedencia : ''},,NO DE SERIE: ${vehicle_data.numeroSerie},VALOR VENTA: ,SERVICIO:` + ((servicio == 'T: 01' || servicio == 'T: 13') ? ' PARTICULAR' : ' ');// +
+      if (servicio == 'T: 13' && vehicle_data.pagoBaja == 2) {
+        datosAdicionales_adic += ",T: 10";
+      } else {
+        datosAdicionales_adic += `,${servicio}`;
+      }
+      datosAdicionales_adic += ((servicio == 'T: 13' || servicio == 'T: 01') ? ',TRAMITE: ALTA' : '');
     }
 
-    if((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora=='64')) {
-      datosAdicionales = datosAdicionales_adic + ((observaciones!=='')?'| OBSERVACIONES: ':'') + observaciones;
-      observaciones = datosAdicionales_adic + '.' + ((observaciones!=='')?' OBSERVACIONES: ':'') + observaciones;
+    if ((servicio == 'T: 08' || servicio == 'T: 01' || servicio == 'T: 13' || servicio == 'T: 03' || servicio == 'T: 05' || servicio == 'T: 02') && (gestora == '64')) {
+      datosAdicionales = datosAdicionales_adic + ((observaciones !== '') ? '| OBSERVACIONES: ' : '') + observaciones;
+      observaciones = datosAdicionales_adic + '.' + ((observaciones !== '') ? ' OBSERVACIONES: ' : '') + observaciones;
     }
-    if ( servicio.length == 0  && (gestora=='22' || gestora=='9' || gestora=='53' || gestora=='75' || gestora=='30' || gestora=='68' || gestora=='14' || gestora=='73' || gestora=='70' || gestora=='66' || gestora=='57')) {
-      datosAdicionales = ((gestora!=='70')?(((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones):'');
-      observaciones = ((observaciones!=='')?'OBSERVACIONES: ':'') + observaciones;
+    if (servicio.length == 0 && (gestora == '22' || gestora == '9' || gestora == '53' || gestora == '75' || gestora == '30' || gestora == '68' || gestora == '14' || gestora == '73' || gestora == '70' || gestora == '66' || gestora == '57')) {
+      datosAdicionales = ((gestora !== '70') ? (((observaciones !== '') ? 'OBSERVACIONES: ' : '') + observaciones) : '');
+      observaciones = ((observaciones !== '') ? 'OBSERVACIONES: ' : '') + observaciones;
 
-      if(gestora=='22' && (dataVehicle_adit && dataVehicle_adit.licencia)) {
+      if (gestora == '22' && (dataVehicle_adit && dataVehicle_adit.licencia)) {
         let fecha_vencimiento = '';
         let fecha_vencimiento_array: Array<any> = [];
         fecha_vencimiento_array = String(dataVehicle_adit.fecha_vencimiento).split('/')
-        fecha_vencimiento = String(fecha_vencimiento_array[2]) + '-' + String(fecha_vencimiento_array[1]).padStart(2,'0') + '-' + String(fecha_vencimiento_array[0]).padStart(2,'0');
+        fecha_vencimiento = String(fecha_vencimiento_array[2]) + '-' + String(fecha_vencimiento_array[1]).padStart(2, '0') + '-' + String(fecha_vencimiento_array[0]).padStart(2, '0');
 
-        observaciones = ((observaciones!=='')?'':'OBSERVACIONES: ') + `${observaciones} No. Licencia: ${String(dataVehicle_adit.licencia).toUpperCase()} ,Fecha vencimiento: ${fecha_vencimiento},.`
+        observaciones = ((observaciones !== '') ? '' : 'OBSERVACIONES: ') + `${observaciones} No. Licencia: ${String(dataVehicle_adit.licencia).toUpperCase()} ,Fecha vencimiento: ${fecha_vencimiento},.`
         datosAdicionales = observaciones;
       }
     }
-    observaciones=observaciones.trim()
+    observaciones = observaciones.trim()
 
 
-   if(datos) {
-    if(datos.tipo_form && (datos.tipo_form==17 || datos.tipo_form==16 || datos.tipo_form==14)) {
-      observaciones += `,${datos.dependencia}`;
-      if(datos.tipo_form==17) {
-        observaciones += `,${datos.fecha_retencion},${datos.ejercicio_fiscal},${datos.nombre_fondo},${datos.numero_contrato},${datos.objeto_contrato},${datos.fuente_financiamiento},${datos.monto_ejercido},${datos.monto_retenido},${datos.numero_oficio},${datos.numero_factura}`;
-      }
-      datosAdicionales += `ContribuyenteReintegro: ${datos.nombre},${datos.telefono},${datos.email}`;
-    } else {
-      this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
-      /*if(datos.tipo_form && datos.tipo_form==3) {
-        datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
-      }*/
-      /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
-      if(datos.tipo_form && datos.tipo_form==12) {
-        datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
-        if (observaciones!=='')
-          datosAdicionales += `OBSERVACIONES: ${observaciones} `;
-      }
-      /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
-      if(datos.tipo_form && datos.tipo_form==3) {
-         if (observaciones!=='') {
-          //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
-          datosAdicionales = `${observaciones} `;
+    if (datos) {
+      if (datos.tipo_form && (datos.tipo_form == 17 || datos.tipo_form == 16 || datos.tipo_form == 14)) {
+        observaciones += `,${datos.dependencia}`;
+        if (datos.tipo_form == 17) {
+          observaciones += `,${datos.fecha_retencion},${datos.ejercicio_fiscal},${datos.nombre_fondo},${datos.numero_contrato},${datos.objeto_contrato},${datos.fuente_financiamiento},${datos.monto_ejercido},${datos.monto_retenido},${datos.numero_oficio},${datos.numero_factura}`;
+        }
+        datosAdicionales += `ContribuyenteReintegro: ${datos.nombre},${datos.telefono},${datos.email}`;
+      } else {
+        this.dataPoliza.fechaVencimiento = datos.fechaVencimiento;
+        /*if(datos.tipo_form && datos.tipo_form==3) {
+          datosAdicionales = `OBSERVACIONES: Fecha próxima de verificación: ${observaciones} ` + datos.fecha_verificacion + ', Placa: ' + datos.placa + ', Serie: ' + datos.serie;
+        }*/
+        /* DESARROLLO SUSTENTABLE - CALIDAD DEL AIRE CERTIFICACION VERIFICACION */
+        if (datos.tipo_form && datos.tipo_form == 12) {
+          datosAdicionales = `Numero de Folio:${datos.folio},Año:${datos.anio},Tipo:${datos.certificacion},Semestre:${datos.semestre} `;
+          if (observaciones !== '')
+            datosAdicionales += `OBSERVACIONES: ${observaciones} `;
+        }
+        /* DESARROLLO SUSTENTABLE - DATOS POR EL INCUMPLIMIENTO DE VERIFICACION */
+        if (datos.tipo_form && datos.tipo_form == 3) {
+          if (observaciones !== '') {
+            //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+            datosAdicionales = `${observaciones} `;
+
+          }
+          if (datos.fecha_verificacion) {
+            datosAdicionales += `Fecha próxima verificacion: ${datos.fecha_verificacion},`
+          }
+          datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
+        }
+
+        if (datos.tipo_form && datos.tipo_form == 6) {
+          if (observaciones !== '') {
+            //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
+            //datosAdicionales = `${observaciones} `;
+
+          }
+          datosAdicionales += `Escritura: ${datos.escritura}, Fecha escritura: ${datos.fecha_verificacion_escritura}, Contribuyente: ${datos.contribuyente}`
+          observaciones = datosAdicionales += (observaciones !== '') ? ` OBSERVACIONES: ${observaciones}` : '';
+
 
         }
-        if(datos.fecha_verificacion) {
-          datosAdicionales += `Fecha próxima verificacion: ${datos.fecha_verificacion},`
+        /* HACIENDA - IMPUESTOS - ISAN */
+        if (datos.tipo_form && datos.tipo_form == 4) {
+          datosAdicionales = `${datos.concepto!}-${this.monthDescription(Number(datos.periodo))}-${datos.ejercicio}`;
+          observaciones = datosAdicionales += (observaciones !== '') ? ` OBSERVACIONES: ${observaciones}` : '';
         }
-        datosAdicionales += ` Placa: ${datos.placa}, Serie: ${datos.serie}`;
-      }
-
-      if(datos.tipo_form && datos.tipo_form==6) {
-        if (observaciones!=='') {
-         //datosAdicionales = `OBSERVACIONES: ${observaciones} `;
-         //datosAdicionales = `${observaciones} `;
-
-       }
-         datosAdicionales += `Escritura: ${datos.escritura}, Fecha escritura: ${datos.fecha_verificacion_escritura}, Contribuyente: ${datos.contribuyente}`
-         observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
 
 
-     }
-      /* HACIENDA - IMPUESTOS - ISAN */
-      if(datos.tipo_form && datos.tipo_form==4) {
-        datosAdicionales = `${datos.concepto!}-${this.monthDescription(Number(datos.periodo))}-${datos.ejercicio}`;
-        observaciones = datosAdicionales += (observaciones!=='')? ` OBSERVACIONES: ${observaciones}`:'';
-      }
-
-
-      /* HACIENDA - IMPUESTOS - CEDULAR POR LA ENAJENACION DE BIENES INMUEBLES */
-      if(datos.tipo_form && datos.tipo_form==9) {
-        const tipo_ingreso = ListaIngresoEnajenacion.find( ingreso => ingreso.id == Number(datos.tipo_ingresos));
-        datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}`:'';
-        observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura=='1'?datos.escritura:'SIN ESCRITURA'},Fecha de enajenación: ${datos.fecha_enajenacion},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: ${datos.calcula_base_impuesto == '1'?'VENTA':'PERMUTA'},Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+        /* HACIENDA - IMPUESTOS - CEDULAR POR LA ENAJENACION DE BIENES INMUEBLES */
+        if (datos.tipo_form && datos.tipo_form == 9) {
+          const tipo_ingreso = ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos));
+          datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}` : '';
+          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion},Nombre del Perito: ${datos.nombre_perito},RFC del Perito: ${datos.rfc_perito},Domicilio del Perito: ${datos.domicilio_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+          if (datos.tiene_exencion == '1') {
+            this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬0.00¬¬6673¬0.0¬|"
+            this.contribuyenteArr.data.total = 0;
+          }
+        }
       }
     }
-   }
-   console.log('IMPUETO CEDULAR::: '+datosAdicionales+'---'+observaciones);
-   let estado: string = '';
-   let municipio: string = '';
-   let estadoPeticion: boolean = false;
-   this.serviciosGenerales.getEntidadesFederativas(this.myFormContribuyente.get('domicilio')?.get('estados')?.value)
-    .subscribe({
-      next: value=> {
-        if(value!.data.length>0) {
-          estado=value!.data[0].descripcion;
+
+    let estado: string = '';
+    let municipio: string = '';
+    let estadoPeticion: boolean = false;
+    this.serviciosGenerales.getEntidadesFederativas(this.myFormContribuyente.get('domicilio')?.get('estados')?.value)
+      .subscribe({
+        next: value => {
+          if (value!.data.length > 0) {
+            estado = value!.data[0].descripcion;
+          }
+        },
+        complete: () => {
+          //estadoPeticion = true
+          if (this.myFormContribuyente.get('domicilio')?.get('municipio')?.value !== '' && this.myFormContribuyente.get('domicilio')?.get('municipio')?.value > 0) {
+            this.serviciosGenerales.getMunicipios(this.myFormContribuyente.get('domicilio')?.get('estados')?.value, this.myFormContribuyente.get('domicilio')?.get('municipio')?.value)
+              .subscribe({
+                next: (value) => {
+                  if (value!.data.length > 0) {
+                    municipio = value!.data[0].descripcion;
+                  }
+                },
+                complete: () => estadoPeticion = true
+              });
+          } else {
+            municipio = 'CUERNAVACA';
+            estadoPeticion = true;
+          }
         }
-      },
-      complete: () => {
-        //estadoPeticion = true
-        if(this.myFormContribuyente.get('domicilio')?.get('municipio')?.value !== '' && this.myFormContribuyente.get('domicilio')?.get('municipio')?.value >0) {
-          this.serviciosGenerales.getMunicipios(this.myFormContribuyente.get('domicilio')?.get('estados')?.value,this.myFormContribuyente.get('domicilio')?.get('municipio')?.value)
-            .subscribe({
-              next: (value) => {
-                if(value!.data.length>0) {
-                  municipio=value!.data[0].descripcion;
-                }
-              },
-              complete: () => estadoPeticion = true
-            });
-        } else {
-          municipio = 'CUERNAVACA';
-          estadoPeticion = true;
-        }
-      }
-    });
+      });
 
     let id = setInterval(() => {
-      if(estadoPeticion) {
-        let razonSocial:string = this.myFormContribuyente.get('razonSocial')?.value;
+      if (estadoPeticion) {
+        let razonSocial: string = this.myFormContribuyente.get('razonSocial')?.value;
 
         const movimiento = sessionStorage.getItem('movimiento')!;
 
@@ -485,52 +498,115 @@ export class DatosContribuyenteComponent implements OnInit {
         this.dataPoliza.sistema = gestora;
         this.dataPoliza.movimiento = movimiento;//this.movimiento.toString();
         this.dataPoliza.total = this.contribuyenteArr.data.total;
-        this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value)?this.myFormContribuyente.get('rfc')?.value:'XAXX010101000';
-        this.dataPoliza.nombre = ((razonSocial.length>0)?this.myFormContribuyente.get('razonSocial')?.value:String(this.myFormContribuyente.get('nombre')?.value).toUpperCase());
+        this.dataPoliza.rfc = (this.myFormContribuyente.get('rfc')?.value) ? this.myFormContribuyente.get('rfc')?.value : 'XAXX010101000';
+        this.dataPoliza.nombre = ((razonSocial.length > 0) ? this.myFormContribuyente.get('razonSocial')?.value : String(this.myFormContribuyente.get('nombre')?.value).toUpperCase());
         this.dataPoliza.primerApellido = String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase();
         this.dataPoliza.segundoApellido = String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
         this.dataPoliza.razonSocial = String(this.myFormContribuyente.get('razonSocial')?.value).toUpperCase();
         this.dataPoliza.tipoPersona = this.myFormContribuyente.get('tipoPersona')?.value;
         this.dataPoliza.origen = 'PH';
-        this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase():'.';
-        this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value)?this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value:0;
+        this.dataPoliza.calle = (this.myFormContribuyente.get('domicilio')?.get('calle')?.value) ? String(this.myFormContribuyente.get('domicilio')?.get('calle')?.value).toUpperCase() : '.';
+        this.dataPoliza.numeroExterior = (this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value) ? this.myFormContribuyente.get('domicilio')?.get('numeroExterior')?.value : 0;
         this.dataPoliza.numeroInterior = this.myFormContribuyente.get('domicilio')?.get('numeroInterior')?.value;
-        this.dataPoliza.colonia = (this.myFormContribuyente.get('domicilio')?.get('colonia')?.value)?String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase():".";
-        this.dataPoliza.municipio = (municipio !== '')?municipio:'CUERNAVACA';
-        this.dataPoliza.estado = (estado)?estado:'MORELOS';
-        this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value)?this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value:62000;
+        this.dataPoliza.colonia = (this.myFormContribuyente.get('domicilio')?.get('colonia')?.value) ? String(this.myFormContribuyente.get('domicilio')?.get('colonia')?.value).toUpperCase() : ".";
+        this.dataPoliza.municipio = (municipio !== '') ? municipio : 'CUERNAVACA';
+        this.dataPoliza.estado = (estado) ? estado : 'MORELOS';
+        this.dataPoliza.codigoPostal = (this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value) ? this.myFormContribuyente.get('domicilio')?.get('codigoPostal')?.value : 62000;
         /*TODO: Carlos A 18/04/2025 inicio*/
-        this.dataPoliza.observaciones = (gestora=='64' || gestora=='40')?this.contribuyenteArr.data.observaciones!:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;////(gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
-        this.dataPoliza.datosAdicionales = (gestora=='64' || gestora=='40')?this.contribuyenteArr.data.observaciones!:datosAdicionales;//datosAdicionales;
+        this.dataPoliza.observaciones = (gestora == '64' || gestora == '40') ? this.contribuyenteArr.data.observaciones! : ((observaciones !== '') ? (observaciones.includes('OBSERVACIONES:')) ? observaciones : `OBSERVACIONES: ${observaciones}` : ''); //observaciones;////(gestora=='64' || gestora=='40')?observaciones:((observaciones!=='')?(observaciones.includes('OBSERVACIONES:'))?observaciones:`OBSERVACIONES: ${observaciones}`:''); //observaciones;//
+        this.dataPoliza.datosAdicionales = (gestora == '64' || gestora == '40') ? this.contribuyenteArr.data.observaciones! : datosAdicionales;//datosAdicionales;
         /*TODO: Carlos A 18/04/2025 fin*/
         this.dataPoliza.detalle = this.contribuyenteArr.data.lineaDetalle;
-        if(Object.entries(vehicle_data).length > 0) {
+        if (Object.entries(vehicle_data).length > 0) {
           this.dataPoliza.datosVehiculo = vehicle_data;
         }
-        if(gestora=='53'){
+        if (gestora == '53') {
           this.dataPoliza.observaciones = this.dataPoliza.datosAdicionales;
         }
         /*TODO: Carlos A 18/04/2025 */
-        if(vehicle_data.tramite==9 || (vehicle_data.tramite==1 && !!vehicle_data.numeroConcesion) || (vehicle_data.tramite==3 && !!vehicle_data.numeroConcesion) && vehicle_data.valorVenta==null){
+        if (vehicle_data.tramite == 9 || (vehicle_data.tramite == 1 && !!vehicle_data.numeroConcesion) || (vehicle_data.tramite == 3 && !!vehicle_data.numeroConcesion) && vehicle_data.valorVenta == null) {
           this.dataPoliza.datosVehiculo!.tipo = 2;
         }
 
-          this.smytService.generarPolizaServ(this.dataPoliza)
-            .subscribe(resp => {
-              this.isLoading = false;
-              this.buttBlock = false;
-              if ( resp.success) {
-                sessionStorage.setItem('datos_poliza',JSON.stringify(resp.poliza));
+
+        this.smytService.generarPolizaServ(this.dataPoliza)
+          .subscribe(resp => {
+            this.isLoading = false;
+            this.buttBlock = false;
+            if (resp.success) {
+              if (datos.tipo_form && datos.tipo_form == 9 && datos.tiene_exencion == '1') {
+                const formValue = this.myFormContribuyente.value
+                let formData = new FormData();
+                // Agregar datos del formulario
+                formData.append('cantidad', '1');
+                formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
+                formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
+                formData.append('escritura', datos.escritura || '');
+                formData.append('rfcPerito', datos.rfc_perito || '');
+                formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
+                formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
+                formData.append('tipoIngresos', datos.tipo_ingresos || '');
+                formData.append('tipoForm', datos.tipo_form?.toString() || '');
+                formData.append('noPhone', datos.noPhone || '');
+                formData.append('email', datos.email || '');
+                formData.append('referenciaInmueble', datos.referencia_inmueble || '');
+                formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
+                formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
+                formData.append('tieneEscritura', datos.tiene_escritura || '');
+                formData.append('tieneExencion', datos.tiene_exencion || '');
+                formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
+                formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
+                formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
+                formData.append('importeInversion', datos.importe_inversion?.toString() || '');
+                formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
+                formData.append('nombre', datos.nombre || '');
+                formData.append('rfc', datos.rfc || '');
+                formData.append('notaria', datos.notaria || '');
+                formData.append('entidad', datos.entidad || '');
+                formData.append('demarcacion', datos.demarcacion || '');
+                formData.append('nombrePerito', datos.nombre_perito || '');
+                formData.append('domicilioPerito', datos.domicilio_perito || '');
+                formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
+                formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
+                formData.append('archivo', this.serviceFileTransfer.getFile()!);
+
+                this.serviciosGenerales.uploadFile(formData).subscribe({
+                  next: (response) => {
+                    console
+                    Swal.fire(
+                      {
+                        icon: "success",
+                        title: "Operación realizada con éxito!!!",
+                        text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
+                      }).then((result) => {
+                        this.router.navigate(['pagos/dependencias']);
+                        return;
+                      });
+                  },
+                  error: (err) => {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error !!!!",
+                      text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
+                      showConfirmButton: false,
+                      timer: 2500
+                    });
+                  }
+                });
+                return;
+              } else {
+                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
                 this.router.navigate(['pagos/generar_poliza']);
                 return;
               }
-              this.openSnackBar(resp.data!);
-              return;
+            }
+            this.openSnackBar(resp.data!);
+            return;
           });
-          clearInterval(id);
+        clearInterval(id);
       }
       //console.log('continua la la espera')
-    },150)
+    }, 150)
   }
 
   isValidField(field: string) {
@@ -539,7 +615,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
-      data: message,duration: 4000,panelClass: ["snack-notification"],horizontalPosition: "center",verticalPosition: "top",
+      data: message, duration: 4000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
     });
   }
 

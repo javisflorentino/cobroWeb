@@ -1,8 +1,8 @@
 <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 <!--<div class="card mb-7">
   <div class="flex justify-content-center flex-wrap">-->
-<div class="grid flex">
-  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-8':'col-12'">
+<div class="grid fle pb-8">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-12':'col-12'">
     <mat-card class="shadow-8">
       <mat-card-header class="mb-3">
         <mat-card-title>Cálculo de Costos</mat-card-title>
@@ -10,7 +10,49 @@
       </mat-card-header>
       <mat-divider class="mt-2 mb-2"></mat-divider>
       <mat-card-content class="mt-5">
-        <form fxLayout="column" [formGroup]="formHEnajenacionBienes">
+        <form [formGroup]="formHEnajenacionBienes">
+          <div class="flex flex-wrap gap-1 md:gap-4 xl:gap-8">
+            <div class="w-12rem h-6rem flex align-items-center justify-content-center">
+              <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+                class="radio-container">
+                <mat-label>Tiene exención</mat-label>
+                <input matInput style="display:none" required>
+                <mat-radio-group #group_c_tp formControlName="tiene_exencion" class="flex-wrap"
+                  (change)="onChangeExencion($event.value)">
+                  <mat-radio-button #buttons_c_tp value="0">
+                    <span class="wrap-label-text">No</span>
+                  </mat-radio-button>
+                  <mat-radio-button #buttons_c_tp value="1">
+                    <span class="wrap-label-text">Sí</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </mat-form-field>
+            </div>
+            <div class="w-12rem h-6rem flex align-items-center justify-content-center">
+              <!-- Botón de subir archivo -->
+              <button mat-fab color="primary" class="butupfile" matTooltip="Agregar Documento" [disabled]="!isUploadEnabled" (click)="validarYSubirArchivo(fileUpload)">
+                <mat-icon>archive</mat-icon>
+              </button>
+
+              <!-- Texto junto al botón -->
+              <span class="ml-2">Subir archivos</span>
+
+              <!-- Input de archivo oculto -->
+              <input id="file-input" type="file" style="display: none !important" class="file-input" (change)="onChange($event)" #fileUpload />
+            </div>
+          </div>
+
+
+
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+
+
+            <div fxFlex class="flex m-2" appearance="outline">
+
+            </div>
+          </div>
+
+
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
               class="radio-container">
@@ -38,21 +80,29 @@
             </mat-form-field>
           </div>
 
-
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Escritura</mat-label>
-            <input matInput type="text" formControlName="escritura">
-            <mat-error class="fontsizeerror">{{
-              getMessage(formHEnajenacionBienes.get('escritura')?.errors,'escritura')
-              }}</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Fecha de enajenación</mat-label>
-            <input matInput [matDatepicker]="dpff" formControlName="fecha_enajenacion" [readonly]="true">
-            <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
-            <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
-            <mat-datepicker #dpff disabled="false"></mat-datepicker>
-          </mat-form-field>
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
+            <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Escritura</mat-label>
+              <input matInput type="text" formControlName="escritura">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formHEnajenacionBienes.get('escritura')?.errors,'escritura')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Fecha de enajenación</mat-label>
+              <input matInput [matDatepicker]="dpff" formControlName="fecha_enajenacion" [readonly]="true">
+              <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+              <mat-datepicker #dpff disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+              <mat-label>Fecha de Provisional de Escritura</mat-label>
+              <input matInput [matDatepicker]="dpff" formControlName="fecha_provisional_escritura" [readonly]="true">
+              <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+              <mat-datepicker #dpff disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
 
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
@@ -115,14 +165,14 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Costo Comprobado</mat-label>
+                <mat-label>Costo actualizado de adquisición</mat-label>
                 <input matInput formControlName="costo_comprobado" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('costo_comprobado')?.errors,'costo_comprobado')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Importe de las inversión</mat-label>
+                <mat-label>Inversiones de mejora</mat-label>
                 <input matInput formControlName="importe_inversion" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('importe_inversion')?.errors,'importe_inversion')
@@ -142,11 +192,18 @@
                   getMessage(formHEnajenacionBienes.get('comisiones_mediaciones')?.errors,'comisiones_mediaciones')
                   }}</mat-error>
               </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Otras deducciones</mat-label>
+                <input matInput formControlName="otras_deducciones" type="text">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('otras_deducciones')?.errors,'otras_deducciones')
+                  }}</mat-error>
+              </mat-form-field>
 
             </mat-form-field>
           </div>
 
-          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+          <!--<div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
               class="full-width radio-container">
               <mat-label>Cálculo base del impuesto</mat-label>
@@ -160,7 +217,7 @@
                 </mat-radio-button>
               </mat-radio-group>
             </mat-form-field>
-          </div>
+          </div>-->
 
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
@@ -205,20 +262,34 @@
             </mat-form-field>
           </div>
 
+          <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
+              class="full-width radio-container">
+              <mat-label>Datos del Perito Valuador</mat-label>
+              <input matInput style="display:none" required>
 
-          <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Contribuyente</mat-label>
-            <input matInput type="text" formControlName="contribuyente">
-            <mat-error class="fontsizeerror">{{
-              getMessage(formHEnajenacionBienes.get('contribuyente')?.errors,'contribuyente') }}</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-            <mat-label>Monto</mat-label>
-            <input matInput formControlName="monto" type="number"
-              onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
-            <mat-error class="fontsizeerror">{{ getMessage(formHEnajenacionBienes.get('monto')?.errors,'monto')
-              }}</mat-error>
-          </mat-form-field>-->
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>RFC</mat-label>
+                <input matInput formControlName="rfc_perito" type="text" name="" id="">
+                <mat-error class="fontsizeerror">El RFC es incorrecto</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Nombre(s)</mat-label>
+                <input matInput type="text" formControlName="nombre_perito">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('nombre_perito')?.getError('error'),'nombre_perito') }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Domicilio fiscal</mat-label>
+                <input matInput type="text" formControlName="domicilio_perito">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('domicilio_perito')?.getError('error'),'domicilio_perito') }}
+                </mat-error>
+              </mat-form-field>
+            </mat-form-field>
+          </div>
+
         </form>
       </mat-card-content>
 
@@ -240,8 +311,8 @@
     </mat-card>
   </div>
 
-  <div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
+  <!--<div class="col-4" *ngIf="sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall'">
     <messages-hacienda [messageArr]="messages" [messageArr_other]="messages_other"></messages-hacienda>
-  </div>
+  </div>-->
 
 </div>
