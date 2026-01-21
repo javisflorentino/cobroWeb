@@ -12,8 +12,10 @@ import { TipoIngresoEnajenacion } from '../../../interface/tipo_ingresos_enajena
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
+import { ModalReporteCedularComponent } from 'src/app/shared/components/modal-reporte-cedular/modal-reporte-cedular.component';
 
 @Component({
   selector: 'hacienda-impuesto-cedular-enajenacion-bienes',
@@ -119,7 +121,8 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
     private smytService: SmytService,
     private _snackBar: MatSnackBar,
     private breakpointObserver: BreakpointObserver,
-    private fileTransferService: FileTransferService) {
+    private fileTransferService: FileTransferService,
+    private dialog: MatDialog) {
     this.mediaQuery();
   }
 
@@ -337,6 +340,18 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
     this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoForm]);
     return
+  }
+
+  abrirModalReporteCedular(): void {
+    const dialogRef = this.dialog.open(ModalReporteCedularComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      panelClass: 'custom-dialog-container'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal de reporte cedular cerrado', result);
+    });
   }
 
   openSnackBar(message: string) {

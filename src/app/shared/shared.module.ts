@@ -27,6 +27,7 @@ import { ModalOficioHabilitacionComponent } from './components/modal-oficio-habi
 import { SharedToolbarMenuComponent } from './components/shared-toolbar-menu/shared-toolbar-menu.component';
 import { PdfViewerComponentComponent } from './components/pdf-viewer-component/pdf-viewer-component.component';
 import { SnackBarWhitLinkComponent } from './components/snack-bar-whit-link/snack-bar-whit-link.component';
+import { ModalReporteCedularComponent } from './components/modal-reporte-cedular/modal-reporte-cedular.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { SnackBarWhitLinkComponent } from './components/snack-bar-whit-link/snac
     ModalOficioHabilitacionComponent,
     SharedToolbarMenuComponent,
     PdfViewerComponentComponent,
-    SnackBarWhitLinkComponent
+    SnackBarWhitLinkComponent,
+    ModalReporteCedularComponent
   ],
   imports: [
     CommonModule,

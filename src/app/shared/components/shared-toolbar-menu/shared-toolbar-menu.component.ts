@@ -8,6 +8,7 @@ import { ModalFacturacionComponent } from '../modal-facturacion/modal-facturacio
 import { ModalValidarReciboOficioComponent } from '../modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
 import { Subject, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ModalReporteCedularComponent } from '../modal-reporte-cedular/modal-reporte-cedular.component';
 
 @Component({
   selector: 'shared-toolbar-menu',
@@ -25,7 +26,8 @@ export class SharedToolbarMenuComponent implements OnDestroy {
     { icon: 'request_quote', label: 'Facturación' },
     { icon: 'history', label: 'Histórico' },
     { icon: 'payments', label: 'Pagar Póliza' },
-    { icon: 'payments', label: 'Oficio de Habilitación' }
+    { icon: 'payments', label: 'Oficio de Habilitación' },
+    { icon: 'payments', label: 'Reporte Impuesto Cedular' },
 
   ];
 
@@ -87,12 +89,18 @@ export class SharedToolbarMenuComponent implements OnDestroy {
 
 
     }
-    if (button.label === 'Oficio de Habilitación') {
-        const dialogRef = this.dialog.open(ModalValidarReciboOficioComponent, {
+    if (button.label === 'Reporte Impuesto Cedular') {
+        const dialogRef = this.dialog.open(ModalReporteCedularComponent, {
           width: '350px',
           disableClose: false
       });
     }
+    if (button.label === '') {
+      const dialogRef = this.dialog.open(ModalValidarReciboOficioComponent, {
+        width: '350px',
+        disableClose: false
+    });
+  }
     this.actionOnToolbarMenu.emit(false)
   }
 

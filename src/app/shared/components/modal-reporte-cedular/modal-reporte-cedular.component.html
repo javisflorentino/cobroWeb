@@ -1,0 +1,53 @@
+<!-- modal-reporte-cedular.component.html -->
+<div class="dialog-container"
+     style="background-image: url('./assets/fondoLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center">
+    <h2 class="dialog-titulo">Reporte de Impuesto Cedular</h2>
+    <p class="dialog-subtitle">Introduzca la serie y folio del recibo</p>
+    
+    <mat-dialog-content>
+      <form [formGroup]="reporteForm">
+        <div class="form-field">
+          <label class="text-center">Serie del Recibo</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="serie" placeholder="Ej: A001">
+            <mat-error *ngIf="reporteForm.get('serie')?.invalid && reporteForm.get('serie')?.touched">
+              Campo requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-field">
+          <label class="text-center">Folio</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="folio" placeholder="Ej: 00012345">
+            <mat-error *ngIf="reporteForm.get('folio')?.invalid && reporteForm.get('folio')?.touched">
+              Campo requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <div class="note-section">
+          <p class="note-text">
+            <strong>Nota:</strong> acudir a oficina recaudación para sello recibido
+          </p>
+        </div>
+      </form>
+    </mat-dialog-content>
+    
+    <mat-dialog-actions align="center">
+      <button mat-raised-button color="primary" 
+              class="dialog-search-button" 
+              (click)="generarReporte()"
+              [disabled]="isLoading || !reporteForm.valid">
+        <span *ngIf="!isLoading">Generar Reporte</span>
+        <span *ngIf="isLoading">Generando...</span>
+      </button>
+    </mat-dialog-actions>
+  </div>

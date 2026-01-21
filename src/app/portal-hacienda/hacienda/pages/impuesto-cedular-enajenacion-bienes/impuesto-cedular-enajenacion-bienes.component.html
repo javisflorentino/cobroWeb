@@ -301,6 +301,11 @@
           Cancelar
         </button>
         <span class=""></span>
+        <button mat-stroked-button mat-raised color="accent" (click)="abrirModalReporteCedular()">
+          <mat-icon>description</mat-icon>
+          Generar Reporte
+        </button>
+        <span class=""></span>
         <button [disabled]="formHEnajenacionBienes.invalid" mat-stroked-button mat-raised color="primary"
           (click)="onSubmit()">
           <mat-icon>calculate</mat-icon>
