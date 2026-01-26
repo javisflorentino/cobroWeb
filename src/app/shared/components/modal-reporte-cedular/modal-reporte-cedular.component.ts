@@ -23,7 +23,7 @@ export class ModalReporteCedularComponent {
     this.reporteForm = this.fb.group({
       serie: ['', Validators.required],
       folio: ['', Validators.required],
-      lineaCaptura: [''],
+      lineaCaptura: ['93001700148148661288'],
     });
   }
 

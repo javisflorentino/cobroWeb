@@ -16,7 +16,9 @@ export const environments = {
   valor_uma: 104,
 
   URL_PAGO_EN_LINEA: 'https://app.hacienda.morelos.gob.mx/pagoenlinea',
-  URL_PAGO_EN_LINEA_RECIBO: 'https://app.hacienda.morelos.gob.mx/recibo'
+  URL_PAGO_EN_LINEA_RECIBO: 'https://app.hacienda.morelos.gob.mx/recibo',
+  URL_SIIGEM_REPORTE_CEDULAR: 'https://app.hacienda.morelos.gob.mx/siigemWeb/impuestos/cedular/reporte'
+
 }
 
 
