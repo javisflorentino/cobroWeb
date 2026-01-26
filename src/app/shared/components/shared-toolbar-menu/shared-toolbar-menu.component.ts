@@ -28,7 +28,7 @@ export class SharedToolbarMenuComponent implements OnDestroy {
     { icon: 'payments', label: 'Pagar Póliza' },
     { icon: 'payments', label: 'Oficio de Habilitación' },
     { icon: 'payments', label: 'Reporte Impuesto Cedular' },
-
+    
   ];
 
   private destroyed = new Subject<void>();

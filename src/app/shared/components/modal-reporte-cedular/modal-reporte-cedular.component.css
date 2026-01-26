@@ -5,40 +5,6 @@
     border-radius: 20px !important;
   }
 
-.dialog-container {
-  padding: 24px;
-  min-width: 400px;
-  max-width: 500px;
-}
-
-.dialog-titulo {
-  text-align: center;
-  color: #1a237e;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.dialog-subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 24px;
-}
-
-.form-field {
-  margin-bottom: 20px;
-}
-
-.form-field label {
-  display: block;
-  text-align: center;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #333;
-}
-
-.full-width {
-  width: 100%;
-}
 
 .error-message {
   color: #f44336;
@@ -50,13 +16,12 @@
 }
 
 .note-section {
-  margin-top: 24px;
-  padding: 12px;
-  background-color: #fff3e0;
-  border-radius: 8px;
-  border-left: 4px solid #ff9800;
-}
-
+    margin-top: 24px;
+    padding: 12px;
+    background-color: #fff3e0;
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+  }
 .note-text {
   margin: 0;
   color: #5d4037;

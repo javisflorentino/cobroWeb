@@ -9,6 +9,7 @@ import { ImpuestoCedularService, ReporteCedularRequest } from 'src/app/shared/se
   styleUrls: ['./modal-reporte-cedular.component.css']
 })
 export class ModalReporteCedularComponent {
+  
   reporteForm: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -21,7 +22,8 @@ export class ModalReporteCedularComponent {
   ) {
     this.reporteForm = this.fb.group({
       serie: ['', Validators.required],
-      folio: ['', Validators.required]
+      folio: ['', Validators.required],
+      lineaCaptura: [''],
     });
   }
 

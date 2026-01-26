@@ -19,5 +19,5 @@ export const environments = {
   URL_PAGO_EN_LINEA_RECIBO: ' https://app.hacienda.morelos.gob.mx/reciboQA',
   
   // URLs para SIIGEM Web
-  URL_SIIGEM_REPORTE_CEDULAR: 'https://app.hacienda.morelos.gob.mx/siigemWeb/impuestos/cedular/reporte'
+  URL_SIIGEM_REPORTE_CEDULAR: 'http://localhost:8080/siigemWeb/impuestos/cedular/reporte'
 }

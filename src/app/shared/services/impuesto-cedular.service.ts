@@ -4,10 +4,12 @@ import { Observable } from 'rxjs';
 import { AuthSiigemService } from './auth-siigem.service';
 import { environments } from 'src/environments/environments';
 
-export interface ReporteCedularRequest {
-  serie: string;
-  folio: string;
+export class ReporteCedularRequest {
+  serie!: string;
+  folio!: string;
+  lineaCaptura: string = '93001694926448580294';
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +31,7 @@ export class ImpuestoCedularService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${this.authSiigemService.token}`
     });
 
     return this.http.post(this.urlReporteCedular, request, {

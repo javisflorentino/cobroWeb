@@ -15,6 +15,7 @@ import { ModalHistoricoPagosComponent } from 'src/app/shared/components/modal-hi
 import { ModalFacturacionComponent } from 'src/app/shared/components/modal-facturacion/modal-facturacion.component';
 import Swal from 'sweetalert2';
 import { ModalValidarReciboOficioComponent } from 'src/app/shared/components/modal-validar-recibo-oficio/modal-validar-recibo-oficio.component';
+import { ModalReporteCedularComponent } from 'src/app/shared/components/modal-reporte-cedular/modal-reporte-cedular.component';
 
 
 @Component({
@@ -115,7 +116,9 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
     { icon: 'request_quote', label: 'Facturación' },
     { icon: 'history', label: 'Histórico' },
     { icon: 'payments', label: 'Pagar Póliza' },
-    { icon: 'article', label: 'Oficio de Habilitación' }
+    { icon: 'article', label: 'Oficio de Habilitación' },
+    { icon: 'description', label: 'Declaración Impuesto Cedular' }
+
 
   ];
   constructor(private dialog: MatDialog) { }
@@ -267,6 +270,18 @@ export class CardsDependenciasComponent implements OnInit, OnDestroy {
         }
       });
     }
-    
+    if (button.label === 'Declaración Impuesto Cedular' || valor==5) {
+      const dialogRef = this.dialog.open(ModalReporteCedularComponent, {
+        width: '350px',
+        disableClose: false
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Datos del formulario:', result);
+          // Aquí puedes manejar los datos recibidos del diálogo
+        }
+      });
+    }
   }
 }
