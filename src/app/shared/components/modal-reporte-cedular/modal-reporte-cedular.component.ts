@@ -23,7 +23,7 @@ export class ModalReporteCedularComponent {
     this.reporteForm = this.fb.group({
       serie: ['', Validators.required],
       folio: ['', Validators.required],
-      lineaCaptura: ['93001700148148661288'],
+      lineaCaptura: [''],
     });
   }
 
@@ -55,11 +55,9 @@ export class ModalReporteCedularComponent {
           this.isLoading = false;
           console.error('Error al generar reporte:', error);
           
-          if (error.message === 'No hay token de autenticación disponible') {
-            this.errorMessage = 'No hay token de autenticación disponible. Por favor, inicie sesión nuevamente.';
-          } else {
-            this.errorMessage = 'Error al generar el reporte. Por favor, intente nuevamente.';
-          }
+ 
+            this.errorMessage = 'No se encontró registro del recibo ingresado, favor de verificar';
+          
         }
       });
     }

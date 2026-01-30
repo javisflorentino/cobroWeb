@@ -537,7 +537,7 @@ export class DatosContribuyenteComponent implements OnInit {
               /* SI EXCISTE UN IMPUESTO QUE USE datos_cobro*/
               if (datos !== null) {
                 /* SI ES EL IMPUESTO DE ENAJENACION  Y TIENE EXENCIONES*/
-                if (datos.tipo_form && datos.tipo_form == 9 && datos.tiene_exencion == '1') {
+                if (datos.tipo_form && datos.tipo_form == 9) {
                   console.log('NUEVO IMPUESTO CON EXCEPCION');
                   const formValue = this.myFormContribuyente.value
                   let formData = new FormData();

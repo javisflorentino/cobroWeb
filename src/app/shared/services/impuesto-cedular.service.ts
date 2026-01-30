@@ -7,7 +7,7 @@ import { environments } from 'src/environments/environments';
 export class ReporteCedularRequest {
   serie!: string;
   folio!: string;
-  lineaCaptura: string = '93001694926448580294';
+  lineaCaptura: string = '';
 }
 
 

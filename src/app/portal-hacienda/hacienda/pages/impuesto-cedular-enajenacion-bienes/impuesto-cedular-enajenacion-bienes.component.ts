@@ -342,17 +342,6 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
     return
   }
 
-  abrirModalReporteCedular(): void {
-    const dialogRef = this.dialog.open(ModalReporteCedularComponent, {
-      width: '500px',
-      maxWidth: '90vw',
-      panelClass: 'custom-dialog-container'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Modal de reporte cedular cerrado', result);
-    });
-  }
 
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(SnackBarComponent, {
