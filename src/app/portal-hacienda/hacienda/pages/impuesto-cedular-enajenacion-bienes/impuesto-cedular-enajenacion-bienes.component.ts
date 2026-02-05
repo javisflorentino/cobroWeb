@@ -89,13 +89,13 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
       //calcula_base_impuesto: ['1', [Validators.required]],
 
-      rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcFisica)]],
+      rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
       nombre: ['', [Validators.required]],
       notaria: ['', [Validators.required]],
       entidad: ['', [Validators.required]],
       demarcacion: ['', [Validators.required]],
 
-      rfc_perito: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcFisica)]],
+      rfc_perito: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
       nombre_perito: ['', [Validators.required]],
       domicilio_perito: ['', [Validators.required]],
     }
