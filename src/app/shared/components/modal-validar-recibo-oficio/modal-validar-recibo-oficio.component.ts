@@ -102,10 +102,10 @@ oficiosForm: FormGroup = this.fb.group({
         const folioPago = xmlDoc.querySelector("FolioPago")?.textContent;
         const idConcepto = xmlDoc.querySelector("Concepto")?.getAttribute("IdConcepto");
         
-        console.log("Línea de Captura:", lineaCaptura);
+        /*console.log("Línea de Captura:", lineaCaptura);
         console.log("Número de Póliza:", numeroPoliza);
         console.log("Folio de Pago:", folioPago);
-        console.log("ID Concepto:", idConcepto);
+        console.log("ID Concepto:", idConcepto);*/
     
         if (!lineaCaptura || !numeroPoliza || !folioPago || !idConcepto) {
           Swal.fire({

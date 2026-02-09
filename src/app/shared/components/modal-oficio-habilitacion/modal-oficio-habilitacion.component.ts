@@ -102,7 +102,6 @@ export class ModalOficioHabilitacionComponent {
           const tipoDependencia = this.habilitacionForm.get('tipoDependencia')!.value;
           const nivel = this.habilitacionForm.get('nivelGobierno')!.value;
           const poder = this.habilitacionForm.get('tipoPoder')!.value;
-          const folioDeclaracion = "Folio";
           const hoy = new Date();
           const dia = String(hoy.getDate()).padStart(2, '0');
           const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
@@ -111,8 +110,11 @@ export class ModalOficioHabilitacionComponent {
           const fecha = `${dia}/${mes}/${anio}`;
           const valores = sessionStorage.getItem('oficio_data');
 
-          const { folioPago, lineaCaptura, numeroPoliza, IdConcepto } = JSON.parse(valores!);
+          const { FolioPago, lineaCaptura, numeroPoliza, IdConcepto } = JSON.parse(valores!);
+          const folioDeclaracion = "FOLIO";
 
+          //const folioDeclaracion = "SAyBG/DGR/W"+numeroPoliza+"/"+anio.toString();
+          
           this.generalesService.insertarPersona(
             nombre,
             apellidoPaterno,
@@ -128,7 +130,7 @@ export class ModalOficioHabilitacionComponent {
             poder,
             folioDeclaracion,
             fecha,
-            folioPago,
+            FolioPago,
             lineaCaptura,
             numeroPoliza
           )

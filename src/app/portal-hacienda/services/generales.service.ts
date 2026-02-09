@@ -209,52 +209,65 @@ export class GeneralesService {
     lineaCaptura: string,
     numeroPoliza: string
   ): Promise<any> {
-    return await fetch(`${this.urlSOAP}oficiosHabilitacion/services/personaPago`, {
-      method: "POST",
-      body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ofic="http://oficioshabilitacion/">
-     <soapenv:Header/>
-     <soapenv:Body>
-        <ofic:insertaPeticion>
-           <personaPago>
-              <nombre>${nombre}</nombre>
-              <apellidoPaterno>${apellidoPaterno}</apellidoPaterno>
-              <apellidoMaterno>${apellidoMaterno}</apellidoMaterno>
-              <rfc>${rfc}</rfc>
-              <curp>${curp}</curp>
-              <sexo>${sexo}</sexo>
-              <telefono>${telefono}</telefono>
-              <correo>${correo}</correo>
-              <dependencia>${dependencia}</dependencia>
-              <tipoDependencia>${tipoDependencia}</tipoDependencia>
-              <nivel>${nivel}</nivel>
-              <poder>${poder}</poder>
-              <folioDeclaracion>${folioDeclaracion}</folioDeclaracion>
-              <fecha>${fecha}</fecha>
-              <folioPago>${folioPago}</folioPago>
-              <lineaCaptura>${lineaCaptura}</lineaCaptura>
-              <numeroPoliza>${numeroPoliza}</numeroPoliza>
-              <validacion1>0</validacion1>
-              <validacion2>0</validacion2>
-              <validacion3>0</validacion3>
-              <estado>En trámite</estado>
-              <observacion>?</observacion>
-              <fechaLiberacion>?</fechaLiberacion>
-              <fechaLiberacionDate>?</fechaLiberacionDate>
-              <codigo>?</codigo>
-              <estampadoTiempo>?</estampadoTiempo>
-              <mensaje>?</mensaje>
-              <noCertificado>?</noCertificado>
-              <selloDigital>?</selloDigital>
-              <selloEstampado>?</selloEstampado>
-              <urlValidacion>?</urlValidacion>
-           </personaPago>
-        </ofic:insertaPeticion>
-     </soapenv:Body>
-  </soapenv:Envelope>`,
-      headers: { "Content-type": "text/xml; charset=utf-8" },
-      redirect: "follow"
-    });
+  
+    const soapBody = `
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ofic="http://oficioshabilitacion/">
+    <soapenv:Header/>
+    <soapenv:Body>
+      <ofic:insertaPeticion>
+        <personaPago>
+          <nombre>${nombre}</nombre>
+          <apellidoPaterno>${apellidoPaterno}</apellidoPaterno>
+          <apellidoMaterno>${apellidoMaterno}</apellidoMaterno>
+          <rfc>${rfc}</rfc>
+          <curp>${curp}</curp>
+          <sexo>${sexo}</sexo>
+          <telefono>${telefono}</telefono>
+          <correo>${correo}</correo>
+          <dependencia>${dependencia}</dependencia>
+          <tipoDependencia>${tipoDependencia}</tipoDependencia>
+          <nivel>${nivel}</nivel>
+          <poder>${poder}</poder>
+          <folioDeclaracion>${folioDeclaracion}</folioDeclaracion>
+          <fecha>${fecha}</fecha>
+          <folioPago>${folioPago}</folioPago>
+          <lineaCaptura>${lineaCaptura}</lineaCaptura>
+          <numeroPoliza>${numeroPoliza}</numeroPoliza>
+          <validacion1>0</validacion1>
+          <validacion2>0</validacion2>
+          <validacion3>0</validacion3>
+          <estado>En trámite</estado>
+          <observacion>?</observacion>
+          <fechaLiberacion>?</fechaLiberacion>
+          <fechaLiberacionDate>?</fechaLiberacionDate>
+          <codigo>?</codigo>
+          <estampadoTiempo>?</estampadoTiempo>
+          <mensaje>?</mensaje>
+          <noCertificado>?</noCertificado>
+          <selloDigital>?</selloDigital>
+          <selloEstampado>?</selloEstampado>
+          <urlValidacion>?</urlValidacion>
+        </personaPago>
+      </ofic:insertaPeticion>
+    </soapenv:Body>
+  </soapenv:Envelope>
+  `;
+  
+   
+  
+    return await fetch(
+      `${this.urlSOAP}oficiosHabilitacion/services/personaPago`,
+      {
+        method: "POST",
+        body: soapBody,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        redirect: "follow",
+      }
+    );
   }
+  
   async validateVahicleOnDb(placa: string, no_serie: string): Promise<any> {
     return await fetch(`${this.urlSOAP}tramitesSMyT/services/SMyT`, {
       method: "POST",
