@@ -583,8 +583,8 @@ export class DatosContribuyenteComponent implements OnInit {
                           title: "Operación realizada con éxito!!!",
                           text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
                         }).then((result) => {
-                          this.router.navigate(['pagos/dependencias']);
-                          return;
+                          
+                          
                         });
                     },
                     error: (err) => {
@@ -597,7 +597,11 @@ export class DatosContribuyenteComponent implements OnInit {
                       });
                     }
                   });
-                  return;
+                  if(datos.tiene_exencion?.toLowerCase()=='1'){
+                    this.router.navigate(['pagos/dependencias']);
+                    return;
+                  }
+                  //return;
                 }
               }
               sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
