@@ -111,9 +111,8 @@ export class ModalOficioHabilitacionComponent {
           const valores = sessionStorage.getItem('oficio_data');
 
           const { FolioPago, lineaCaptura, numeroPoliza, IdConcepto } = JSON.parse(valores!);
-          const folioDeclaracion = "FOLIO";
 
-          //const folioDeclaracion = "SAyBG/DGR/W"+numeroPoliza+"/"+anio.toString();
+          const folioDeclaracion = "SAyBG/DGR/OH/"+numeroPoliza+"/"+anio.toString();
           
           this.generalesService.insertarPersona(
             nombre,
