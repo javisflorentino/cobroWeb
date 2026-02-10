@@ -222,12 +222,8 @@ export class ValidatorsService {
         const val1 = normalizar(contribuyenteArr.data[route][(field === 'razonSocial' ? 'nombre' : field)]);
         const val2 = normalizar(formGroup.get(field)?.value);
 
-        console.log(`v1: "${val1}" (Largo: ${val1.length})`);
-        console.log(`v2: "${val2}" (Largo: ${val2.length})`);
-        console.log(`¿Son iguales?: ${val1 === val2}`);
         //if (String(contribuyenteArr.data[route][((field == 'razonSocial') ? 'nombre' : field)]).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize() !== String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize()) {
         if (val1 !== val2) {
-          console.log(`Error en validación del campo "${field}". Valor esperado: "${val1}", valor ingresado: "${val2}"`);
           /* TODO: 10/06/2025 Carlos A. Si se evalua apellido materno y su valor es vacio se ejecuta la sentencia  */
           if (field == 'segundoApellido' && formGroup.get(field)?.value.trim() == '') {
             formGroup.get(field)?.setErrors(null);
