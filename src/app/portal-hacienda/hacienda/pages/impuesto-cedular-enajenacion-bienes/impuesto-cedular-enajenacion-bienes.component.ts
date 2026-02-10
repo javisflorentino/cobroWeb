@@ -137,7 +137,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
   ngOnInit(): void {
     this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
-    this.smytService.getMesages_hacienda_exencion()
+    /*this.smytService.getMesages_hacienda_exencion()
       .subscribe(message => {
         this.messages = message;
         if (this.sizeDisplay === 'Small' || this.sizeDisplay === 'XSmall') {
@@ -146,7 +146,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
           });
           this.openSnackBar(msg);
         }
-      });
+      });*/
 
     this.ActivatedRouteSubscribe = this.activateRaute.params.subscribe(({ idConcept, tipoForm }) => {
       this.idConcepto = idConcept;
