@@ -450,8 +450,8 @@ export class DatosContribuyenteComponent implements OnInit {
           const tipo_ingreso = ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos));
           datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}` : '';
           observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion},Nombre del Perito: ${datos.nombre_perito},RFC del Perito: ${datos.rfc_perito},Domicilio del Perito: ${datos.domicilio_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
-            this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬0.00¬¬6673¬0.0¬|"
-            this.contribuyenteArr.data.total = 0;
+            this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬"+this.contribuyenteArr.data.total+"¬¬6673¬"+this.contribuyenteArr.data.total+"¬|"
+            //this.contribuyenteArr.data.total = 0;
           
         }
       }
