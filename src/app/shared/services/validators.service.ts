@@ -25,7 +25,7 @@ export class ValidatorsService {
 
   /* Carlos A. 10/02/2026 linea comentada */
   //public peoplesNamePath: string = '^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚÜáéíóúü.\\-]+([\\sa-zA-ZÑÁÉÍÓÚÜáéíóúü.\\-]+)*$';//'^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
-  public peoplesNamePath: string = "^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚÜáéíóúü.'´\-]+([\sa-zA-ZÑÁÉÍÓÚÜáéíóúü.'´\-]+)*$";//'^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
+  public peoplesNamePath: string = "^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚÜáéíóúü'´.\-]+( [a-zA-ZÑÁÉÍÓÚÜáéíóúü'´.\-]+)*$";//'^(?![0-9]*$)[a-zA-ZÑÁÉÍÓÚ.]+([\ a-zA-ZÑÁÉÍÓÚ.]+)*$';
 
   public peoplesNamePathWithNumbers: string = '^(?=.*[a-zA-ZÑÁÉÍÓÚÜü])[a-zA-ZÑÁÉÍÓÚÜü0-9.,&\-\s]+([\ a-zA-ZÑÁÉÍÓÚÜü0-9.,&\-\s]+)*$';
 
