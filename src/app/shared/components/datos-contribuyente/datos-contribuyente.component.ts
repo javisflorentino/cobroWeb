@@ -79,7 +79,7 @@ export class DatosContribuyenteComponent implements OnInit {
       codigoPostal: ['', [Validators.required, Validators.pattern(this.validatosService.exprCp)]],
       estados: [{ value: '17', disabled: true }, [Validators.required, Validators.min(1)]],
       municipio: ['', [Validators.required, Validators.min(1)]],
-      observaciones: []
+      observaciones: ['', [Validators.maxLength(900)]]
     }/*,
     {
       validators:[this.validatosService.validateDataInput('calle',4,'domicilio'),

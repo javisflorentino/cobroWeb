@@ -397,7 +397,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
   consultConceptoPagoImpuestoCedular(idConcepto: number) {
     const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
-    this.generalesService.getDetalleCobroImpuestoCedular(datos.fecha_enajenacion, datos.base_impuesto, 6673)
+    this.generalesService.getDetalleCobroImpuestoCedular(datos.fecha_enajenacion, datos.base_impuesto, datos.tiene_escritura, 6673)
       .subscribe({
         next: (resp) => {
           console.log(resp);

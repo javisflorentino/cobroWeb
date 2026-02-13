@@ -123,12 +123,12 @@ export class GeneralesService {
       );
   }
 
-  getDetalleCobroImpuestoCedular(fecha: string, importe: number, idConcepto: number): Observable<CalculoConcepto | null> {
+  getDetalleCobroImpuestoCedular(fecha: string, importe: number, tiene_escritura: string,idConcepto: number): Observable<CalculoConcepto | null> {
     let headers = new HttpHeaders();
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
     //console.log([{"id": "sh-form-16","idConcepto": idConcepto,"data": [{"id": "sh-input-monto","value": importe},{"id": "sh-input-periodo","value": periodo},{"id": "sh-input-ejercicioFiscal","value": fecha}]}])
-    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`, JSON.stringify([{ "id": "sh-form-19", "idConcepto": idConcepto, "data": [{ "id": "sh-input-fecha", "value": fecha }, { "id": "sh-input-monto", "value": importe }] }]), { headers })
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`, JSON.stringify([{ "id": "sh-form-19", "idConcepto": idConcepto, "data": [{ "id": "sh-input-fecha", "value": fecha }, { "id": "sh-input-monto", "value": importe }, { "id": "sh-input-escritura", "value": tiene_escritura }] }]), { headers })
       .pipe(
         map(resp => {
           if (resp.success) {
