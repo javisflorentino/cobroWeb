@@ -15,7 +15,7 @@
             <div class="w-12rem h-6rem flex align-items-center justify-content-center">
               <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
                 class="radio-container">
-                <mat-label>Tiene exención</mat-label>
+                <mat-label style="font-size: 12px;">Tiene exención</mat-label>
                 <input matInput style="display:none" required>
                 <mat-radio-group #group_c_tp formControlName="tiene_exencion" class="flex-wrap"
                   (change)="onChangeExencion($event.value)">
@@ -56,7 +56,7 @@
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex style="margin-right:0.5em;" #field_p floatLabel="always" appearance="outline"
               class="radio-container">
-              <mat-label>Cuenta con escritura</mat-label>
+              <mat-label style="font-size: 12px;">Cuenta con escritura</mat-label>
               <input matInput style="display:none" required>
               <mat-radio-group #group_c_tp formControlName="tiene_escritura" class="flex-wrap"
                 (change)="changeRadioTP($event.value)">
@@ -70,7 +70,7 @@
             </mat-form-field>
 
             <mat-form-field fxFlex class="col-6" appearance="outline">
-              <mat-label>Tipo de ingreso por enajenación</mat-label>
+              <mat-label style="font-size: 12px;">Tipo de ingreso por enajenación</mat-label>
               <mat-select formControlName="tipo_ingresos" required>
                 <mat-option *ngFor="let listaIng of tipoIngEnajenacionArr; let i = index"
                   [ngClass]="{'blanco': i % 2 === 0, 'gris': i % 2 !== 0}"
@@ -82,21 +82,22 @@
 
           <div class="input-row" fxLayout="row" fxLayout.lt-md="column">
             <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-              <mat-label>Escritura</mat-label>
+              <mat-label style="font-size: 12px;">Escritura</mat-label>
               <input matInput type="text" formControlName="escritura">
               <mat-error class="fontsizeerror">{{
                 getMessage(formHEnajenacionBienes.get('escritura')?.errors,'escritura')
                 }}</mat-error>
             </mat-form-field>
             <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-              <mat-label>Fecha de enajenación</mat-label>
+              <mat-label style="font-size: 12px;">Fecha de enajenación</mat-label>
               <input matInput [matDatepicker]="dpff" formControlName="fecha_enajenacion" [readonly]="true">
               <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
               <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
               <mat-datepicker #dpff disabled="false"></mat-datepicker>
             </mat-form-field>
             <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
-              <mat-label>Fecha de Provisional de Escritura</mat-label>
+              <!--<mat-label>Fecha de Provisional de Escritura</mat-label>-->
+              <mat-label style="font-size: 12px;">Fecha de Autorización Preventiva</mat-label>
               <input matInput [matDatepicker]="dpff" formControlName="fecha_provisional_escritura" [readonly]="true">
               <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
               <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
@@ -111,7 +112,7 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Teléfono de contacto</mat-label>
+                <mat-label style="font-size: 12px;">Teléfono de contacto</mat-label>
                 <input matInput type="text" formControlName="noPhone">
                 <mat-hint>Ej: 7771234567</mat-hint>
                 <mat-error class="fontsizeerror">{{
@@ -119,7 +120,7 @@
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Correo electrónico</mat-label>
+                <mat-label style="font-size: 12px;">Correo electrónico</mat-label>
                 <input matInput type="text" formControlName="email">
                 <mat-error>{{getMessage(formHEnajenacionBienes.get('email')?.errors,'email')}}</mat-error>
               </mat-form-field>
@@ -134,21 +135,21 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Referencia del inmueble</mat-label>
+                <mat-label style="font-size: 12px;">Referencia del inmueble</mat-label>
                 <input matInput formControlName="referencia_inmueble" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('referencia_inmueble')?.errors,'referencia_inmueble')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Monto del avaluo</mat-label>
+                <mat-label style="font-size: 12px;">Monto del avaluo</mat-label>
                 <input matInput formControlName="monto_avaluo" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('monto_avaluo')?.errors,'monto_avaluo')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Ingreso por enajenación</mat-label>
+                <mat-label style="font-size: 12px;">Ingreso por enajenación</mat-label>
                 <input matInput formControlName="ingreso_enajenacion" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('ingreso_enajenacion')?.errors,'ingreso_enajenacion')
@@ -165,35 +166,35 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Costo actualizado de adquisición</mat-label>
+                <mat-label style="font-size: 12px;">Costo actualizado de adquisición</mat-label>
                 <input matInput formControlName="costo_comprobado" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('costo_comprobado')?.errors,'costo_comprobado')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Inversiones de mejora</mat-label>
+                <mat-label style="font-size: 12px;">Inversiones de mejora</mat-label>
                 <input matInput formControlName="importe_inversion" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('importe_inversion')?.errors,'importe_inversion')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Gastos notariales</mat-label>
+                <mat-label style="font-size: 12px;">Gastos notariales</mat-label>
                 <input matInput formControlName="gastos_notariales" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('gastos_notariales')?.errors,'gastos_notariales')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Comisiones y mediaciones pagadas</mat-label>
+                <mat-label style="font-size: 12px;">Comisiones y mediaciones pagadas</mat-label>
                 <input matInput formControlName="comisiones_mediaciones" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('comisiones_mediaciones')?.errors,'comisiones_mediaciones')
                   }}</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Otras deducciones</mat-label>
+                <mat-label style="font-size: 12px;">Otras deducciones</mat-label>
                 <input matInput formControlName="otras_deducciones" type="text">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('otras_deducciones')?.errors,'otras_deducciones')
@@ -226,33 +227,33 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>RFC</mat-label>
+                <mat-label style="font-size: 12px;">RFC</mat-label>
                 <input matInput formControlName="rfc" type="text" name="" id="">
                 <mat-error class="fontsizeerror">El RFC es incorrecto</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Nombre(s)</mat-label>
+                <mat-label style="font-size: 12px;">Nombre(s)</mat-label>
                 <input matInput type="text" formControlName="nombre">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('nombre')?.getError('error'),'nombre') }}
                 </mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Notaría</mat-label>
+                <mat-label style="font-size: 12px;">Notaría</mat-label>
                 <input matInput type="text" formControlName="notaria">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('notaria')?.getError('error'),'notaria') }}
                 </mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Entidad</mat-label>
+                <mat-label style="font-size: 12px;">Entidad</mat-label>
                 <input matInput type="text" formControlName="entidad">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('entidad')?.getError('error'),'entidad') }}
                 </mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Demarcación</mat-label>
+                <mat-label style="font-size: 12px;">Demarcación</mat-label>
                 <input matInput type="text" formControlName="demarcacion">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('demarcacion')?.getError('error'),'demarcacion') }}
@@ -269,24 +270,24 @@
               <input matInput style="display:none" required>
 
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>RFC</mat-label>
+                <mat-label style="font-size: 12px;">RFC o Cédula</mat-label>
                 <input matInput formControlName="rfc_perito" type="text" name="" id="">
                 <mat-error class="fontsizeerror">El RFC es incorrecto</mat-error>
               </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label>Nombre(s)</mat-label>
+                <mat-label style="font-size: 12px;">Nombre(s)</mat-label>
                 <input matInput type="text" formControlName="nombre_perito">
-                <mat-error class="fontsizeerror">{{
+                <!--<mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('nombre_perito')?.getError('error'),'nombre_perito') }}
-                </mat-error>
+                </mat-error>-->
               </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Domicilio fiscal</mat-label>
                 <input matInput type="text" formControlName="domicilio_perito">
                 <mat-error class="fontsizeerror">{{
                   getMessage(formHEnajenacionBienes.get('domicilio_perito')?.getError('error'),'domicilio_perito') }}
                 </mat-error>
-              </mat-form-field>
+              </mat-form-field>-->
             </mat-form-field>
           </div>
 
@@ -300,7 +301,7 @@
           <mat-icon>cancel</mat-icon>
           Cancelar
         </button>
-       
+
         <span class=""></span>
         <button [disabled]="formHEnajenacionBienes.invalid" mat-stroked-button mat-raised color="primary"
           (click)="onSubmit()">

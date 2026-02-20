@@ -26,6 +26,7 @@ import ListaIngresoEnajenacion from '../../../../../data/arreglos/tipo_ingresos_
 import { formatDate } from '@angular/common';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
 import Swal from 'sweetalert2';
+import { environments } from 'src/environments/environments.dev';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -99,6 +100,8 @@ export class DatosContribuyenteComponent implements OnInit {
     }
   );
 
+  private url = environments.URL_PAGO_EN_LINEA_RECIBO + '/poliza/imprimirPoliza?lineaCaptura=';
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -161,10 +164,10 @@ export class DatosContribuyenteComponent implements OnInit {
     if (sessionStorage.getItem('gestora') !== '64') {
       this.TaxDataControl = false;
     }
-    if (sessionStorage.getItem('gestora') == '90' && datos !== null && datos.tipo_form == 9) {
+    /*if (sessionStorage.getItem('gestora') == '90' && datos !== null && datos.tipo_form == 9) {
       this.TaxDataControl = true;
       this.myFormContribuyente.get('tipoPersona')?.disable();
-    }
+    }*/
   }
 
   /*
@@ -449,10 +452,10 @@ export class DatosContribuyenteComponent implements OnInit {
         if (datos.tipo_form && datos.tipo_form == 9) {
           const tipo_ingreso = ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos));
           datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}` : '';
-          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion},Nombre del Perito: ${datos.nombre_perito},RFC del Perito: ${datos.rfc_perito},Domicilio del Perito: ${datos.domicilio_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
-            this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬"+this.contribuyenteArr.data.total+"¬¬6673¬"+this.contribuyenteArr.data.total+"¬|"
-            //this.contribuyenteArr.data.total = 0;
-          
+          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad},Demarcación: ${datos.demarcacion},Nombre del Perito: ${datos.nombre_perito},RFC o Cédula del Perito: ${datos.rfc_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+          this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬" + this.contribuyenteArr.data.total + "¬¬6673¬" + this.contribuyenteArr.data.total + "¬|"
+          //this.contribuyenteArr.data.total = 0;
+
         }
       }
     }
@@ -580,10 +583,20 @@ export class DatosContribuyenteComponent implements OnInit {
                         {
                           icon: "success",
                           title: "Operación realizada con éxito!!!",
-                          text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
+                          html: `Para validar su trámite conserve la linea de captura y consulte en linea su póliza
+                          <button type="button" id="btn-poliza" class="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Obtener Póliza de Pago</button>`,
+                          didRender: () => {
+                            const btn = document.getElementById('btn-poliza');
+                            if (btn) {
+                              btn.addEventListener('click', () => {
+                                this.getPoliza(resp.poliza.lineaCaptura);
+                              });
+                            }
+                          }
+                          //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
                         }).then((result) => {
-                          
-                          
+
+
                         });
                     },
                     error: (err) => {
@@ -596,7 +609,7 @@ export class DatosContribuyenteComponent implements OnInit {
                       });
                     }
                   });
-                  if(datos.tiene_exencion?.toLowerCase()=='1'){
+                  if (datos.tiene_exencion?.toLowerCase() == '1') {
                     this.router.navigate(['pagos/dependencias']);
                     return;
                   }
@@ -615,6 +628,10 @@ export class DatosContribuyenteComponent implements OnInit {
       }
       //console.log('continua la la espera')
     }, 150)
+  }
+
+  getPoliza(lineaCaptura: string) {
+    window.open(`${this.url}${lineaCaptura}`);
   }
 
   isValidField(field: string) {

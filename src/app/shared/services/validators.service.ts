@@ -197,12 +197,20 @@ export class ValidatorsService {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const contribuyenteArr = JSON.parse(sessionStorage.getItem('contribuyente')!);
 
-      const normalizar = (valor: any) =>
+      /*const normalizar = (valor: any) =>
         String(valor || '')
           .toUpperCase()
           .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^A-Z0-9]/g, "")
+          .trim();*/
+        const normalizar = (valor: any) =>
+        String(valor || '')
+          .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, "") // Quita acentos
-          .replace(/[^A-Z0-9]/g, "")      // Quita todo lo que no sea letra/número
+          .toUpperCase()
+          .replace(/[^A-Z0-9\s]/g, "")    // Mantiene letras, números Y espacios (\s)
+          .replace(/\s+/g, " ")           // Colapsa múltiples espacios en uno solo
           .trim();
 
       if (contribuyenteArr.data[route] !== undefined) {// && contribuyenteArr.data[route]['razonSocial']=='F') {

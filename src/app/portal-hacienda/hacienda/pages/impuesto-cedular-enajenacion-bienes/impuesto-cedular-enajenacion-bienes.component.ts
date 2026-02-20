@@ -95,9 +95,9 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
       entidad: ['', [Validators.required]],
       demarcacion: ['', [Validators.required]],
 
-      rfc_perito: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
+      rfc_perito: ['XAXX010101000', [Validators.required]],//, Validators.pattern(this.validatorService.rfcPath)]],
       nombre_perito: ['', [Validators.required]],
-      domicilio_perito: ['', [Validators.required]],
+      //domicilio_perito: ['', [Validators.required]],
     }
   );
 
