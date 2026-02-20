@@ -26,7 +26,7 @@ import ListaIngresoEnajenacion from '../../../../../data/arreglos/tipo_ingresos_
 import { formatDate } from '@angular/common';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
 import Swal from 'sweetalert2';
-import { environments } from 'src/environments/environments.dev';
+import { environments } from 'src/environments/environments';
 
 @Component({
   selector: 'shared-datos-contribuyente',
