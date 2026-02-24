@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environments } from 'src/environments/environments';
-import { Observable, catchError, filter, map, of, tap } from 'rxjs';
+import { Observable, catchError, filter, map, of, tap, throwError } from 'rxjs';
 import { ComboConcept, ComboDTO, DefinArrEstMun } from '../interface/datos-combo.interface';
 import { CalculoConcepto } from '../interface/portal-calculo-concepto.interface';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
@@ -13,6 +13,10 @@ import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 import { Messages } from '../interface/portal-message.interface';
 import { ResponseStruct } from 'src/app/shared/interfaces/response-struct.interface';
 
+import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
+import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
+import { DatosNotariaRequest } from 'src/app/shared/interfaces/notarias-request.interface';
+import { DatosNotariaResponse } from 'src/app/shared/interfaces/notarias-response.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +29,8 @@ export class GeneralesService {
 
   private asJson!: ValidateVehicle;
   private xmlSring: ConvertXmlString = new ConvertXmlString();
+
+  private urlSmytParticularPublico = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
 
   constructor(private http: HttpClient) { }
 
@@ -123,7 +129,7 @@ export class GeneralesService {
       );
   }
 
-  getDetalleCobroImpuestoCedular(fecha: string, importe: number, tiene_escritura: string,idConcepto: number): Observable<CalculoConcepto | null> {
+  getDetalleCobroImpuestoCedular(fecha: string, importe: number, tiene_escritura: string, idConcepto: number): Observable<CalculoConcepto | null> {
     let headers = new HttpHeaders();
     headers = headers.set("Content-Type", "application/json")
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
@@ -209,7 +215,7 @@ export class GeneralesService {
     lineaCaptura: string,
     numeroPoliza: string
   ): Promise<any> {
-  
+
     const soapBody = `
   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ofic="http://oficioshabilitacion/">
     <soapenv:Header/>
@@ -252,9 +258,9 @@ export class GeneralesService {
     </soapenv:Body>
   </soapenv:Envelope>
   `;
-  
-   
-  
+
+
+
     return await fetch(
       `${this.urlSOAP}oficiosHabilitacion/services/personaPago`,
       {
@@ -267,7 +273,7 @@ export class GeneralesService {
       }
     );
   }
-  
+
   async validateVahicleOnDb(placa: string, no_serie: string): Promise<any> {
     return await fetch(`${this.urlSOAP}tramitesSMyT/services/SMyT`, {
       method: "POST",
@@ -438,7 +444,7 @@ export class GeneralesService {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
 
-    return this.http.post<ResponseStruct>(this.baseUrlSiigem+'/impuestos/cedular', file, { headers })
+    return this.http.post<ResponseStruct>(this.baseUrlSiigem + '/impuestos/cedular', file, { headers })
       .pipe(
         map(data => {
           if (!!data.success) {
@@ -450,5 +456,45 @@ export class GeneralesService {
       )
 
 
+  }
+
+  /* Carlos A. 23/02/2026 - Método que obtiene información de Notarios para impuesto Cedular */
+  //baseUrlSiigem
+  getNotaryData(datosNotarias: DatosNotariaRequest): Observable<DatosNotariaResponse | null> {
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+    headers = headers.set('Authorization', `Basic ${btoa(`${environments.user_server}:${environments.pass_server}`)}`);
+
+    return this.http.post<DatosNotariaResponse>(this.baseUrlSiigem + '/notarios', JSON.stringify(datosNotarias), { headers })
+      .pipe(
+        map(data => {
+          if (!!data.success) {
+            return data
+          }
+          throw { message: data.mensaje, error: "Unauthorized", statusCode: 401 };
+        }),
+        catchError(err => { throw err })
+      );
+  }
+
+  obtenerGafeteOperador(datosTramite: DatosTramite): Observable<TopLevel | null> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<TopLevel>(`${this.urlSmytParticularPublico}`, JSON.stringify(datosTramite), { headers })
+      .pipe(
+        catchError(err => {
+          let message = '';
+          return throwError(() => {
+            message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
+            return { message: message, code: `${err.status}` };
+          });
+        })
+      );
   }
 }

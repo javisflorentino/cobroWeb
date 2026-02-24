@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
 import { ModalReporteCedularComponent } from 'src/app/shared/components/modal-reporte-cedular/modal-reporte-cedular.component';
+import { ComboConcept } from 'src/app/portal-hacienda/interface/datos-combo.interface';
+import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
 
 @Component({
   selector: 'hacienda-impuesto-cedular-enajenacion-bienes',
@@ -47,6 +49,10 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
   public messages: Messages[] = [];
   public messages_other: Messages[] = [];
 
+  public arrEstados: ComboConcept[] = [];
+  public arrMunicipios: ComboConcept[] = [];
+
+
   /* Arreglo de Lista de Ingresos por Enajenación */
   public tipoIngEnajenacionArr: TipoIngresoEnajenacion[] = ListaIngresoEnajenacion;
 
@@ -60,6 +66,8 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
   private ActivatedRouteSubscribe?: Subscription;
   private breakpointObserverControl!: Subscription;
+
+  private serviciosGenerales = inject(GeneralesService);
 
   private fb = inject(FormBuilder);
   public formHEnajenacionBienes: FormGroup = this.fb.group(
@@ -91,8 +99,8 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
       rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
       nombre: ['', [Validators.required]],
-      notaria: ['', [Validators.required]],
-      entidad: ['', [Validators.required]],
+      notaria: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
+      entidad: ['', [Validators.required, Validators.min(1)]],//'', [Validators.required]],
       demarcacion: ['', [Validators.required]],
 
       rfc_perito: ['XAXX010101000', [Validators.required]],//, Validators.pattern(this.validatorService.rfcPath)]],
@@ -137,6 +145,20 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
   ngOnInit(): void {
     this.conceptTitle = sessionStorage.getItem('concept')!;
     let msg: string = '';
+
+    /*
+      OBTIENE LISTA DE ENTIDADES FEDERATIVAS
+      MODIF: 12/12/2023
+    */
+    this.serviciosGenerales.getEntidadesFederativas().subscribe(resp => {
+      if (!resp) {
+        this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+      } else {
+        this.arrEstados = resp?.data;
+        this.formHEnajenacionBienes.get('entidad')?.setValue(17);
+        this.changeEstado('17');
+      }
+    });
     /*this.smytService.getMesages_hacienda_exencion()
       .subscribe(message => {
         this.messages = message;
@@ -210,6 +232,26 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
   onChangeExencion(value: string) {
     this.isUploadEnabled = value === '1';
   }
+
+  //URL_SIIGEM_DATOS_NOTARIOS
+  getNotaryData(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const value = element.value;
+
+    console.log(value);
+    console.log()
+    if (Number(value) >= 1) {
+      this.serviciosGenerales.getNotaryData({numero: Number(value),localidad: this.formHEnajenacionBienes.get('demarcacion')?.value}).subscribe(resp => {
+        if (!resp) {
+          this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+        } else {
+          this.formHEnajenacionBienes.get('rfc')?.setValue(resp.data[0].rfc);
+          this.formHEnajenacionBienes.get('nombre')?.setValue(resp.data[0].notario);
+        }
+      });
+    }
+  }
+
 
   validarYSubirArchivo(fileUpload: HTMLInputElement) {
     fileUpload.click();
@@ -303,6 +345,8 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
         notaria: String(this.formHEnajenacionBienes.get('notaria')?.value).toUpperCase(),
         entidad: String(this.formHEnajenacionBienes.get('entidad')?.value).toUpperCase(),
         demarcacion: String(this.formHEnajenacionBienes.get('demarcacion')?.value).toUpperCase(),
+        entidad_descripcion: this.arrEstados.find(ent => ent.pk === this.formHEnajenacionBienes.get('entidad')?.value)?.descripcion.toUpperCase() || '',
+        demarcacion_descripcion: this.arrMunicipios.find(mun => mun.pk === this.formHEnajenacionBienes.get('demarcacion')?.value)?.descripcion.toUpperCase() || '',
 
         nombre_perito: String(this.formHEnajenacionBienes.get('nombre_perito')?.value).toUpperCase(),
         rfc_perito: String(this.formHEnajenacionBienes.get('rfc_perito')?.value).toUpperCase(),
@@ -328,7 +372,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
                 unitario: 0
               }
             ],
-            lineaDetalle: "331926¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬"+new Date().getFullYear()+"¬0.00¬¬6673¬0.0¬|",
+            lineaDetalle: "331926¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬" + new Date().getFullYear() + "¬0.00¬¬6673¬0.0¬|",
             observaciones: "undefined"
           },
           success: true
@@ -340,6 +384,37 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
     this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto, this.tipoForm]);
     return
+  }
+
+  /*
+      Carlos A.
+      SE DISPARA AL SELECCIONAR UN ESTADO
+      MODIF: 23/02/2026
+  */
+  changeEstado(event: string): void {
+    this.serviciosGenerales.getMunicipios(Number(event))
+      .subscribe(resp => {
+        if (!resp || resp.data.length == 0) {
+          this.openSnackBar('Problema con el API-SERVER, favor de contactar a Servicio Técnico ');
+        } else {
+          this.arrMunicipios = resp.data;
+        }
+
+      });
+
+
+    if (!event || event == '17') {
+      //this.formHEnajenacionBienes.get('nombre')?.setValue('');
+      this.formHEnajenacionBienes.get('nombre')?.disable();
+      //this.formHEnajenacionBienes.get('notaria')?.disable();
+      this.formHEnajenacionBienes.get('rfc')?.disable();
+    } else {
+      this.formHEnajenacionBienes.get('nombre')?.enable();
+      //this.formHEnajenacionBienes.get('notaria')?.enable();
+      this.formHEnajenacionBienes.get('rfc')?.enable();
+    }
+    this.formHEnajenacionBienes.updateValueAndValidity();
+    return;
   }
 
 

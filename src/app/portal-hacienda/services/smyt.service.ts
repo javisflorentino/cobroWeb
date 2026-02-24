@@ -160,6 +160,24 @@ export class SmytService {
       );
   }
 
+  obtenerGafeteOperador(datosTramite: DatosTramite): Observable<TopLevel | null> {
+    let headers = new HttpHeaders();
+
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<TopLevel>(`${this.urlSmytParticularPublico}`, JSON.stringify(datosTramite), { headers })
+      .pipe(
+        catchError(err => {
+          let message = '';
+          return throwError(() => {
+            message = `Error ${err.status}, ${err.statusText}. Repórtelo al CAT e intentelo mas tarde`;
+            return { message: message, code: `${err.status}` };
+          });
+        })
+      );
+  }
+
 
   async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {

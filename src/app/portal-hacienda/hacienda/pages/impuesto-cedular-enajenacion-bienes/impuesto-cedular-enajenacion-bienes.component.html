@@ -30,7 +30,8 @@
             </div>
             <div class="w-12rem h-6rem flex align-items-center justify-content-center">
               <!-- Botón de subir archivo -->
-              <button mat-fab color="primary" class="butupfile" matTooltip="Agregar Documento" [disabled]="!isUploadEnabled" (click)="validarYSubirArchivo(fileUpload)">
+              <button mat-fab color="primary" class="butupfile" matTooltip="Agregar Documento"
+                [disabled]="!isUploadEnabled" (click)="validarYSubirArchivo(fileUpload)">
                 <mat-icon>archive</mat-icon>
               </button>
 
@@ -38,7 +39,8 @@
               <span class="ml-2">Subir archivos</span>
 
               <!-- Input de archivo oculto -->
-              <input id="file-input" type="file" style="display: none !important" class="file-input" (change)="onChange($event)" #fileUpload />
+              <input id="file-input" type="file" style="display: none !important" class="file-input"
+                (change)="onChange($event)" #fileUpload />
             </div>
           </div>
 
@@ -231,6 +233,45 @@
                 <input matInput formControlName="rfc" type="text" name="" id="">
                 <mat-error class="fontsizeerror">El RFC es incorrecto</mat-error>
               </mat-form-field>
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label style="font-size: 12px;">Entidad</mat-label>
+                <input matInput type="text" formControlName="entidad">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('entidad')?.getError('error'),'entidad') }}
+                </mat-error>
+              </mat-form-field>-->
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Entidad</mat-label>
+                <mat-select formControlName="entidad" (valueChange)="changeEstado($event)">
+                  <mat-option value="0">--- Seleccione Entidad ---</mat-option>
+                  <mat-option *ngFor="let estado of arrEstados" [value]="estado.pk">{{estado.descripcion}}</mat-option>
+                </mat-select>
+                <mat-error class="fontsizeerror"></mat-error>
+              </mat-form-field>
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label style="font-size: 12px;">Demarcación</mat-label>
+                <input matInput type="text" formControlName="demarcacion">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('demarcacion')?.getError('error'),'demarcacion') }}
+                </mat-error>
+              </mat-form-field>-->
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Demarcación</mat-label>
+                <mat-select formControlName="demarcacion">
+                  <mat-option value="0">--- Seleccione Demarcación ---</mat-option>
+                  <mat-option *ngFor="let municipio of arrMunicipios"
+                    [value]="municipio.pk">{{municipio.descripcion}}</mat-option>
+                </mat-select>
+                <mat-error class="fontsizeerror">Campo requerido</mat-error>
+              </mat-form-field>
+
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label style="font-size: 12px;">Notaría</mat-label>
+                <input matInput type="text" formControlName="notaria" (change)="getNotaryData($event)">
+                <mat-error class="fontsizeerror">{{
+                  getMessage(formHEnajenacionBienes.get('notaria')?.getError('error'),'notaria') }}
+                </mat-error>
+              </mat-form-field>
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label style="font-size: 12px;">Nombre(s)</mat-label>
                 <input matInput type="text" formControlName="nombre">
@@ -238,28 +279,6 @@
                   getMessage(formHEnajenacionBienes.get('nombre')?.getError('error'),'nombre') }}
                 </mat-error>
               </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label style="font-size: 12px;">Notaría</mat-label>
-                <input matInput type="text" formControlName="notaria">
-                <mat-error class="fontsizeerror">{{
-                  getMessage(formHEnajenacionBienes.get('notaria')?.getError('error'),'notaria') }}
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label style="font-size: 12px;">Entidad</mat-label>
-                <input matInput type="text" formControlName="entidad">
-                <mat-error class="fontsizeerror">{{
-                  getMessage(formHEnajenacionBienes.get('entidad')?.getError('error'),'entidad') }}
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
-                <mat-label style="font-size: 12px;">Demarcación</mat-label>
-                <input matInput type="text" formControlName="demarcacion">
-                <mat-error class="fontsizeerror">{{
-                  getMessage(formHEnajenacionBienes.get('demarcacion')?.getError('error'),'demarcacion') }}
-                </mat-error>
-              </mat-form-field>
-
             </mat-form-field>
           </div>
 

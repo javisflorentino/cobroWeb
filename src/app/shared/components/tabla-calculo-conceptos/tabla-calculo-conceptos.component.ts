@@ -235,6 +235,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 9:
             this.consultConceptoPagoImpuestoCedular(this.idConcepto);
             break;
+          case 19:
+            this.consultConceptGafeteServicio();
+            break;
           default:
             if (!this.tipoform) {
               this.consultConceptoPago(idConcepto, 1, this.tipoform);
@@ -265,6 +268,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           }, 2000)
 
         });
+
     } else {
 
       this.smyPagosService.getCalculoPagos(dataVehicleLs)
@@ -395,12 +399,41 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
       })
   }
 
+  consultConceptGafeteServicio() {
+    let datos_cobro = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    this.generalesService.obtenerGafeteOperador({ "numeroConcesion": datos_cobro.folio!.toUpperCase(), "tramite": 11 })
+      .subscribe({
+        next: (resp) => {
+          console.log("Uno::", JSON.stringify(resp));
+          if (resp?.success && resp.data) {
+            console.log("Dos::" + resp.data.conceptos[0].descripcion);
+            this.isLoading = false;
+            this.conceptos = resp.data.conceptos;
+            //sessionStorage.setItem('datos_cobro', JSON.stringify(datos));
+            this.total += resp.data.total;
+
+            sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle) }, success: true }));//this.conceptoPago));
+
+            return;
+          }
+
+          this.openSnackBar('Problemas al obtener el concepto, intente nuevamente');
+          setTimeout(() => {
+            this.router.navigate(['pagos/dependencias']);
+          }, 2000)
+
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+  }
+
   consultConceptoPagoImpuestoCedular(idConcepto: number) {
     const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
     this.generalesService.getDetalleCobroImpuestoCedular(datos.fecha_enajenacion, datos.base_impuesto, datos.tiene_escritura, 6673)
       .subscribe({
         next: (resp) => {
-          console.log(resp);
           this.isLoading = false;
           this.conceptos = resp!.data.conceptos;
           sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));//this.conceptoPago));

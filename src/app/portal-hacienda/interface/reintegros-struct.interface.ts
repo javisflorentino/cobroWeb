@@ -51,7 +51,9 @@ export interface ReintegrosStruct {
   rfc?: string;
   notaria?:  string;
   entidad?:  string;
+  entidad_descripcion?:  string;
   demarcacion?:  string;
+  demarcacion_descripcion?:  string;
   nombre_perito?: string;
   rfc_perito?: string;
   domicilio_perito?: string;
