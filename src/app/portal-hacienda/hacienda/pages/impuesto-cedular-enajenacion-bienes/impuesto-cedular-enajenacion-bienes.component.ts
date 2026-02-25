@@ -99,7 +99,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
 
       rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatorService.rfcPath)]],
       nombre: ['', [Validators.required]],
-      notaria: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
+      notaria: [0, [Validators.required, Validators.min(1), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
       entidad: ['', [Validators.required, Validators.min(1)]],//'', [Validators.required]],
       demarcacion: ['', [Validators.required]],
 
