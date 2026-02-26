@@ -8,15 +8,15 @@ style="background-image: url('./assets/fondoLogo.png');
             background-position: center">
   <h2 class="dialog-titulo">Oficios de Habilitación</h2>
   <p class="">
-    
-Proporcione los siguientes datos de su comprobante de pago o de su CFDI para continuar con el proceso. <br>En caso de no haber realizado aún el pago, favor de realizarlo 
+
+Proporcione los siguientes datos de su comprobante de pago o de su CFDI para continuar con el proceso. <br>En caso de no haber realizado aún el pago, favor de realizarlo
     <b><a href="#" style="color: #328335;" (click)="abrirModalPago($event)">aquí</a>.</b>
   </p>
   <p class="">
     Si no cuentas con tu serie y folio puedes obtenerlo
     <b><a href="#" style="color: #328335;" (click)="abrirModalRecibo($event)">aquí</a>.</b>
   </p>
-  
+
   <mat-dialog-content>
     <form [formGroup]="oficiosForm">
         <div class="grid">
@@ -24,7 +24,7 @@ Proporcione los siguientes datos de su comprobante de pago o de su CFDI para con
               <div class="form-field">
                 <label class="dialog-label">Serie</label>
                 <mat-form-field appearance="outline" class="full-width">
-    
+
                   <mat-select formControlName="serie">
                     <mat-option value="A">A</mat-option>
                     <mat-option value="B">B</mat-option>
@@ -32,14 +32,15 @@ Proporcione los siguientes datos de su comprobante de pago o de su CFDI para con
                     <mat-option value="D">D</mat-option>
                     <mat-option value="E">E</mat-option>
                     <mat-option value="F">F</mat-option>
-                    <mat-option value="G">G</mat-option> 
-                    <mat-option value="H">H</mat-option> 
+                    <mat-option value="G">G</mat-option>
+                    <mat-option value="H">H</mat-option>
                     <mat-option value="I">I</mat-option>
                     <mat-option value="J">J</mat-option>
+                    <mat-option value="M">M</mat-option>
                   </mat-select>
                   <mat-error *ngIf="oficiosForm.get('serie')?.invalid">Campo requerido</mat-error>
                 </mat-form-field>
-                
+
               </div>
             </div>
             <div class="col-6">
@@ -52,11 +53,11 @@ Proporcione los siguientes datos de su comprobante de pago o de su CFDI para con
               </div>
             </div>
           </div>
-      
-      
+
+
     </form>
   </mat-dialog-content>
-  
+
   <mat-dialog-actions align="center">
     <button mat-raised-button color="primary" class="dialog-search-button" (click)="search()">
         Consultar Oficio
