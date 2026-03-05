@@ -25,7 +25,7 @@ export class GeneralesService {
   private baseUrlApp = `${environments.baseUrlApp}${environments.appEnviroment}`;
   private urlSOAP = `${environments.baseUrlServ}`;
 
-  private baseUrlSiigem = `${environments.baseUrlSiigem}${environments.siigemEnviroment}`;
+  private baseUrlSiigem = `${environments.baseUrlSiigem}`;
 
   private asJson!: ValidateVehicle;
   private xmlSring: ConvertXmlString = new ConvertXmlString();

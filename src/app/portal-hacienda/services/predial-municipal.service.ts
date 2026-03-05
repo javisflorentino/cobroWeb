@@ -9,8 +9,9 @@ import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
   providedIn: 'root'
 })
 export class PredialMunicipalService {
-  private urlBusquedaEstadoCuenta = `https://pagos.hacienda.morelos.gob.mx/siigemWeb/predial/consulta`;//'serviciosHacienda/poliza/generar';
-  private urlIinformacionMunicipio = `https://pagos.hacienda.morelos.gob.mx/siigemWeb/predial/detalleMunicicpio`;//'serviciosHacienda/poliza/generar';
+
+  private urlBusquedaEstadoCuenta = `${environments.baseUrlSiigem}/predial/consulta`;//'serviciosHacienda/poliza/generar';
+  private urlIinformacionMunicipio = `${environments.baseUrlSiigem}/predial/detalleMunicicpio`;//'serviciosHacienda/poliza/generar';
   constructor(private http: HttpClient, private authSiigemService: AuthSiigemService) {}
   consultarEstadoCuenta(request: EstadoCuentaRequest): Observable<EstadoCuentaResponse> {
       const token = this.authSiigemService.getToken(); // idealmente lo sacas de localStorage o un servicio

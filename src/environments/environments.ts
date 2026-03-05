@@ -5,7 +5,7 @@ export const environments = {
   baseUrlSiigem: '/',
 
 
-  appEnviroment: 'serviciosHaciendaQA',
+  appEnviroment: 'serviciosHacienda',
   siigemEnviroment: 'siigemWeb',
 
 
