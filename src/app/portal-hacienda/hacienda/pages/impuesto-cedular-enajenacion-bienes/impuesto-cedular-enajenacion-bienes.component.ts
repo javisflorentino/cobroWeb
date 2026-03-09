@@ -358,7 +358,7 @@ export class ImpuestoCedularEnajenacionBienesComponent implements OnInit, OnDest
       sessionStorage.setItem('contribuyente', JSON.stringify(
         {
           data: {
-            total: 5,
+            total: 0,
             conceptos: [
               {
                 id: 331926,

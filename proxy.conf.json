@@ -6,7 +6,7 @@
       "changeOrigin": true
   },
   "/serviciosHacienda/*": {
-      "target": "http://192.168.114.122:8090",
+      "target": "https://app.hacienda.morelos.gob.mx",
       "secure": true,
       "logLevel": "debug",
       "changeOrigin": true
@@ -18,7 +18,7 @@
     "changeOrigin": true
   },
     "/siigemWeb/*": {
-    "target": "http://localhost:8080",
+    "target": "https://app.hacienda.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true

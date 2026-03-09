@@ -2,7 +2,7 @@ export const environments = {
   baseUrlApp: '/',
   baseUrlServ: '/',
 
-  baseUrlSiigem: '/',
+  baseUrlSiigem: 'https://app.hacienda.morelos.gob.mx/siigemWeb',
 
 
   appEnviroment: 'serviciosHacienda',

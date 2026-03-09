@@ -118,7 +118,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if ([837, 834, 829].find(resp => resp == this.idConcepto) !== undefined) {
           // Reemplazar noOlderDay por noOlderDay_tmp, manteniendo required
-          control?.setValidators([
+         /*  control?.setValidators([
             Validators.required,
             this.validatorFormService.noOlderDay
           ]);
@@ -128,7 +128,7 @@ export class LicenciaVehiculoComponent implements OnInit, OnDestroy {
             this.formLicencias.get('tien_licencia')?.setValue('1');
             this.formLicencias.get('tien_licencia')?.disable();
             this.tieneLicencia(1);
-          }, 1000);
+          }, 1000); */
         } else if (this.idConcepto == 839 || this.idConcepto == 838) {
           // Reemplazar noOlderDay por noOlderDay_tmp, manteniendo required
           control?.setValidators([
