@@ -401,7 +401,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
   consultConceptGafeteServicio() {
     let datos_cobro = JSON.parse(sessionStorage.getItem('datos_cobro')!);
-    this.generalesService.obtenerGafeteOperador({ "numeroConcesion": datos_cobro.folio!.toUpperCase(), "tramite": 11 })
+    this.generalesService.obtenerGafeteOperador({ "placa": datos_cobro.placa!.toUpperCase(), "tramite": 11 })
       .subscribe({
         next: (resp) => {
           console.log("Uno::", JSON.stringify(resp));

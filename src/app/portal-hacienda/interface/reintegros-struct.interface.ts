@@ -60,4 +60,7 @@ export interface ReintegrosStruct {
   percent_base_impuesto?: number;
   otras_deducciones?: number;
 
+  agrupacion?: string;
+  numero_economico?: string;
+
 }

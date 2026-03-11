@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 
-import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
-import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
+//import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
+//import { Oficinas } from 'src/app/portal-hacienda/interface/portal-oficinas.interface';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 export class ExpedicionGafeteOperadorComponent implements OnInit {
 
   /* Arreglo de oficinas de SMyT */
-  public oficinasArr: Oficinas[] = ListaOficinas;
+  //public oficinasArr: Oficinas[] = ListaOficinas;
 
   //Controla la visualización del Spinner
   public isLoading: boolean = false;
@@ -28,10 +28,9 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
   /* Inicialización del formulario reactivo */
   public expGafPubForm: FormGroup = this.fb.group({
     id: [''],
-    oficina: ['', [Validators.required]],
-    concesion: ['', [Validators.required, Validators.minLength(5)]]
-  }, {
-    validators: [this.validatorsService.existsSeriesPublico('serie', 'placa', 1, 3, '1', 'folio_concesion')]
+    placa: ['', [Validators.required, Validators.minLength(4)]],
+    agrupacion: ['', [Validators.required, Validators.pattern(this.validatorsService.alfaPath)]],
+    numero_economico: ['', [Validators.required, Validators.pattern(this.validatorsService.alfaPath)]],
   });
 
   private smytSevice = inject(SmytService);
@@ -72,14 +71,19 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
       return;
     }
 
-    let concesion = this.expGafPubForm.get('concesion')!.value;
+    //let concesion = this.expGafPubForm.get('concesion')!.value;
+    let placa = this.expGafPubForm.get('placa')!.value;
+    let agrupacion = this.expGafPubForm.get('agrupacion')!.value;
+    let numero_economico = this.expGafPubForm.get('numero_economico')!.value;
 
-    this.smytSevice.obtenerGafeteOperador({ "numeroConcesion": concesion.toUpperCase(), "tramite": 11 })
+
+    this.smytSevice.obtenerGafeteOperador({ "placa": placa.toUpperCase(), "tramite": 11 })
       .subscribe({
         next: (resp) => {
           if (resp?.success && resp.data) {
             //sessionStorage.setItem('vehicle_data', JSON.stringify({ "numeroConcesion": String(concesion), "tramite": 11}));
-            sessionStorage.setItem('datos_cobro', JSON.stringify({folio: concesion,idConcepto: this.idConcepto,tipo_form: this.tipoForm}));
+            //sessionStorage.setItem('datos_cobro', JSON.stringify({folio: concesion,idConcepto: this.idConcepto,tipo_form: this.tipoForm}));
+            sessionStorage.setItem('datos_cobro', JSON.stringify({placa: placa, agrupacion: agrupacion, numero_economico: numero_economico, idConcepto: this.idConcepto,  tipo_form: this.tipoForm}));
             this.router.navigate(['/pagos/tabla-conceptos', 873, 19]);
             return;
           }

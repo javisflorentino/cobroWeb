@@ -9,21 +9,35 @@
       <mat-divider class="mt-2 mb-2"></mat-divider>
       <mat-card-content>
         <div class="">
-          <form action="" fxLayout="column"  [formGroup]="expGafPubForm" (ngSubmit)="onSubmit()">
+          <form action="" fxLayout="column" [formGroup]="expGafPubForm" (ngSubmit)="onSubmit()">
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-              <mat-form-field fxFlex class="col-10" appearance="outline">
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>No Placa</mat-label>
+                <input matInput formControlName="placa" required type="text" maxlength="8">
+                <mat-error class="fontsizeerror" *ngIf="isValidField('placa')"> Campo requerido </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Nombre agrupación</mat-label>
+                <input matInput formControlName="agrupacion" type="text" name="" id="">
+                <mat-error *ngIf="isValidField('agrupacion')">Campo requerido</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Número económico</mat-label>
+                <input matInput formControlName="numero_economico" type="text" name="" id="">
+                <mat-error *ngIf="isValidField('numero_economico')">Campo requerido</mat-error>
+              </mat-form-field>
+              <!--<mat-form-field fxFlex class="col-10" appearance="outline">
                 <mat-label>Oficina del trámite</mat-label>
                 <mat-select formControlName="oficina" required>
                   <mat-option *ngFor="let oficina of oficinasArr" [value]="oficina.id">{{oficina.nombre}}</mat-option>
                 </mat-select>
                 <mat-error class="fontsizeerror" *ngIf="isValidField('oficina')"> Campo requerido </mat-error>
-              </mat-form-field>
+              </mat-form-field>-->
 
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" hintLabel="">
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" hintLabel="">
                 <mat-label>Folio Concesión </mat-label>
                 <input matInput formControlName="concesion" required type="text" name="">
-                <!--<mat-error class="fontsizeerror"> {{ getMessage(refrendoSerPubForm.get('folio_concesion')?.getError('error'),'folio_concesion') }} </mat-error>-->
-              </mat-form-field>
+              </mat-form-field>-->
             </div>
           </form>
         </div>

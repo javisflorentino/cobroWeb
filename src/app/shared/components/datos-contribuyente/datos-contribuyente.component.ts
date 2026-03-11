@@ -460,15 +460,15 @@ export class DatosContribuyenteComponent implements OnInit {
              this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬" + this.contribuyenteArr.data.total + "¬¬6673¬" + this.contribuyenteArr.data.total + "¬|"
           //   this.contribuyenteArr.data.total = this.contribuyenteArr.data.total;
           // }
-          
+
           //this.contribuyenteArr.data.total = 0;
 
         }
         /* Carlos A. 2302/2026 CONTROL VEHICULAR - SERVICIO PUBLICO - EXPEDICION ANUAL DE GAFETE DE OPERADOR */
         if (datos.tipo_form && datos.tipo_form == 19) {
-          observaciones = ` OBSERVACIONES: Folio: ${datos.folio!}`;
+          observaciones = ` OBSERVACIONES: Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
           //this.contribuyenteArr.data.lineaDetalle = this.contribuyenteArr.data.lineaDetalle;
-          this.contribuyenteArr.data.observaciones = `Folio: ${datos.folio!}`;
+          this.contribuyenteArr.data.observaciones = `Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
         }
       }
     }
