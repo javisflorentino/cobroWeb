@@ -70,7 +70,9 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
     //fecha_enajenacion: [new Date(),[Validators.required]],
     fecha_solicitud: [new Date(), [Validators.required]],
     fecha_aprobacion: [new Date(), [Validators.required]],
-    pagos: this.fb.array([])
+    pagos: this.fb.array([]),
+
+    isForaneo: ['', [Validators.required]]
   });
 
   // al seleccionar motociclista se habilita centimetros cubicos y se deshabilita cilindros
@@ -287,7 +289,9 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       "placaAnterior": String(this.myForm.get('placa_foranea')?.value).toUpperCase(), "pagoBaja": this.myForm.get('pago_baja_f')?.value, "pagosRealizados": pagosRealizados,
       "fechaSolicitud": solicitudData.getDate() + '/' + (solicitudData.getMonth() + 1) + '/' + solicitudData.getFullYear(),
       "fechaAprobacion": aprobacionData.getDate() + '/' + (aprobacionData.getMonth() + 1) + '/' + aprobacionData.getFullYear(),
-      "tonelaje": this.myForm.get('tonelaje')?.value, "capacidadPasajeros": this.myForm.get('pasajeros')?.value
+      "tonelaje": this.myForm.get('tonelaje')?.value, "capacidadPasajeros": this.myForm.get('pasajeros')?.value,
+
+      "foraneo": this.myForm.get('isForaneo')?.value
     }));
 
     sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
@@ -315,6 +319,7 @@ export class AltaVehiculoUsadoPageComponent implements OnDestroy, AfterViewInit 
       tonelaje: this.myForm.get('tonelaje')?.value,
       capacidadPasajeros: this.myForm.get('pasajeros')?.value,
       //fechaEnajenacion: enajenacionDate.getDate() + '/' + (enajenacionDate.getMonth() + 1) + '/' + enajenacionDate.getFullYear()
+      foraneo: this.myForm.get('isForaneo')?.value
     }
 
     this.smytService.validateVehicle(parameters)

@@ -26,4 +26,6 @@ export interface DatosTramite {
   numeroConcesion?:     string;
   tipoConcesion?:       string;
 
+  foraneo?:             string;
+
 }
