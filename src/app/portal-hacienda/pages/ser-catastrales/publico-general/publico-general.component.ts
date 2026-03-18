@@ -22,7 +22,7 @@ export class PublicoGeneralComponent implements OnDestroy {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
-  public url: string = 'https://app.hacienda.morelos.gob.mx/MCISRyC/poliza/compraFuera';
+  public url: string = 'https://app.administracionyfinanzas.morelos.gob.mx/MCISRyC/poliza/compraFuera';
 
   constructor() {
     this.mediaQuery();

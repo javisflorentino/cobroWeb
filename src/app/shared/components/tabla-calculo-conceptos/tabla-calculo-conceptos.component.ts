@@ -154,8 +154,8 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           //this.openSnackBar('UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:\n <a href="https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5" target="_blank">https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5</a>');
           this.openSnackBarWhitLink({
             message: 'UNA VEZ REALIZADO EL PAGO DEBE CONTINUAR CON SU TRÁMITE EN:',
-            linkText: 'https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5',
-            linkUrl: 'https://pagos.hacienda.morelos.gob.mx/#/pagos/dependencias?opc=5'
+            linkText: 'https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=5',
+            linkUrl: 'https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=5'
           })
           this.isReposicionLicencia = true;
         }

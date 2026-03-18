@@ -24,7 +24,7 @@ export class NotariosComponent implements OnDestroy {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
-  public url: string =  'https://app.hacienda.morelos.gob.mx/MCISRyC/?e=5';
+  public url: string =  'https://app.administracionyfinanzas.morelos.gob.mx/MCISRyC/?e=5';
 
   constructor(){
     this.mediaQuery();

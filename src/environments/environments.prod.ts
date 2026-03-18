@@ -1,8 +1,8 @@
 export const environments = {
-  baseUrlApp: 'https://app.hacienda.morelos.gob.mx/',
-  baseUrlServ: 'https://pagos.hacienda.morelos.gob.mx/',
+  baseUrlApp: 'https://app.administracionyfinanzas.morelos.gob.mx/',
+  baseUrlServ: 'https://pagos.administracionyfinanzas.morelos.gob.mx/',
 
-  baseUrlSiigem: 'https://app.hacienda.morelos.gob.mx/siigemWeb',
+  baseUrlSiigem: 'https://app.administracionyfinanzas.morelos.gob.mx/siigemWeb',
 
   appEnviroment: 'serviciosHacienda',
     siigemEnviroment: 'siigemWeb',
@@ -15,9 +15,9 @@ export const environments = {
   pass_server: 'Hdes22G*_106',
   valor_uma: 104,
 
-  URL_PAGO_EN_LINEA: 'https://app.hacienda.morelos.gob.mx/pagoenlinea',
-  URL_PAGO_EN_LINEA_RECIBO: 'https://app.hacienda.morelos.gob.mx/recibo',
-  URL_SIIGEM_REPORTE_CEDULAR: 'https://app.hacienda.morelos.gob.mx/siigemWeb/impuestos/cedular/reporte'
+  URL_PAGO_EN_LINEA: 'https://app.administracionyfinanzas.morelos.gob.mx/pagoenlinea',
+  URL_PAGO_EN_LINEA_RECIBO: 'https://app.administracionyfinanzas.morelos.gob.mx/recibo',
+  URL_SIIGEM_REPORTE_CEDULAR: 'https://app.administracionyfinanzas.morelos.gob.mx/siigemWeb/impuestos/cedular/reporte'
 
 }
 

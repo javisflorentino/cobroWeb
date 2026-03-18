@@ -53,7 +53,7 @@ export class ModalFacturacionComponent {
       Validators.pattern('^[0-9]{5}$') // 5 dígitos, solo números
     ]]
   });
-  
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ModalFacturacionComponent>,
@@ -63,7 +63,7 @@ export class ModalFacturacionComponent {
     event.target['value'] = event.target['value'].toUpperCase();
   }
   ngOnInit(): void {
-    
+
   }
   async obtenerCfdi(): Promise<void> {
     this.cfdiForm.markAllAsTouched()
@@ -75,9 +75,9 @@ export class ModalFacturacionComponent {
       });
       return;
     }
-  
+
     this.isLoading = true; // Comienza carga
-  
+
     const lineaCaptura = this.cfdiForm.get("codigoReimpresion")?.value;
     const serie = this.cfdiForm.get("serie")?.value;
     const folio = this.cfdiForm.get("folio")?.value;
@@ -91,74 +91,74 @@ export class ModalFacturacionComponent {
     const cp = this.cfdiForm.get("codigoPostal")?.value;
     const nombre = this.cfdiForm.get("nombreRazonSocial")?.value.replace(/&/g, '&amp;');
     const lineaCapturaSerieFolio = `${lineaCaptura}/${serie}-${folio}`;
-  
+
     try {
       const consultarCFDResponse = await this.ingresosSevice.consultarCFDSoap(lineaCaptura);
-  
+
       if (!consultarCFDResponse) {
         throw new Error(`No se pudo obtener información para la línea de captura ${lineaCaptura}`);
       }
-  
+
       this.asJson = this.xmlSring.xmlStringToJson(consultarCFDResponse.toString());
-  
-      if (!this.asJson['soap:Envelope'] || 
-          !this.asJson['soap:Envelope']['soap:Body'] || 
+
+      if (!this.asJson['soap:Envelope'] ||
+          !this.asJson['soap:Envelope']['soap:Body'] ||
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'] ||
           !this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult) {
         throw new Error('La línea de captura no es válida');
       }
-  
+
       const cfd = this.asJson['soap:Envelope']['soap:Body']['ConsultarCFDResponse'].ConsultarCFDResult;
-  
+
       if (!cfd?.RFC || !cfd?.Serie || !cfd?.Folio) {
         throw new Error('La información del CFD está incompleta');
       }
-  
+
       const rfcCFD = cfd.RFC['#text'];
       const serieCFD = cfd.Serie['#text'];
       const folioCFD = cfd.Folio['#text'];
-  
+
       if (rfcCFD?.toUpperCase() !== rfc.toUpperCase()) {
         await Swal.fire({
-          icon: "error", 
-          title: "Error de validación", 
+          icon: "error",
+          title: "Error de validación",
           text: `El RFC capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`,
           allowOutsideClick: false
         });
         return;
       }
-  
+
       if (serieCFD?.toUpperCase() !== serie.toUpperCase() || folioCFD !== folio) {
         await Swal.fire({
-          icon: "error", 
-          title: "Error de validación", 
+          icon: "error",
+          title: "Error de validación",
           text: `La serie o folio capturado no corresponde con el del comprobante de pago de la línea de captura ${lineaCaptura}.`,
           allowOutsideClick: false
         });
         return;
       }
-  
+
       const resultadoTimbre = await this.ingresosSevice.timbraCP(
-        lineaCapturaSerieFolio, 
-        pago, 
-        uso, 
-        cp, 
-        regimen, 
+        lineaCapturaSerieFolio,
+        pago,
+        uso,
+        cp,
+        regimen,
         nombre
       );
-  
+
       if (resultadoTimbre.includes('<TimbraCFDResult>true</TimbraCFDResult>') || resultadoTimbre.includes('<TimbraCFDResult>1</TimbraCFDResult>')) {
         await Swal.fire({
           icon: 'success',
           title: 'Timbrado exitoso',
           text: 'El CFDI se timbró correctamente.'
         });
-  
+
         try {
           const envioResponse = await firstValueFrom(
             this.generalesService.envioCDFI(lineaCaptura, serie, folio, email)
           );
-        
+
           if (envioResponse) {
             await Swal.fire({
               icon: 'success',
@@ -180,7 +180,7 @@ export class ModalFacturacionComponent {
             text: 'El timbrado fue exitoso, pero ocurrió un error al enviar el correo electrónico.'
           });
         }
-        const urlPDF = `https://app.hacienda.morelos.gob.mx/recibo/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
+        const urlPDF = `https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
         window.open(urlPDF, '_blank');
         this.dialogRef.close();
       } else {
@@ -201,7 +201,7 @@ export class ModalFacturacionComponent {
       this.isLoading = false; // Termina carga en cualquier caso
     }
   }
-  
+
   close(): void {
     this.dialogRef.close();
   }

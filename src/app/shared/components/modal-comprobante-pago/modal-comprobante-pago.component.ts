@@ -25,7 +25,7 @@ export class ModalComprobantePagoComponent {
   search(): void {
     if (this.paymentForm?.valid) {
       const formData = this.paymentForm.value;
-      const url = `https://app.hacienda.morelos.gob.mx/recibo/cfd/imprimirCfd?lineaCaptura=${formData.captureLine}`; // Ajusta la URL base a la correcta
+      const url = `https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfd/imprimirCfd?lineaCaptura=${formData.captureLine}`; // Ajusta la URL base a la correcta
 
       window.open(url, '_blank'); // Abre el recibo en una nueva pestaña
       this.dialogRef.close(); // Cierra el modal si deseas

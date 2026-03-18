@@ -23,7 +23,7 @@ export class ImpuestosComponent implements OnDestroy {
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
 
-  public url: string = 'https://app.hacienda.morelos.gob.mx/SIMAT-GEM';
+  public url: string = 'https://app.administracionyfinanzas.morelos.gob.mx/SIMAT-GEM';
 
   constructor() {
     this.mediaQuery();
