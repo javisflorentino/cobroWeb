@@ -2,7 +2,7 @@ export const environments = {
   baseUrlApp: '/',
   baseUrlServ: '/',
 
-  baseUrlSiigem: 'https://app.hacienda.morelos.gob.mx/siigemWeb',
+  baseUrlSiigem: 'http://localhost:8080/siigemWeb',
 
 
   appEnviroment: 'serviciosHacienda',
@@ -15,7 +15,7 @@ export const environments = {
   valor_uma: 104,
   //URL_PAGO_EN_LINEA: 'http://localhost:8080/pagoenlinea',
   //URL_PAGO_EN_LINEA: 'http://192.168.114.122:8080/pagoenlinea',//'https://app.hacienda.morelos.gob.mx/pagoenlinea',
-  URL_PAGO_EN_LINEA: 'https://app.hacienda.morelos.gob.mx/pagoLineaQA',
+  URL_PAGO_EN_LINEA: 'https://app.hacienda.morelos.gob.mx/pagoenlinea',
   URL_PAGO_EN_LINEA_RECIBO: ' https://app.hacienda.morelos.gob.mx/reciboQA',
 
   // URLs para SIIGEM Web
