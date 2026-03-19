@@ -22,15 +22,15 @@ import { DatosNotariaResponse } from 'src/app/shared/interfaces/notarias-respons
 })
 export class GeneralesService {
 
-  private baseUrlApp = `${environments.baseUrlApp}${environments.appEnviroment}`;
-  private urlSOAP = `${environments.baseUrlServ}`;
+  private baseUrlApp = `/${environments.appEnviroment}`;
+  private urlSOAP = `/`;
 
-  private baseUrlSiigem = `${environments.baseUrlSiigem}`;
+  private baseUrlSiigem = `/siigemWeb`;
 
   private asJson!: ValidateVehicle;
   private xmlSring: ConvertXmlString = new ConvertXmlString();
 
-  private urlSmytParticularPublico = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
+  private urlSmytParticularPublico = `/${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
 
   constructor(private http: HttpClient) { }
 

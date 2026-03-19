@@ -15,7 +15,7 @@ export class ReporteCedularRequest {
   providedIn: 'root'
 })
 export class ImpuestoCedularService {
-  private urlReporteCedular = environments.URL_SIIGEM_REPORTE_CEDULAR;
+  private urlReporteCedular = `/siigemWeb/impuestos/cedular/reporte`;
 
   constructor(
     private http: HttpClient,
@@ -24,7 +24,7 @@ export class ImpuestoCedularService {
 
   generarReporte(request: ReporteCedularRequest): Observable<HttpResponse<Blob>> {
     const token = this.authSiigemService.getToken();
-    
+
     if (!token) {
       throw new Error('No hay token de autenticación disponible');
     }
@@ -49,7 +49,7 @@ export class ImpuestoCedularService {
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    
+
     // Limpiar
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
@@ -57,14 +57,14 @@ export class ImpuestoCedularService {
 
   extraerNombreArchivo(contentDisposition: string | null, serie: string, folio: string): string {
     let filename = `reporte_cedular_${serie}_${folio}.pdf`;
-    
+
     if (contentDisposition) {
       const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
       if (filenameMatch && filenameMatch[1]) {
         filename = filenameMatch[1];
       }
     }
-    
+
     return filename;
   }
 }

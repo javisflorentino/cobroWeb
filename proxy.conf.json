@@ -18,7 +18,7 @@
     "changeOrigin": true
   },
     "/siigemWeb/*": {
-    "target": "https://localhost:8080",
+    "target": "https://app.administracionyfinanzas.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true

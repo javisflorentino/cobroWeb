@@ -19,7 +19,7 @@ export class MenuService {
    }
 
 
-  private urlConceptos: string = `${environments.baseUrlApp}`//'http://localhost:3000/';
+  private urlConceptos: string = `/`//'http://localhost:3000/';
   //private urlSubConceptos: string = 'http://localhost:3002/menu';
 
   saveToLocalStorage(): void {

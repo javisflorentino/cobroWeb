@@ -5,12 +5,12 @@ import { environments } from 'src/environments/environments';
   providedIn: 'root'
 })
 export class IngresosService {
-  private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
+  private urlSOPA = `/`;//'tramitesSMyT/services/SMyT/validarVehiculo';
 
   constructor() { }
   async consultarCFDSoap(lineacaptura: string): Promise<any> {
     const lineaCapturaSerieFolio = `${lineacaptura}`;
-    
+
     const soapEnvelope = `
     <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">
        <soap:Header/>
@@ -20,7 +20,7 @@ export class IngresosService {
           </tem:ConsultarCFD>
        </soap:Body>
     </soap:Envelope>`;
-  
+
     try {
       const response = await fetch(`${this.urlSOPA}ws_recibo/recibo.asmx`, {
         method: "POST",
@@ -30,11 +30,11 @@ export class IngresosService {
         },
         body: soapEnvelope
       });
-  
-     
-  
+
+
+
       const text = await response.text();
-      return text; 
+      return text;
     } catch (error) {
       console.error("SOAP Error:", error);
       throw error;
@@ -59,7 +59,7 @@ export class IngresosService {
           </tem:TimbraCFD>
        </soap:Body>
     </soap:Envelope>`;
-  
+
     try {
       const response = await fetch(`${this.urlSOPA}wsTimbrado/Timbrado.asmx`, {
         method: "POST",
@@ -69,11 +69,11 @@ export class IngresosService {
         },
         body: soapEnvelope
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error SOAP: ${response.status}`);
       }
-  
+
       const responseText = await response.text();
       return responseText; // Puedes parsear el XML para extraer TimbraCFDResult si lo deseas
     } catch (error) {
@@ -81,6 +81,6 @@ export class IngresosService {
       throw error;
     }
   }
-    
+
 }
 
