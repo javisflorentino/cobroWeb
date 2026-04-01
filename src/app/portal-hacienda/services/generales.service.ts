@@ -17,6 +17,7 @@ import { TopLevel } from 'src/app/shared/interfaces/calculo-conceptos';
 import { DatosTramite } from 'src/app/shared/interfaces/datos-tramite.interface';
 import { DatosNotariaRequest } from 'src/app/shared/interfaces/notarias-request.interface';
 import { DatosNotariaResponse } from 'src/app/shared/interfaces/notarias-response.interface';
+import { PolizaExistenteResponse } from 'src/app/shared/interfaces/polizaExistente-response.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +34,18 @@ export class GeneralesService {
   private urlSmytParticularPublico = `/${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
 
   constructor(private http: HttpClient) { }
+
+  polizaExistente(nombre:string, monto:number): Observable<PolizaExistenteResponse | null> {
+    let headers = new HttpHeaders();
+    const body = JSON.stringify({ "nombre": nombre , "importe": monto });
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<PolizaExistenteResponse>(`${this.baseUrlApp}/poliza/validarPolizaExistente`, body, { headers })
+      .pipe(
+        catchError(error => of(null))
+      );
+  }
 
   getEntidadesFederativas(idEntidad?: number): Observable<ComboDTO | null> {
     let headers = new HttpHeaders();

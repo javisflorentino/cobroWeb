@@ -23,12 +23,12 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   public environment = environments.URL_PAGO_EN_LINEA + '/';
 
   public soloMostrarPost: boolean = false;
-  public links = ['Pago en Línea','Depósito Bancario','Otros Métodos de Pago', 'Banorte'];
-  public links_icons = ['credit_card','account_balance','credit_card', 'credit_card'];
-  public position: boolean[] = [true,false,false, false];
+  public links = ['Pago en Línea', 'Depósito Bancario', 'Otros Métodos de Pago', 'Banorte'];
+  public links_icons = ['credit_card', 'account_balance', 'credit_card', 'credit_card'];
+  public position: boolean[] = [true, false, false, false];
   public mostrarEmbedBanorte: boolean = true;
 
-   //QA
+  //QA
   //private url = 'https://qa.hacienda.morelos.gob.mx/recibo/poliza/imprimirPoliza?lineaCaptura=';
   //public url_pagolinea: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
   //public url_pagolinea_only: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
@@ -36,24 +36,26 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
 
   private url = environments.URL_PAGO_EN_LINEA_RECIBO + '/poliza/imprimirPoliza?lineaCaptura=';
   public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
-  public url_pagolinea_only: string =  environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
-  public url_pagolineaBanorte: string =  environments.URL_PAGO_EN_LINEA + '/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  public url_pagolinea_only: string = environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  //public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';
+  //public url_pagolinea_only: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  public url_pagolineaBanorte: string = environments.URL_PAGO_EN_LINEA + '/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
 
 
-    authSiigemService = inject(AuthSiigemService);
+  authSiigemService = inject(AuthSiigemService);
   @ViewChild('miBoton') miBoton!: ElementRef<HTMLButtonElement>;
 
   @ViewChild('formPL', { read: ElementRef })
   private paytmForm!: ElementRef;
 
 
-  public datosPoliza:Poliza = {
+  public datosPoliza: Poliza = {
     fechaVencimiento: '',
-    numeroPoliza:     '',
-    lineaCaptura:     '',
-    total:            0,
+    numeroPoliza: '',
+    lineaCaptura: '',
+    total: 0,
   };
-  public estadoCuenta:EstadoCuenta | undefined ;
+  public estadoCuenta: EstadoCuenta | undefined;
 
   private contribuyenteArr = {} as TopLevel;
 
@@ -70,25 +72,25 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   })
 
   //Controla la visualización del Spinner
-    public isLoading: boolean = false;
+  public isLoading: boolean = false;
 
-    private destroyed = new Subject<void>();
-    /* CONTROLAR LA RESOLUCION DE LA PANTALLA */
-    public sizeDisplay!: string;
-    /* CONTROLAR EL TIPO DE RESOLUCIONES */
-    private displayNameMap = new Map([
-      [Breakpoints.XSmall, 'XSmall'],
-      [Breakpoints.Small, 'Small'],
-      [Breakpoints.Medium, 'Medium'],
-      [Breakpoints.Large, 'Large'],
-      [Breakpoints.XLarge, 'XLarge'],
-    ]);
-    /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
-    private breakpointObserver = inject(BreakpointObserver);
+  private destroyed = new Subject<void>();
+  /* CONTROLAR LA RESOLUCION DE LA PANTALLA */
+  public sizeDisplay!: string;
+  /* CONTROLAR EL TIPO DE RESOLUCIONES */
+  private displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+  /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
+  private breakpointObserver = inject(BreakpointObserver);
 
-  constructor( private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     private http: HttpClient, private sanitizer: DomSanitizer
-   ) {
+  ) {
     this.mediaQuery();
   }
   ngAfterViewInit(): void {
@@ -108,105 +110,108 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
       this.contribuyenteArr = contribuyenteOnlyStr ? JSON.parse(contribuyenteOnlyStr) : null;
     }
     const contribuyente = this.contribuyenteArr?.data?.contribuyente;
-  const nombrePago = contribuyente
-    ? `${contribuyente.nombre} ${contribuyente.primerApellido} ${contribuyente.segundoApellido}`
-    : '';
+    const nombrePago = contribuyente
+      ? `${contribuyente.nombre} ${contribuyente.primerApellido} ${contribuyente.segundoApellido}`
+      : '';
 
-  const lineaDetalle = this.contribuyenteArr?.data?.lineaDetalle || '';
+    const lineaDetalle = this.contribuyenteArr?.data?.lineaDetalle || '';
     this.datosPoliza = JSON.parse(sessionStorage.getItem('datos_poliza')!);
-      this.estadoCuenta = JSON.parse(sessionStorage.getItem('datosPago')!);
+    this.estadoCuenta = JSON.parse(sessionStorage.getItem('datosPago')!);
 
 
 
-     // Si viene estado de cuenta → solo usar flujo POST personalizado
-  if (this.estadoCuenta) {
-    this.mostrarEmbedBanorte = true;
-    this.position =  [false,false,false, true];
-    this.links = ['Pago en Línea'];  // Solo Banorte
-    this.links_icons = ['credit_card'];  // Solo un icono
-    //this.enviarDatosCliente(); // llamada al método que ya tienes
-    //this.enviarDatosClientePorPost();
+    // Si viene estado de cuenta → solo usar flujo POST personalizado
+    if (this.estadoCuenta) {
+      this.mostrarEmbedBanorte = true;
+      this.position = [false, false, false, true];
+      this.links = ['Pago en Línea'];  // Solo Banorte
+      this.links_icons = ['credit_card'];  // Solo un icono
+      //this.enviarDatosCliente(); // llamada al método que ya tienes
+      //this.enviarDatosClientePorPost();
 
-  } else if (this.datosPoliza) {
-    this.mostrarEmbedBanorte = false;
-    this.position = [true, false, false, false];
-  this.links = ['Pago en Línea','Depósito Bancario','Otros Métodos de Pago'];  // Sin Banorte
-    this.links_icons = ['credit_card','account_balance','credit_card'];  // Sin el último icono
-    // Llenar formulario
-    this.myForm.reset({
-      numeroPoliza: this.datosPoliza.numeroPoliza,
-      lineaCaptura: this.datosPoliza.lineaCaptura,
-      monto: this.datosPoliza.total.toString(),
-      nombrePago: nombrePago,
-      lineaDetallePago: lineaDetalle,
-      pago2015: '2015',
-      banco: 'Bancomer',
-      extra: 'ECONOMIA-',
-      fecha: String(new Date().getDate() + 4)
-    });
+    } else if (this.datosPoliza) {
+      this.mostrarEmbedBanorte = false;
+      this.position = [true, false, false, false];
+      this.links = ['Pago en Línea', 'Depósito Bancario', 'Otros Métodos de Pago'];  // Sin Banorte
+      this.links_icons = ['credit_card', 'account_balance', 'credit_card'];  // Sin el último icono
+      // Llenar formulario
+      this.myForm.reset({
+        numeroPoliza: this.datosPoliza.numeroPoliza,
+        lineaCaptura: this.datosPoliza.lineaCaptura,
+        monto: this.datosPoliza.total.toString(),
+        nombrePago: nombrePago,
+        lineaDetallePago: lineaDetalle,
+        pago2015: '2015',
+        banco: 'Bancomer',
+        extra: 'ECONOMIA-',
+        fecha: String(new Date().getDate() + 4)
+      });
 
-    // Generar URLs de pago por GET
-    this.url_pagolinea += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}&sistema=0`;
-    this.url_pagolinea_only += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}`;
-  }
+      // Generar URLs de pago por GET
+      this.url_pagolinea += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}&sistema=0`;
+      this.url_pagolinea_only += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}`;
+
+      //this.url_pagolinea += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}`;//`?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}&sistema=0`;
+      //this.url_pagolinea_only += `?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}&sistema=0`;//`?lineaCaptura=${this.datosPoliza.lineaCaptura}&monto=${this.datosPoliza.total.toString()}`;
+    }
   }
   enviarDatosCliente(): void {
     var datos = JSON.parse(sessionStorage.getItem('datosPago')!);
-  this.url_pagolineaBanorte =
-  environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyBanorte' +
-  '?referencia=' + datos.referencia +
-  '&referencia2=' + datos.referencia2 +
-  '&sistema=' + 106 +
-  '&banco=' + "86" +
-  '&importe=' + datos.importeTotal +
-  '&pkPago=' + datos.pkPago +
-  '&clave=' + datos.clave +
-  '&pkMunicipio=' + datos.pkMunicipio;
+    this.url_pagolineaBanorte =
+      environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyBanorte' +
+      '?referencia=' + datos.referencia +
+      '&referencia2=' + datos.referencia2 +
+      '&sistema=' + 106 +
+      '&banco=' + "86" +
+      '&importe=' + datos.importeTotal +
+      '&pkPago=' + datos.pkPago +
+      '&clave=' + datos.clave +
+      '&pkMunicipio=' + datos.pkMunicipio;
 
 
-      const requestData: DatosPago = {
-        referencia: datos.referencia,
-        referencia2: datos.referencia2,
-        sistema: 106,
-        banco: "86",
-        importeTotal: datos.importeTotal,
-        pkPago: datos.pkPago,
-        clave: datos.clave,
-        pkMunicipio: datos.pkMunicipio,
-      };
+    const requestData: DatosPago = {
+      referencia: datos.referencia,
+      referencia2: datos.referencia2,
+      sistema: 106,
+      banco: "86",
+      importeTotal: datos.importeTotal,
+      pkPago: datos.pkPago,
+      clave: datos.clave,
+      pkMunicipio: datos.pkMunicipio,
+    };
 
-    }
-    enviarDatosClientePorPost(): void {
-  const datos = JSON.parse(sessionStorage.getItem('datosPago')!);
+  }
+  enviarDatosClientePorPost(): void {
+    const datos = JSON.parse(sessionStorage.getItem('datosPago')!);
 
-  // Crear formulario dinámicamente
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = this.url_pagolineaBanorte;
-  form.target = 'pagoFrame'; // Nombre del iframe
+    // Crear formulario dinámicamente
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = this.url_pagolineaBanorte;
+    form.target = 'pagoFrame'; // Nombre del iframe
 
-  // Agregar campos ocultos
-  const campos : any= {
-    referencia: datos.referencia,
-    importeTotal: datos.importeTotal,
-    token: this.authSiigemService.getToken()
-  };
+    // Agregar campos ocultos
+    const campos: any = {
+      referencia: datos.referencia,
+      importeTotal: datos.importeTotal,
+      token: this.authSiigemService.getToken()
+    };
 
-  Object.keys(campos).forEach(key => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = campos[key];
-    form.appendChild(input);
-  });
+    Object.keys(campos).forEach(key => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = campos[key];
+      form.appendChild(input);
+    });
 
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-}
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
   ngOnDestroy(): void {
     sessionStorage.removeItem('datos_poliza');
-        sessionStorage.removeItem('datosPago');
+    sessionStorage.removeItem('datosPago');
 
     this.destroyed.next();
     this.destroyed.unsubscribe();
@@ -216,19 +221,19 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   activeLink = this.links[0];
 
 
-  activeLinkFunct(link:number):void {
+  activeLinkFunct(link: number): void {
     console.log('entra = ' + link)
     this.activeLink = this.links[link];
     //this.position[link] = true;
     //this.position[(link>0)?0:1] = false;
-    this.position.forEach((val,ind) =>{
-      if(ind!==link) {
-        this.position[ind]=false
+    this.position.forEach((val, ind) => {
+      if (ind !== link) {
+        this.position[ind] = false
       } else {
-        this.position[ind]=true
+        this.position[ind] = true
       }
     })
-     // Ejecutar POST solo si entra al tab Banorte
+    // Ejecutar POST solo si entra al tab Banorte
     /*if (link === 3) {
       this.enviarDatosCliente();
     }*/
@@ -244,24 +249,24 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
 
   public mediaQuery() {
 
-      this.breakpointObserver
-        .observe([
-          Breakpoints.XSmall,
-          Breakpoints.Small,
-          Breakpoints.Medium,
-          Breakpoints.Large,
-          Breakpoints.XLarge,
-        ])
-        .pipe(takeUntil(this.destroyed))
-        .subscribe(result => {
-          for (const query of Object.keys(result.breakpoints)) {
-            if (result.breakpoints[query]) {
-              this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
-            }
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.sizeDisplay = this.displayNameMap.get(query) ?? 'Unknown';
           }
-        });
+        }
+      });
 
 
-    }
+  }
 
 }
