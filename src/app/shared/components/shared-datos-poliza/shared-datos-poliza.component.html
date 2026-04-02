@@ -1,4 +1,8 @@
-<mat-card class="">
+<!--<altcha-widget challengeurl="http://192.168.114.89:8080/api/v1/captcha/challenge" hidefooter
+  (statechange)="onStateChange($event)">
+</altcha-widget>-->
+
+<mat-card class="" *ngIf="isVerified">
   <mat-card-header>
     <mat-tab-group (selectedIndexChange)="activeLinkFunct($event)">
       <mat-tab *ngFor="let link of links; index as ind">
@@ -19,11 +23,12 @@
     <div class="mt-3 flex  justify-content-center" *ngIf="!mostrarEmbedBanorte">
       <button mat-raised-button color="primary" (click)="getPoliza()">Obtener Póliza de Pago</button>
     </div>
-    <!--<mat-tab-nav-panel #0 *ngIf="position[0] && !mostrarEmbedBanorte" class="mt-5">-->
-    <mat-tab-nav-panel #2 *ngIf="position[2] && !mostrarEmbedBanorte" class="mt-5">
+    <mat-tab-nav-panel #0 *ngIf="position[0] && !mostrarEmbedBanorte" class="mt-5">
+    <!--<mat-tab-nav-panel #2 *ngIf="position[2] && !mostrarEmbedBanorte" class="mt-5">-->
 
-      <form [formGroup]="myForm" id="formPagoEnLinea" method="post" [action]="environment" style="display:none;" target="_blank" #formPL>
-      <!--<form [formGroup]="myForm" id="formPagoEnLinea" method="post" action="http://localhost:8080/pagoenlinea/" style="display:none;" target="_blank" #formPL>-->
+      <form [formGroup]="myForm" id="formPagoEnLinea" method="post" [action]="environment" style="display:none;"
+        target="_blank" #formPL>
+        <!--<form [formGroup]="myForm" id="formPagoEnLinea" method="post" action="http://localhost:8080/pagoenlinea/" style="display:none;" target="_blank" #formPL>-->
         <input formControlName="numeroPoliza" id="numeroPoliza" name="numeroPoliza" type="hidden">
         <input formControlName="lineaCaptura" id="lineaCaptura" name="lineaCaptura" type="hidden">
         <input formControlName="monto" id="monto" name="monto" type="hidden">
@@ -85,7 +90,8 @@
         </ul>
         <p>
           Una vez confirmado el pago,podrás consultar tu comprobante y/o CFDI en
-          <a href="https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=2">pagos.morelos.gob.mx</a>
+          <a
+            href="https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=2">pagos.morelos.gob.mx</a>
           , utilizando
           la línea de captura de tu póliza.
         </p>
@@ -99,7 +105,9 @@
         </p>
         Si pagas por medio de <strong>SPEI</strong> o en sucursales <strong>HSBC</strong>, tu comprobante lo podrás
         consultar en 30
-        minutos en <a href="https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=2">pagos.morelos.gob.mx</a>, utilizando la línea de captura de tu póliza.
+        minutos en <a
+          href="https://pagos.administracionyfinanzas.morelos.gob.mx/#/pagos/dependencias?opc=2">pagos.morelos.gob.mx</a>,
+        utilizando la línea de captura de tu póliza.
         <p>
           Si realiza su pago, por medio del <strong>SPEI</strong> o en <strong>ventanilla bancaria</strong> de los
           bancos
@@ -108,8 +116,8 @@
         </p>
       </mat-tab-nav-panel>
     </div>
-    <!--<div #2 *ngIf="position[2] && !mostrarEmbedBanorte">-->
-    <div #0 *ngIf="position[0] && !mostrarEmbedBanorte">
+    <div #2 *ngIf="position[2] && !mostrarEmbedBanorte">
+    <!--<div #0 *ngIf="position[0] && !mostrarEmbedBanorte">-->
       <mat-tab-nav-panel class="mt-5">
         <div class="flex  justify-content-center">
           <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
@@ -127,8 +135,7 @@
       <mat-tab-nav-panel class="mt-5">
         <div class="flex justify-content-center">
           <iframe name="pagoFrame"
-                  [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
-                  height="800">
+            [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}" height="800">
           </iframe>
           <button #miBoton hidden (click)="enviarDatosClientePorPost()" class="btn btn-primary">
             Iniciar Pago

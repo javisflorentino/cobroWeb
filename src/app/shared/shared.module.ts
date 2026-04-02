@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidenavConceptosComponent } from './components/sidenav-conceptos/sidenav-conceptos.component';
 import { Error404PageComponent } from './pages/error404-page/error404-page.component';
@@ -60,6 +60,8 @@ import { ModalReporteCedularComponent } from './components/modal-reporte-cedular
     ReactiveFormsModule,
     MatMenuModule
   ],
+  // IMPORTANTE: Añade esta línea
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [
     SidenavConceptosComponent,
     SharedToolbarComponent,

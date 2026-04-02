@@ -23,6 +23,8 @@ import { PolizaExistenteResponse } from 'src/app/shared/interfaces/polizaExisten
 })
 export class GeneralesService {
 
+  private url_pasarelaCaptcha = `/${environments.pagoLineaEnvironment}/${environments.pasarelaCaptchaValidate}`;
+
   private baseUrlApp = `/${environments.appEnviroment}`;
   private urlSOAP = `/`;
 
@@ -42,6 +44,18 @@ export class GeneralesService {
       .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
 
     return this.http.post<PolizaExistenteResponse>(`${this.baseUrlApp}/poliza/validarPolizaExistente`, body, { headers })
+      .pipe(
+        catchError(error => of(null))
+      );
+  }
+
+  validateCaptcha(token: string): Observable<ResponseStruct | null> {
+    let headers = new HttpHeaders();
+    const body = JSON.stringify({ "payload": token });
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+
+    return this.http.post<ResponseStruct>(`${this.url_pasarelaCaptcha}`, body, { headers })
       .pipe(
         catchError(error => of(null))
       );

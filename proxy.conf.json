@@ -36,7 +36,7 @@
     "changeOrigin": true
   },
   "/pagoenlinea/*": {
-    "target": "http://192.168.114.89:8080",
+    "target": "https://app.administracionyfinanzas.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true

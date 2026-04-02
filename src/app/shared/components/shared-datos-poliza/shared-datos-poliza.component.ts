@@ -12,13 +12,21 @@ import { AuthSiigemService } from '../../services/auth-siigem.service';
 
 import { environments } from 'src/environments/environments';
 
+import 'altcha'; // Esto registra el elemento <altcha-widget>
+import Swal from 'sweetalert2';
+import { GeneralesService } from 'src/app/portal-hacienda/services/generales.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-shared-datos-poliza',
   templateUrl: './shared-datos-poliza.component.html',
   styles: [
-  ]
+  ],
 })
 export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  isVerified = false;
+  payload: string | null = null;
 
   public environment = environments.URL_PAGO_EN_LINEA + '/';
 
@@ -87,6 +95,8 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   ]);
   /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
   private breakpointObserver = inject(BreakpointObserver);
+  private generalService = inject(GeneralesService);
+  private router = inject(Router);
 
   constructor(private fb: FormBuilder,
     private http: HttpClient, private sanitizer: DomSanitizer
@@ -96,6 +106,95 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.miBoton.nativeElement.click();
+    });
+
+    Swal.fire({
+      title: 'Verificación de Seguridad',
+      html: `
+        <div id="captcha-container" style="display: flex; justify-content: center; margin-top: 15px;">
+          <altcha-widget
+            challengeurl="/${environments.pagoLineaEnvironment}/${environments.pasarelaCaptchaChallenge}"
+            hidefooter
+            strings='{
+              "label": "Verifica que eres humano",
+              "placeholder": "Cargando verificación...",
+              "error": "La verificación falló. Reintente.",
+              "expired": "La sesión expiró. Reintente.",
+              "verified": "Verificación exitosa",
+              "verifying": "Verificando..."
+            }'>
+          </altcha-widget>
+        </div>
+      `,
+      showConfirmButton: false, // Ocultamos el botón hasta que verifique
+      allowOutsideClick: false,
+      didOpen: () => {
+        const widget = document.querySelector('altcha-widget');
+        // Escuchamos el evento nativo del Web Component
+        widget?.addEventListener('statechange', (event: any) => {
+          const { state, payload } = event.detail;
+
+          if (state === 'verified') {
+            console.log('Captcha verificado con payload:', payload);
+            this.generalService.validateCaptcha(payload)
+              .subscribe({
+                next: (response) => {
+                  console.log('Respuesta de validación de captcha:', response);
+                  if (response?.success) {
+                    this.isVerified = true;
+                    this.payload = payload;
+                    // Cerramos el modal automáticamente tras el éxito
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Verificado',
+                      timer: 1500,
+                      showConfirmButton: false
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'Captcha no válido'
+                    }).then((result) => {
+                      /* ESTA ES LA PARTE CLAVE */
+                      if (result.isConfirmed) {
+                        this.router.navigate(['pagos/dependencias']);
+                        return;
+                      }
+                    });
+                  }
+                },
+                error: (err) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error validando captcha'
+                  }).then((result) => {
+                    /* ESTA ES LA PARTE CLAVE */
+                    if (result.isConfirmed) {
+                      this.router.navigate(['pagos/dependencias']);
+                      return;
+                    }
+                  });
+                },
+                complete: () => { }
+
+              });
+          } else if (state === 'expired') {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Expirado',
+              text: 'El captcha ha expirado. Por favor, inténtalo de nuevo.'
+            }).then((result) => {
+              /* ESTA ES LA PARTE CLAVE */
+              if (result.isConfirmed) {
+                this.router.navigate(['pagos/dependencias']);
+                return;
+              }
+            });
+          }
+        });
+      }
     });
   }
 
@@ -267,6 +366,16 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
       });
 
 
+  }
+
+  // Se ejecuta cuando el usuario resuelve el reto
+  onStateChange(event: any) {
+    console.log('Estado del captcha:', event.detail);
+    const { state, payload } = event.detail;
+    if (state === 'verified') {
+      this.isVerified = true;
+      this.payload = payload; // Este string Base64 contiene la solución
+    }
   }
 
 }
