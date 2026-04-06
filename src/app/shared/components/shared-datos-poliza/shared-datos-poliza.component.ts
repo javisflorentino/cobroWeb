@@ -104,9 +104,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     this.mediaQuery();
   }
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.miBoton.nativeElement.click();
-    });
+    
 
     Swal.fire({
       title: 'Verificación de Seguridad',
@@ -149,6 +147,9 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
                       title: 'Verificado',
                       timer: 1500,
                       showConfirmButton: false
+                    });
+                    setTimeout(() => {
+                      this.miBoton.nativeElement.click();
                     });
                   } else {
                     Swal.fire({
