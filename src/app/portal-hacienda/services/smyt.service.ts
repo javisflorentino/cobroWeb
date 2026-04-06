@@ -27,13 +27,13 @@ import { StructTipoMotor } from '../interface/struct-tipomotor.interface';
 export class SmytService {
 
   private urlMessage = 'http://localhost:3001/messages';
-  private urlSOPA = `/`;//'tramitesSMyT/services/SMyT/validarVehiculo';
-  private urlSmytGenerarPoliza = `/${environments.appEnviroment}/poliza/generar`;//'serviciosHacienda/poliza/generar';
-  private urlSmytParticular = `/${environments.appEnviroment}/smyt/particular`;//'serviciosHacienda/smyt/particular';
-  private urlSmytParticularPublico = `/${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
-  private urlValidarCehiculo = `/${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+  private urlSOPA = `${environments.baseUrlServ}`;//'tramitesSMyT/services/SMyT/validarVehiculo';
+  private urlSmytGenerarPoliza = `${environments.baseUrlApp}${environments.appEnviroment}/poliza/generar`;//'serviciosHacienda/poliza/generar';
+  private urlSmytParticular = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/particular`;//'serviciosHacienda/smyt/particular';
+  private urlSmytParticularPublico = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/publico`;//'serviciosHacienda/smyt/particular';
+  private urlValidarCehiculo = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
   /*TODO: Carlos A 17/07/2025 */
-  private urlSmytValidVehiculo = `/${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
+  private urlSmytValidVehiculo = `${environments.baseUrlApp}${environments.appEnviroment}/smyt/validarVehiculo`;//'serviciosHacienda/smyt/particular';
 
 
   constructor(private http: HttpClient) { }
@@ -181,7 +181,7 @@ export class SmytService {
 
   async validateVehicleSoap(placa: string, serie: string): Promise<any> {
     try {
-      const response = await fetch(`${this.urlSOPA}tramitesSMyT/services/SMyT?wsdl`, {
+      const response = await fetch(`/tramitesSMyT/services/SMyT?wsdl`, {
         method: "POST",
         body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:smyt="http://SMyT/">
         <soapenv:Header/>
