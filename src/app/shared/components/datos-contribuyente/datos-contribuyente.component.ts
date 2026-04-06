@@ -312,15 +312,8 @@ export class DatosContribuyenteComponent implements OnInit {
     }
 
   }
+  generarPoliza_response(): void {
 
-  generarPoliza(): void {
-
-    if (this.myFormContribuyente.invalid) {
-      this.myFormContribuyente.markAllAsTouched();
-      this.isLoading = false;
-      this.buttBlock = false;
-      return;
-    }
     const datos: ReintegrosStruct = JSON.parse(sessionStorage.getItem('datos_cobro')!);
     const gestora = sessionStorage.getItem('gestora')!;
     if (!this.contribuyenteArr.data.contribuyente) {
@@ -457,7 +450,7 @@ export class DatosContribuyenteComponent implements OnInit {
           //   this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬0.00¬¬6673¬0.00¬|"
           //   this.contribuyenteArr.data.total = 0;
           // }else{
-             this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬" + this.contribuyenteArr.data.total + "¬¬6673¬" + this.contribuyenteArr.data.total + "¬|"
+          this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬" + this.contribuyenteArr.data.total + "¬¬6673¬" + this.contribuyenteArr.data.total + "¬|"
           //   this.contribuyenteArr.data.total = this.contribuyenteArr.data.total;
           // }
 
@@ -641,6 +634,45 @@ export class DatosContribuyenteComponent implements OnInit {
       }
       //console.log('continua la la espera')
     }, 150)
+  }
+  generarPoliza(): void {
+
+    if (this.myFormContribuyente.invalid) {
+      this.myFormContribuyente.markAllAsTouched();
+      this.isLoading = false;
+      this.buttBlock = false;
+      return;
+    }
+    this.generarPoliza_response();
+    /*let nombreCompleto = String(this.myFormContribuyente.get('nombre')?.value).toUpperCase() + ' ' + String(this.myFormContribuyente.get('primerApellido')?.value).toUpperCase() + ' ' + String(this.myFormContribuyente.get('segundoApellido')?.value).toUpperCase();
+    this.serviciosGenerales.polizaExistente(nombreCompleto, Number(this.contribuyenteArr.data.total))
+      .subscribe({
+        next: (resp) => {
+          if (resp?.success && typeof resp.data === 'object') {
+            Swal.fire(
+              {
+                title: "Concepto Pagado con Anterioridad !!",
+                html: `${resp.message}. Desea Continuar con el proceso de pago?`,
+                showDenyButton: true,
+                confirmButtonText: "Continuar",
+                denyButtonText: `Cancelar`
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.generarPoliza_response();
+                } else if (result.isDenied) {
+                  this.router.navigate(['pagos/dependencias']);
+                  return;
+                }
+              });
+          } else {
+            this.generarPoliza_response();
+          }
+        },
+        error: (err) => {
+          this.openSnackBar('Error al validar póliza existente, favor de intentar nuevamente');
+        },
+        complete: () => {}
+      });*/
   }
 
   getPoliza(lineaCaptura: string) {

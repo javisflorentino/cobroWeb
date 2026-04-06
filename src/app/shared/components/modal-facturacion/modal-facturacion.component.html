@@ -7,7 +7,7 @@
             background-repeat: no-repeat;
             background-position: center">
   <h2 class="dialog-titulo">IMPRESIÓN DE CFDI</h2>
-  
+
   <p class="dialog-subtitle">
     Proporcione los siguientes datos de su comprobante de pago o de su CFDI para timbrar o consultar, los datos deben coincidir con los de su cédula fiscal.
   </p>
@@ -35,11 +35,12 @@
                 <!-- <mat-option value="D">D</mat-option> -->
                 <!-- <mat-option value="E">E</mat-option> -->
                 <mat-option value="F">F</mat-option>
-                <mat-option value="G">G</mat-option> 
+                <mat-option value="G">G</mat-option>
                 <!-- <mat-option value="H">H</mat-option>  -->
                 <mat-option value="I">I</mat-option>
                 <mat-option value="J">J</mat-option>
                 <mat-option value="K">K</mat-option>
+                <mat-option value="M">M</mat-option>
               </mat-select>
               <mat-error *ngIf="cfdiForm.get('serie')?.hasError('required')">Campo requerido</mat-error>
             </mat-form-field>
@@ -64,7 +65,7 @@
           <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('required')">Campo requerido</mat-error>
           <mat-error *ngIf="cfdiForm.get('correoElectronico')?.hasError('email')">
             Debe ingresar un correo electrónico válido
-          </mat-error>        
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -169,7 +170,7 @@
       NOTA: El XML será enviado a su correo.
     </div>
   </mat-dialog-content>
-  
+
   <mat-dialog-actions align="center">
       <button mat-raised-button color="primary" class="dialog-search-button" (click)="obtenerCfdi()">
         Obtener CFDI
