@@ -63,4 +63,6 @@ export interface ReintegrosStruct {
   agrupacion?: string;
   numero_economico?: string;
 
+  licencia?: string;
+
 }

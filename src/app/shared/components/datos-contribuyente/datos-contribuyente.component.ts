@@ -459,9 +459,11 @@ export class DatosContribuyenteComponent implements OnInit {
         }
         /* Carlos A. 2302/2026 CONTROL VEHICULAR - SERVICIO PUBLICO - EXPEDICION ANUAL DE GAFETE DE OPERADOR */
         if (datos.tipo_form && datos.tipo_form == 19) {
-          observaciones = ` OBSERVACIONES: Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
+          observaciones = ` OBSERVACIONES: No Licencia: ${datos.licencia!}`;
+          //observaciones = ` OBSERVACIONES: Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
           //this.contribuyenteArr.data.lineaDetalle = this.contribuyenteArr.data.lineaDetalle;
-          this.contribuyenteArr.data.observaciones = `Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
+          //this.contribuyenteArr.data.observaciones = `Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
+          this.contribuyenteArr.data.observaciones = `No Licencia: ${datos.licencia!}`;
         }
       }
     }

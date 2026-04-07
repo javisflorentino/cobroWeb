@@ -82,7 +82,30 @@ export class ValidatorsFormService {
     return null;
   }
 
+  licenseValidateGafete(no_licencia:string, idConcept:number) {
+    let flag:boolean = false;
+    if (!no_licencia.charAt(0).match('^[a-zA-Z]$')) {
+      return 'EL PRIMER CARACTER DEBE SER UNA LETRA.';
+    }
+    console.log("Id Concepto::: " + idConcept);
+    switch(no_licencia.charAt(0)) {
+      case 'C':
+      case 'D':
+      case 'E':
+      case 'F':
+        if ([873].find(resp => resp==idConcept) === undefined) {
+          flag = true;
+        }
+        break;
+      default:
+        flag=true;
+    }
 
+    if( flag ) {
+      return 'El número de licencia no coincide con los que expide la Secretaría de Movilidad y Transporte<br>Si deseas continuar con el trámite completa el formulario';
+    }
+    return null;
+  }
 
 
 }

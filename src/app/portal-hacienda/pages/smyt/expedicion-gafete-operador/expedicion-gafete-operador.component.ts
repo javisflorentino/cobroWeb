@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 
@@ -7,14 +7,23 @@ import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { SmytService } from 'src/app/portal-hacienda/services/smyt.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ValidatorsFormService } from 'src/app/shared/validators/validators-form.service';
 
 @Component({
   selector: 'app-expedicion-gafete-operador',
   templateUrl: './expedicion-gafete-operador.component.html',
   styleUrls: ['./expedicion-gafete-operador.component.css']
 })
-export class ExpedicionGafeteOperadorComponent implements OnInit {
+export class ExpedicionGafeteOperadorComponent implements OnInit, OnDestroy {
+
+  /* Carlo A. 07/04/2026 - Implementación de nuevas variables */
+  private debounce: Subject<string> = new Subject<string>();
+  private debouncerSubscription?: Subscription;
+  private validatorFormService = inject(ValidatorsFormService);
+  private _snackBar = inject(MatSnackBar);
 
   /* Arreglo de oficinas de SMyT */
   //public oficinasArr: Oficinas[] = ListaOficinas;
@@ -27,10 +36,11 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
 
   /* Inicialización del formulario reactivo */
   public expGafPubForm: FormGroup = this.fb.group({
-    id: [''],
+    /*id: [''],
     placa: ['', [Validators.required, Validators.minLength(4)]],
     agrupacion: ['', [Validators.required, Validators.pattern(this.validatorsService.alfaPath)]],
-    numero_economico: ['', [Validators.required, Validators.pattern(this.validatorsService.alfaPath)]],
+    numero_economico: ['', [Validators.required, Validators.pattern(this.validatorsService.alfaPath)]],*/
+    no_licencia: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
   });
 
   private smytSevice = inject(SmytService);
@@ -47,6 +57,13 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
   /* CONTROLA EL NOMBRE DEL CONCEPTO Y MOSTRARLO EN HTML */
   public conceptTitle: string = '';
 
+  /* Carlo A. 07/04/2026 - Nuevo Bloque */
+  @ViewChild('no_licencia')
+  private no_licencia!: ElementRef<HTMLInputElement>;
+  @HostListener('input', ['$event']) onKeyUp(event: any) {
+    event.target['value'] = event.target['value'].toUpperCase();
+  }
+
   constructor(private fb: FormBuilder, private validatorsService: ValidatorsService) { }
 
   ngOnInit(): void {
@@ -55,6 +72,24 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
       this.tipoForm = tipoForm;
       this.conceptTitle = sessionStorage.getItem('concept')!;
     });
+
+    /* Carlo A. 07/04/2026 */
+    this.debouncerSubscription = this.debounce
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        const resp = this.validatorFormService.licenseValidateGafete(value, this.idConcepto);
+        if (resp) {
+          this.expGafPubForm.get('no_licencia')?.setErrors({ notUnique: true });
+          this.openSnackBar(resp);
+        }
+      });
+  }
+
+  /* Carlo A. 07/04/2026 - Manejo de suscripciones */
+  ngOnDestroy(): void {
+    this.debouncerSubscription?.unsubscribe();
   }
 
   isValidField(field: string) {
@@ -72,18 +107,25 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
     }
 
     //let concesion = this.expGafPubForm.get('concesion')!.value;
-    let placa = this.expGafPubForm.get('placa')!.value;
+    /*let placa = this.expGafPubForm.get('placa')!.value;
     let agrupacion = this.expGafPubForm.get('agrupacion')!.value;
-    let numero_economico = this.expGafPubForm.get('numero_economico')!.value;
+    let numero_economico = this.expGafPubForm.get('numero_economico')!.value;*/
 
+    /* Carlo A. 07/04/2026 */
+    let no_licencia = this.expGafPubForm.get('no_licencia')!.value;
 
-    this.smytSevice.obtenerGafeteOperador({ "placa": placa.toUpperCase(), "tramite": 11 })
+    sessionStorage.setItem('datos_cobro', JSON.stringify({ licencia: no_licencia, idConcepto: this.idConcepto, tipo_form: this.tipoForm }));
+    this.router.navigate(['/pagos/tabla-conceptos', 873, 19]);
+    return;
+
+    /* Carlos A. 07/04/2026 - Se comentó este bloque*/
+    /*this.smytSevice.obtenerGafeteOperador({ "licencia": no_licencia.toUpperCase(), "tramite": 11 })
       .subscribe({
         next: (resp) => {
           if (resp?.success && resp.data) {
             //sessionStorage.setItem('vehicle_data', JSON.stringify({ "numeroConcesion": String(concesion), "tramite": 11}));
             //sessionStorage.setItem('datos_cobro', JSON.stringify({folio: concesion,idConcepto: this.idConcepto,tipo_form: this.tipoForm}));
-            sessionStorage.setItem('datos_cobro', JSON.stringify({placa: placa, agrupacion: agrupacion, numero_economico: numero_economico, idConcepto: this.idConcepto,  tipo_form: this.tipoForm}));
+            sessionStorage.setItem('datos_cobro', JSON.stringify({ licencia: no_licencia, idConcepto: this.idConcepto, tipo_form: this.tipoForm }));
             this.router.navigate(['/pagos/tabla-conceptos', 873, 19]);
             return;
           }
@@ -94,6 +136,18 @@ export class ExpedicionGafeteOperadorComponent implements OnInit {
           Swal.fire({ icon: "error", title: "Error!!", text: err.message, allowOutsideClick: false });
           this.isLoading = false;
         }
-      })
+      })*/
+  }
+
+  /* Carlo A. 07/04/2026 */
+  onKeyPress(searchTerm: string) {
+    this.debounce.next(searchTerm);
+  }
+
+  /* Carlo A. 07/04/2026 */
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      data: message, duration: 15000, panelClass: ["snack-notification"], horizontalPosition: "center", verticalPosition: "top",
+    });
   }
 }

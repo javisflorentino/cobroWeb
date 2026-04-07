@@ -11,7 +11,15 @@
         <div class="">
           <form action="" fxLayout="column" [formGroup]="expGafPubForm" (ngSubmit)="onSubmit()">
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+              <!-- Carlos A. 07/04/2026 - Nuevo bloque-->
+               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>No de Licencia</mat-label>
+                <input #no_licencia matInput type="text" maxlength="20" formControlName="no_licencia" (keyup)="onKeyPress(txtInput.value)" #txtInput>
+                <mat-error class="fontsizeerror" *ngIf="isValidField('no_licencia')"> Campo requerido</mat-error>
+              </mat-form-field>
+
+              <!-- Carlos A. Inicio - 07/04/2026 - Bloque comentado-->
+              <!--<mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="8">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('placa')"> Campo requerido </mat-error>
@@ -25,7 +33,9 @@
                 <mat-label>Número económico</mat-label>
                 <input matInput formControlName="numero_economico" type="text" name="" id="">
                 <mat-error *ngIf="isValidField('numero_economico')">Campo requerido</mat-error>
-              </mat-form-field>
+              </mat-form-field>-->
+              <!-- Carlos A. Fin - 07/04/2026 - Bloque comentado-->
+
               <!--<mat-form-field fxFlex class="col-10" appearance="outline">
                 <mat-label>Oficina del trámite</mat-label>
                 <mat-select formControlName="oficina" required>
