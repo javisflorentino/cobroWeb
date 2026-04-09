@@ -626,6 +626,8 @@ export class DatosContribuyenteComponent implements OnInit {
               }
               sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
               this.router.navigate(['pagos/generar_poliza']);
+              /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+              //this.router.navigate(['pagos/pasarela-pagos']);
               return;
 
             }

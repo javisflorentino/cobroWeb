@@ -1,0 +1,79 @@
+.payment-card {
+  max-width: 800px;
+  margin: 0 auto;
+  border-top: 4px solid #8e1c3a; /* Color guinda Morelos */
+}
+
+.full-width {
+  width: 100%;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-around;
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.value {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.highlighted {
+  color: #8e1c3a;
+}
+
+.loader-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+/*Estilos EVO*/
+/* Asegura que el input tenga altura y sea clicleable */
+input.mat-mdc-input-element {
+  min-height: 25px !important;
+  cursor: text !important;
+}
+
+/* EVO suele inyectar clases propias, hay que darles padding para que no choquen con el borde de Material */
+#card-number, #security-code, #expiry-month, #expiry-year, #cardholder-name {
+  padding: 8px 0 !important;
+}
+
+/* Si EVO inyecta un iframe interno (común en su SDK), forzamos que use el 100% del ancho */
+.mat-mdc-form-field-infix {
+  min-height: 50px !important;
+  display: flex !important;
+  align-items: center;
+}
+
+/* Asegura que el contenedor de errores tenga espacio */
+.mat-mdc-form-field-subscript-wrapper {
+  display: block !important;
+  margin-top: 4px !important;
+}
+
+/* Color rojo para resaltar los errores de la pasarela */
+mat-error {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Forzar el color rojo de Hacienda/Material cuando EVO detecta error */
+::ng-deep .mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  border-color: #f44336 !important;
+}
+::ng-deep .mat-form-field-invalid .mat-mdc-floating-label {
+  color: #f44336 !important;
+}

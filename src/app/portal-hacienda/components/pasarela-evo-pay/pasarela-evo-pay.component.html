@@ -1,0 +1,115 @@
+<div class="container-fluid py-4">
+  <div *ngIf="isLoading" class="loader-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="mt-3">Procesando con EVO Payments...</p>
+  </div>
+
+  <form [formGroup]="myForm" *ngIf="!showChallenge">
+    <mat-card class="payment-card">
+      <mat-card-header>
+        <mat-card-title>Portal de Pagos - Morelos</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="summary-row mb-4">
+          <div><small>Línea:</small> <strong>{{lineaCaptura}}</strong></div>
+          <div><small>Total:</small> <strong class="text-danger">{{monto | currency}}</strong></div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
+            <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+              <mat-label>Nombre del titular</mat-label>
+              <input matInput id="cardholder-name" type="text" maxlength="19"
+                tabindex="1" readonly>
+              <mat-error *ngIf="myForm.get('cardholder_name')?.hasError('required')">
+                Campo requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
+            <mat-form-field appearance="outline" class="w-100" floatLabel="always"
+              [class.mat-form-field-invalid]="evoErrors.cardNumber">
+              <mat-label>No de Tarjeta</mat-label>
+              <input matInput id="card-number" type="text" tabindex="2" placeholder="0000 0000 0000 0000"
+                autocomplete="cc-number" readonly>
+              <mat-error *ngIf="myForm.get('numTarjeta')?.hasError('pattern')">
+                Campo requerido, solo números y espacios
+              </mat-error>
+
+              <mat-error *ngIf="evoErrors.cardNumber">
+                La tarjeta es inválida o no compatible.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px; display: flex; gap: 8px;">
+
+
+                <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+                  <mat-label>Mes Expiración (MM)</mat-label>
+                  <input matInput id="expiry-month" placeholder="MM" maxlength="2"
+                    readonly>
+                  <!--<mat-select formControlName="expiryMonth" id="expiry-month" tabindex="3" readonly>
+                  <mat-option *ngFor="let m of months" [value]="m">{{m}}</mat-option>
+                </mat-select>-->
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+                  <mat-label>Año (YY)</mat-label>
+                  <input matInput id="expiry-year" placeholder="YY" maxlength="2" readonly>
+                  <!--<mat-select formControlName="expiryYear" id="expiry-year" tabindex="4" readonly>
+                  <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+                </mat-select>-->
+                </mat-form-field>
+
+
+          </div>
+
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
+            <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+              <mat-label>CVV2</mat-label>
+              <input matInput id="security-code" type="password" maxlength="4" tabindex="5"
+                readonly>
+              <mat-error *ngIf="myForm.get('cvv')?.hasError('pattern')">
+                Solo 3 o 4 números
+              </mat-error>
+
+              <mat-error *ngIf="evoErrors.securityCode">
+                Código de seguridad inválido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
+            <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+              <mat-label>Correo Electrónico</mat-label>
+              <input matInput formControlName="email" type="email">
+              <mat-error *ngIf="myForm.get('email')?.invalid">Email inválido</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
+            <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+              <mat-label>Teléfono (10 dígitos)</mat-label>
+              <input matInput formControlName="phone" maxlength="10">
+              <mat-error *ngIf="myForm.get('phone')?.invalid">Requerido a 10 dígitos</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="pay()" [disabled]="isLoading">
+          <mat-icon>lock</mat-icon> REALIZAR PAGO SEGURO
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+
+  <div *ngIf="showChallenge" class="challenge-wrapper">
+    <div [innerHTML]="authHtml"></div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+[
+  {
+    "componentLink": "pagos/pasarela-evo-payment",
+    "name": "Evo Payment",
+    "id": 1,
+    "iconURL": "evo_p"
+  },
+  {
+    "componentLink": "pagos/pasarela-banamex-payment",
+    "name": "Banamex Payment",
+    "id": 2,
+    "iconURL": "banamex_p"
+  },
+  {
+    "componentLink": "pagos/pasarela-bbva-payment",
+    "name": "BBVA Payment",
+    "id": 3,
+    "iconURL": "bbva_p"
+  }
+]

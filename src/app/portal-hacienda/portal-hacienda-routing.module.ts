@@ -11,6 +11,8 @@ import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuest
 import { PublicoGeneralComponent } from './pages/ser-catastrales/publico-general/publico-general.component';
 import { ImpuestosPagesComponent } from './hacienda/pages/impuestos-pages/impuestos-pages.component';
 import { CesionDerechosComponent } from './pages/cesion-derechos/cesion-derechos/cesion-derechos.component';
+import { CardsPasarelaPagosComponent } from './components/cards-pasarela-pagos/cards-pasarela-pagos.component';
+import { PasarelaEvoPayComponent } from './components/pasarela-evo-pay/pasarela-evo-pay.component';
 
 const routes: Routes = [
   {
@@ -25,7 +27,7 @@ const routes: Routes = [
         path: 'dependencias/:flag',
         component: CardsDependenciasComponent
       },
-     
+
       {
         path:'datos-contribuyente',
         component:DatosContribuyenteComponent
@@ -78,6 +80,14 @@ const routes: Routes = [
       {
         path: 'desarrollo-sustentable',
         loadChildren: () => import('./desarrollo-sustentable/desarrollo-sustentable.module').then(m => m.DesarrolloSustentableModule)
+      },
+      {
+        path: 'pasarela-pagos',
+        component: CardsPasarelaPagosComponent
+      },
+      {
+        path: 'pasarela-evo-payment',
+        component: PasarelaEvoPayComponent
       },
       {
         path: '**',

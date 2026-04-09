@@ -1,0 +1,9 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="grid mb-8 p-3">
+  <!--<div class="col-4 sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">-->
+  <div class="col-4 cursor-pointer sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">
+    <mat-card class="shadow-4 m-1 hover:shadow-8 " style="background-color: transparent; border-radius: 25px !important;">
+      <img mat-card-image [src]="item | menuImageShared" [alt]="item.name" (click)="emitValCard(item.componentLink)">
+    </mat-card>
+  </div>
+</div>

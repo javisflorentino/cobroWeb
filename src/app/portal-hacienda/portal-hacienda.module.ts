@@ -16,6 +16,10 @@ import { ImpuestosComponent } from './pages/hacienda-impuestos/impuestos/impuest
 import { ReactiveFormsModule } from '@angular/forms';
 import { CesionDerechosComponent } from './pages/cesion-derechos/cesion-derechos/cesion-derechos.component';
 //import { DataVehicleComponent } from './components/smyt/data-vehicle/data-vehicle.component';
+import { CardsPasarelaPagosComponent } from './components/cards-pasarela-pagos/cards-pasarela-pagos.component';
+import { MenuImageSharedPipe } from './pipes/menu-image-shared.pipe';
+import { PasarelaEvoPayComponent } from './components/pasarela-evo-pay/pasarela-evo-pay.component';
+import { ThreeDSecureModalComponent } from './components/three-dsecure-modal/three-dsecure-modal.component';
 
 
 @NgModule({
@@ -29,6 +33,10 @@ import { CesionDerechosComponent } from './pages/cesion-derechos/cesion-derechos
     PublicoGeneralComponent,
     ImpuestosComponent,
     CesionDerechosComponent,
+    CardsPasarelaPagosComponent,
+    MenuImageSharedPipe,
+    PasarelaEvoPayComponent,
+    ThreeDSecureModalComponent
     //DataVehicleComponent
   ],
   imports: [

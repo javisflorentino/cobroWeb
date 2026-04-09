@@ -1,0 +1,47 @@
+.menu-container {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .menu-buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .menu-button {
+      width: 60px;
+      height: 60px;
+      background-color: #C49A6D; /* Color café claro/beige como en la imagen */
+      box-shadow: none;
+      border-radius: 50%;
+    }
+
+    .menu-button:hover {
+      background-color:rgb(206, 173, 144); /* Un poco más oscuro al hacer hover */
+      transform: translateY(-3px);
+      transition: all 0.3s ease;
+    }
+      /* Estilo para los iconos dentro de los botones */
+    .custom-icon {
+      color: #FFFFFF; /* Color café más oscuro/rojizo para los iconos */
+      font-size: 28px;
+      height: 28px;
+      width: 28px;
+    }
+      /* 🔵 Aquí agregamos el media query para móviles */
+  @media (max-width: 768px) {
+    .menu-button {
+      width: 40px;
+      height: 40px;
+    }
+
+    .custom-icon {
+      font-size: 22px;
+      height: 21px;
+      width: 21px;
+    }
+  }
