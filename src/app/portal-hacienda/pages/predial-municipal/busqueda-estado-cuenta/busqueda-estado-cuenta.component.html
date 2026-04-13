@@ -61,6 +61,60 @@
               <mat-error class="fontsizeerror">El campo no puede ir vacío</mat-error>
           </mat-form-field>
             </div>
+            
+            <!-- Campos para timbrar (solo para municipio 7) -->
+            <div *ngIf="pkMunicipio == 7" class="mt-4">
+              <mat-divider class="mb-4"></mat-divider>
+              <h3 class="mb-3">Información para timbrar (Opcional)</h3>
+              
+              <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <mat-form-field fxFlex class="" style="margin-right:0.5em;" floatLabel="always" appearance="outline"
+                  class="full-width radio-container">
+                  <mat-label>¿Desea timbrar?</mat-label>
+                  <input matInput style="display:none">
+                  <mat-radio-group #group_timbrar formControlName="timbrar" class="flex-wrap" (change)="onTimbrarChange()">
+                    <mat-radio-button #buttons_timbrar [value]="true">
+                      <span class="wrap-label-text">Sí</span>
+                    </mat-radio-button>
+                    <mat-radio-button #buttons_timbrar [value]="false">
+                      <span class="wrap-label-text">No</span>
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </mat-form-field>
+              </div>
+              
+              <div *ngIf="predialMunicipal.get('timbrar')?.value === true" class="mt-3">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                    <mat-label>Código Postal</mat-label>
+                    <input matInput formControlName="codigoPostal" type="text" maxlength="5">
+                    <mat-error class="fontsizeerror">Código postal inválido</mat-error>
+                  </mat-form-field>
+                  
+                  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                    <mat-label>Régimen Fiscal</mat-label>
+                    <mat-select formControlName="regimen">
+                      <mat-option value="">Seleccione una opción</mat-option>
+                      <mat-option *ngFor="let regimen of regimenOptions" [value]="regimen.id">
+                        {{regimen.id}} - {{regimen.descripcion}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="fontsizeerror">Campo requerido</mat-error>
+                  </mat-form-field>
+                  
+                  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                    <mat-label>Uso CFDI</mat-label>
+                    <mat-select formControlName="usoCfdi">
+                      <mat-option value="">Seleccione una opción</mat-option>
+                      <mat-option *ngFor="let uso of usoCfdiOptions" [value]="uso.id">
+                        {{uso.id}} - {{uso.descripcion}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="fontsizeerror">Campo requerido</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <mat-card-actions align="end">

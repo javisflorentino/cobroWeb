@@ -16,6 +16,10 @@ import { PdfViewerComponentComponent } from 'src/app/shared/components/pdf-viewe
 import { AuthSiigemService } from 'src/app/shared/services/auth-siigem.service';
 import { DetalleMunicipio } from 'src/app/shared/interfaces/detalle-municipio';
 import { map, switchMap, tap } from 'rxjs';
+
+// Importar directamente los archivos JSON
+import regimenData from '../../../../../../data/arreglos/regimen.json';
+import usoCfdiData from '../../../../../../data/arreglos/usoCfdi.json';
 @Component({
   selector: 'app-busqueda-estado-cuenta',
   templateUrl: './busqueda-estado-cuenta.component.html',
@@ -40,7 +44,11 @@ export class BusquedaEstadoCuentaComponent {
     tipoPersona: ['1', [Validators.required]],
     correo: ['', [Validators.required, Validators.email]],
     confirmarCorreo: [''],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+    timbrar: [false],
+    codigoPostal: [''],
+    regimen: [''],
+    usoCfdi: ['']
   }, {
     validators: []
   });
@@ -49,6 +57,10 @@ export class BusquedaEstadoCuentaComponent {
 
   public validadorLabel: string = 'Identificador'; // Valor por defecto
   public claveLabel: string = 'Clave Catastral'; // Valor por defecto
+  
+  // Opciones para los combos de timbrar
+  public regimenOptions: any[] = regimenData;
+  public usoCfdiOptions: any[] = usoCfdiData;
 
 
 
@@ -150,7 +162,32 @@ setValidadorLabel() {
     });
   }
 
- 
+  onTimbrarChange(): void {
+    const timbrarValue = this.predialMunicipal.get('timbrar')?.value;
+    
+    if (timbrarValue === true) {
+      // Si se selecciona "Sí" para timbrar, agregar validaciones requeridas
+      this.predialMunicipal.get('codigoPostal')?.setValidators([Validators.required, Validators.pattern(/^\d{5}$/)]);
+      this.predialMunicipal.get('regimen')?.setValidators([Validators.required]);
+      this.predialMunicipal.get('usoCfdi')?.setValidators([Validators.required]);
+    } else {
+      // Si se selecciona "No" o se cambia a false, limpiar validaciones
+      this.predialMunicipal.get('codigoPostal')?.clearValidators();
+      this.predialMunicipal.get('regimen')?.clearValidators();
+      this.predialMunicipal.get('usoCfdi')?.clearValidators();
+      
+      // Limpiar valores
+      this.predialMunicipal.get('codigoPostal')?.setValue('');
+      this.predialMunicipal.get('regimen')?.setValue('');
+      this.predialMunicipal.get('usoCfdi')?.setValue('');
+    }
+    
+    // Actualizar validaciones
+    this.predialMunicipal.get('codigoPostal')?.updateValueAndValidity();
+    this.predialMunicipal.get('regimen')?.updateValueAndValidity();
+    this.predialMunicipal.get('usoCfdi')?.updateValueAndValidity();
+  }
+
   onSubmit(): void {
      // Validar que el formulario sea válido
     if (this.predialMunicipal.invalid) {
@@ -170,7 +207,11 @@ setValidadorLabel() {
       validador: this.predialMunicipal.get('validador')?.value.trim(),
       tipoPersona: this.predialMunicipal.get('tipoPersona')?.value,
       correo: this.predialMunicipal.get('correo')?.value.trim(),
-      telefono: this.predialMunicipal.get('telefono')?.value.trim()
+      telefono: this.predialMunicipal.get('telefono')?.value.trim(),
+      timbrar: this.predialMunicipal.get('timbrar')?.value,
+      codigoPostal: this.predialMunicipal.get('codigoPostal')?.value.trim(),
+      regimen: this.predialMunicipal.get('regimen')?.value.trim(),
+      usoCfdi: this.predialMunicipal.get('usoCfdi')?.value.trim()
     };
     console.log(JSON.stringify(requestData));
     // Consumir el endpoint

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "G01",
+    "descripcion": "Adquisición de mercancías"
+  },
+  {
+    "id": "G02",
+    "descripcion": "Devoluciones, descuentos o bonificaciones"
+  },
+  {
+    "id": "G03",
+    "descripcion": "Gastos en general"
+  },
+  {
+    "id": "I01",
+    "descripcion": "Construcciones"
+  },
+  {
+    "id": "I02",
+    "descripcion": "Mobiliario y equipo de oficina por inversiones"
+  },
+  {
+    "id": "I03",
+    "descripcion": "Equipo de transporte"
+  },
+  {
+    "id": "I04",
+    "descripcion": "Equipo de cómputo y accesorios"
+  },
+  {
+    "id": "I05",
+    "descripcion": "Dados, troqueles, moldes, matrices y herramental"
+  },
+  {
+    "id": "I06",
+    "descripcion": "Comunicaciones telefónicas"
+  },
+  {
+    "id": "I07",
+    "descripcion": "Comunicaciones satelitales"
+  },
+  {
+    "id": "I08",
+    "descripcion": "Otra maquinaria y equipo"
+  },
+  {
+    "id": "D01",
+    "descripcion": "Honorarios médicos, dentales y gastos hospitalarios"
+  },
+  {
+    "id": "D02",
+    "descripcion": "Gastos médicos por incapacidad o discapacidad"
+  },
+  {
+    "id": "D03",
+    "descripcion": "Gastos funerales"
+  },
+  {
+    "id": "D04",
+    "descripcion": "Donativos"
+  },
+  {
+    "id": "D05",
+    "descripcion": "Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)"
+  },
+  {
+    "id": "D06",
+    "descripcion": "Aportaciones voluntarias al SAR"
+  },
+  {
+    "id": "D07",
+    "descripcion": "Primas por seguros de gastos médicos"
+  },
+  {
+    "id": "D08",
+    "descripcion": "Gastos de transportación escolar obligatoria"
+  },
+  {
+    "id": "D09",
+    "descripcion": "Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones"
+  },
+  {
+    "id": "D10",
+    "descripcion": "Pagos por servicios educativos (colegiaturas)"
+  },
+  {
+    "id": "P01",
+    "descripcion": "Por definir"
+  },
+  {
+    "id": "S01",
+    "descripcion": "Sin efectos fiscales"
+  }
+]

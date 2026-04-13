@@ -50,6 +50,10 @@ export interface EstadoCuentaRequest {
   tipoPersona: number;
   correo: string;
   telefono?: string;
+  timbrar?: boolean;
+  codigoPostal?: string;
+  regimen?: string;
+  usoCfdi?: string;
 }
 
 export interface EstadoCuentaResponse {
