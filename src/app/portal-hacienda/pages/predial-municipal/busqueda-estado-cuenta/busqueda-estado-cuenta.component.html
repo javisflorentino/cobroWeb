@@ -92,6 +92,13 @@
                   </mat-form-field>
                   
                   <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                    <mat-label>RFC</mat-label>
+                    <input matInput formControlName="rfc" type="text" maxlength="13" placeholder="XXXXXXXX000000">
+                    <mat-error class="fontsizeerror" *ngIf="predialMunicipal.get('rfc')?.hasError('required')">RFC requerido</mat-error>
+                    <mat-error class="fontsizeerror" *ngIf="predialMunicipal.get('rfc')?.hasError('pattern')">RFC inválido</mat-error>
+                  </mat-form-field>
+                  
+                  <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                     <mat-label>Régimen Fiscal</mat-label>
                     <mat-select formControlName="regimen">
                       <mat-option value="">Seleccione una opción</mat-option>

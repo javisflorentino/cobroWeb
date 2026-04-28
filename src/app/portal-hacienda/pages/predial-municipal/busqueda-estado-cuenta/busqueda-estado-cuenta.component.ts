@@ -48,7 +48,8 @@ export class BusquedaEstadoCuentaComponent {
     timbrar: [false],
     codigoPostal: [''],
     regimen: [''],
-    usoCfdi: ['']
+    usoCfdi: [''],
+    rfc: ['']
   }, {
     validators: []
   });
@@ -170,22 +171,26 @@ setValidadorLabel() {
       this.predialMunicipal.get('codigoPostal')?.setValidators([Validators.required, Validators.pattern(/^\d{5}$/)]);
       this.predialMunicipal.get('regimen')?.setValidators([Validators.required]);
       this.predialMunicipal.get('usoCfdi')?.setValidators([Validators.required]);
+      this.predialMunicipal.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatorsService.rfcFisica)]);
     } else {
       // Si se selecciona "No" o se cambia a false, limpiar validaciones
       this.predialMunicipal.get('codigoPostal')?.clearValidators();
       this.predialMunicipal.get('regimen')?.clearValidators();
       this.predialMunicipal.get('usoCfdi')?.clearValidators();
+      this.predialMunicipal.get('rfc')?.clearValidators();
       
       // Limpiar valores
       this.predialMunicipal.get('codigoPostal')?.setValue('');
       this.predialMunicipal.get('regimen')?.setValue('');
       this.predialMunicipal.get('usoCfdi')?.setValue('');
+      this.predialMunicipal.get('rfc')?.setValue('');
     }
     
     // Actualizar validaciones
     this.predialMunicipal.get('codigoPostal')?.updateValueAndValidity();
     this.predialMunicipal.get('regimen')?.updateValueAndValidity();
     this.predialMunicipal.get('usoCfdi')?.updateValueAndValidity();
+    this.predialMunicipal.get('rfc')?.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -211,7 +216,8 @@ setValidadorLabel() {
       timbrar: this.predialMunicipal.get('timbrar')?.value,
       codigoPostal: this.predialMunicipal.get('codigoPostal')?.value.trim(),
       regimen: this.predialMunicipal.get('regimen')?.value.trim(),
-      usoCfdi: this.predialMunicipal.get('usoCfdi')?.value.trim()
+      usoCfdi: this.predialMunicipal.get('usoCfdi')?.value.trim(),
+      rfc: this.predialMunicipal.get('rfc')?.value.trim()
     };
     console.log(JSON.stringify(requestData));
     // Consumir el endpoint

@@ -54,6 +54,7 @@ export interface EstadoCuentaRequest {
   codigoPostal?: string;
   regimen?: string;
   usoCfdi?: string;
+  rfc?: string;
 }
 
 export interface EstadoCuentaResponse {
