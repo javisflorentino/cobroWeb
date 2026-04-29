@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { Router } from '@angular/router';
@@ -33,7 +33,7 @@ import { environments } from 'src/environments/environments';
   templateUrl: './datos-contribuyente.component.html',
   styleUrls: ['./datos-contribuyente.component.css']
 })
-export class DatosContribuyenteComponent implements OnInit {
+export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
 
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt;
   public arrMunicipios: ComboConcept[] = [];//Municipios[] = ListaMunicipios;
@@ -67,7 +67,7 @@ export class DatosContribuyenteComponent implements OnInit {
   public myFormContribuyente: FormGroup = this.fb.group({
     tipoPersona: ['F', [Validators.required]],
     nombre: ['', [Validators.required]],
-    primerApellido: ['', [Validators.required]],
+    primerApellido: [''],
     segundoApellido: [''], /* TODO: 10/06/2025 Carlos A. se quito la condicion de requerido  */
     razonSocial: [{ value: '', disabled: true }, [Validators.required]],
     rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatosService.rfcFisica)]],
@@ -81,22 +81,10 @@ export class DatosContribuyenteComponent implements OnInit {
       estados: [{ value: '17', disabled: true }, [Validators.required, Validators.min(1)]],
       municipio: ['', [Validators.required, Validators.min(1)]],
       observaciones: ['', [Validators.maxLength(900)]]
-    }/*,
-    {
-      validators:[this.validatosService.validateDataInput('calle',4,'domicilio'),
-        this.validatosService.validateDataInput('numeroExterior',5,'domicilio'),
-        this.validatosService.validateDataInput('colonia',6,'domicilio'),
-        this.validatosService.validateDataInput('codigoPostal',7,'domicilio'),
-      ]
-    }*/
-    )
+    })
   },
     {
-      validators: [this.validatosService.validateDataInput('nombre', 1, 'contribuyente'),
-      this.validatosService.validateDataInput('primerApellido', 2, 'contribuyente'),
-      this.validatosService.validateDataInput('segundoApellido', 3, 'contribuyente'),
-      this.validatosService.validateDataInput('razonSocial', 8, 'contribuyente')
-      ],
+      validators: [this.validatosService.validateDataInput('nombre', 1, 'contribuyente')],
     }
   );
 
@@ -111,6 +99,36 @@ export class DatosContribuyenteComponent implements OnInit {
     private serviciosGenerales: GeneralesService,
     private serviceFileTransfer: FileTransferService
   ) { }
+
+  ngAfterViewInit(): void {
+    const contribuyente = JSON.parse(sessionStorage.getItem('contribuyente')!);
+
+    // Extraemos la referencia para que el código sea más legible
+    const dataC = contribuyente?.data?.contribuyente;
+
+    // 1. Definimos un array para los validadores de control individual
+    // Esto es para los validadores simples (Required)
+    if (!!dataC) {
+      // Evaluamos: ¿Existe la propiedad? ¿Es diferente de null/undefined? ¿Es diferente de ""?
+      const tienePrimerApe = dataC.primerApellido && dataC.primerApellido.trim() !== '';
+      const tieneSegundoApe = dataC.segundoApellido && dataC.segundoApellido.trim() !== '';
+
+      if (tienePrimerApe) {
+        this.myFormContribuyente.get('primerApellido')?.setValidators([Validators.required]);
+      }
+      if (tieneSegundoApe) {
+        this.myFormContribuyente.get('segundoApellido')?.setValidators([Validators.required]);
+      }
+    } else {
+      // Si no hay datos, por defecto el primer apellido suele ser obligatorio
+      this.myFormContribuyente.get('primerApellido')?.setValidators([Validators.required]);
+    }
+
+    // Llamada a la configuración de validadores de grupo (como vimos antes)
+    this.configurarValidadoresDinamicos(dataC);
+
+
+  }
 
   @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
@@ -170,6 +188,26 @@ export class DatosContribuyenteComponent implements OnInit {
     }*/
   }
 
+  /* Carlos A 28/04/2026 - Configurar validadores dinámicos */
+  private configurarValidadoresDinamicos(dataC: any): void {
+    const groupValidators = [
+      this.validatosService.validateDataInput('nombre', 1, 'contribuyente'),
+      this.validatosService.validateDataInput('razonSocial', 8, 'contribuyente')
+    ];
+
+    // Si después de la evaluación anterior el control tiene el validador 'required'
+    if (this.myFormContribuyente.get('primerApellido')?.hasValidator(Validators.required)) {
+      groupValidators.push(this.validatosService.validateDataInput('primerApellido', 2, 'contribuyente'));
+    }
+
+    if (this.myFormContribuyente.get('segundoApellido')?.hasValidator(Validators.required)) {
+      groupValidators.push(this.validatosService.validateDataInput('segundoApellido', 3, 'contribuyente'));
+    }
+
+    this.myFormContribuyente.setValidators(groupValidators);
+    this.myFormContribuyente.updateValueAndValidity();
+  }
+
   /*
       SE DISPARA AL SELECCIONAR UN ESTADO
       MODIF: 12/12/2023
@@ -210,16 +248,21 @@ export class DatosContribuyenteComponent implements OnInit {
     let pathSelect = this.validatosService.streetNamePath;
 
     /* TODO: 10/06/2025 Carlos A. mientras no se evalue apellido materno entra a la condicion  */
-    if (idMssg !== null && nameField !== 'segundoApellido') {
+    if (idMssg !== null) {
       const message = this.mssgArr.filter(({ id }) => id == idMssg)
       return message[0].msg;
     }
     if (nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
-      /* TODO: 10/06/2025 Carlos A. Si apellido materno esta vacio, se elima la validacion  */
+      /* TODO: 10/06/2025 Carlos A. Si apellido materno o paterno esta vacio, se elima la validacion  */
       if (nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
         //console.log("Aqui entrooooo")
         this.myFormContribuyente.get('segundoApellido')?.clearValidators();
         this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
+        return '';
+      }
+      if(nameField === 'primerApellido' && this.myFormContribuyente.get('primerApellido')?.value.trim() == ''){
+        this.myFormContribuyente.get('primerApellido')?.clearValidators();
+        this.myFormContribuyente.get('primerApellido')?.updateValueAndValidity();
         return '';
       }
       touched = this.myFormContribuyente.get(nameField)?.touched;
@@ -254,30 +297,40 @@ export class DatosContribuyenteComponent implements OnInit {
 
   disabledEnabledElement(element: string[], enabledElement: string[]) {
     element.forEach(element => {
-      this.myFormContribuyente.get(element)?.disable();
+      const control = this.myFormContribuyente.get(element);
+      control?.disable();
+      control?.setValue('', { emitEvent: false });
     });
     enabledElement.forEach(element => {
-      this.myFormContribuyente.get(element)?.enable();
+      const control = this.myFormContribuyente.get(element);
+      control?.enable();
+      control?.setValue(''); // Aseguramos que inicie limpio
+      control?.markAsPristine(); // Es mejor marcarlo como limpio (Pristine) al habilitar
+      control?.markAsUntouched(); // También es buena práctica marcarlo como no tocado (Untouched)
+      control?.updateValueAndValidity();
     });
   }
 
   changeRadioTP(evento: string): void {
     this.tipoPersona = evento;
+    const rfcControl = this.myFormContribuyente.get('rfc');
+
     if (evento === 'M') {
+      // Deshabilitar campos de Física, Habilitar Razón Social
       this.disabledEnabledElement(['nombre', 'primerApellido', 'segundoApellido', 'curp'], ['razonSocial']);
-      this.myFormContribuyente.get('rfc')?.setValue('');
-      this.myFormContribuyente.get('rfc')?.clearValidators();
-      this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
+      rfcControl?.setValue('');
+      rfcControl?.clearValidators();
+      rfcControl?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
+    } else {
+      // Deshabilitar Razón Social, Habilitar campos de Física
+      this.disabledEnabledElement(['razonSocial'], ['nombre', 'primerApellido', 'segundoApellido', 'curp']);
+      //this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
+      rfcControl?.setValue('XAXX010101000');
+      rfcControl?.clearValidators();
+      rfcControl?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcFisica)]);
       this.myFormContribuyente.updateValueAndValidity();
-      return;
     }
-    this.disabledEnabledElement(['razonSocial'], ['nombre', 'primerApellido', 'segundoApellido', 'curp']);
-    this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
-    this.myFormContribuyente.get('rfc')?.clearValidators();
-    this.myFormContribuyente.get('rfc')?.setValue('XAXX010101000');
-    this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcFisica)]);
-    this.myFormContribuyente.updateValueAndValidity();
-    return;
+    rfcControl?.updateValueAndValidity();
   }
 
   monthDescription(valor: number): string {
@@ -445,7 +498,7 @@ export class DatosContribuyenteComponent implements OnInit {
         if (datos.tipo_form && datos.tipo_form == 9) {
           const tipo_ingreso = ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos));
           datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}` : '';
-          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad_descripcion},Demarcación: ${datos.demarcacion_descripcion},Nombre del Perito: ${datos.nombre_perito},RFC o Cédula del Perito: ${datos.rfc_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad_descripcion},Demarcación: ${datos.demarcacion_descripcion},Nombre del Perito: ${datos.nombre_perito},RFC o Cédula del Perito: ${datos.rfc_perito}. ${observaciones}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
           // if(datos.tiene_exencion=="1"){
           //   this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬0.00¬¬6673¬0.00¬|"
           //   this.contribuyenteArr.data.total = 0;
@@ -548,7 +601,6 @@ export class DatosContribuyenteComponent implements OnInit {
               if (datos !== null) {
                 /* SI ES EL IMPUESTO DE ENAJENACION  Y TIENE EXENCIONES*/
                 if (datos.tipo_form && datos.tipo_form == 9) {
-                  console.log('NUEVO IMPUESTO CON EXCEPCION');
                   const formValue = this.myFormContribuyente.value
                   let formData = new FormData();
                   // Agregar datos del formulario
@@ -586,7 +638,7 @@ export class DatosContribuyenteComponent implements OnInit {
 
                   this.serviciosGenerales.uploadFile(formData).subscribe({
                     next: (response) => {
-                      console
+
                       Swal.fire(
                         {
                           icon: "success",

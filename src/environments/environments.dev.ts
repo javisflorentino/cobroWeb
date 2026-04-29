@@ -10,17 +10,18 @@ export const environments = {
 
   pasarelaCaptchaValidate: 'captcha/validate',//'api/v1/captcha/validate',
   pasarelaCaptchaChallenge: 'captcha/challenge',//'api/v1/captcha/challenge',
-  URL_PASARELA_CAPTCHA: 'http://192.168.114.89:8080/pagoenlinea/',//'http://192.168.114.89:8080/',
+  //URL_PASARELA_CAPTCHA: 'http://192.168.114.89:8080/pagoenlinea/',
+  URL_PASARELA_CAPTCHA: 'https://qa.administracionyfinanzas.morelos.gob.mx/pagoLineaQA/',//'http://192.168.114.89:8080/',
 
 
   user_server: 'WS_SH1',
   pass_server: 'Hdes22G*_106',
   valor_uma: 104,
-  //URL_PAGO_EN_LINEA: 'http://localhost:8080/pagoenlinea',
-  URL_PAGO_EN_LINEA: 'https://app.administracionyfinanzas.morelos.gob.mx/pagoLineaQA',
   //URL_PAGO_EN_LINEA: 'http://192.168.114.89:8080/pagoenlinea',
-  URL_PAGO_EN_LINEA_RECIBO: ' https://app.administracionyfinanzas.morelos.gob.mx/reciboQA',
-  URL_SIIGEM_REPORTE_CEDULAR: 'https://app.administracionyfinanzas.morelos.gob.mx/impuestos/cedular/reporteQA'
+  URL_PAGO_EN_LINEA: 'https://qa.administracionyfinanzas.morelos.gob.mx/pagoLineaQA',
+  //URL_PAGO_EN_LINEA: 'http://192.168.114.89:8080/pagoenlinea',
+  URL_PAGO_EN_LINEA_RECIBO: ' https://qa.administracionyfinanzas.morelos.gob.mx/reciboQA',
+  URL_SIIGEM_REPORTE_CEDULAR: 'https://qa.administracionyfinanzas.morelos.gob.mx/impuestos/cedular/reporteQA'
 
 }
 

@@ -12,7 +12,7 @@
       "changeOrigin": true
   },
   "/serviciosHacienda/*": {
-      "target": "https://app.hacienda.morelos.gob.mx",
+      "target": "https://qa.hacienda.morelos.gob.mx",
       "secure": true,
       "logLevel": "debug",
       "changeOrigin": true
@@ -36,7 +36,13 @@
     "changeOrigin": true
   },
   "/pagoenlinea/*": {
-    "target": "https://app.administracionyfinanzas.morelos.gob.mx",
+    "target": "http://localhost:8080",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/pagoLineaQA/*": {
+    "target": "http://localhost:8080",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true

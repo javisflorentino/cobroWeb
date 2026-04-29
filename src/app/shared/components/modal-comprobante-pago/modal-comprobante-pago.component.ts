@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
+import { environments } from 'src/environments/environments';
+
 @Component({
   selector: 'app-modal-comprobante-pago',
   templateUrl: './modal-comprobante-pago.component.html',
@@ -25,7 +27,8 @@ export class ModalComprobantePagoComponent {
   search(): void {
     if (this.paymentForm?.valid) {
       const formData = this.paymentForm.value;
-      const url = `https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfd/imprimirCfd?lineaCaptura=${formData.captureLine}`; // Ajusta la URL base a la correcta
+      const url = `${environments.URL_PAGO_EN_LINEA_RECIBO}/cfd/imprimirCfd?lineaCaptura=${formData.captureLine}`;
+      //`https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfd/imprimirCfd?lineaCaptura=${formData.captureLine}`; // Ajusta la URL base a la correcta
 
       window.open(url, '_blank'); // Abre el recibo en una nueva pestaña
       this.dialogRef.close(); // Cierra el modal si deseas

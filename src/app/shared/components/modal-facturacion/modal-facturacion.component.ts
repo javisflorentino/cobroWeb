@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
 import { ValidatorsService } from '../../services/validators.service';
 
+import { environments } from 'src/environments/environments';
+
 @Component({
   selector: 'app-modal-facturacion',
   templateUrl: './modal-facturacion.component.html',
@@ -180,7 +182,8 @@ export class ModalFacturacionComponent {
             text: 'El timbrado fue exitoso, pero ocurrió un error al enviar el correo electrónico.'
           });
         }
-        const urlPDF = `https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
+        const urlPDF = `${environments.URL_PAGO_EN_LINEA_RECIBO}/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
+        //`https://app.administracionyfinanzas.morelos.gob.mx/recibo/cfdi/imprimirCfdi?lineaCaptura=${lineaCaptura}`;
         window.open(urlPDF, '_blank');
         this.dialogRef.close();
       } else {
