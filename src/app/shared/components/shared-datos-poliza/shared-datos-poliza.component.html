@@ -117,7 +117,7 @@
       <!--<div #0 *ngIf="position[0] && !mostrarEmbedBanorte">-->
 
     <!-- Carlos A. 07/05/2026 - Inicio: TODA ESTA SECCION SE COMENTA POR PROBLEMAS CON BANCOS QUE NO TIENEN MAPEADA LA IP DE pagos.  -->
-      <!--<mat-tab-nav-panel class="mt-5">
+      <mat-tab-nav-panel class="mt-5">
         <div class="flex  justify-content-center">
           <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
             height="800">
@@ -126,11 +126,11 @@
               height="800" />
           </object>
         </div>
-      </mat-tab-nav-panel>-->
+      </mat-tab-nav-panel>
     <!-- Carlos A. 07/05/2026 - Fin Seccion -->
 
     <!-- Carlos A. 07/05/2026 - Inicio: Esta seccion se agrego para solucuionar el problema de bancos, borrar una vez resuelto -->
-      <div class="mt-3 mb-3  flex  justify-content-center">
+      <!--<div class="mt-3 mb-3  flex  justify-content-center">
         <button mat-raised-button color="warn" (click)="portalPagoLinea()" *ngIf="position[2]">pago en Línea</button>
       </div>
 
@@ -185,7 +185,7 @@
             </mat-card>
           </div>
         </div>
-      </mat-tab-nav-panel>
+      </mat-tab-nav-panel>-->
     <!-- Carlos A. 07/05/2026 - Fin Seccion -->
 
 
