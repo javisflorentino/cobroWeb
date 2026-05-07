@@ -655,8 +655,16 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
                           }
                           //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
                         }).then((result) => {
-
-
+                          if (result.isConfirmed) {
+                            sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                            this.router.navigate(['pagos/generar_poliza']);
+                            /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                            //this.router.navigate(['pagos/pasarela-pagos']);
+                            return;
+                          } else {
+                            this.router.navigate(['pagos/dependencias']);
+                            return;
+                          }
                         });
                     },
                     error: (err) => {
@@ -675,12 +683,13 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
                   }
                   //return;
                 }
+              } else {
+                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                this.router.navigate(['pagos/generar_poliza']);
+                /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                //this.router.navigate(['pagos/pasarela-pagos']);
+                return;
               }
-              sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
-              this.router.navigate(['pagos/generar_poliza']);
-              /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
-              //this.router.navigate(['pagos/pasarela-pagos']);
-              return;
 
             }
             this.openSnackBar(resp.data!);

@@ -68,7 +68,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   private contribuyenteArr = {} as TopLevel;
 
   public myForm = this.fb.group({
-    numeroPoliza: [''],
+    poliza: [''],
     lineaCaptura: [''],
     monto: [''],
     nombrePago: [''],
@@ -236,7 +236,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
       this.links_icons = ['credit_card', 'account_balance', 'credit_card'];  // Sin el último icono
       // Llenar formulario
       this.myForm.reset({
-        numeroPoliza: this.datosPoliza.numeroPoliza,
+        poliza: this.datosPoliza.numeroPoliza,
         lineaCaptura: this.datosPoliza.lineaCaptura,
         monto: this.datosPoliza.total.toString(),
         nombrePago: nombrePago,
