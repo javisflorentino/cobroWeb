@@ -260,7 +260,7 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
         this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
         return '';
       }
-      if(nameField === 'primerApellido' && this.myFormContribuyente.get('primerApellido')?.value.trim() == ''){
+      if (nameField === 'primerApellido' && this.myFormContribuyente.get('primerApellido')?.value.trim() == '') {
         this.myFormContribuyente.get('primerApellido')?.clearValidators();
         this.myFormContribuyente.get('primerApellido')?.updateValueAndValidity();
         return '';
@@ -682,6 +682,12 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
                     return;
                   }
                   //return;
+                } else {
+                  sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                  this.router.navigate(['pagos/generar_poliza']);
+                  /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                  //this.router.navigate(['pagos/pasarela-pagos']);
+                  return;
                 }
               } else {
                 sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
