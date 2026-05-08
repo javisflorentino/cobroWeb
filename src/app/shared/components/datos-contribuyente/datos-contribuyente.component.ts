@@ -27,6 +27,7 @@ import { formatDate } from '@angular/common';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
 import Swal from 'sweetalert2';
 import { environments } from 'src/environments/environments';
+import { PolizaRecive } from 'src/app/portal-hacienda/interface/portal-datos-poliza.interface';
 
 @Component({
   selector: 'shared-datos-contribuyente',
@@ -596,92 +597,16 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
           .subscribe(resp => {
             this.isLoading = false;
             this.buttBlock = false;
+
             if (resp.success) {
               /* SI EXCISTE UN IMPUESTO QUE USE datos_cobro*/
               if (datos !== null) {
                 /* SI ES EL IMPUESTO DE ENAJENACION  Y TIENE EXENCIONES*/
                 if (datos.tipo_form && datos.tipo_form == 9) {
-                  const formValue = this.myFormContribuyente.value
-                  let formData = new FormData();
-                  // Agregar datos del formulario
-                  formData.append('cantidad', '1');
-                  formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
-                  formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
-                  formData.append('escritura', datos.escritura || '');
-                  formData.append('rfcPerito', datos.rfc_perito || '');
-                  formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
-                  formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
-                  formData.append('tipoIngresos', datos.tipo_ingresos || '');
-                  formData.append('tipoForm', datos.tipo_form?.toString() || '');
-                  formData.append('noPhone', datos.noPhone || '');
-                  formData.append('email', datos.email || '');
-                  formData.append('referenciaInmueble', datos.referencia_inmueble || '');
-                  formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
-                  formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
-                  formData.append('tieneEscritura', datos.tiene_escritura || '');
-                  formData.append('tieneExencion', datos.tiene_exencion || '');
-                  formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
-                  formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
-                  formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
-                  formData.append('importeInversion', datos.importe_inversion?.toString() || '');
-                  formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
-                  formData.append('nombre', datos.nombre || '');
-                  formData.append('rfc', datos.rfc || '');
-                  formData.append('notaria', datos.notaria || '');
-                  formData.append('entidad', datos.entidad || '');
-                  formData.append('demarcacion', datos.demarcacion || '');
-                  formData.append('nombrePerito', datos.nombre_perito || '');
-                  formData.append('domicilioPerito', datos.domicilio_perito || '');
-                  formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
-                  formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
-                  formData.append('archivo', this.serviceFileTransfer.getFile()!);
-
-                  this.serviciosGenerales.uploadFile(formData).subscribe({
-                    next: (response) => {
-
-                      Swal.fire(
-                        {
-                          icon: "success",
-                          title: "Operación realizada con éxito!!!",
-                          html: `Para validar su trámite conserve la linea de captura y consulte en linea su póliza
-                          <button type="button" id="btn-poliza" class="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Obtener Póliza de Pago</button>`,
-                          didRender: () => {
-                            const btn = document.getElementById('btn-poliza');
-                            if (btn) {
-                              btn.addEventListener('click', () => {
-                                this.getPoliza(resp.poliza.lineaCaptura);
-                              });
-                            }
-                          }
-                          //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
-                            this.router.navigate(['pagos/generar_poliza']);
-                            /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
-                            //this.router.navigate(['pagos/pasarela-pagos']);
-                            return;
-                          } else {
-                            this.router.navigate(['pagos/dependencias']);
-                            return;
-                          }
-                        });
-                    },
-                    error: (err) => {
-                      Swal.fire({
-                        icon: "error",
-                        title: "Error !!!!",
-                        text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
-                        showConfirmButton: false,
-                        timer: 2500
-                      });
-                    }
-                  });
-                  if (datos.tiene_exencion?.toLowerCase() == '1') {
-                    this.router.navigate(['pagos/dependencias']);
-                    return;
-                  }
-                  //return;
+                  /* Carlos A 08052026 */
+                  this.isLoading = true;
+                  this.buttBlock = true;
+                  this.impuestoCedular(datos, resp);
                 } else {
                   sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
                   this.router.navigate(['pagos/generar_poliza']);
@@ -697,15 +622,110 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
                 return;
               }
 
+            } else {
+              this.openSnackBar(resp.data!);
+              let id_redirec = setTimeout(() => {
+                clearInterval(id_redirec);
+                this.router.navigate(['pagos/dependencias']);
+                return;
+              }, 150);
             }
-            this.openSnackBar(resp.data!);
-            return;
           });
         clearInterval(id);
       }
       //console.log('continua la la espera')
     }, 150)
   }
+
+  impuestoCedular(datos: ReintegrosStruct, resp: PolizaRecive): void {
+    const formValue = this.myFormContribuyente.value
+    let formData = new FormData();
+    // Agregar datos del formulario
+    formData.append('cantidad', '1');
+    formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
+    formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
+    formData.append('escritura', datos.escritura || '');
+    formData.append('rfcPerito', datos.rfc_perito || '');
+    formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
+    formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
+    formData.append('tipoIngresos', datos.tipo_ingresos || '');
+    formData.append('tipoForm', datos.tipo_form?.toString() || '');
+    formData.append('noPhone', datos.noPhone || '');
+    formData.append('email', datos.email || '');
+    formData.append('referenciaInmueble', datos.referencia_inmueble || '');
+    formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
+    formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
+    formData.append('tieneEscritura', datos.tiene_escritura || '');
+    formData.append('tieneExencion', datos.tiene_exencion || '');
+    formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
+    formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
+    formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
+    formData.append('importeInversion', datos.importe_inversion?.toString() || '');
+    formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
+    formData.append('nombre', datos.nombre || '');
+    formData.append('rfc', datos.rfc || '');
+    formData.append('notaria', datos.notaria || '');
+    formData.append('entidad', datos.entidad || '');
+    formData.append('demarcacion', datos.demarcacion || '');
+    formData.append('nombrePerito', datos.nombre_perito || '');
+    formData.append('domicilioPerito', datos.domicilio_perito || '');
+    formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
+    formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
+    formData.append('archivo', this.serviceFileTransfer.getFile()!);
+
+    this.serviciosGenerales.uploadFile(formData).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.buttBlock = false;
+        Swal.fire(
+          {
+            icon: "success",
+            title: "Operación realizada con éxito!!!",
+            html: `Para validar su trámite conserve la linea de captura y consulte en linea su póliza
+                          <button type="button" id="btn-poliza" class="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Obtener Póliza de Pago</button>`,
+            didRender: () => {
+              const btn = document.getElementById('btn-poliza');
+              if (btn) {
+                btn.addEventListener('click', () => {
+                  this.getPoliza(resp.poliza.lineaCaptura);
+                });
+              }
+            }
+            //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (datos.tiene_exencion?.toLowerCase() == '1') {
+                this.router.navigate(['pagos/dependencias']);
+                return;
+              } else {
+                //return;
+                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                this.router.navigate(['pagos/generar_poliza']);
+                /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                //this.router.navigate(['pagos/pasarela-pagos']);
+                return;
+              }
+            } else {
+              this.router.navigate(['pagos/dependencias']);
+              return;
+            }
+          });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error !!!!",
+          text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
+          showConfirmButton: false,
+          timer: 2500
+        }).then(() => {
+          this.router.navigate(['pagos/dependencias']);
+          return;
+        });
+      }
+    });
+  }
+
   generarPoliza(): void {
 
     if (this.myFormContribuyente.invalid) {
