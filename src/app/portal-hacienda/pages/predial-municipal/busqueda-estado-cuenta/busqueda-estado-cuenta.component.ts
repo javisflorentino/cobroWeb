@@ -213,7 +213,7 @@ setValidadorLabel() {
       tipoPersona: this.predialMunicipal.get('tipoPersona')?.value,
       correo: this.predialMunicipal.get('correo')?.value.trim(),
       telefono: this.predialMunicipal.get('telefono')?.value.trim(),
-      timbrar: this.predialMunicipal.get('timbrar')?.value,
+      //timbrar: this.predialMunicipal.get('timbrar')?.value,
       codigoPostal: this.predialMunicipal.get('codigoPostal')?.value.trim(),
       regimen: this.predialMunicipal.get('regimen')?.value.trim(),
       usoCfdi: this.predialMunicipal.get('usoCfdi')?.value.trim(),
