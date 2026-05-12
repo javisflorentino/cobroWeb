@@ -43,11 +43,11 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   //public url_pagolineaBanorte: string =  'https://app.hacienda.morelos.gob.mx/pagoLineaQA/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
 
   private url = environments.URL_PAGO_EN_LINEA_RECIBO + '/poliza/imprimirPoliza?lineaCaptura=';
-  public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
-  public url_pagolinea_only: string = environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
+  public url_pagolinea: string = `/${environments.pagoLineaEnvironment}/reqByGetOnlyEvo`;//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  public url_pagolinea_only: string = `/${environments.pagoLineaEnvironment}/reqByGetIndex`;//'http://localhost:8080/pagoenlinea/reqByGetIndex';
   //public url_pagolinea: string = environments.URL_PAGO_EN_LINEA + '/reqByGetIndex';
   //public url_pagolinea_only: string = environments.URL_PAGO_EN_LINEA + '/reqByGetOnlyEvo';//'http://localhost:8080/pagoenlinea/reqByGetIndex';
-  public url_pagolineaBanorte: string = environments.URL_PAGO_EN_LINEA + '/reqByPostBanorte';//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
+  public url_pagolineaBanorte: string = `/${environments.pagoLineaEnvironment}/reqByPostBanorte`;//'http://localhost:8080/pagoenlinea/reqByGetOnlyEvo';
 
 
   authSiigemService = inject(AuthSiigemService);
@@ -68,7 +68,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
   private contribuyenteArr = {} as TopLevel;
 
   public myForm = this.fb.group({
-    numeroPoliza: [''],
+    poliza: [''],
     lineaCaptura: [''],
     monto: [''],
     nombrePago: [''],
@@ -104,7 +104,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
     this.mediaQuery();
   }
   ngAfterViewInit(): void {
-    
+
 
     Swal.fire({
       title: 'Verificación de Seguridad',
@@ -236,7 +236,7 @@ export class SharedDatosPolizaComponent implements OnInit, OnDestroy, AfterViewI
       this.links_icons = ['credit_card', 'account_balance', 'credit_card'];  // Sin el último icono
       // Llenar formulario
       this.myForm.reset({
-        numeroPoliza: this.datosPoliza.numeroPoliza,
+        poliza: this.datosPoliza.numeroPoliza,
         lineaCaptura: this.datosPoliza.lineaCaptura,
         monto: this.datosPoliza.total.toString(),
         nombrePago: nombrePago,

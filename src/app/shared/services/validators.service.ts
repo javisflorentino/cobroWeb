@@ -233,10 +233,10 @@ export class ValidatorsService {
         //if (String(contribuyenteArr.data[route][((field == 'razonSocial') ? 'nombre' : field)]).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize() !== String(formGroup.get(field)?.value).toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").normalize()) {
         if (val1 !== val2) {
           /* TODO: 10/06/2025 Carlos A. Si se evalua apellido materno y su valor es vacio se ejecuta la sentencia  */
-          if (field == 'segundoApellido' && formGroup.get(field)?.value.trim() == '') {
+          /*if (field == 'segundoApellido' && formGroup.get(field)?.value.trim() == '') {
             formGroup.get(field)?.setErrors(null);
             return null;
-          }
+          }*/
           formGroup.get(field)?.setErrors({ notEqual: true, error: mssg });
           return { notEqual: true, error: mssg };
         }

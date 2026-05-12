@@ -1,6 +1,6 @@
 {
   "/siigemWebQA/*": {
-      "target": "http://192.168.114.122:8080",
+      "target": "https://app.hacienda.morelos.gob.mx",
       "secure": true,
       "logLevel": "debug",
       "changeOrigin": true
@@ -12,7 +12,7 @@
       "changeOrigin": true
   },
   "/serviciosHacienda/*": {
-      "target": "https://app.hacienda.morelos.gob.mx",
+      "target": "https://qa.hacienda.morelos.gob.mx",
       "secure": true,
       "logLevel": "debug",
       "changeOrigin": true
@@ -24,7 +24,7 @@
     "changeOrigin": true
   },
     "/siigemWeb/*": {
-    "target": "http://localhost:8080",
+    "target": "https://app.hacienda.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
@@ -35,12 +35,25 @@
     "logLevel": "debug",
     "changeOrigin": true
   },
-  "/pagoenlinea/*": {
-    "target": "https://localhost:8090",
+  "/pagoLineaDEV/*": {
+    "target": "https://app.administracionyfinanzas.morelos.gob.mx",
     "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
   },
+  "/pagoenlinea/*": {
+    "target": "http://192.168.114.89:8080",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/pagoLineaQA/*": {
+    "target": "https://app.hacienda.morelos.gob.mx",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+
   "/oficiosHabilitacion/*": {
     "target": "https://app.hacienda.morelos.gob.mx",
     "secure": true,

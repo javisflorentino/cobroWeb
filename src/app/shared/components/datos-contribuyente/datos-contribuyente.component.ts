@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Messages } from 'src/app/portal-hacienda/interface/portal-message.interface';
 import { Router } from '@angular/router';
@@ -27,13 +27,14 @@ import { formatDate } from '@angular/common';
 import { FileTransferService } from 'src/app/portal-hacienda/services/file-transfer.service';
 import Swal from 'sweetalert2';
 import { environments } from 'src/environments/environments';
+import { PolizaRecive } from 'src/app/portal-hacienda/interface/portal-datos-poliza.interface';
 
 @Component({
   selector: 'shared-datos-contribuyente',
   templateUrl: './datos-contribuyente.component.html',
   styleUrls: ['./datos-contribuyente.component.css']
 })
-export class DatosContribuyenteComponent implements OnInit {
+export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
 
   public mssgArr: MessageSmyt[] = ListMessageSmyt.smyt;
   public arrMunicipios: ComboConcept[] = [];//Municipios[] = ListaMunicipios;
@@ -67,36 +68,24 @@ export class DatosContribuyenteComponent implements OnInit {
   public myFormContribuyente: FormGroup = this.fb.group({
     tipoPersona: ['F', [Validators.required]],
     nombre: ['', [Validators.required]],
-    primerApellido: ['', [Validators.required]],
+    primerApellido: [''],
     segundoApellido: [''], /* TODO: 10/06/2025 Carlos A. se quito la condicion de requerido  */
     razonSocial: [{ value: '', disabled: true }, [Validators.required]],
     rfc: ['XAXX010101000', [Validators.required, Validators.pattern(this.validatosService.rfcFisica)]],
     curp: [''],
     domicilio: this.fb.group({
-      calle: ['', [Validators.required]],
-      numeroExterior: ['', [Validators.required]],
-      numeroInterior: [],
-      colonia: ['', [Validators.required]],
+      calle: ['', [Validators.required, Validators.pattern(/.*\S.*/)]],
+      numeroExterior: ['', [Validators.required, Validators.pattern(/.*\S.*/)]],
+      numeroInterior: [''],
+      colonia: ['', [Validators.required, Validators.pattern(/.*\S.*/)]],
       codigoPostal: ['', [Validators.required, Validators.pattern(this.validatosService.exprCp)]],
       estados: [{ value: '17', disabled: true }, [Validators.required, Validators.min(1)]],
       municipio: ['', [Validators.required, Validators.min(1)]],
       observaciones: ['', [Validators.maxLength(900)]]
-    }/*,
-    {
-      validators:[this.validatosService.validateDataInput('calle',4,'domicilio'),
-        this.validatosService.validateDataInput('numeroExterior',5,'domicilio'),
-        this.validatosService.validateDataInput('colonia',6,'domicilio'),
-        this.validatosService.validateDataInput('codigoPostal',7,'domicilio'),
-      ]
-    }*/
-    )
+    })
   },
     {
-      validators: [this.validatosService.validateDataInput('nombre', 1, 'contribuyente'),
-      this.validatosService.validateDataInput('primerApellido', 2, 'contribuyente'),
-      this.validatosService.validateDataInput('segundoApellido', 3, 'contribuyente'),
-      this.validatosService.validateDataInput('razonSocial', 8, 'contribuyente')
-      ],
+      validators: [this.validatosService.validateDataInput('nombre', 1, 'contribuyente')],
     }
   );
 
@@ -111,6 +100,36 @@ export class DatosContribuyenteComponent implements OnInit {
     private serviciosGenerales: GeneralesService,
     private serviceFileTransfer: FileTransferService
   ) { }
+
+  ngAfterViewInit(): void {
+    const contribuyente = JSON.parse(sessionStorage.getItem('contribuyente')!);
+
+    // Extraemos la referencia para que el código sea más legible
+    const dataC = contribuyente?.data?.contribuyente;
+
+    // 1. Definimos un array para los validadores de control individual
+    // Esto es para los validadores simples (Required)
+    if (!!dataC) {
+      // Evaluamos: ¿Existe la propiedad? ¿Es diferente de null/undefined? ¿Es diferente de ""?
+      const tienePrimerApe = dataC.primerApellido && dataC.primerApellido.trim() !== '';
+      const tieneSegundoApe = dataC.segundoApellido && dataC.segundoApellido.trim() !== '';
+
+      if (tienePrimerApe) {
+        this.myFormContribuyente.get('primerApellido')?.setValidators([Validators.required]);
+      }
+      if (tieneSegundoApe) {
+        this.myFormContribuyente.get('segundoApellido')?.setValidators([Validators.required]);
+      }
+    } else {
+      // Si no hay datos, por defecto el primer apellido suele ser obligatorio
+      this.myFormContribuyente.get('primerApellido')?.setValidators([Validators.required]);
+    }
+
+    // Llamada a la configuración de validadores de grupo (como vimos antes)
+    this.configurarValidadoresDinamicos(dataC);
+
+
+  }
 
   @HostListener('input', ['$event']) onKeyUp(event: any) {
     event.target['value'] = event.target['value'].toUpperCase();
@@ -170,6 +189,26 @@ export class DatosContribuyenteComponent implements OnInit {
     }*/
   }
 
+  /* Carlos A 28/04/2026 - Configurar validadores dinámicos */
+  private configurarValidadoresDinamicos(dataC: any): void {
+    const groupValidators = [
+      this.validatosService.validateDataInput('nombre', 1, 'contribuyente'),
+      this.validatosService.validateDataInput('razonSocial', 8, 'contribuyente')
+    ];
+
+    // Si después de la evaluación anterior el control tiene el validador 'required'
+    if (this.myFormContribuyente.get('primerApellido')?.hasValidator(Validators.required)) {
+      groupValidators.push(this.validatosService.validateDataInput('primerApellido', 2, 'contribuyente'));
+    }
+
+    if (this.myFormContribuyente.get('segundoApellido')?.hasValidator(Validators.required)) {
+      groupValidators.push(this.validatosService.validateDataInput('segundoApellido', 3, 'contribuyente'));
+    }
+
+    this.myFormContribuyente.setValidators(groupValidators);
+    this.myFormContribuyente.updateValueAndValidity();
+  }
+
   /*
       SE DISPARA AL SELECCIONAR UN ESTADO
       MODIF: 12/12/2023
@@ -210,16 +249,21 @@ export class DatosContribuyenteComponent implements OnInit {
     let pathSelect = this.validatosService.streetNamePath;
 
     /* TODO: 10/06/2025 Carlos A. mientras no se evalue apellido materno entra a la condicion  */
-    if (idMssg !== null && nameField !== 'segundoApellido') {
+    if (idMssg !== null) {
       const message = this.mssgArr.filter(({ id }) => id == idMssg)
       return message[0].msg;
     }
     if (nameField === 'nombre' || nameField === 'primerApellido' || nameField === 'segundoApellido' /*|| nameField === 'razonSocial'*/) {
-      /* TODO: 10/06/2025 Carlos A. Si apellido materno esta vacio, se elima la validacion  */
+      /* TODO: 10/06/2025 Carlos A. Si apellido materno o paterno esta vacio, se elima la validacion  */
       if (nameField === 'segundoApellido' && this.myFormContribuyente.get('segundoApellido')?.value.trim() === '') {
         //console.log("Aqui entrooooo")
         this.myFormContribuyente.get('segundoApellido')?.clearValidators();
         this.myFormContribuyente.get('segundoApellido')?.updateValueAndValidity();
+        return '';
+      }
+      if (nameField === 'primerApellido' && this.myFormContribuyente.get('primerApellido')?.value.trim() == '') {
+        this.myFormContribuyente.get('primerApellido')?.clearValidators();
+        this.myFormContribuyente.get('primerApellido')?.updateValueAndValidity();
         return '';
       }
       touched = this.myFormContribuyente.get(nameField)?.touched;
@@ -254,30 +298,40 @@ export class DatosContribuyenteComponent implements OnInit {
 
   disabledEnabledElement(element: string[], enabledElement: string[]) {
     element.forEach(element => {
-      this.myFormContribuyente.get(element)?.disable();
+      const control = this.myFormContribuyente.get(element);
+      control?.disable();
+      control?.setValue('', { emitEvent: false });
     });
     enabledElement.forEach(element => {
-      this.myFormContribuyente.get(element)?.enable();
+      const control = this.myFormContribuyente.get(element);
+      control?.enable();
+      control?.setValue(''); // Aseguramos que inicie limpio
+      control?.markAsPristine(); // Es mejor marcarlo como limpio (Pristine) al habilitar
+      control?.markAsUntouched(); // También es buena práctica marcarlo como no tocado (Untouched)
+      control?.updateValueAndValidity();
     });
   }
 
   changeRadioTP(evento: string): void {
     this.tipoPersona = evento;
+    const rfcControl = this.myFormContribuyente.get('rfc');
+
     if (evento === 'M') {
+      // Deshabilitar campos de Física, Habilitar Razón Social
       this.disabledEnabledElement(['nombre', 'primerApellido', 'segundoApellido', 'curp'], ['razonSocial']);
-      this.myFormContribuyente.get('rfc')?.setValue('');
-      this.myFormContribuyente.get('rfc')?.clearValidators();
-      this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
+      rfcControl?.setValue('');
+      rfcControl?.clearValidators();
+      rfcControl?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcMoral)]);
+    } else {
+      // Deshabilitar Razón Social, Habilitar campos de Física
+      this.disabledEnabledElement(['razonSocial'], ['nombre', 'primerApellido', 'segundoApellido', 'curp']);
+      //this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
+      rfcControl?.setValue('XAXX010101000');
+      rfcControl?.clearValidators();
+      rfcControl?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcFisica)]);
       this.myFormContribuyente.updateValueAndValidity();
-      return;
     }
-    this.disabledEnabledElement(['razonSocial'], ['nombre', 'primerApellido', 'segundoApellido', 'curp']);
-    this.myFormContribuyente.get('razonSocial')?.enable(); //.addValidators([]);
-    this.myFormContribuyente.get('rfc')?.clearValidators();
-    this.myFormContribuyente.get('rfc')?.setValue('XAXX010101000');
-    this.myFormContribuyente.get('rfc')?.setValidators([Validators.required, Validators.pattern(this.validatosService.rfcFisica)]);
-    this.myFormContribuyente.updateValueAndValidity();
-    return;
+    rfcControl?.updateValueAndValidity();
   }
 
   monthDescription(valor: number): string {
@@ -445,7 +499,7 @@ export class DatosContribuyenteComponent implements OnInit {
         if (datos.tipo_form && datos.tipo_form == 9) {
           const tipo_ingreso = ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos));
           datosAdicionales = tipo_ingreso ? `Tipo de ingreso: ${tipo_ingreso.descripcion}` : '';
-          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad_descripcion},Demarcación: ${datos.demarcacion_descripcion},Nombre del Perito: ${datos.nombre_perito},RFC o Cédula del Perito: ${datos.rfc_perito}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
+          observaciones = ` OBSERVACIONES: ,Escritura: ${datos.tiene_escritura == '1' ? datos.escritura : 'SIN ESCRITURA'},Tiene exención: ${datos.tiene_exencion == '1' ? 'SI' : 'NO'},Fecha de enajenación: ${datos.fecha_enajenacion},Fecha de Provisional de Escritura: ${datos.fecha_provisional_escritura},Teléfono: ${datos.noPhone},Email: ${datos.email},Referencia_inmueble: ${datos.referencia_inmueble},Monto_Avaluó: ${datos.monto_avaluo},Ingreso de enajenación: ${datos.ingreso_enajenacion},Base_Impuesto: ${datos.base_impuesto},Tipo de Transmisión de Propiedad: Enajenación,Nombre del Notario: ${datos.nombre},RFC del Notario: ${datos.rfc},Notaría: ${datos.notaria},Entidad: ${datos.entidad_descripcion},Demarcación: ${datos.demarcacion_descripcion},Nombre del Perito: ${datos.nombre_perito},RFC o Cédula del Perito: ${datos.rfc_perito}. ${observaciones}`;// + (observaciones!=='')?`observaciones: ${observaciones}`:'';
           // if(datos.tiene_exencion=="1"){
           //   this.contribuyenteArr.data.lineaDetalle = "4124734¬0383¬1¬IMPUESTO CEDULAR POR LA ENAJENACIÓN DE BIENES INMUEBLES¬2026¬0.00¬¬6673¬0.00¬|"
           //   this.contribuyenteArr.data.total = 0;
@@ -543,102 +597,135 @@ export class DatosContribuyenteComponent implements OnInit {
           .subscribe(resp => {
             this.isLoading = false;
             this.buttBlock = false;
+
             if (resp.success) {
               /* SI EXCISTE UN IMPUESTO QUE USE datos_cobro*/
               if (datos !== null) {
                 /* SI ES EL IMPUESTO DE ENAJENACION  Y TIENE EXENCIONES*/
                 if (datos.tipo_form && datos.tipo_form == 9) {
-                  console.log('NUEVO IMPUESTO CON EXCEPCION');
-                  const formValue = this.myFormContribuyente.value
-                  let formData = new FormData();
-                  // Agregar datos del formulario
-                  formData.append('cantidad', '1');
-                  formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
-                  formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
-                  formData.append('escritura', datos.escritura || '');
-                  formData.append('rfcPerito', datos.rfc_perito || '');
-                  formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
-                  formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
-                  formData.append('tipoIngresos', datos.tipo_ingresos || '');
-                  formData.append('tipoForm', datos.tipo_form?.toString() || '');
-                  formData.append('noPhone', datos.noPhone || '');
-                  formData.append('email', datos.email || '');
-                  formData.append('referenciaInmueble', datos.referencia_inmueble || '');
-                  formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
-                  formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
-                  formData.append('tieneEscritura', datos.tiene_escritura || '');
-                  formData.append('tieneExencion', datos.tiene_exencion || '');
-                  formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
-                  formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
-                  formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
-                  formData.append('importeInversion', datos.importe_inversion?.toString() || '');
-                  formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
-                  formData.append('nombre', datos.nombre || '');
-                  formData.append('rfc', datos.rfc || '');
-                  formData.append('notaria', datos.notaria || '');
-                  formData.append('entidad', datos.entidad || '');
-                  formData.append('demarcacion', datos.demarcacion || '');
-                  formData.append('nombrePerito', datos.nombre_perito || '');
-                  formData.append('domicilioPerito', datos.domicilio_perito || '');
-                  formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
-                  formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
-                  formData.append('archivo', this.serviceFileTransfer.getFile()!);
-
-                  this.serviciosGenerales.uploadFile(formData).subscribe({
-                    next: (response) => {
-                      console
-                      Swal.fire(
-                        {
-                          icon: "success",
-                          title: "Operación realizada con éxito!!!",
-                          html: `Para validar su trámite conserve la linea de captura y consulte en linea su póliza
-                          <button type="button" id="btn-poliza" class="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Obtener Póliza de Pago</button>`,
-                          didRender: () => {
-                            const btn = document.getElementById('btn-poliza');
-                            if (btn) {
-                              btn.addEventListener('click', () => {
-                                this.getPoliza(resp.poliza.lineaCaptura);
-                              });
-                            }
-                          }
-                          //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
-                        }).then((result) => {
-
-
-                        });
-                    },
-                    error: (err) => {
-                      Swal.fire({
-                        icon: "error",
-                        title: "Error !!!!",
-                        text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
-                        showConfirmButton: false,
-                        timer: 2500
-                      });
-                    }
-                  });
-                  if (datos.tiene_exencion?.toLowerCase() == '1') {
-                    this.router.navigate(['pagos/dependencias']);
-                    return;
-                  }
-                  //return;
+                  /* Carlos A 08052026 */
+                  this.isLoading = true;
+                  this.buttBlock = true;
+                  this.impuestoCedular(datos, resp);
+                } else {
+                  sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                  this.router.navigate(['pagos/generar_poliza']);
+                  /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                  //this.router.navigate(['pagos/pasarela-pagos']);
+                  return;
                 }
+              } else {
+                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                this.router.navigate(['pagos/generar_poliza']);
+                /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                //this.router.navigate(['pagos/pasarela-pagos']);
+                return;
               }
-              sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
-              this.router.navigate(['pagos/generar_poliza']);
-              /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
-              //this.router.navigate(['pagos/pasarela-pagos']);
-              return;
 
+            } else {
+              this.openSnackBar(resp.data!);
+              let id_redirec = setTimeout(() => {
+                clearInterval(id_redirec);
+                this.router.navigate(['pagos/dependencias']);
+                return;
+              }, 150);
             }
-            this.openSnackBar(resp.data!);
-            return;
           });
         clearInterval(id);
       }
       //console.log('continua la la espera')
     }, 150)
   }
+
+  impuestoCedular(datos: ReintegrosStruct, resp: PolizaRecive): void {
+    const formValue = this.myFormContribuyente.value
+    let formData = new FormData();
+    // Agregar datos del formulario
+    formData.append('cantidad', '1');
+    formData.append('baseImpuesto', datos.base_impuesto?.toString() || '');
+    formData.append('percentBaseImpuesto', datos.percent_base_impuesto?.toString() || '');
+    formData.append('escritura', datos.escritura || '');
+    formData.append('rfcPerito', datos.rfc_perito || '');
+    formData.append('fechaEnajenacion', datos.fecha_enajenacion || '');
+    formData.append('fechaProvisionalEscritura', datos.fecha_provisional_escritura || '');
+    formData.append('tipoIngresos', datos.tipo_ingresos || '');
+    formData.append('tipoForm', datos.tipo_form?.toString() || '');
+    formData.append('noPhone', datos.noPhone || '');
+    formData.append('email', datos.email || '');
+    formData.append('referenciaInmueble', datos.referencia_inmueble || '');
+    formData.append('montoAvaluo', datos.monto_avaluo?.toString() || '');
+    formData.append('ingresoEnajenacion', datos.ingreso_enajenacion?.toString() || '');
+    formData.append('tieneEscritura', datos.tiene_escritura || '');
+    formData.append('tieneExencion', datos.tiene_exencion || '');
+    formData.append('comisionesMediaciones', datos.comisiones_mediaciones?.toString() || '');
+    formData.append('costoComprobado', datos.costo_comprobado?.toString() || '');
+    formData.append('gastosNotariales', datos.gastos_notariales?.toString() || '');
+    formData.append('importeInversion', datos.importe_inversion?.toString() || '');
+    formData.append('otrasDeducciones', datos.otras_deducciones?.toString() || '');
+    formData.append('nombre', datos.nombre || '');
+    formData.append('rfc', datos.rfc || '');
+    formData.append('notaria', datos.notaria || '');
+    formData.append('entidad', datos.entidad || '');
+    formData.append('demarcacion', datos.demarcacion || '');
+    formData.append('nombrePerito', datos.nombre_perito || '');
+    formData.append('domicilioPerito', datos.domicilio_perito || '');
+    formData.append('concepto', ListaIngresoEnajenacion.find(ingreso => ingreso.id == Number(datos.tipo_ingresos))?.descripcion || '');
+    formData.append('lineaCaptura', resp.poliza.lineaCaptura || '');
+    formData.append('archivo', this.serviceFileTransfer.getFile()!);
+
+    this.serviciosGenerales.uploadFile(formData).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.buttBlock = false;
+        Swal.fire(
+          {
+            icon: "success",
+            title: "Operación realizada con éxito!!!",
+            html: `Para validar su trámite conserve la linea de captura y consulte en linea su póliza
+                          <button type="button" id="btn-poliza" class="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Obtener Póliza de Pago</button>`,
+            didRender: () => {
+              const btn = document.getElementById('btn-poliza');
+              if (btn) {
+                btn.addEventListener('click', () => {
+                  this.getPoliza(resp.poliza.lineaCaptura);
+                });
+              }
+            }
+            //text: "Para validar su trámite conserve la linea de captura y consulte en linea su póliza: " + resp.poliza.lineaCaptura,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (datos.tiene_exencion?.toLowerCase() == '1') {
+                this.router.navigate(['pagos/dependencias']);
+                return;
+              } else {
+                //return;
+                sessionStorage.setItem('datos_poliza', JSON.stringify(resp.poliza));
+                this.router.navigate(['pagos/generar_poliza']);
+                /* Carlos A. 08/04/2026 - Descomentar esta línea y comentar la anterior, implementación de la nueva pasarela de pagos*/
+                //this.router.navigate(['pagos/pasarela-pagos']);
+                return;
+              }
+            } else {
+              this.router.navigate(['pagos/dependencias']);
+              return;
+            }
+          });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error !!!!",
+          text: "Problema al processar su solicitud, favor de contactar a Servicio Técnico",
+          showConfirmButton: false,
+          timer: 2500
+        }).then(() => {
+          this.router.navigate(['pagos/dependencias']);
+          return;
+        });
+      }
+    });
+  }
+
   generarPoliza(): void {
 
     if (this.myFormContribuyente.invalid) {
