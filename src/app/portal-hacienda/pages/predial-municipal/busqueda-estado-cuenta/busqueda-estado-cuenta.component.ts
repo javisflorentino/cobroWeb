@@ -138,9 +138,6 @@ setValidadorLabel() {
     case 6:
       this.validadorLabel = 'Importe de Último Pago';
       break;
-    case 7:
-      this.validadorLabel = 'Importe de Último Pago';
-      break;
     case 20:
       this.validadorLabel = 'Importe de Último Pago';
       break;

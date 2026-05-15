@@ -48,7 +48,7 @@
                 <mat-error class="fontsizeerror" *ngIf="predialMunicipal.get('correo')?.hasError('required')">El campo no puede ir vacío</mat-error>
                 <mat-error class="fontsizeerror" *ngIf="predialMunicipal.get('correo')?.hasError('email')">El correo no es válido</mat-error>
             </mat-form-field>
-            <mat-form-field *ngIf="pkMunicipio == 17" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-form-field *ngIf="pkMunicipio == 17 || pkMunicipio == 7" fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>Confirmar Correo</mat-label>
                 <input matInput formControlName="confirmarCorreo" type="text" required>
                 <mat-error class="fontsizeerror" *ngIf="predialMunicipal.get('confirmarCorreo')?.hasError('required')">El campo no puede ir vacío</mat-error>
