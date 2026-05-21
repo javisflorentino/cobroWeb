@@ -49,6 +49,10 @@ oficiosForm: FormGroup = this.fb.group({
     //   data: { /* lo que necesites pasar */ }
     // });
 
+      sessionStorage.setItem('gestora', '26');
+    sessionStorage.setItem('movimiento', "100");
+        sessionStorage.setItem('route_origen', "tabla-conceptos");
+
 
     const id = 287;
     const otroParametro = 0;

@@ -78,35 +78,38 @@ export class BusquedaEstadoCuentaComponent {
     ngOnInit(): void {
       sessionStorage.removeItem('datosPago');
     
-      this.route.paramMap.pipe(
-        // Mapeamos el parámetro idConcepto
-        map(params => parseInt(params.get('idConcepto') || '0')),
-        tap(pk => {
-          this.pkMunicipio = pk;
-    
-          if (pk === 0) {
-            this.openSnackBar('No se pudo obtener el municipio de la URL');
-            // this.router.navigate(['/']);
-          }
-    
-          // Cambia el label según el municipio
-          this.setValidadorLabel();
-          
-          // Agregar validación de confirmación de correo solo para municipio 17
-          if (pk === 17) {
-            this.predialMunicipal.get('confirmarCorreo')?.setValidators([Validators.required, Validators.email]);
-            this.predialMunicipal.setValidators([
-              this.validatorsService.isFieldOneEqualFielTwo('correo', 'confirmarCorreo', 1)
-            ]);
-          } else {
-            this.predialMunicipal.get('confirmarCorreo')?.clearValidators();
-            this.predialMunicipal.clearValidators();
-          }
-          this.predialMunicipal.get('confirmarCorreo')?.updateValueAndValidity();
-          this.predialMunicipal.updateValueAndValidity();
+      // Primero autenticarse para obtener el token, luego cargar el detalle del municipio
+      this.authSiigemService.login().pipe(
+        tap({
+          next: (res) => console.log('Login exitoso', res),
+          error: (err) => console.error('Error al autenticar', err)
         }),
-        // Llamamos al servicio una vez que pkMunicipio está definido
-        switchMap(pk => this.predialService.getDetalleMunicipio(pk))
+        switchMap(() => this.route.paramMap.pipe(
+          // Mapeamos el parámetro idConcepto
+          map(params => parseInt(params.get('idConcepto') || '0')),
+          tap(pk => {
+            this.pkMunicipio = pk;
+      
+            if (pk === 0) {
+              this.openSnackBar('No se pudo obtener el municipio de la URL');
+              // this.router.navigate(['/']);
+            }
+      
+            // Cambia el label según el municipio
+            this.setValidadorLabel();
+            
+           
+              this.predialMunicipal.get('confirmarCorreo')?.setValidators([Validators.required, Validators.email]);
+              this.predialMunicipal.setValidators([
+                this.validatorsService.isFieldOneEqualFielTwo('correo', 'confirmarCorreo', 1)
+              ]);
+            
+            this.predialMunicipal.get('confirmarCorreo')?.updateValueAndValidity();
+            this.predialMunicipal.updateValueAndValidity();
+          }),
+          // Llamamos al servicio una vez que pkMunicipio está definido
+          switchMap(pk => this.predialService.getDetalleMunicipio(pk))
+        ))
       ).subscribe({
         next: (response) => {
           if (response.success && response.data) {
@@ -122,11 +125,6 @@ export class BusquedaEstadoCuentaComponent {
       });
     
       this.conceptTitle = sessionStorage.getItem('concept')!;
-    
-      this.authSiigemService.login().subscribe({
-        next: (res) => console.log('Login exitoso', res),
-        error: (err) => console.error('Error al autenticar', err)
-      });
     }
     
 
