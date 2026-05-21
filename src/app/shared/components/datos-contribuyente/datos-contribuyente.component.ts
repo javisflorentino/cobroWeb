@@ -519,6 +519,12 @@ export class DatosContribuyenteComponent implements OnInit, AfterViewInit {
           //this.contribuyenteArr.data.observaciones = `Placa: ${datos.placa!}, Agrupación: ${datos.agrupacion!}, Número Económico: ${datos.numero_economico!}`;
           this.contribuyenteArr.data.observaciones = `No Licencia: ${datos.licencia!}`;
         }
+
+        /* Carlos A. 21/05/2026 5 AL MILLAR */
+        if (datos.tipo_form && datos.tipo_form == 20) {
+          datosAdicionales = `Nombre Contacto: ${datos.nombre_contact}, Teléfono Contacto: ${datos.telefono}, Email Contacto: ${datos.email}`;
+          observaciones = ` OBSERVACIONES: , Fecha de Retención: ${datos.fecha_retencion},Ejercicio Fiscal: ${datos.ejercicio_fiscal},No de Obra: ${datos.no_obra}, Desc de Obra: ${datos.desc_obra},Monto Retenido: ${datos.monto_retenido},Monto Ejercido: ${datos.ejercicio},Fuente de Financiamiento: ${datos.fuente_financiamiento},Ente Ejecutor: ${datos.ente_ejecutor},Nombre del Programa: ${datos.nombre_programa},No Oficio de Autorización: ${datos.numero_oficio},Modalidad de Ejecución: ${datos.modalidad_ejecucion},No de Factura Emitida por el Contratista: ${datos.numero_factura},No Estimacion Pagada: ${datos.no_estimacion}`;
+        }
       }
     }
 

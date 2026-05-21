@@ -65,4 +65,11 @@ export interface ReintegrosStruct {
 
   licencia?: string;
 
+  desc_obra: string;
+  ente_ejecutor: string;
+  nombre_programa: string;
+  modalidad_ejecucion: string;
+  no_estimacion: string;
+  no_obra: string;
+  nombre_contact: string;
 }

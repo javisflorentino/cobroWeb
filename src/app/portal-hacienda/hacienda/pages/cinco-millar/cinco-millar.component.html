@@ -1,0 +1,190 @@
+<shared-load-spinner *ngIf="isLoading()"></shared-load-spinner>
+<!--<div class="card mb-7">
+  <div class="flex justify-content-center flex-wrap">-->
+<div class="grid fle pb-8">
+  <div [ngClass]="(sizeDisplay !== 'Small' && sizeDisplay !== 'XSmall')?'col-12':'col-12'">
+    <mat-card class="shadow-8">
+      <mat-card-header class="mb-3">
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle>{{conceptTitle() | titlecase }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content class="mt-5">
+        <form [formGroup]="formCincoMillar">
+          <div class="input-row" fxLayout="row wrap" style="width: 100%;">
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Concepto </mat-label>
+              <mat-select formControlName="concepto" (valueChange)="changeField($event)">
+                <mat-option value="">--- Seleccione Concepto ---</mat-option>
+                <mat-option *ngFor="let tipo of listaConceptos" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error> Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Fondo</mat-label>
+              <mat-select formControlName="fondo">
+                <mat-option value="">--- Seleccione Fondo ---</mat-option>
+                <mat-option *ngFor="let tipo of listaFondos" [value]="tipo.id">{{tipo.descripcion}}</mat-option>
+              </mat-select>
+              <mat-error> Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row wrap" style="width: 100%;">
+            <mat-form-field fxFlex="23" style="min-width: 220px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Fecha de retención</mat-label>
+              <input matInput [matDatepicker]="dpff" formControlName="fecha_retencion" [readonly]="true">
+              <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+              <mat-datepicker #dpff disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <!-- CAMPO 2: Nuestro nuevo componente aislado que SOLO muestra el año -->
+            <app-year-picker [label]="'Ejercicio fiscal'" [control]="ejercicioFiscalControl" />
+
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">No de obra</mat-label>
+              <input matInput formControlName="no_obra" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('no_obra')?.errors,'no_obra')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Desc. de obra</mat-label>
+              <input matInput formControlName="desc_obra" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('desc_obra')?.errors,'desc_obra')
+                }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row wrap" style="width: 100%;">
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Fuente de financiamiento</mat-label>
+              <input matInput formControlName="fuente_finan" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('fuente_finan')?.errors,'fuente_finan')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Monto del ejercicio</mat-label>
+              <input matInput formControlName="monto_ejercicio" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('monto_ejercicio')?.errors,'monto_ejercicio')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Ente ejecutor</mat-label>
+              <input matInput formControlName="ente_ejecutor" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('ente_ejecutor')?.errors,'ente_ejecutor')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Nombre del programa</mat-label>
+              <input matInput formControlName="nombre_programa" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('nombre_programa')?.errors,'nombre_programa')
+                }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row wrap" style="width: 100%;">
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">No de oficio de autorización</mat-label>
+              <input matInput formControlName="no_oficio" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('no_oficio')?.errors,'no_oficio')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Modalidad de ejecución</mat-label>
+              <input matInput formControlName="modalidad_ejecucion" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('modalidad_ejecucion')?.errors,'modalidad_ejecucion')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">No de factura emitida por el contratista</mat-label>
+              <input matInput formControlName="no_factura" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('no_factura')?.errors,'no_factura')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">No de estimación pagada</mat-label>
+              <input matInput formControlName="no_estimacion" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('no_estimacion')?.errors,'no_estimacion')
+                }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="input-row" fxLayout="row wrap" style="width: 100%;">
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Monto retenido</mat-label>
+              <input matInput formControlName="monto_retenido" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('monto_retenido')?.errors,'monto_retenido')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Nombre del contacto</mat-label>
+              <input matInput formControlName="nombre_contact" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('nombre_contact')?.errors,'nombre_contact')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Teléfono del contacto</mat-label>
+              <input matInput formControlName="tel_contact" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('tel_contact')?.errors,'tel_contact')
+                }}</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="23" style="min-width: 250px; margin-right: 0.5em; margin-bottom: 0.5em;"
+              appearance="outline">
+              <mat-label style="font-size: 12px;">Correo del contacto</mat-label>
+              <input matInput formControlName="email_contact" type="text">
+              <mat-error class="fontsizeerror">{{
+                getMessage(formCincoMillar.get('email_contact')?.errors,'email_contact')
+                }}</mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos/dependencias']">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+
+        <span class=""></span>
+        <button [disabled]="formCincoMillar.invalid" mat-stroked-button mat-raised color="primary" (click)="onSubmit()">
+          <mat-icon>calculate</mat-icon>
+          Calcular
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</div>

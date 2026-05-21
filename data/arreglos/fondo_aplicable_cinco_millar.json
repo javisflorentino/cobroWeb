@@ -1,0 +1,198 @@
+[
+  {
+    "id": 1,
+    "idConcepto": 1,
+    "descripcion": "RAMO 28",
+    "status":1
+  },
+  {
+    "id": 2,
+    "idConcepto": 1,
+    "descripcion": "RECURSOS FISCALES",
+    "status":1
+  },
+  {
+    "id": 3,
+    "idConcepto": 1,
+    "descripcion": "INGRESOS PROPIOS",
+    "status":1
+  },
+  {
+    "id": 4,
+    "idConcepto": 1,
+    "descripcion": "FIRM",
+    "status":1
+  },
+  {
+    "id": 5,
+    "idConcepto": 1,
+    "descripcion": "FAEFOM",
+    "status":1
+  },
+  {
+    "id": 6,
+    "idConcepto": 1,
+    "descripcion": "FAEDE",
+    "status":1
+  },
+
+
+  {
+    "id": 7,
+    "idConcepto": 2,
+    "descripcion": "PRODDER",
+    "status":1
+  },
+  {
+    "id": 8,
+    "idConcepto": 2,
+    "descripcion": "RAMO 04",
+    "status":1
+  },
+  {
+    "id": 9,
+    "idConcepto": 2,
+    "descripcion": "RAMO 11",
+    "status":1
+  },
+  {
+    "id": 10,
+    "idConcepto": 2,
+    "descripcion": "RAMO 12",
+    "status":1
+  },
+  {
+    "id": 11,
+    "idConcepto": 2,
+    "descripcion": "RAMO 15 'DESARROLLO AGRARIO, TERRITORIAL Y URBANO'",
+    "status":1
+  },
+  {
+    "id": 12,
+    "idConcepto": 2,
+    "descripcion": "RAMO 16 'MEDIO AMBIENTE Y RECURSOS NATURALES'",
+    "status":1
+  },
+  {
+    "id": 13,
+    "idConcepto": 2,
+    "descripcion": "RAMO 23",
+    "status":1
+  },
+  {
+    "id": 14,
+    "idConcepto": 2,
+    "descripcion": "RAMO 48",
+    "status":1
+  },
+  {
+    "id": 15,
+    "idConcepto": 2,
+    "descripcion": "PROGRAMA DE DEVOLUCIÓN DE DERECHOS",
+    "status":1
+  },
+
+
+  {
+    "id": 16,
+    "idConcepto": 3,
+    "descripcion": "FONDO I FONE",
+    "status":1
+  },
+  {
+    "id": 17,
+    "idConcepto": 3,
+    "descripcion": "FONDO II FASSA",
+    "status":1
+  },
+  {
+    "id": 18,
+    "idConcepto": 3,
+    "descripcion": "FONDO III FAIS",
+    "status":1
+  },
+  {
+    "id": 19,
+    "idConcepto": 3,
+    "descripcion": "FONDO III FISM",
+    "status":1
+  },
+  {
+    "id": 20,
+    "idConcepto": 3,
+    "descripcion": "FONDO III FISE",
+    "status":1
+  },
+  {
+    "id": 21,
+    "idConcepto": 3,
+    "descripcion": "FONDO IV FORTAMUN",
+    "status":1
+  },
+  {
+    "id": 22,
+    "idConcepto": 3,
+    "descripcion": "FONDO V FAM",
+    "status":1
+  },
+  {
+    "id": 23,
+    "idConcepto": 3,
+    "descripcion": "FONDO V FAM ALIMENTACIÓN Y ASISTENCIA SOCIAL",
+    "status":1
+  },
+  {
+    "id": 24,
+    "idConcepto": 3,
+    "descripcion": "FONDO V FAM INFR. EDUCACIÓN BÁSICA",
+    "status":1
+  },
+  {
+    "id": 25,
+    "idConcepto": 3,
+    "descripcion": "FONDO V FAM INFR. EDUCACIÓN MEDIA SUPERIOR",
+    "status":1
+  },
+  {
+    "id": 26,
+    "idConcepto": 3,
+    "descripcion": "FONDO V FAM INFR. EDUCACIÓN SUPERIOR",
+    "status":1
+  },
+  {
+    "id": 27,
+    "idConcepto": 3,
+    "descripcion": "FONDO VI FAETA",
+    "status":1
+  },
+  {
+    "id": 28,
+    "idConcepto": 3,
+    "descripcion": "FONDO VI EDUC. TECNOLÓGICA",
+    "status":1
+  },
+  {
+    "id": 29,
+    "idConcepto": 3,
+    "descripcion": "FONDO VI EDUC. DE LOS ADULTOS",
+    "status":1
+  },
+  {
+    "id": 30,
+    "idConcepto": 3,
+    "descripcion": "FONDO VII FASP ",
+    "status":1
+  },
+  {
+    "id": 31,
+    "idConcepto": 3,
+    "descripcion": "FONDO VIII FAFEF",
+    "status":1
+  },
+  {
+    "id": 32,
+    "idConcepto": 3,
+    "descripcion": "FAISMUN",
+    "status":1
+  }
+]

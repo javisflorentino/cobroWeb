@@ -12,6 +12,8 @@ import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pa
 import { MessagesHaciendaComponent } from '../components/hacienda/messages-hacienda/messages-hacienda.component';
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
 import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
+import { CincoMillarComponent } from './pages/cinco-millar/cinco-millar.component';
+import { YearPickerComponent } from './components/year-picker/year-picker.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedu
     ReintegrosPagesComponent,
     MessagesHaciendaComponent,
     EnajenacionBienesPagesComponent,
-    ImpuestoCedularEnajenacionBienesComponent
+    ImpuestoCedularEnajenacionBienesComponent,
+    CincoMillarComponent,
+    YearPickerComponent
   ],
   imports: [
     CommonModule,

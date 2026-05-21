@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "descripcion": "5 AL MILLAR ESTATAL",
+    "status":1
+  },
+  {
+    "id": 2,
+    "descripcion": "5 AL MILLAR FEDERAL",
+    "status":1
+  },
+  {
+    "id": 3,
+    "descripcion": "RAMO 33",
+    "status":1
+  }
+]

@@ -238,6 +238,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           case 19:
             this.consultConceptGafeteServicio();
             break;
+          case 20:
+            this.consultConceptoPagoCincoMillar(this.idConcepto);
+            break;
           default:
             if (!this.tipoform) {
               this.consultConceptoPago(idConcepto, 1, this.tipoform);
@@ -440,6 +443,45 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.total += Number(resp!.data.total);
           datos.concepto = resp?.data.conceptos[0].descripcion;
           sessionStorage.setItem('datos_cobro', JSON.stringify(datos));
+        },
+        error: (err) => {
+          this.isLoading = false;
+          Swal.fire({ title: "Error !!", text: err.message, icon: "error", allowOutsideClick: false })
+            .then((response) => {
+              this.router.navigate(['pagos/dependencias']);
+            });
+        }
+      })
+  }
+
+  consultConceptoPagoCincoMillar(idConcepto: number) {
+    const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+
+    this.generalesService.getDetalleCobroCincoMillar(datos.monto_retenido, 4788)
+      .subscribe({
+        next: (resp) => {
+          this.isLoading = false;
+          this.conceptos = resp!.data.conceptos;
+
+          this.conceptos[0].importeUnitario = Number(datos.monto_retenido);
+          this.conceptos[0].importe = Number(datos.monto_retenido);
+
+          if (resp?.data?.lineaDetalle) {
+            // 1. Convertimos la cadena en un array usando el separador
+            const partes = resp.data.lineaDetalle.split('¬');
+
+            // 2. Modificamos directamente las posiciones (índices) que te interesan
+            // No importa si están vacías o si el valor se repite en otro lado
+            if (partes.length > 5) partes[5] = String(datos.monto_retenido);
+            if (partes.length > 8) partes[8] = String(datos.monto_retenido);
+
+            // 3. Volvemos a armar la cadena original con los nuevos valores
+            resp.data.lineaDetalle = partes.join('¬');
+          }
+
+          this.total += Number(datos.monto_retenido);
+
+          sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));
         },
         error: (err) => {
           this.isLoading = false;

@@ -173,6 +173,23 @@ export class GeneralesService {
       );
   }
 
+  getDetalleCobroCincoMillar(importe: number, idConcepto: number): Observable<CalculoConcepto | null> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    //console.log([{"id": "sh-form-16","idConcepto": idConcepto,"data": [{"id": "sh-input-monto","value": importe},{"id": "sh-input-periodo","value": periodo},{"id": "sh-input-ejercicioFiscal","value": fecha}]}])
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`, JSON.stringify([{ "id": "sh-form-0", "idConcepto": idConcepto, "data": [{ "id": "sh-input-monto", "value": importe }] }]), { headers })
+      .pipe(
+        map(resp => {
+          if (resp.success) {
+            return resp;
+          }
+          throw { message: resp.mensaje, error: "Unauthorized", statusCode: 401 };
+        }),
+        catchError(error => { throw error; })
+      );
+  }
+
   async getRezagosActualizaciones(idConcepto: number, monto: number, fecha: string): Promise<any> {
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",

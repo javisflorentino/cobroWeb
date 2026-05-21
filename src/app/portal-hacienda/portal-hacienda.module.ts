@@ -21,7 +21,6 @@ import { MenuImageSharedPipe } from './pipes/menu-image-shared.pipe';
 import { PasarelaEvoPayComponent } from './components/pasarela-evo-pay/pasarela-evo-pay.component';
 import { ThreeDSecureModalComponent } from './components/three-dsecure-modal/three-dsecure-modal.component';
 
-
 @NgModule({
   declarations: [
     LayoutPortalPagosComponent,

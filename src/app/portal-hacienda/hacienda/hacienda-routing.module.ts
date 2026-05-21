@@ -5,6 +5,7 @@ import { IsanPagesComponent } from './pages/isan-pages/isan-pages.component';
 import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pages.component';
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
 import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
+import { CincoMillarComponent } from './pages/cinco-millar/cinco-millar.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'hacienda-impuesto-cedular/:idConcept/:tipoForm',
     component: ImpuestoCedularEnajenacionBienesComponent
+  },
+  {
+    path: 'hacienda-cinco-millar/:idConcept/:tipoForm',
+    component: CincoMillarComponent
   }
 
 ];
