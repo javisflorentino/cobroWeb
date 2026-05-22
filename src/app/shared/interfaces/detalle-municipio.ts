@@ -4,4 +4,5 @@ export interface DetalleMunicipio {
     direccion: string;
     correo: string;
     telefono: string;
+    notas: string;
 }
