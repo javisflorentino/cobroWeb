@@ -1,6 +1,7 @@
 .layout-container{
   background-position: center;
   background-size: cover;
+  /*Carlo A 27/05/2026 - Comentar esta línea para para que el elemento tomo el nuevo color definido en themes*/
   background-color: #cacabf;
 }
 

@@ -16,7 +16,7 @@
     <ul class="list-none p-0 m-0 overflow-hidden sidenav-matnav-list">
       <div>
         <li *ngFor="let item of itemsConceptos"
-          class="cursor-pointer p-1 hover:surface-700 transition-duration-150 transition-colors sidenav-matnav-ul-li"
+          class="cursor-pointer p-1 transition-duration-150 transition-colors sidenav-matnav-ul-li"
           routerLinkActive="active"
           (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora,item.tipoMovimiento)"
           >

@@ -7,14 +7,15 @@
               class="menu-button shadow-4 m-1 hover:shadow-4"
               [matTooltip]="button.label"
               matTooltipPosition="below"
+              color="primary"
               (click)="openDialog(button, 0)"
               >
         <mat-icon class="custom-icon" >{{button.icon}}</mat-icon>
       </button>
     </div>
   </div>
-  
-  
+
+
   <!--<div class="col-4 sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">-->
   <div class="col-4 cursor-pointer sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">
     <mat-card class="shadow-4 m-1 hover:shadow-8 " style="background-color: transparent; border-radius: 25px !important;">

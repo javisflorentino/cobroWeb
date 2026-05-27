@@ -126,13 +126,85 @@ $crimson-palette: (
   )
 );
 
+$md-mcgpalette-sand: (
+  50 : #f5f4f2,  // Tu valor 97 (Muy claro, ideal para fondos)
+  100 : #ebeade, // Tu valor 95
+  200 : #e4e3d6, // Tu valor 90
+  300 : #cbcabe, // Tu valor 80
+  400 : #b2b1a5, // Nivel intermedio autogenerado para suavizar la escala
+  500 : #acaca0, // Tu valor 70 (Color base intermedio)
+  600 : #929186, // Tu valor 60
+  700 : #78786d, // Tu valor 50 (Tono oscuro para textos o bordes fuertes)
+  800 : #5f5f56, // Escala oscura proyectada
+  900 : #474740, // Escala más oscura proyectada
+  A100 : #ffffff,
+  A200 : #fbfbfa,
+  A400 : #e2e1d5,
+  A700 : #c9c7b5,
+  contrast: (
+    50 : rgba(black, 0.87),
+    100 : rgba(black, 0.87),
+    200 : rgba(black, 0.87),
+    300 : rgba(black, 0.87),
+    400 : rgba(black, 0.87),
+    500 : rgba(black, 0.87), // En el 70 (#acaca0) el texto negro se lee perfecto
+    600 : #ffffff,           // A partir de aquí el fondo es lo suficientemente oscuro para letras blancas
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : rgba(black, 0.87),
+    A200 : rgba(black, 0.87),
+    A400 : rgba(black, 0.87),
+    A700 : rgba(black, 0.87),
+  )
+);
+
+$md-mcgpalette-verdetierra: (
+  50 : #f5fae8,  // Proyección del Matiz 97 para fondos ultra claros
+  100 : #edf4d1, // Tu valor 95
+  200 : #dfe6c3, // Tu valor 90
+  300 : #c3caa8, // Tu valor 80
+  400 : #a7af8e, // Tu valor 70 (Color base medio-claro)
+  500 : #8d9475, // Tu valor 60 (Color base intermedio)
+  600 : #71785b, // Tu valor 50
+  700 : #5a6146, // Tu valor 40 (Color oscuro institucional)
+  800 : #424931, // Proyección oscura para textos fuertes
+  900 : #2b311d, // Proyección máxima oscura
+  A100 : #f6ffdb,
+  A200 : #e5ffa3,
+  A400 : #c9f654,
+  A700 : #b7e335,
+  contrast: (
+    50 : rgba(black, 0.87),
+    100 : rgba(black, 0.87),
+    200 : rgba(black, 0.87),
+    300 : rgba(black, 0.87),
+    400 : rgba(black, 0.87), // Letras oscuras sobre el matiz 70
+    500 : #ffffff,           // El matiz 60 (#8d9475) ya es ideal para letras blancas
+    600 : #ffffff,           // Letras blancas fijas
+    700 : #ffffff,           // Letras blancas fijas
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : rgba(black, 0.87),
+    A200 : rgba(black, 0.87),
+    A400 : rgba(black, 0.87),
+    A700 : rgba(black, 0.87),
+  )
+);
+
 
 $personal-primary: mat.define-palette($md-mcgpalettegreen, 700, 300, 900);
 $personal-accent: mat.define-palette($md-mcgpalettegreen, 300, 100, 500);
 $personal-warn: mat.define-palette($crimson-palette, 700);
+// Definición de la paleta basada en tus nuevos colores
+$personal-sand: mat.define-palette($md-mcgpalette-sand, 600, 200, 800);
+$personal-verdetierra: mat.define-palette($md-mcgpalette-verdetierra, 600, 200, 800);
+
 $personal-theme: mat.define-light-theme((
   color: (
     primary: $personal-primary,
+    // Carlos A. 27/05/2026 la siguiente linea se aplica para la nueva paleta de colores. Comentar la de arriba y descomentar esta para aplicar el nuevo color institucional "Verde Tierra"
+    //primary: $personal-verdetierra,//$personal-sand,//$personal-primary,
     accent: $personal-accent,
     warn: $personal-warn,
   )
@@ -140,3 +212,60 @@ $personal-theme: mat.define-light-theme((
 @include mat.all-component-themes($personal-theme);
 /*html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
+
+
+
+
+/* PERSONALIZACIÓN DEL MENÚ LATERAL CON LA RAMPA "VERDE TIERRA" */
+/* Carlos A. 27/05/2026 Toda esta seccion es para aplicar la nueva paleta de colores"*/
+
+// 1. Contenedor lateral (Fondo Verde Tierra muy tenue)
+/*.matsidenav {
+  background-color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 50) !important; // #edf4d1
+
+  mat-card {
+    background-color: #ffffff;
+    border-left: 4px solid mat.get-color-from-palette($md-mcgpalette-verdetierra, 600); // #71785b
+  }
+}
+
+// 2. La barra superior del menú (Verde Seco Institucional con texto e iconos en Blanco)
+.my-toolbar-sidenav {
+  background-color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 600) !important; // #5a6146
+  color: #ffffff !important;
+
+  span, button, mat-icon {
+    color: #ffffff !important;
+  }
+}
+
+.containerToolbar {
+  background-color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 50) !important; // #5a6146
+
+}
+
+// 3. Opciones de la lista (Texto oscuro, hover y activo en la misma gama)
+.sidenav-matnav-ul-li {
+  color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 900) !important; // #2b311d
+  border-bottom: 1px solid mat.get-color-from-palette($md-mcgpalette-verdetierra, 200); // #dfe6c3
+
+  mat-icon {
+    color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 600) !important;
+  }
+
+  // Hover sutil (Matiz 80)
+  &:hover {
+    background-color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 300) !important; // #c3caa8
+    color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 900) !important;
+  }
+
+  // Elemento seleccionado (Matiz 70)
+  &.active {
+    background-color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 400) !important; // #a7af8e
+    color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 900) !important;
+
+    mat-icon {
+      color: mat.get-color-from-palette($md-mcgpalette-verdetierra, 900) !important;
+    }
+  }
+}*/

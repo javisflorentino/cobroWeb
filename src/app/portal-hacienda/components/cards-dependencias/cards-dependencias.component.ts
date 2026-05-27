@@ -49,12 +49,14 @@ import { ModalReporteCedularComponent } from 'src/app/shared/components/modal-re
     .menu-button {
       width: 60px;
       height: 60px;
+      /*Carlo A 27/05/2026 - Comentar esta línea para para que el elemento tomo el nuevo color definido en themes*/
       background-color: #C49A6D; /* Color café claro/beige como en la imagen */
       box-shadow: none;
       border-radius: 50%;
     }
 
     .menu-button:hover {
+      /*Carlo A 27/05/2026 - Comentar esta línea para para que el elemento tomo el nuevo color definido en themes*/
       background-color:rgb(206, 173, 144); /* Un poco más oscuro al hacer hover */
       transform: translateY(-3px);
       transition: all 0.3s ease;

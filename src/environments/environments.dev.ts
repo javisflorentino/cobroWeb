@@ -4,9 +4,9 @@ export const environments = {
 
   baseUrlSiigem: 'https://app.administracionyfinanzas.morelos.gob.mx/',
 
-  appEnviroment: 'serviciosHacienda',
+  appEnviroment: 'serviciosHaciendaQA',
   siigemEnviroment: 'siigemWebQA',
-  pagoLineaEnvironment: 'pagoenlinea',
+  pagoLineaEnvironment: 'pagoLineaDEV',
 
   pasarelaCaptchaValidate: 'captcha/validate',//'api/v1/captcha/validate',
   pasarelaCaptchaChallenge: 'captcha/challenge',//'api/v1/captcha/challenge',

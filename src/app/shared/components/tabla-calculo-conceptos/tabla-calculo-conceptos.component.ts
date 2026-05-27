@@ -457,7 +457,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
   consultConceptoPagoCincoMillar(idConcepto: number) {
     const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
 
-    this.generalesService.getDetalleCobroCincoMillar(datos.monto_retenido, 4788)
+    this.generalesService.getDetalleCobroCincoMillar(datos.monto_retenido, idConcepto)
       .subscribe({
         next: (resp) => {
           this.isLoading = false;

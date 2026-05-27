@@ -48,14 +48,14 @@ export class CincoMillarComponent implements OnInit, OnDestroy {
       no_obra: ['', [Validators.required]],
       desc_obra: ['', [Validators.required]],
       fuente_finan: ['', [Validators.required]],
-      monto_ejercicio: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
+      monto_ejercicio: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberPattern)]],
       ente_ejecutor: ['', [Validators.required]],
       nombre_programa: ['', [Validators.required]],
       no_oficio: ['', [Validators.required]],
       modalidad_ejecucion: ['', [Validators.required]],
       no_factura: ['', [Validators.required]],
       no_estimacion: ['', [Validators.required]],
-      monto_retenido: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberIntFloatPattern)]],
+      monto_retenido: [0, [Validators.required, Validators.min(0), Validators.pattern(this.validatorService.numberPattern)]],
       nombre_contact: ['', [Validators.required]],
       tel_contact: ['', [Validators.required, Validators.pattern(this.validatorService.expNoTelNew)]],
       email_contact: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)]],
@@ -134,7 +134,7 @@ export class CincoMillarComponent implements OnInit, OnDestroy {
         tipo_form: this.tipoForm()
       }));
 
-    this.router.navigate(['/pagos/tabla-conceptos', this.idConcepto(), this.tipoForm()]);
+    this.router.navigate(['/pagos/tabla-conceptos', this.listaConceptos.find(c => c.id === this.formCincoMillar.get('concepto')?.value)?.idConcepto , this.tipoForm()]);
     return
 
   }

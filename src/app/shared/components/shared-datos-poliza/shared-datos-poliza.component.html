@@ -24,18 +24,6 @@
       <button mat-raised-button color="primary" (click)="getPoliza()">Obtener Póliza de Pago</button>
     </div>
     <mat-tab-nav-panel #0 *ngIf="position[0] && !mostrarEmbedBanorte" class="mt-5">
-      <!--<form [formGroup]="myForm" id="formPagoEnLinea" method="post" [action]="environment" style="display:none;"
-        target="_blank" #formPL>
-        <input formControlName="numeroPoliza" id="numeroPoliza" name="numeroPoliza" type="hidden">
-        <input formControlName="lineaCaptura" id="lineaCaptura" name="lineaCaptura" type="hidden">
-        <input formControlName="monto" id="monto" name="monto" type="hidden">
-        <input formControlName="nombrePago" id="nombrePago" name="nombrePago" type="hidden">
-        <input formControlName="lineaDetallePago" id="lineaDetallePago" name="lineaDetallePago" type="hidden">
-        <input formControlName="pago2015" id="pago2015" name="pago2015" type="hidden">
-        <input formControlName="banco" id="banco" name="banco" type="hidden">
-        <input formControlName="extra" id="extra" name="extra" type="hidden">
-        <input formControlName="fecha" id="fecha" name="fecha" type="hidden">
-      </form>-->
       <div class="flex  justify-content-center">
         <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
           height="800">
@@ -117,7 +105,7 @@
       <!--<div #0 *ngIf="position[0] && !mostrarEmbedBanorte">-->
 
     <!-- Carlos A. 07/05/2026 - Inicio: TODA ESTA SECCION SE COMENTA POR PROBLEMAS CON BANCOS QUE NO TIENEN MAPEADA LA IP DE pagos.  -->
-      <mat-tab-nav-panel class="mt-5">
+      <!--<mat-tab-nav-panel class="mt-5">
         <div class="flex  justify-content-center">
           <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
             height="800">
@@ -126,11 +114,11 @@
               height="800" />
           </object>
         </div>
-      </mat-tab-nav-panel>
+      </mat-tab-nav-panel>-->
     <!-- Carlos A. 07/05/2026 - Fin Seccion -->
 
     <!-- Carlos A. 07/05/2026 - Inicio: Esta seccion se agrego para solucuionar el problema de bancos, borrar una vez resuelto -->
-      <!--<div class="mt-3 mb-3  flex  justify-content-center">
+      <div class="mt-3 mb-3  flex  justify-content-center">
         <button mat-raised-button color="warn" (click)="portalPagoLinea()" *ngIf="position[2]">pago en Línea</button>
       </div>
 
@@ -185,7 +173,7 @@
             </mat-card>
           </div>
         </div>
-      </mat-tab-nav-panel>-->
+      </mat-tab-nav-panel>
     <!-- Carlos A. 07/05/2026 - Fin Seccion -->
 
 
