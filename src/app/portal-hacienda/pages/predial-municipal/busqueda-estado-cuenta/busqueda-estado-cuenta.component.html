@@ -143,29 +143,7 @@
         <div>
           <h3 class="mb-3">⚠️ Atención: Notas Importantes</h3>
           <div class="alert-content">
-            <ul class="ps-3">
-              <li class="mb-2">
-                Únicamente se encuentran disponibles aquellos municipios con los que el Gobierno del Estado ha suscrito Convenio de Colaboración para el cobro coordinado del Impuesto Predial, y que han habilitado esta forma de pago para sus contribuyentes.
-              </li>
-              <li class="mb-2">
-                El municipio es responsable exclusivo de los datos proporcionados, incluyendo cálculos, conceptos y montos.
-              </li>
-              <li class="mb-2">
-                Si su Clave Catastral no aparece, favor de comunicarse o acudir al municipio que le corresponda.
-              </li>
-              <li class="mb-2">
-                Si requiere factura, ésta deberá solicitarse al municipio que le corresponda con el recibo de pago expedido por el sistema.
-              </li>
-              <li class="mb-2">
-                El pago lo podrá realizar por Internet usando su Tarjeta de Crédito o Débito.
-              </li>
-              <li class="mb-2">
-                Si desconoce el número de su Clave Catastral, este puede obtenerlo de su último pago de Impuesto Predial o comunicarse al municipio correspondiente.
-              </li>
-              <li class="mb-2">
-                Si usted es pensionado o jubilado y desea solicitar el descuento correspondiente, deberá acudir directamente al municipio que le corresponda.
-              </li>
-            </ul>
+            <ul class="ps-3" [innerHTML]="detalleMunicipio?.notas"></ul>
           </div>
         </div>
       </div>
