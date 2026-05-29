@@ -15,7 +15,7 @@ import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -36,6 +36,8 @@ export class PagoRefrendoServicioPublicoComponent {
   public buttBlock = false;
   /* Se usa para obtener el nombre del concepto seleccionado y mostrarlo en el HTML */
   public nameConcept: string = '';
+  /* Almacena la opción de modalidad desde los parámetros de la URL */
+  public opcion: string = '';
   /* Inicialización del formulario reactivo */
   public refrendoSerPubForm: FormGroup = this.fb.group({
     id: [''],
@@ -62,7 +64,8 @@ export class PagoRefrendoServicioPublicoComponent {
     private _snackBar: MatSnackBar,
     private validatorsService: ValidatorsService,
     private smytService: SmytService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     /*this.subscription = router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -73,6 +76,10 @@ export class PagoRefrendoServicioPublicoComponent {
 
   ngOnInit(): void {
     this.nameConcept = sessionStorage.getItem('concept')!;
+    // Capturar el parámetro 'opc' de los query params
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.opcion = params['opc'] || '';
+    });
     //this.refrendoForm.markAllAsTouched();
   }
 
@@ -99,7 +106,7 @@ export class PagoRefrendoServicioPublicoComponent {
       .subscribe({
         next: (resp) => {
           if(resp?.success && resp.data) {
-            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tipoConcesion":1, "numeroConcesion":String(fc), "tramite": 3, "obtenerContribuyente": true }));
+            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tipoConcesion":1, "numeroConcesion":String(fc), "tramite": 3, "obtenerContribuyente": true, "opcion": this.opcion, "tipo":2 }));
             this.router.navigate(['/pagos/tabla-conceptos', 881]);
             return
           }

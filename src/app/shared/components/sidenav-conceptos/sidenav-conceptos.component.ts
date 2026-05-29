@@ -231,6 +231,17 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       MODIF: 12/12/2023
     */
     sessionStorage.setItem('movimiento',String(tipoMovimiento))
+    
+    // Extraer opc de la URL si existe
+    let opcValue: string | null = null;
+    let itemCleaned: string = item || '';
+    
+    if (itemCleaned && itemCleaned.includes('?opc=')) {
+      const urlParts = itemCleaned.split('?opc=');
+      itemCleaned = urlParts[0];
+      opcValue = urlParts[1];
+    }
+    
     if (Number(gestora) > 0) {
       if (this.generalService.conceptoStorage.filter(resp => resp.idConcepto === Number(idConcepto) && resp.combinable == 1).length == 0) {
         (sessionStorage.getItem('contribuyente')) ? sessionStorage.removeItem('contribuyente') : '';
@@ -247,15 +258,15 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       }*/
     }
 
-    if (new RegExp('^(?:https?):\/\/?').test(item)) {
-      window.open(`${item}`);
+    if (new RegExp('^(?:https?):\/\/?').test(itemCleaned)) {
+      window.open(`${itemCleaned}`);
       return;
     }
 
     this.dellLocalStore();
 
     sessionStorage.setItem('gestora', String(gestora));
-    sessionStorage.setItem('route_origen', item);
+    sessionStorage.setItem('route_origen', itemCleaned);
 
     idConcepto = idConcepto.toString();
     if (idConcepto === "0" && gestora === 0) {
@@ -287,7 +298,15 @@ export class SidenavConceptosComponent implements OnInit, AfterViewInit {
       //return;
     }
 
-    this.router.navigate(['/pagos/' + item, idConcepto, conceptSelect[0].formulario]);
+    // Construir navegación con query params si existe opc
+    const navigationPath = ['/pagos/' + itemCleaned, idConcepto, conceptSelect[0].formulario];
+    const navigationOptions: any = {};
+    
+    if (opcValue) {
+      navigationOptions.queryParams = { opc: opcValue };
+    }
+    
+    this.router.navigate(navigationPath, navigationOptions);
     return;
   }
 

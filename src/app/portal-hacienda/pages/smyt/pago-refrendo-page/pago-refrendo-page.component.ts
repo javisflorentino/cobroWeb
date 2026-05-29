@@ -109,7 +109,8 @@ export class PagoRefrendoPageComponent implements OnInit, OnDestroy {
             placa,
             numeroSerie: adicional?.noSerie,
             tramite: 1,
-            obtenerContribuyente: true
+            obtenerContribuyente: true,
+            tipo:1
           }));
     
           // Guarda los datos adicionales
