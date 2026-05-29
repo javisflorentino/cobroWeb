@@ -116,25 +116,25 @@
         <mat-form-field appearance="outline" class="full-width">
           <mat-select formControlName="regimenFiscal">
             <mat-option value=''>Seleccionar régimen fiscal</mat-option>
-            <mat-option value='601-G03,S01'>General de Ley Personas Morales</mat-option>
-            <mat-option value='603-G03,S01'>Personas Morales con Fines no Lucrativos</mat-option>
+            <mat-option value='601-G03,S01,I01'>General de Ley Personas Morales</mat-option>
+            <mat-option value='603-G03,S01,I01'>Personas Morales con Fines no Lucrativos</mat-option>
             <mat-option value='605-D04,S01'>Sueldos y Salarios e Ingresos Asimilados a Salarios</mat-option>
-            <mat-option value='606-G03,D04,S01'>Arrendamiento</mat-option>
+            <mat-option value='606-G03,D04,S01,I01'>Arrendamiento</mat-option>
             <mat-option value='607-D04,S01'>Régimen de Enajenación o Adquisición de Bienes</mat-option>
             <mat-option value='608-D04,S01'>Demás ingresos</mat-option>
             <mat-option value='610-S01'>Residentes en el Extranjero sin Establecimiento Permanente en México</mat-option>
             <mat-option value='611-D04,S01'>Ingresos por Dividendos (socios y accionistas)</mat-option>
-            <mat-option value='612-G03,D04,S01'>Personas Físicas con Actividades Empresariales y Profesionales</mat-option>
+            <mat-option value='612-G03,D04,S01,I01'>Personas Físicas con Actividades Empresariales y Profesionales</mat-option>
             <mat-option value='614-D04,S01'>Ingresos por intereses</mat-option>
             <mat-option value='615-D04,S01'>Régimen de los ingresos por obtención de premios</mat-option>
             <mat-option value='616-S01'>Sin obligaciones fiscales</mat-option>
-            <mat-option value='620-G03,S01'>Sociedades Cooperativas de Producción que optan por diferir sus ingresos</mat-option>
-            <mat-option value='621-G03,S01'>Incorporación Fiscal</mat-option>
-            <mat-option value='622-G03,S01'>Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</mat-option>
-            <mat-option value='623-G03,S01'>Opcional para Grupos de Sociedades</mat-option>
-            <mat-option value='624-G03,S01'>Coordinados</mat-option>
-            <mat-option value='625-G03,D04,S01'>Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas</mat-option>
-            <mat-option value='626-G03,S01'>Régimen Simplificado de Confianza</mat-option>
+            <mat-option value='620-G03,S01,I01'>Sociedades Cooperativas de Producción que optan por diferir sus ingresos</mat-option>
+            <mat-option value='621-G03,S01,I01'>Incorporación Fiscal</mat-option>
+            <mat-option value='622-G03,S01,I01'>Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</mat-option>
+            <mat-option value='623-G03,S01,I01'>Opcional para Grupos de Sociedades</mat-option>
+            <mat-option value='624-G03,S01,I01'>Coordinados</mat-option>
+            <mat-option value='625-G03,D04,S01,I01'>Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas</mat-option>
+            <mat-option value='626-G03,S01,I01'>Régimen Simplificado de Confianza</mat-option>
           </mat-select>
           <mat-error *ngIf="cfdiForm.get('regimenFiscal')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
@@ -148,6 +148,7 @@
             <mat-option value="G03" *ngIf="includesValue('G03')">Gastos en general</mat-option>
             <mat-option value="D04" *ngIf="includesValue('D04')">Donativos</mat-option>
             <mat-option value="S01" *ngIf="includesValue('S01')">Sin efectos fiscales</mat-option>
+            <mat-option value="I01" *ngIf="includesValue('I01')">Construcciones</mat-option>
           </mat-select>
           <mat-error *ngIf="cfdiForm.get('usoCfdi')?.hasError('required')">Campo requerido</mat-error>
         </mat-form-field>
