@@ -12,7 +12,7 @@ import { ConvertXmlString } from 'src/app/shared/clases/convert-xml-string';
 import ListMessageSmyt from '../../../../../../data/arreglos/smyt_mensajes.json';
 import ListaOficinas from '../../../../../../data/arreglos/smyt_oficinas_tramite.json';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -38,15 +38,25 @@ export class PagoRefrendoServicioPublicoComponent {
   public nameConcept: string = '';
   /* Almacena la opción de modalidad desde los parámetros de la URL */
   public opcion: string = '';
+  /* Controla si se muestra el campo de serie vehicular */
+  public mostrarSerie: boolean = true;
   /* Inicialización del formulario reactivo */
   public refrendoSerPubForm: FormGroup = this.fb.group({
     id: [''],
     oficina: ['', [Validators.required]],
     placa: ['', [Validators.required, Validators.minLength(4)]],
+    confirmarPlaca: ['', [Validators.required]],
     serie: ['', [Validators.required, Validators.minLength(5)]],
-    folio_concesion: ['', [Validators.required, Validators.minLength(5)]]
+    confirmarSerie: ['', [Validators.required]],
+    folio_concesion: ['', [Validators.required, Validators.minLength(5)]],
+    confirmarFolioConcesion: ['', [Validators.required]]
   }, {
-    validators: [this.validatorsService.existsSeriesPublico('serie', 'placa', 1, 3, '1', 'folio_concesion')]
+    validators: [
+    
+      this.isFieldOneEqualFielTwo('placa', 'confirmarPlaca', 2),
+      this.isFieldOneEqualFielTwo('folio_concesion', 'confirmarFolioConcesion', 3),
+      this.isFieldOneEqualFielTwo('serie', 'confirmarSerie', 4)
+    ]
   });
   /* Deshabilitar esta funcion, solo se creo para monitorear evento de navegación */
   //public subscription: Subscription;
@@ -79,6 +89,7 @@ export class PagoRefrendoServicioPublicoComponent {
     // Capturar el parámetro 'opc' de los query params
     this.activatedRoute.queryParams.subscribe(params => {
       this.opcion = params['opc'] || '';
+      this.actualizarVisibilidadSerie();
     });
     //this.refrendoForm.markAllAsTouched();
   }
@@ -86,6 +97,30 @@ export class PagoRefrendoServicioPublicoComponent {
   ngOnDestroy(): void {
     console.log('Destruido');
     //this.subscription.unsubscribe();
+  }
+
+  /**
+   * Actualiza la visibilidad del campo de serie vehicular según el valor de opc.
+   * Si opc es null, vacío, 1 o 3 -> se muestra la serie
+   * Si opc es 2 -> se oculta la serie
+   */
+  private actualizarVisibilidadSerie(): void {
+    const opc = this.opcion;
+    // Mostrar serie si opc es null, vacío, "1" o "3"
+    // Ocultar serie si opc es "2"
+    if (opc === null || opc === '' || opc === '1' || opc === '3') {
+      this.mostrarSerie = true;
+      this.refrendoSerPubForm.get('serie')?.setValidators([Validators.required, Validators.minLength(5)]);
+      this.refrendoSerPubForm.get('confirmarSerie')?.setValidators([Validators.required]);
+    } else {
+      this.mostrarSerie = false;
+      this.refrendoSerPubForm.get('serie')?.clearValidators();
+      this.refrendoSerPubForm.get('confirmarSerie')?.clearValidators();
+      this.refrendoSerPubForm.get('serie')?.setValue('');
+      this.refrendoSerPubForm.get('confirmarSerie')?.setValue('');
+    }
+    this.refrendoSerPubForm.get('serie')?.updateValueAndValidity();
+    this.refrendoSerPubForm.get('confirmarSerie')?.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -102,11 +137,11 @@ export class PagoRefrendoServicioPublicoComponent {
     let s = this.refrendoSerPubForm.get('serie')?.value;
     let fc = this.refrendoSerPubForm.get('folio_concesion')?.value;
 
-    this.smytService.validarVehiculo({ "placa": p.toUpperCase(), "numeroSerie": String(s.toUpperCase()), "numeroConcesion": String(fc.toUpperCase()) })
+    this.smytService.validarVehiculo({ "placa": p.toUpperCase(), "numeroSerie": String(s?.toUpperCase() || ''), "numeroConcesion": String(fc.toUpperCase()) })
       .subscribe({
         next: (resp) => {
           if(resp?.success && resp.data) {
-            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s), "tipoConcesion":1, "numeroConcesion":String(fc), "tramite": 3, "obtenerContribuyente": true, "opcion": this.opcion, "tipo":2 }));
+            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s || ''), "tipoConcesion":1, "numeroConcesion":String(fc), "tramite": 3, "obtenerContribuyente": true, "opcion": this.opcion, "tipo":2 }));
             this.router.navigate(['/pagos/tabla-conceptos', 881]);
             return
           }
@@ -121,50 +156,6 @@ export class PagoRefrendoServicioPublicoComponent {
               this.buttBlock = false;
         }
       })
-
-
-    /*this.smytSevice.validateVehicleSoap(p, s)
-      .then(response => response.text())
-      .then(xml => {
-        this.asJson = this.xmlSring.xmlStringToJson(xml.toString());
-        const response = this.asJson['soap:Envelope']['soap:Body']['ns2:obtenEstatusVehiculoResponse'].estatusVehiculo.vehiculo.noSerie['#text'];
-        sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(response), "tramite": 1, "obtenerContribuyente": true }));
-        this.smytService.validateVehicle({ "tramite": 1, "placa": p, "numeroSerie": String(response), "obtenerContribuyente": false, "obtenerVehiculo":true })
-          .subscribe({
-            next: (resp) =>{
-              if (resp?.success) {
-                sessionStorage.setItem('vehicle_data_adicional', JSON.stringify({
-                  "vMarca":        resp.data.adicional?.vMarca,
-                  "vSubmarca":     resp.data.adicional?.vSubmarca,
-                  "noCilindros":   resp.data.adicional?.noCilindros,
-                  "placaAnterior": resp.data.adicional?.placaAnterior,
-                  "modelo":        resp.data.adicional?.modelo,
-                  "tipoVehiculo":  resp.data.adicional?.tipoVehiculo
-                }));
-                this.router.navigate(['/pagos/tabla-conceptos', 1]);
-                return
-              }
-              Swal.fire({icon: "error", title: "Error!!", text: resp?.data.toString(), allowOutsideClick:false});
-              this.isLoading = false;
-              this.buttBlock = false;
-            },
-            error: (err) =>{
-              Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
-              this.isLoading = false;
-              this.buttBlock = false;
-            },
-            complete: () => {}
-          });
-      })
-      .catch(err => {
-        Swal.fire({icon: "error", title: "Error!!", text: err.message, allowOutsideClick:false});
-        this.isLoading = false;
-        this.buttBlock = false;
-      });*/
-
-
-
-
   }
 
   isValidField(field: string) {
@@ -176,9 +167,12 @@ export class PagoRefrendoServicioPublicoComponent {
     let nameFileValue = this.refrendoSerPubForm.get(nameField)?.value;
     let pathSelect = this.validatorsService.alfaPath;
 
-    if (idMssg !== null) {
+    if (idMssg !== null && idMssg !== undefined) {
       const message = this.mssgArr.filter(({ id }) => id == idMssg);
-      return message[0].msg;
+      if (message.length > 0) {
+        return message[0].msg;
+      }
+      return 'Valor inválido';
     }
     if (touched) {
       let idMessage = 100;
@@ -186,8 +180,11 @@ export class PagoRefrendoServicioPublicoComponent {
       let pattern = new RegExp(pathSelect);
       if (!pattern.test(nameFileValue) || nameFileValue == null) {
         const message = this.mssgArr.filter(({ id }) => id == idMessage);
-        this.refrendoSerPubForm.get(nameField)?.setErrors({ notEqual: true, error: idMessage });
-        return message[0].msg;
+        if (message.length > 0) {
+          this.refrendoSerPubForm.get(nameField)?.setErrors({ notEqual: true, error: idMessage });
+          return message[0].msg;
+        }
+        return 'Valor inválido';
       }
 
     }
@@ -202,5 +199,24 @@ export class PagoRefrendoServicioPublicoComponent {
 
   redirectHome(): void {
     location.reload();
+  }
+
+  /**
+   * Validador personalizado para comparar dos campos del formulario
+   * Similar a isFieldOneEqualFielTwo del ValidatorsService
+   */
+  private isFieldOneEqualFielTwo(field1: string, field2: string, mssg: number) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const fielValue1 = formGroup.get(field1)?.value;
+      const fielValue2 = formGroup.get(field2)?.value;
+
+      if (String(fielValue1).toUpperCase() !== String(fielValue2).toUpperCase()) {
+        formGroup.get(field2)?.setErrors({ notEqual: true, error: mssg });
+        return { notEqual: true, error: mssg };
+      }
+      formGroup.get(field2)?.markAsTouched();
+      formGroup.get(field2)?.setErrors(null);
+      return null;
+    }
   }
 }

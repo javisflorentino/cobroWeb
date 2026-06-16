@@ -18,24 +18,48 @@
                 </mat-select>
                 <mat-error class="fontsizeerror" *ngIf="isValidField('oficina')"> Campo requerido </mat-error>
               </mat-form-field>
+            </div>
 
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline" hintLabel="">
                 <mat-label>Folio Concesión </mat-label>
                 <input matInput formControlName="folio_concesion" required type="text" name="">
-                <!--<mat-error class="fontsizeerror"> {{ getMessage(refrendoSerPubForm.get('folio_concesion')?.getError('error'),'folio_concesion') }} </mat-error>-->
-
+                <mat-error class="fontsizeerror"> {{ getMessage(refrendoSerPubForm.get('folio_concesion')?.getError('error'),'folio_concesion') }} </mat-error>
               </mat-form-field>
 
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Confirmar Folio Concesión</mat-label>
+                <input matInput formControlName="confirmarFolioConcesion" required type="text">
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarFolioConcesion')?.hasError('required')">Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarFolioConcesion')?.hasError('notEqual')">Los folios de concesión no coinciden</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
               <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
                 <mat-label>No Placa</mat-label>
                 <input matInput formControlName="placa" required type="text" maxlength="8">
                 <mat-error class="fontsizeerror" *ngIf="isValidField('placa')"> Campo requerido </mat-error>
               </mat-form-field>
 
-              <mat-form-field fxFlex class="" appearance="outline" hintLabel="">
+              <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+                <mat-label>Confirmar No Placa</mat-label>
+                <input matInput formControlName="confirmarPlaca" required type="text" maxlength="8">
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarPlaca')?.hasError('required')">Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarPlaca')?.hasError('notEqual')">Las placas no coinciden</mat-error>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="mostrarSerie" fxFlex class="" appearance="outline" hintLabel="">
                 <mat-label>Serie Vehicular </mat-label>
                 <input #serie matInput formControlName="serie" required #serieV type="text" name="">
                 <mat-error class="fontsizeerror"> {{ getMessage(refrendoSerPubForm.get('serie')?.getError('error'),'serie') }} </mat-error>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="mostrarSerie" fxFlex class="" appearance="outline" hintLabel="">
+                <mat-label>Confirmar Serie Vehicular</mat-label>
+                <input matInput formControlName="confirmarSerie" required type="text">
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarSerie')?.hasError('required')">Campo requerido</mat-error>
+                <mat-error class="fontsizeerror" *ngIf="refrendoSerPubForm.get('confirmarSerie')?.hasError('notEqual')">Las series no coinciden</mat-error>
               </mat-form-field>
             </div>
           </form>
