@@ -13,6 +13,8 @@ import { ImpuestosPagesComponent } from './hacienda/pages/impuestos-pages/impues
 import { CesionDerechosComponent } from './pages/cesion-derechos/cesion-derechos/cesion-derechos.component';
 import { CardsPasarelaPagosComponent } from './components/cards-pasarela-pagos/cards-pasarela-pagos.component';
 import { PasarelaEvoPayComponent } from './components/pasarela-evo-pay/pasarela-evo-pay.component';
+import { PasarelaBanbajioPaymentComponent } from './components/pasarela-banbajio-payment/pasarela-banbajio-payment.component';
+import { PasarelaSantanderPaymentComponent } from './components/pasarela-santander-payment/pasarela-santander-payment.component';
 
 const routes: Routes = [
   {
@@ -88,6 +90,14 @@ const routes: Routes = [
       {
         path: 'pasarela-evo-payment',
         component: PasarelaEvoPayComponent
+      },
+      {
+        path: 'pasarela-banbajio-payment',
+        component: PasarelaBanbajioPaymentComponent
+      },
+      {
+        path: 'pasarela-santander-payment',
+        component: PasarelaSantanderPaymentComponent
       },
       {
         path: '**',

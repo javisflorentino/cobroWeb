@@ -16,5 +16,17 @@
     "name": "BBVA Payment",
     "id": 3,
     "iconURL": "bbva_p"
+  },
+  {
+    "componentLink": "pagos/pasarela-banbajio-payment",
+    "name": "Banbajio Payment",
+    "id": 4,
+    "iconURL": "banbajio_p"
+  },
+  {
+    "componentLink": "pagos/pasarela-santander-payment",
+    "name": "Santander Payment",
+    "id": 5,
+    "iconURL": "santander_p"
   }
 ]

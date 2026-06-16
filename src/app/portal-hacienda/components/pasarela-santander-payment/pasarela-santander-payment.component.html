@@ -1,0 +1,22 @@
+<shared-load-spinner *ngIf="isLoading()"></shared-load-spinner>
+
+<mat-card class="" style="background-color: transparent; border-radius: 25px !important;">
+  <mat-card-header>
+    <mat-card-title class="text-center text-2xl font-bold"></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="flex  justify-content-center">
+      <object [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}"
+        height="800" *ngIf="!hayError">
+        <embed [src]="urlPasarelaSafe"
+          [ngStyle]="{'width': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '350px' : '1100px'}" height="800" />
+      </object>
+
+      <div *ngIf="hayError">
+        <app-error404-page />
+      </div>
+
+
+    </div>
+  </mat-card-content>
+</mat-card>

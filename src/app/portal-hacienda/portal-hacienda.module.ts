@@ -20,6 +20,8 @@ import { CardsPasarelaPagosComponent } from './components/cards-pasarela-pagos/c
 import { MenuImageSharedPipe } from './pipes/menu-image-shared.pipe';
 import { PasarelaEvoPayComponent } from './components/pasarela-evo-pay/pasarela-evo-pay.component';
 import { ThreeDSecureModalComponent } from './components/three-dsecure-modal/three-dsecure-modal.component';
+import { PasarelaBanbajioPaymentComponent } from './components/pasarela-banbajio-payment/pasarela-banbajio-payment.component';
+import { PasarelaSantanderPaymentComponent } from './components/pasarela-santander-payment/pasarela-santander-payment.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { ThreeDSecureModalComponent } from './components/three-dsecure-modal/thr
     CardsPasarelaPagosComponent,
     MenuImageSharedPipe,
     PasarelaEvoPayComponent,
-    ThreeDSecureModalComponent
+    ThreeDSecureModalComponent,
+    PasarelaBanbajioPaymentComponent,
+    PasarelaSantanderPaymentComponent
     //DataVehicleComponent
   ],
   imports: [

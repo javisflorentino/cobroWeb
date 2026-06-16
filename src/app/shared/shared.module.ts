@@ -70,7 +70,8 @@ import { ModalReporteCedularComponent } from './components/modal-reporte-cedular
     LoadSpinnerComponent,
     SegmentTextPipe,
     SnackBarComponent,
-    SanitizeUrlPipe
+    SanitizeUrlPipe,
+    Error404PageComponent,
   ]
 })
 export class SharedModule { }

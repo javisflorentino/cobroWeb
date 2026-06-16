@@ -11,4 +11,5 @@ export interface Poliza {
   numeroPoliza:     string;
   lineaCaptura:     string;
   total:            number;
+  token?:             string;
 }
