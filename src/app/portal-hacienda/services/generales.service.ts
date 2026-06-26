@@ -190,6 +190,22 @@ export class GeneralesService {
       );
   }
 
+  getDetalleCobroEspectaculos(datosFormulario: any): Observable<CalculoConcepto | null> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + btoa(`${environments.user_server}:${environments.pass_server}`));
+    return this.http.post<CalculoConcepto>(`${this.baseUrlApp}/concepto/validarFormulario`, JSON.stringify(datosFormulario), { headers })
+      .pipe(
+        map(resp => {
+          if (resp.success) {
+            return resp;
+          }
+          throw { message: resp.mensaje, error: "Unauthorized", statusCode: 401 };
+        }),
+        catchError(error => { throw error; })
+      );
+  }
+
   async getRezagosActualizaciones(idConcepto: number, monto: number, fecha: string): Promise<any> {
     return await fetch(`${this.urlSOAP}conceptos/services/isan`, {
       method: "POST",

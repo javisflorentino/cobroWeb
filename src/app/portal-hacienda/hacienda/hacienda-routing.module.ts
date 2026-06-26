@@ -6,6 +6,7 @@ import { ReintegrosPagesComponent } from './pages/reintegros-pages/reintegros-pa
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
 import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
 import { CincoMillarComponent } from './pages/cinco-millar/cinco-millar.component';
+import { HaciendaDiversionesEspectaculosComponent } from './pages/hacienda-diversiones-espectaculos/hacienda-diversiones-espectaculos.component';
 
 
 const routes: Routes = [
@@ -33,7 +34,12 @@ const routes: Routes = [
   {
     path: 'hacienda-cinco-millar/:idConcept/:tipoForm',
     component: CincoMillarComponent
+  },
+  {
+    path: 'hacienda-impuestos-espetaculos/:idconcept/:tipoform',
+    component: HaciendaDiversionesEspectaculosComponent
   }
+  
 
 ];
 
