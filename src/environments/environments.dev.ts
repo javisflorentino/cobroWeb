@@ -5,13 +5,13 @@ export const environments = {
   baseUrlSiigem: 'https://app.administracionyfinanzas.morelos.gob.mx/',
 
   appEnviroment: 'serviciosHacienda',
-  siigemEnviroment: 'siigemWebQA',
+  siigemEnviroment: 'siigemWeb',
   pagoLineaEnvironment: 'pagoenlinea',
 
   pasarelaCaptchaValidate: 'captcha/validate',//'api/v1/captcha/validate',
   pasarelaCaptchaChallenge: 'captcha/challenge',//'api/v1/captcha/challenge',
   //URL_PASARELA_CAPTCHA: 'http://192.168.114.89:8080/pagoenlinea/',//'http://192.168.114.89:8080/',
-  URL_PASARELA_CAPTCHA: 'https://app.administracionyfinanzas.morelos.gob.mx/pagoenlinea/',//'http://192.168.114.89:8080/',
+  URL_PASARELA_CAPTCHA: 'http://192.168.114.89:8080/pagoenlinea/',//'http://192.168.114.89:8080/',
 
 
   user_server: 'WS_SH1',
