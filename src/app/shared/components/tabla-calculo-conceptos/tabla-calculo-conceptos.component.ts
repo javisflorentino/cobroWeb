@@ -114,7 +114,7 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
 
   ngOnDestroy() {
     //sessionStorage.removeItem('route_origen');
-    console.log('Destroy TABLA-CALCULO');
+    //console.log('Destroy TABLA-CALCULO');
     this.destroyed.next();
     this.destroyed.complete();
     this.activatedRoute.params.subscribe().unsubscribe();
@@ -240,6 +240,9 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
             break;
           case 20:
             this.consultConceptoPagoCincoMillar(this.idConcepto);
+            break;
+          case 21:
+            this.getdetalleImpuestoEspectaculos();
             break;
           default:
             if (!this.tipoform) {
@@ -482,6 +485,35 @@ export class TablaCalculoConceptosComponent implements OnInit, OnDestroy, AfterC
           this.total += Number(datos.monto_retenido);
 
           sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));
+        },
+        error: (err) => {
+          this.isLoading = false;
+          Swal.fire({ title: "Error !!", text: err.message, icon: "error", allowOutsideClick: false })
+            .then((response) => {
+              this.router.navigate(['pagos/dependencias']);
+            });
+        }
+      })
+  }
+
+  getdetalleImpuestoEspectaculos() {
+    const datos = JSON.parse(sessionStorage.getItem('datos_cobro')!);
+    this.generalesService.getDetalleCobroEspectaculos(datos)
+      .subscribe({
+        next: (resp) => {
+          this.isLoading = false;
+          this.conceptos = resp!.data.conceptos;
+          sessionStorage.setItem('contribuyente', JSON.stringify({ data: { total: Number(resp!.data.total), conceptos: this.conceptos, lineaDetalle: String(resp!.data.lineaDetalle), observaciones: String(resp?.data.observaciones) }, success: true }));
+          this.total += Number(resp!.data.total);
+
+          // Guardar datos_cobro como objeto plano con tipo_form y observaciones
+          // para que datos-contribuyente pueda leerlos correctamente
+          const datosCobroObj = {
+            tipo_form: 21,
+            observaciones: resp?.data.observaciones || '',
+            concepto: resp?.data.conceptos[0]?.descripcion || ''
+          };
+          sessionStorage.setItem('datos_cobro', JSON.stringify(datosCobroObj));
         },
         error: (err) => {
           this.isLoading = false;

@@ -13,6 +13,7 @@ import { MessagesHaciendaComponent } from '../components/hacienda/messages-hacie
 import { EnajenacionBienesPagesComponent } from './pages/enajenacion-bienes-pages/enajenacion-bienes-pages.component';
 import { ImpuestoCedularEnajenacionBienesComponent } from './pages/impuesto-cedular-enajenacion-bienes/impuesto-cedular-enajenacion-bienes.component';
 import { CincoMillarComponent } from './pages/cinco-millar/cinco-millar.component';
+import { HaciendaDiversionesEspectaculosComponent } from './pages/hacienda-diversiones-espectaculos/hacienda-diversiones-espectaculos.component';
 import { YearPickerComponent } from './components/year-picker/year-picker.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { YearPickerComponent } from './components/year-picker/year-picker.compon
     EnajenacionBienesPagesComponent,
     ImpuestoCedularEnajenacionBienesComponent,
     CincoMillarComponent,
+    HaciendaDiversionesEspectaculosComponent,
     YearPickerComponent
   ],
   imports: [

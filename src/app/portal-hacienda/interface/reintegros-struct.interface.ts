@@ -72,4 +72,5 @@ export interface ReintegrosStruct {
   no_estimacion: string;
   no_obra: string;
   nombre_contact: string;
+  observaciones?: string;
 }

@@ -1,0 +1,58 @@
+<shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
+<div class="card">
+  <div class="flex justify-content-center flex-wrap" >
+    <mat-card class="shadow-8">
+      <mat-card-header class="mb-3">
+        <mat-card-title>Cálculo de Costos</mat-card-title>
+        <mat-card-subtitle>{{conceptTitle | titlecase }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider class="mt-2 mb-2"></mat-divider>
+      <mat-card-content class="mt-5">
+        <form fxLayout="column" [formGroup]="myFormDiversionesEspectaculos">
+          <mat-form-field fxFlex style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Fecha del evento</mat-label>
+            <input matInput [matDatepicker]="dpff" formControlName="fecha_evento" [readonly]="true" >
+            <mat-error class="fontsizeerror">No puede ser mayor a la fecha actual</mat-error>
+            <mat-datepicker-toggle matIconSuffix [for]="dpff"></mat-datepicker-toggle>
+            <mat-datepicker #dpff disabled="false"></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Número de boletos</mat-label>
+            <input matInput formControlName="numero_boletos" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+            <mat-error class="fontsizeerror">{{ getMessage(myFormDiversionesEspectaculos.get('numero_boletos')?.errors,'numero_boletos') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Impuesto</mat-label>
+            <input matInput formControlName="impuesto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1">
+            <mat-error class="fontsizeerror">{{ getMessage(myFormDiversionesEspectaculos.get('impuesto')?.errors,'impuesto') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Actualización</mat-label>
+            <input matInput formControlName="actualizacion" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0">
+            <mat-error class="fontsizeerror">{{ getMessage(myFormDiversionesEspectaculos.get('actualizacion')?.errors,'actualizacion') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex class="" style="margin-right:0.5em;" appearance="outline">
+            <mat-label>Recargos</mat-label>
+            <input matInput formControlName="recargos" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0">
+            <mat-error class="fontsizeerror">{{ getMessage(myFormDiversionesEspectaculos.get('recargos')?.errors,'recargos') }}</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button mat-raised color="warn" [routerLink]="['/pagos/dependencias']">
+          <mat-icon>cancel</mat-icon>
+            Cancelar
+        </button>
+        <span class=""></span>
+        <button [disabled]="myFormDiversionesEspectaculos.invalid" mat-stroked-button mat-raised color="primary" (click)="validarFormulario()">
+          <mat-icon>calculate</mat-icon>
+            Calcular
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</div>
