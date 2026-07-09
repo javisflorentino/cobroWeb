@@ -137,15 +137,43 @@ export class PagoRefrendoServicioPublicoComponent {
     let s = this.refrendoSerPubForm.get('serie')?.value;
     let fc = this.refrendoSerPubForm.get('folio_concesion')?.value;
 
-    this.smytService.validarVehiculo({ "placa": p.toUpperCase(), "numeroSerie": String(s?.toUpperCase() || ''), "numeroConcesion": String(fc.toUpperCase()) })
+    // Determinar tipoConcesion y tramite según la opción
+    const opc = this.opcion;
+    let tipoConcesion: number;
+    let tramite: number;
+
+    if (opc === null || opc === '' || opc === '1' || opc === '3') {
+      tipoConcesion = 1;
+      tramite = 3;
+    } else {
+      tipoConcesion = 2;
+      tramite = 3;
+    }
+
+    this.smytService.validarVehiculo2({
+      "placa": p.toUpperCase(),
+      "numeroSerie": String(s?.toUpperCase() || ''),
+      "numeroConcesion": String(fc.toUpperCase()),
+      "tramite": tramite,
+      "tipoConcesion": String(tipoConcesion),
+      "opcion": this.opcion
+    })
       .subscribe({
         next: (resp) => {
           if(resp?.success && resp.data) {
-            sessionStorage.setItem('vehicle_data', JSON.stringify({ "placa": p, "numeroSerie": String(s || ''), "tipoConcesion":1, "numeroConcesion":String(fc), "tramite": 3, "obtenerContribuyente": true, "opcion": this.opcion, "tipo":2 }));
+            sessionStorage.setItem('vehicle_data', JSON.stringify({
+              "placa": p,
+              "numeroSerie": String(s || ''),
+              "tipoConcesion": tipoConcesion,
+              "numeroConcesion": String(fc),
+              "tramite": tramite,
+              "opcion": this.opcion,
+              "obtenerContribuyente": true
+            }));
             this.router.navigate(['/pagos/tabla-conceptos', 881]);
             return
           }
-          Swal.fire({icon: "error", title: "Error!!", text: "El vehiculo no se encuentra registrado", allowOutsideClick:false});
+          Swal.fire({icon: "error", title: "Error!!", text: "Los datos son incorrectos", allowOutsideClick:false});
               this.isLoading = false;
               this.buttBlock = false;
 

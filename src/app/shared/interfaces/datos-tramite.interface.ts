@@ -29,4 +29,6 @@ export interface DatosTramite {
   foraneo?:             string;
 
   licencia?:       string;
+
+  opcion?:              string;
 }
