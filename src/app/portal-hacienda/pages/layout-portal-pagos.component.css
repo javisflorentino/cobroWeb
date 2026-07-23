@@ -1,46 +1,120 @@
+/* 1. Forzamos al contenedor de Angular Material a ser un Flexbox vertical */
 .layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa exactamente el alto de la pantalla */
   background-position: center;
   background-size: cover;
-  /*Carlo A 27/05/2026 - Comentar esta línea para para que el elemento tomo el nuevo color definido en themes*/
   background-color: #cacabf;
+  overflow: hidden; /* Evita scrolls globales molestos */
 }
 
-.example-footer {
-  background-color: #dbdace;
-  color: #213523;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 3; /* Asegura que el footer siempre quede al frente */
+/* 2. El header mantiene su tamaño natural */
+shared-toolbar {
+  flex-shrink: 0;
 }
 
-.centerToolbarFooter {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1; /* Detrás de los extremos */
-  color: #213523;
-}
-
-.example-footer_terminos {
-  background-color: #dbdace;
-  color: #213523;
-  position: fixed;
-  bottom: 70px; /* Se posiciona justo arriba del footer base (que mide aprox 64px) */
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 2; /* Por debajo del footer principal pero arriba del contenido */
-}
-
-/* Espaciado para el contenido principal para que el footer fijo no tape nada */
+/* 3. EL TRUCO: El contenido del main absorbe TODO el espacio sobrante */
 main {
   display: block;
-  margin-bottom: 75px; 
+  flex-grow: 1; 
+  flex-shrink: 1;
+  flex-basis: auto;
+  
+  /* Hacemos que SOLO la zona de las cards tenga scroll interno si no caben */
+  overflow-y: auto; 
+  padding: 16px;
+  
+  /* Eliminamos los márgenes gigantes de antes */
+  margin-bottom: 0 !important; 
+}
+
+/* 4. El Footer se queda abajo de forma natural sin 'fixed' y no flota sobre el contenido */
+.custom-gov-footer {
+  flex-shrink: 0; /* Impide que el footer se aplaste si hay mucho contenido arriba */
+  background-color: #2E3B2B;
+  color: #FFFFFF;
+  font-family: 'QuetzalSansRegular', sans-serif;
+  width: 100%;
+}
+
+/* Cenefa Superior */
+.footer-cenefa {
+  width: 100%;
+  height: 15px; 
+  background-image: url('/assets/Cenefa.png');
+  background-repeat: repeat-x;
+  background-position: top left;
+}
+
+/* Estructura del contenido interno del Footer */
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.gov-logo {
+  height: 55px; /* Reducido ligeramente para optimizar espacio vertical */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Reducimos un poco los márgenes verticales dentro del footer */
+.footer-logo-row {
+  margin-bottom: 1rem !important;
+}
+
+.footer-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.info-column h3 {
+  font-size: 14px; /* Un poco más compacto */
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.info-column p, 
+.info-column ul li {
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 4px;
+}
+
+.info-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-column a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.info-column a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+  .layout-container {
+    overflow-y: auto; /* Permitimos scroll general en móviles porque las columnas se apilan */
+  }
+  
+  main {
+    overflow-y: visible; 
+  }
+
+  .footer-info-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 }
