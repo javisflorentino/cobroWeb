@@ -1,41 +1,58 @@
 <!--<mat-sidenav-container style="background-image: url('./assets/banner-cuernavaca_1.jpg'); background-position: center; background-size: cover;" fullscreen>-->
 <!--<mat-sidenav-container style="background-image: url('./assets/morelos_2024_desenfoque.png'); background-repeat: no-repeat; background-position: center; background-size: 40% 60%" class="layout-container" fullscreen>-->
 <mat-sidenav-container class="layout-container" fullscreen>
-  <shared-sidenav-conceptos [reciveActionSideNav]="sendActionSidenav" [valDependenciaCard]="valCardSubjectEmitt"
-    [eraseLocalStor]="sendActEraseLocalStor" (fathAlert)="triggerAlert($event)"
-    (nameConcept)="reciveNameConcept($event)"></shared-sidenav-conceptos>
+  
+  <!-- PANEL LATERAL (MENÚ) -->
+  <shared-sidenav-conceptos 
+    [reciveActionSideNav]="sendActionSidenav" 
+    [valDependenciaCard]="valCardSubjectEmitt"
+    [eraseLocalStor]="sendActEraseLocalStor" 
+    (fathAlert)="triggerAlert($event)"
+    (nameConcept)="reciveNameConcept($event)">
+  </shared-sidenav-conceptos>
 
-  <shared-toolbar (openOrCloseSidenav)="actionOnSidenav($event)" (closeLocalStor)="redirectHome($event)"
-    [receiveNameDep]="senNameDep" [viewResolution]="sizeDisplay"
-    (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)"></shared-toolbar>
+  <!-- BARRA SUPERIOR (HEADER) -->
+  <shared-toolbar 
+    [receiveNameDep]="senNameDep" 
+    [viewResolution]="sizeDisplay"
+    (openOrCloseSidenav)="actionOnSidenav($event)" 
+    (closeLocalStor)="redirectHome($event)"
+    (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)">
+  </shared-toolbar>
 
-
-  <div class="p-2">
+  <!-- CONTENIDO DINÁMICO (VISTAS) -->
+  <main class="p-2">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
     <router-outlet></router-outlet>
-  </div>
+  </main>
 
-  <shared-toolbar-menu style="position: fixed;  width: 100%; z-index: 2;" class="example-footer_terminos shadow-8"
-    *ngIf="flagActivitie"></shared-toolbar-menu>
+  <!-- MENÚ FLOTANTE DE TÉRMINOS Y CONDICIONES -->
+  <shared-toolbar-menu 
+    *ngIf="flagActivitie"
+    class="example-footer_terminos shadow-8">
+  </shared-toolbar-menu>
 
-  <mat-toolbar class="example-footer shadow-8 border-round-sm "
-    style="background-image: url('./assets/backgroud_pleca.png'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;"
-    [class.mat-elevation-z10]="true">
+  <!-- PIE DE PÁGINA INSTITUCIONAL -->
+  <mat-toolbar 
+    class="example-footer shadow-8 border-round-sm"
+    [class.mat-elevation-z10]="true"
+    style="background-image: url('./assets/backgroud_pleca.png'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;">
+    
     <div class="centerToolbarFooter">
-      <span [ngStyle]="{'font-size': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '13px' : '20px'}"
-        style="margin: auto; white-space: initial; text-align: center; font-family: 'QuetzalSansRegular';">
+      <span 
+        [ngStyle]="{'font-size': (sizeDisplay === 'XSmall' || sizeDisplay === 'Small') ? '13px' : '20px'}"
+        style="white-space: initial; font-family: 'QuetzalSansRegular';">
 
-        <span><button mat-button [matTooltip]="!flagActivitie?'Términos y Condiciones':'Ocultar opciones'"
-            (click)="activeOrInactiveToolbarMenu(!flagActivitie)" style="justify-content: center;">
-            <mat-icon *ngIf="!flagActivitie; else other_icon">keyboard_double_arrow_up</mat-icon>
-            <ng-template #other_icon><mat-icon>keyboard_double_arrow_down</mat-icon></ng-template>
-          </button>
-        </span>
-        <br>
-        <!--<span style="font-family: 'QuetzalSansRegular';">&#169; Dirección General de Gestión de Información
-          Hacendaria</span>-->
-        <span style="font-family: 'QuetzalSansRegular';"></span>
+        <button 
+          mat-button 
+          [matTooltip]="!flagActivitie ? 'Términos y Condiciones' : 'Ocultar opciones'"
+          (click)="activeOrInactiveToolbarMenu(!flagActivitie)">
+          <mat-icon>{{ flagActivitie ? 'keyboard_double_arrow_down' : 'keyboard_double_arrow_up' }}</mat-icon>
+        </button>
+
       </span>
     </div>
+
   </mat-toolbar>
+
 </mat-sidenav-container>

@@ -19,7 +19,7 @@
   <!--<div class="col-4 sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">-->
   <div class="col-4 cursor-pointer sm:col-4 md:col-3 xl:col-2" *ngFor="let item of cardsArr">
     <mat-card class="shadow-4 m-1 hover:shadow-8 " style="background-color: transparent; border-radius: 25px !important;">
-      <img mat-card-image [src]="item | menuImage:viewResolution" [alt]="item.titulo" (click)="emitValCard(item.pk)">
+    <img mat-card-image [src]="item | menuImage:viewResolution" [alt]="item.titulo" (click)="emitValCard(item.pk)">
     </mat-card>
   </div>
 </div>

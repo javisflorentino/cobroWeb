@@ -1,6 +1,6 @@
 export const environments = {
   baseUrlApp: 'https://qa.administracionyfinanzas.morelos.gob.mx/',
-  baseUrlServ: 'https://qa.administracionyfinanzas.morelos.gob.mx/',
+  baseUrlServ: 'https://app.administracionyfinanzas.morelos.gob.mx/',
 
   baseUrlSiigem: 'https://app.administracionyfinanzas.morelos.gob.mx/',
 
