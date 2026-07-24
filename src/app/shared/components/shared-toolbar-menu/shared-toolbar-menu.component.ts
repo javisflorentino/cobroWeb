@@ -101,6 +101,12 @@ export class SharedToolbarMenuComponent implements OnDestroy {
         disableClose: false
     });
   }
+  if (button.label === 'Oficio de Habilitación') {
+  const dialogRef = this.dialog.open(ModalValidarReciboOficioComponent, {
+    width: '350px',
+    disableClose: false
+  });
+}
     this.actionOnToolbarMenu.emit(false)
   }
 

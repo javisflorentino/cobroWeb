@@ -1,274 +1,160 @@
 .my-toolbar {
-  background-color: #dbdace;
-  color: #213523;
+  background-color: #2E3B2B; 
+  color: #CBCABE;            
   height: 85px;
+  padding: 0 !important; /* Reseteamos el padding nativo de Material si lo hubiera */
 }
-.wide-trigger {
-  width: 400px;
-}
-@media (max-width: 768px) {
-  .wide-trigger {
-    width: 100%; /* Que ocupe solo el espacio disponible */
-    max-width: 200px; /* O el máximo que quieras para que no se vea enorme */
 
-  }
-}
-::ng-deep .my-menu {
-  max-width: 500px !important
-}
+/* Contenedor principal con márgenes internos para separar de los bordes laterales */
 .containerToolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   height: 100%;
-}
-
-.leftToolbar {
-  display: flex;
-  align-items: center;
-  flex: 1; /* 1 parte */
-}
-
-.centerToolbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 2; /* más espacio en el centro */
-  text-align: center;
-}
-
-.rightToolbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1; /* 1 parte */
-}
-
-/* Móviles */
-@media (max-width: 768px) {
-  .rightToolbar {
-    display: none;
-  }
-
-  .leftToolbar {
-    width: auto;
-    left: 0;
-    padding-left: 10px;
-  }
-
-  .centerToolbar {
-    width: 100%;
-    left: 0;
-    justify-content: center;
-  }
-}
-
-
-/*.containerRight {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}*/
-
-.rightOne {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-.rightToolbarSecond {
-  position: absolute;
-  width: 132%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  z-index: 2; /* Para que estén por encima del div central */
-  margin-left: 60px;
-
-}
-.rightOneSecond {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  color: red;
-}
-.rightTwoSecond {
-  position: absolute;
-  width: 10%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
-.rightTwo {
-  position: absolute;
-  width: 10%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-.leftToolbar {
-  left: 0;
-}
-
-.rightToolbar {
-  right: 0;
-}
-
-
-
-
-
-/*Carlos A. 27/05/2026 - CSS para la nueva imagen*/
-/*.my-toolbar {
-  color: #213523;
-  height: 85px;
-
-  width: 100% !important;
+  padding: 0 24px; /* Añade 24px de espacio libre a la izquierda y derecha */
   box-sizing: border-box;
-  padding: 0 16px;
 }
 
-.wide-trigger {
-  width: 400px;
-}
-
-@media (max-width: 768px) {
-  .wide-trigger {
-    width: 100%; // Que ocupe solo el espacio disponible
-    max-width: 200px; // O el máximo que quieras para que no se vea enorme
-
-  }
-}
-
-::ng-deep .my-menu {
-  max-width: 500px !important
-}
-
-.containerToolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-}
-
+/* Alineaciones internas limpias */
 .leftToolbar {
   display: flex;
   align-items: center;
-  flex: 1; // 1 parte
+  justify-content: flex-start;
+  flex: 1;
 }
 
 .centerToolbar {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 2;
-  // más espacio en el centro
   text-align: center;
-
-  width: 100%;
 }
 
 .rightToolbar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: 1; // 1 parte
+  flex: 1;
 }
 
-// Móviles
+/* Estilo optimizado del campo de búsqueda (Limpio y centrado) */
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: rgba(203, 202, 190, 0.08);
+  border: 1px solid rgba(203, 202, 190, 0.2);
+  border-radius: 24px; /* Bordes redondeados modernos estilo píldora */
+  padding: 4px 8px 4px 16px;
+  width: 350px;
+  transition: all 0.3s ease;
+}
+
+.search-wrapper:focus-within {
+  border-color: #7C4A36; /* Foco terracota */
+  background-color: rgba(203, 202, 190, 0.12);
+  box-shadow: 0 0 0 2px rgba(124, 74, 54, 0.2);
+}
+
+.clean-search-input {
+  background: transparent;
+  border: none;
+  color: #CBCABE;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+.clean-search-input::placeholder {
+  color: rgba(203, 202, 190, 0.5);
+}
+
+/* Ajuste específico para albergar los bullets del buscador */
+::ng-deep .my-menu {
+  max-width: 450px !important;
+  background-color: #2E3B2B !important;
+  border: 1px solid rgba(203, 202, 190, 0.15);
+  border-radius: 12px !important;
+  padding: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.menu-pills-container {
+  padding: 2px;
+}
+
+.pills-flexbox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Cápsula de Trámite */
+.concept-pill {
+  background-color: rgba(203, 202, 190, 0.05) !important;
+  color: #CBCABE !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+  text-align: left !important;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+.concept-pill:hover {
+  background-color: #7C4A36 !important; /* Fondo Terracota */
+  color: #ffffff !important;
+  transform: translateX(3px);
+}
+
+/* Iconos de flecha (Gris por defecto, Blanco al hacer Hover) */
+.pill-arrow {
+  color: rgba(203, 202, 190, 0.6);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  transition: color 0.2s ease;
+}
+
+.concept-pill:hover .pill-arrow {
+  color: #ffffff;
+}
+
+.no-results-msg {
+  background-color: rgba(119, 51, 87, 0.12);
+  color: #CBCABE;
+  border-left: 4px solid #773357;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Adaptación responsiva para móviles */
+@media (max-width: 992px) {
+  .search-wrapper {
+    width: 100%;
+    max-width: 220px;
+  }
+}
+
 @media (max-width: 768px) {
   .rightToolbar {
     display: none;
   }
-
   .leftToolbar {
-    width: auto;
-    left: 0;
-    padding-left: 10px;
+    flex: 0 0 auto;
+  }
+  .centerToolbar {
+    flex: 1;
+  }
+  .search-wrapper {
+    max-width: 160px;
   }
 }
-
-
-.rightOne {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-.rightToolbarSecond {
-  position: absolute;
-  width: 132%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  z-index: 2; // Para que estén por encima del div central
-  margin-left: 60px;
-
-}
-
-.rightOneSecond {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  color: red;
-}
-
-.rightTwoSecond {
-  position: absolute;
-  width: 10%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
-
-.rightTwo {
-  position: absolute;
-  width: 10%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-.leftToolbar {
-  left: 0;
-}
-
-.rightToolbar {
-  right: 0;
-}*/

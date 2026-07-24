@@ -1,46 +1,52 @@
-<div class="fadein animation-duration-1000 align-items-center justify-content-center " style=" height: 60px;">
-  <div class="menu-container" style="position: relative; z-index: inherit; font-family: QuetzalSansRegular">
-    <div class="grid" style="width: 100%;"
-      [ngStyle]="{'font-size': (sizeDisplay == 'XSmall' || sizeDisplay=='Small') ? '10px' : '17px'}">
-      <div class="col-6">
-        <div class="text-center">
-          Terminos y Condiciones
-          <div class="grid" style="width: 100%;">
-            <div class="col-6"><a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf"
-                target="_blank">Avisos de privacidad</a></div>
-            <div class="col-6"><a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf"
-                target="_blank">Términos y Condiciones</a></div>
-          </div>
-        </div>
+<div class="menu-dropdown-wrapper fadein animation-duration-500">
+  <div class="menu-main-card" [ngClass]="{'mobile-menu': sizeDisplay == 'XSmall' || sizeDisplay == 'Small'}">
+    
+    <!-- SECCIÓN 1: CONCEPTOS Y TRÁMITES EN BOTONES TIPO PÍLDORA -->
+    <div class="concepts-section">
+      <h3 class="section-title">Servicios y Trámites Digitales</h3>
+      <div class="concepts-grid">
+        <button 
+          *ngFor="let button of menuButtons" 
+          mat-button 
+          class="concept-pill-btn" 
+          (click)="openDialog(button)">
+          <mat-icon class="pill-icon">{{ button.icon }}</mat-icon>
+          <span class="pill-label">{{ button.label }}</span>
+        </button>
       </div>
-      <div class="col-6">
-        <div class="text-center">
-          Contáctanos
-          <div class="grid" style="width: 100%;">
-            <div class="col-6">
-              <mat-icon>phone_in_talk</mat-icon><span>(777) 310 0921 ext 133</span>
-            </div>
-            <div class="col-6">
-              <mat-icon>mail</mat-icon><span>soporte.csi&#64;morelos.gob.mx</span>
-            </div>
-          </div>
+    </div>
+
+    <!-- SECCIÓN 2: INFORMACIÓN DE CONTACTO Y LEGALES -->
+    <div class="info-footer-section">
+      <div class="info-grid">
+        <!-- Columna Enlaces -->
+        <div class="info-col">
+          <h4>Legales</h4>
+          <a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf" target="_blank" class="info-link">
+            <mat-icon>gavel</mat-icon> Avisos de Privacidad
+          </a>
+          <a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf" target="_blank" class="info-link">
+            <mat-icon>description</mat-icon> Términos y Condiciones
+          </a>
+        </div>
+        
+        <!-- Columna Soporte -->
+        <div class="info-col">
+          <h4>Soporte Técnico</h4>
+          <span class="info-text">
+            <mat-icon>phone_in_talk</mat-icon> (777) 310 0921 <small class="text-chebron">ext 133</small>
+          </span>
+          <a href="mailto:soporte.csi@morelos.gob.mx" class="info-link">
+            <mat-icon>mail</mat-icon> soporte.csi@morelos.gob.mx
+          </a>
         </div>
       </div>
     </div>
 
-    <!--<div class="menu-buttons-row text-xs">
-        <div class="gbm-footer__section--trans"><div class="gbm_footer--title">Transparencia</div><div class="gbm-footer__list"><div class="gbm-footer__list--link"><a href="/aviso-de-privacidad" class="gbm-footer__list--item">Avisos de privacidad</a></div><div class="gbm-footer__list--link"><a href="https://www.plataformadetransparencia.org.mx/Inicio" class="gbm-footer__list--item">Transparencia</a></div></div></div>
-        <div class="gbm-footer__section--contact">
-          <div class="gbm_footer--title">Contáctanos en</div>
-          <div class="gbm-footer__list">
-            <div class="gbm-footer__list--link">
-              <mat-icon style="transform: scale(0.8);">phone_in_talk</mat-icon><span>(777) 329 2200</span>
-            </div>
-            <div class="gbm-footer__list--link">
-              <mat-icon>mail</mat-icon><span>soporte.csi@morelos.gob.mx</span>
-            </div>
-          </div>
-        </div>
-      </div>-->
+    <!-- SECCIÓN 3: LOGOTIPO ANCLADO HASTA ABAJO DEL SIDEBAR/MENU -->
+    <div class="menu-brand-footer">
+      <img src="./assets/morelos_2024_desenfoque.png" alt="Gobierno del Estado de Morelos" class="brand-logo-blur">
+    </div>
+
   </div>
 </div>

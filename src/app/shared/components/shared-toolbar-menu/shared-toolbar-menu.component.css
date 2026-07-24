@@ -1,40 +1,149 @@
-.menu-container {
+/* Contenedor del Dropdown */
+.menu-dropdown-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 1px;
+  box-sizing: border-box;
+  font-family: 'QuetzalSansRegular', sans-serif;
+}
+
+/* Tarjeta Principal usando tus colores base */
+.menu-main-card {
+  background-color: #2E3B2B; /* Fondo verde institucional */
+  color: #CBCABE; /* Texto claro arena */
+  width: 100%;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  border-top: 4px solid #773357; /* Línea de acento Chedron */
+}
+
+/* Títulos de sección */
+.section-title {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Grid de Conceptos Flotantes (Píldoras) sin líneas blancas divisorias */
+.concepts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+/* Botones estilo Píldora Minimalista */
+.concept-pill-btn {
+  background-color: rgba(203, 202, 190, 0.1) !important; /* Fondo sutil color arena opaco */
+  color: #CBCABE !important;
+  border: 1px solid rgba(203, 202, 190, 0.2) !important;
+  border-radius: 30px !important;
+  padding: 8px 18px !important;
+  height: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.concept-pill-btn:hover {
+  background-color: #773357 !important; /* Cambio al chedron en hover */
+  color: #FFFFFF !important;
+  border-color: #773357 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(119, 51, 87, 0.3);
+}
+
+.pill-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.pill-label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Sección de Información */
+.info-footer-section {
+  border-top: 1px solid rgba(203, 202, 190, 0.15);
+  padding-top: 20px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.info-col h4 {
+  color: #FFFFFF;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-link, .info-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #CBCABE;
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.info-link mat-icon, .info-text mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.info-link:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+.text-chebron {
+  color: #773357;
+  font-weight: bold;
+}
+
+/* Área inferior del logotipo solicitado */
+.menu-brand-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(203, 202, 190, 0.1);
   width: 100%;
 }
 
-.menu-buttons-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.menu-button {
-  width: 50px;
+.brand-logo-blur {
   height: 50px;
-  background-color: #C49A6D;
-  box-shadow: none;
-  border-radius: 50%;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15));
 }
 
-.menu-button:hover {
-  background-color:rgb(206, 173, 144); /* Un poco más oscuro al hacer hover */
-  transform: translateY(-3px);
-  transition: all 0.3s ease;
+/* Soporte y Ajustes de Responsividad */
+.mobile-menu .info-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
-/* Estilo para los iconos dentro de los botones */
-.custom-icon {
-  color: #FFFFFF;
-  font-size: 28px;
-  height: 28px;
-  width: 28px;
-}
-
-.custom-icon-img {
-  width: 28px;
-  height: 28px;
+.mobile-menu .concepts-grid {
+  justify-content: center;
 }

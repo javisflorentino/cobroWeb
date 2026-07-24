@@ -1,73 +1,50 @@
 <mat-sidenav [ngStyle]="{width: '350px'}" #sidenav mode="push" class="matsidenav">
   <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-  <mat-toolbar class="my-toolbar-sidenav" [class.mat-elevation-z5]="true">
+  
+  <mat-toolbar class="my-toolbar-sidenav" [class.mat-elevation-z3]="true">
     <button mat-icon-button *ngIf="showBack" (click)="backMenu()">
-      <mat-icon>arrow_back</mat-icon>
+      <mat-icon style="color: #CBCABE;">arrow_back</mat-icon>
     </button>
     <span class="spacer"></span>
-    <span style="font-family: QuetzalSansThin;">Menú</span>
+    <span style="font-family: QuetzalSansThin; letter-spacing: 1px;">MENÚ</span>
     <span class="spacer"></span>
     <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
+      <mat-icon style="color: #CBCABE;">menu</mat-icon>
     </button>
   </mat-toolbar>
 
   <mat-nav-list>
-    <ul class="list-none p-0 m-0 overflow-hidden sidenav-matnav-list">
-      <div>
-        <li *ngFor="let item of itemsConceptos"
-          class="cursor-pointer p-1 transition-duration-150 transition-colors sidenav-matnav-ul-li"
+    <ul class="sidenav-matnav-list">
+      
+      <!-- Listado de Conceptos en formato Bullet -->
+      <li *ngFor="let item of itemsConceptos"
+          class="cursor-pointer sidenav-matnav-ul-li"
           routerLinkActive="active"
-          (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora,item.tipoMovimiento)"
-          >
-          <div class="grid">
-            <div class="col-10">
-                <!--<div class="p-1"><span [ngClass]="{'sizelogtext':item.titulo.length>=45,'sizeshorttext':item.titulo.length<45}">{{item.titulo}}</span></div>-->
-                <div class="p-1"><span class="text-sm">{{item.titulo}}</span></div>
-            </div>
-            <div class="col-2">
-              <div class="p-1"><mat-icon *ngIf="item.gestora==0" align="start">navigate_next</mat-icon></div>
-            </div>
-          </div>
+          (click)="actionList(item.url, item.titulo, item.pk, item.idConcepto, item.pk, item.gestora, item.tipoMovimiento)">
+        
+        <div class="flex align-items-center justify-content-between" style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-sm font-medium pr-2">{{item.titulo}}</span>
+          <mat-icon *ngIf="item.gestora == 0" class="nav-icon-accent">navigate_next</mat-icon>
+        </div>
+        
+      </li>
 
-          <!--<span [ngClass]="{'sizelogtext':item.titulo.length>=45,'sizeshorttext':item.titulo.length<45}" >{{item.titulo.length}}-{{item.titulo}}</span>-->
-          <!--<span *ngIf="item.gestora==0" [ngClass]="{}" style="flex: auto;"></span>
-          <mat-icon *ngIf="item.gestora==0" align="start">navigate_next</mat-icon>-->
-        </li>
+      <!-- Alerta informativa (Gris / Terracota) -->
+      <div *ngIf="showMessage" class="mt-3 px-2">
+        <div class="alert-container-warn">
+          <i class="pi pi-info-circle mr-2"></i>
+          Seleccione alguna de las dependencias para mostrar las opciones.
+        </div>
       </div>
-      <mat-card class="" *ngIf="showMessage">
-        <mat-card-content>
-          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para
-            mostrar las opciones </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="" *ngIf="showMessage_errReq">
-        <mat-card-content>
-          <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">No se encontraron registros, comuniquese con soporte </div>
-        </mat-card-content>
-      </mat-card>
+
+      <!-- Alerta de Error (Vino) -->
+      <div *ngIf="showMessage_errReq" class="mt-3 px-2">
+        <div class="alert-container-error">
+          <i class="pi pi-exclamation-triangle mr-2"></i>
+          No se encontraron registros, comuníquese con soporte.
+        </div>
+      </div>
+
     </ul>
-
-
-
-
-    <!--mat-card class="" *ngIf="showMessage">
-      <mat-card-content>
-        <div [ngClass]="{ 'alert': 'Prueba', 'alert-danger': 'error' }">Seleccione alguna de las dependencia para
-          mostrar las opciones </div>
-      </mat-card-content>
-    </!--mat-card>
-
-    <mat-list-item-- *ngFor="let item of itemsConceptos" [lines]="item.titulo.length/35">
-      <div matListItemLine routerLinkActive="active"
-        (click)="actionList(item.url,item.titulo,item.pk, item.idConcepto, item.pk, item.gestora)">
-        <span [innerHTML]="item.titulo | segmentText:35"></span>
-      </div>
-
-      <span>
-        <mat-divider></mat-divider>
-      </span>
-    </mat-list-item-->
   </mat-nav-list>
-
 </mat-sidenav>

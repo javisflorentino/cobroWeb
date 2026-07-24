@@ -1,27 +1,64 @@
 .my-toolbar-sidenav {
-  background-color: #dbdace;
-  color: #213523;
-}
-.matsidenav{
-  z-index:101;
-  position: fixed;
-  background-color: #213523;
-}
-.sidenav-matnav-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  color:#dbdace
-}
-.sidenav-matnav-ul-li {
-  margin-top: -1px;
-  padding: 12px;
-  border-bottom:solid 1px #dbdace;
+  background-color: #2E3B2B; /* Verde oscuro seco */
+  color: #CBCABE;            /* Gris claro cálido */
 }
 
-.sizelogtext {
-  font-size: 12px;
+.matsidenav {
+  z-index: 101;
+  position: fixed;
+  background-color: #2E3B2B; /* Fondo general del panel */
 }
-.sizeshorttext {
-  font-size: 15px;
+
+/* Contenedor de la lista con padding para que los bullets no peguen al borde */
+.sidenav-matnav-list {
+  list-style-type: none;
+  padding: 16px 12px;
+  margin: 0;
+}
+
+/* Transformación de los elementos en "Bullets" o Tarjetas independientes */
+.sidenav-matnav-ul-li {
+  margin-bottom: 10px;      /* Separación vertical entre bullets */
+  padding: 14px 16px;
+  background-color: rgba(203, 202, 190, 0.08); /* Fondo gris muy sutil */
+  border-radius: 8px;       /* Forma redondeada de bullet */
+  color: #CBCABE;           /* Texto gris base */
+  transition: all 0.25s ease;
+  border: none;             /* Adiós a las líneas blancas */
+}
+
+/* Efecto Hover: Cambia suavemente al Terracota al pasar el cursor */
+.sidenav-matnav-ul-li:hover {
+  background-color: #7C4A36;
+  color: #ffffff;
+  transform: translateX(4px); /* Ligero desplazamiento dinámico */
+}
+
+/* Icono de navegación con el tono vino/plum */
+.nav-icon-accent {
+  color: #773357;
+  transition: color 0.25s ease;
+}
+
+.sidenav-matnav-ul-li:hover .nav-icon-accent {
+  color: #ffffff; /* Se vuelve blanco en hover para no perder contraste */
+}
+
+/* Mensajes de Alerta estilizados con la nueva paleta */
+.alert-container-warn {
+  background-color: rgba(203, 202, 190, 0.15);
+  color: #CBCABE;
+  border-left: 4px solid #7C4A36; /* Acento terracota */
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.alert-container-error {
+  background-color: rgba(119, 51, 87, 0.2); /* Fondo sutil de vino */
+  color: #fca5a5;
+  border-left: 4px solid #773357; /* Acento vino */
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
 }
