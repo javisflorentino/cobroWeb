@@ -147,97 +147,103 @@ main {
   text-decoration: underline;
 }
 
-/* Ajuste para pantallas medianas/pequeñas */
-@media (max-width: 992px) {
-  main {
-    /* En pantallas chicas las columnas se apilan y el footer se hace más alto, 
-       por lo que aumentamos el colchón inferior */
-    padding-bottom: 450px !important; 
-  }
-
-  .footer-container {
-    flex-direction: column; 
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .footer-info-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    width: 100%;
-  }
-}
-
 /* ==========================================
-   NUEVAS SECCIONES ADICIONALES (LANDING HOME)
+  NUEVAS SECCIONES ADICIONALES (LANDING HOME)
    ========================================== */
 
-/* 1. Hero Element */
+/* 1. Hero Element (Estilo Banner Sólido con Marca de Agua) */
 .hero-section {
   position: relative;
-  height: 480px;
+  height: 380px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-image: url('/assets/morelos_2024_desenfoque.png'); /* Usando tu asset existente de fondo */
-  background-size: cover;
-  background-position: center;
+  
+  /* Color verde sólido de fondo institucional */
+  background-color: #2E3B2B; 
+  
+  /* Colocamos el Isotipo directamente como fondo alineado a la derecha */
+  background-image: url('/assets/Isotipo.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% + 80px) center; /* Corta el isotipo elegantemente a la derecha */
+  background-size: contain;
+  
   border-radius: 8px;
   margin-bottom: 40px;
   overflow: hidden;
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* Apagamos el overlay anterior ya que el diseño es de color plano */
 .hero-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, rgba(46, 59, 43, 0.92) 0%, rgba(20, 30, 18, 0.8) 100%);
-  z-index: 1;
+  display: none;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
-  padding: 0 24px;
-  color: #FFFFFF;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Columna de Texto alineada a la izquierda */
+.hero-text-side {
+  flex: 1;
+  text-align: left;
+  max-width: 700px;
+}
+
+/* Ocultamos el div contenedor de la imagen del HTML ya que se procesa por CSS de fondo */
+.hero-image-side {
+  display: none;
 }
 
 .hero-title {
   font-family: 'QuetzalSansRegular', sans-serif;
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 700;
   margin-bottom: 16px;
   letter-spacing: 0.5px;
-  color: #CBCABE;
+  color: #FFFFFF;
 }
 
 .hero-subtitle {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
   margin-bottom: 32px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(203, 202, 190, 0.9);
 }
 
 .hero-btn-primary {
-  background-color: #CBCABE;
-  color: #2E3B2B;
-  border: none;
-  padding: 14px 36px;
-  font-size: 16px;
+  /* Estado Inicial: Blanco institucional */
+  background-color: #FFFFFF;
+  color: #773357; /* Texto en el color institucional para que resalte sobre el blanco */
+  border: 2px solid #773357; /* Añade un borde sutil para definir el botón sobre el fondo */
+  
+  padding: 12px 34px; /* Ajuste menor para compensar el grosor del borde y mantener los 14px/36px visuales */
+  font-size: 15px;
   font-weight: bold;
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.25s ease-in-out;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   letter-spacing: 1px;
 }
 
+/* Estado Activo: Transición al tono uva institucional */
 .hero-btn-primary:hover {
-  background-color: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  background-color: #773357;
+  color: #FFFFFF; /* El texto cambia a blanco para mantener un contraste legible */
+  border-color: #773357;
+  transform: translateY(-2px); /* Un ligero efecto de elevación moderno */
+  box-shadow: 0 6px 18px rgba(119, 51, 87, 0.35); /* Sombra difuminada con el color del botón */
 }
 
 /* 2. Flujo de Pasos */
@@ -306,7 +312,7 @@ main {
 .secretarias-section {
   padding: 20px 0 50px 0;
   margin-bottom: 40px;
-  scroll-margin-top: 20px; /* Margen para que el scroll automático no quede pegado al header */
+  scroll-margin-top: 20px;
 }
 
 .section-header-box {
@@ -399,12 +405,62 @@ main {
   RESPONSIVE DESIGN PARA NUEVAS SECCIONES
    ========================================== */
 @media (max-width: 992px) {
+  main {
+    padding-bottom: 450px !important; 
+  }
+
+  .footer-container {
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .footer-info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  /* Ajustes adaptativos para el Hero */
+.hero-section {
+  position: relative;
+  height: 380px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  
+  /* CAMBIA ESTA LÍNEA CON TU NUEVO COLOR SÓLIDO */
+  background-color: #2E3B2B; 
+  
+  /* El resto de tus propiedades del Isotipo se mantienen igual */
+  background-image: url('/assets/Isotipo.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% + 80px) center; 
+  background-size: contain;
+  
+  border-radius: 8px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+  .hero-content {
+    text-align: center;
+    padding: 0 24px;
+    justify-content: center;
+  }
+
+  .hero-text-side {
+    text-align: center;
+    max-width: 100%;
+    padding-bottom: 60px; /* Colchón para no empalmar con el fondo */
+  }
+
   .hero-title {
-    font-size: 32px;
+    font-size: 28px;
   }
-  .hero-section {
-    height: 400px;
-  }
+
+  /* Ajustes adaptativos para los pasos */
   .steps-grid {
     grid-template-columns: 1fr;
     gap: 20px;

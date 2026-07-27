@@ -27,17 +27,21 @@
     <!-- VISTA HOME: SE MUESTRA SOLO SI NO HAY UN TRÁMITE ACTIVO -->
     <div *ngIf="!controlView" class="fadein animation-duration-400">
       
-      <!-- ==================== SECCIÓN 1: HERO SELECTION ==================== -->
-      <section class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="hero-content text-center">
-          <h1 class="hero-title animate-fadein">Trámites y Servicios Digitales</h1>
-          <p class="hero-subtitle">Realiza tus contribuciones de manera rápida, segura y 100% digital desde cualquier lugar.</p>
-          <button (click)="scrollToTarget(targetSecretarias)" class="hero-btn-primary">
-            <i class="pi pi-credit-card mr-2"></i> IR A PAGAR
-          </button>
-        </div>
-      </section>
+<!-- ==================== SECCIÓN 1: HERO SELECTION ==================== -->
+<section class="hero-section">
+  <div class="hero-content">
+    
+    <!-- Bloque Izquierdo: Textos y Botón -->
+    <div class="hero-text-side">
+      <h1 class="hero-title animate-fadein">Finanzas Digital Morelos</h1>
+      <p class="hero-subtitle">Realiza tus contribuciones de manera rápida, segura y 100% digital desde cualquier lugar.</p>
+      <button (click)="scrollToTarget(targetSecretarias)" class="hero-btn-primary">
+        <i class="pi pi-credit-card mr-2"></i> IR A PAGAR
+      </button>
+    </div>
+
+  </div>
+</section>
 
       <!-- ==================== SECCIÓN 2: PASO A PASO ==================== -->
       <section class="steps-section">

@@ -1,8 +1,10 @@
 .my-toolbar {
-  background-color: #2E3B2B; 
-  color: #CBCABE;            
-  height: 85px;
-  padding: 0 !important; /* Reseteamos el padding nativo de Material si lo hubiera */
+  background-color: #FFFFFF !important; /* Blanco institucional impecable */
+  color: #2E3B2B !important; /* El texto principal pasa a tu verde oscuro para mantener contraste */
+  height: 64px;
+  padding: 0 16px !important;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(46, 59, 43, 0.12); /* Línea sutil inferior en verde tenue */
 }
 
 /* Contenedor principal con márgenes internos para separar de los bordes laterales */
@@ -24,13 +26,29 @@
   flex: 1;
 }
 
+/* Centrado exacto y armonía para los textos internos de identidad */
 .centerToolbar {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 2;
   text-align: center;
+  flex: 2;
+  color: #2E3B2B !important;
+  line-height: 1.3;
+}
+
+.centerToolbar strong {
+  font-family: 'QuetzalSansRegular', sans-serif;
+  color: #2E3B2B !important;
+  letter-spacing: 0.5px;
+}
+
+.centerToolbar span {
+  display: block;
+  font-family: 'QuetzalSansThin', sans-serif;
+  color: #4A5545 !important; /* Gris oscuro elegante sobre el fondo blanco */
+  margin-top: 2px;
 }
 
 .rightToolbar {
@@ -38,6 +56,20 @@
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+  gap: 8px; /* Espaciado uniforme entre botones */
+}
+
+/* Botones de acción resaltados con el tono institucional uva */
+.rightToolbar button[mat-mini-fab] {
+  background-color: #773357 !important; 
+  color: #FFFFFF !important; 
+  box-shadow: 0 2px 4px rgba(119, 51, 87, 0.2) !important;
+  transition: all 0.2s ease;
+}
+
+.rightToolbar button[mat-mini-fab]:hover {
+  background-color: #5F2846 !important;
+  transform: scale(1.05);
 }
 
 /* Estilo optimizado del campo de búsqueda (Limpio y centrado) */
@@ -58,17 +90,22 @@
   box-shadow: 0 0 0 2px rgba(124, 74, 54, 0.2);
 }
 
+/* Icono del buscador interno adaptado al color de resaltado */
+.search-wrapper button[mat-icon-button] {
+  color: #773357 !important;
+}
+
 .clean-search-input {
   background: transparent;
   border: none;
-  color: #CBCABE;
+  color: #2E3B2B !important; /* Texto oscuro para lectura sobre blanco */
   font-size: 14px;
   width: 100%;
   outline: none;
 }
 
 .clean-search-input::placeholder {
-  color: rgba(203, 202, 190, 0.5);
+  color: rgba(46, 59, 43, 0.5) !important; /* Placeholder en sintonía con el texto oscuro */
 }
 
 /* Ajuste específico para albergar los bullets del buscador */
