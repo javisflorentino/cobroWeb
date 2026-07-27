@@ -1,7 +1,3 @@
-/*
-  Renderiza los componentes estaticos y compartidos Sidenav y Toolbar
-  Renderiza los componentes definidos como rutas
-*/
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,33 +10,23 @@ import { MenuConceptos } from 'src/app/shared/interfaces/shared-conceptos.interf
   templateUrl: './layout-portal-pagos.component.html',
   styleUrls: ['./layout-portal-pagos.component.css']
 })
-export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
+export class LayoutPortalPagosComponent implements OnInit, OnDestroy {
 
-  /* NOTA: SE CREA OBSERVABLE QUE EMITIRA VALOR AL COMPONENTE SIDENAV   */
   public sendActionSidenav: Subject<boolean> = new Subject<boolean>();
-  /* NOTA: SE CREA OBSERVABLE QUE EMITIRA UN OBJETO DE LA DEPENDENCIA SELECCIONADA AL COMPONENTE SIDENAV   */
-  public valCardSubjectEmitt: Subject<MenuConceptos[]> = new Subject<MenuConceptos[]>();//PortalMenu[]> = new Subject<PortalMenu[]>();
+  public valCardSubjectEmitt: Subject<MenuConceptos[]> = new Subject<MenuConceptos[]>();
 
   private _snackBar = inject(MatSnackBar);
 
-  /* NOTA: RECIBE EL NOMBRE DEL CONCEPTO DEL SIDENAV PARA SU MANIPULACION */
   public receiveNameConcept!: string;
-
-  /* se envia a shared-toolbar */
   public senNameDep: string = 'SECRETARÍA DE ADMINISTRACIÓN Y FINANZAS';
-
-  // Envia un valor numerico aleatorio mayot a 0 para indicar que se quiere ir al home. Se envia al Sidenav que limpiara variables al recibir
-  public sendActEraseLocalStor: Subject<boolean> = new Subject<boolean>();//: boolean = false;
+  public sendActEraseLocalStor: Subject<boolean> = new Subject<boolean>();
 
   public controlView: boolean = false;
-
-  //Controla la visualización del Spinner
   public isLoading: boolean = false;
 
   private destroyed = new Subject<void>();
-  /* CONTROLAR LA RESOLUCION DE LA PANTALLA */
   public sizeDisplay!: string;
-  /* CONTROLAR EL TIPO DE RESOLUCIONES */
+  
   private displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
     [Breakpoints.Small, 'Small'],
@@ -48,45 +34,41 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     [Breakpoints.Large, 'Large'],
     [Breakpoints.XLarge, 'XLarge'],
   ]);
-  /* INYECCION DE LA DEPENDECIA QUE ESCUCHA  LA RESOLUCION ACTUAL */
+  
   private breakpointObserver = inject(BreakpointObserver);
-
-  /* TODO: BANDERA QUE CONTROLA EL ACTIVAR O DESACTIVAR EL TOOLBARMENU */
   public flagActivitie = false;
 
   constructor() {
     this.mediaQuery();
   }
 
-
-
-  ngOnInit(): void {
-    //this.sendActionSidenav.subscribe();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    console.log('DESTROY LAYOUT')
     this.sendActionSidenav.unsubscribe();
     this.valCardSubjectEmitt.unsubscribe();
     this.sendActEraseLocalStor.unsubscribe();
-
     this.destroyed.next();
     this.destroyed.unsubscribe();
   }
 
-  /* RECIBE VALORES DEL COMPONENTE HIJO TOOLBAR AL PRECIONAR MENU*/
+  /**
+   * Ejecuta un scroll suave hacia el contenedor objetivo de las secretarías
+   * @param target Elemento HTML referenciado en la vista
+   */
+  public scrollToTarget(target: HTMLElement): void {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  }
+
   actionOnSidenav(val: boolean): void {
-    /* ACTUALIZA EL VALOR A EMITIR AL HIJO SIDENAV */
     this.sendActionSidenav.next(val);
     return;
   }
 
-  /* TODO: RECIBE UN VALOR BOOL DEL HIJO, SHAREDTOOLBAR, Y SE USA VARA HABILITAR O DESHABILITAR EL TOOLBARMENU */
   activeOrInactiveToolbarMenu(val: boolean){
     this.flagActivitie = val;
   }
 
-  /* NOTA: DISPARA ALERTAS  */
   triggerAlert(event: string) {
     this.openSnackBar(event);
   }
@@ -97,16 +79,11 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     });
   }
 
-  /* RECIBE UN OBJETO DE LA DEPENDENCIA SELECIONADA DEL HIJO DEPENDENCIAS-CARD */
-  reciveValCard(valCard: MenuConceptos[]){//PortalMenu[]) {
+  reciveValCard(valCard: MenuConceptos[]) {
     this.valCardSubjectEmitt.next(valCard);
-    //this.sendActionSidenav = val;
-    //this.sendValCardSidenav.next(val);
     this.senNameDep = valCard[0].titulo;
-    //sessionStorage.removeItem('idParent');
   }
 
-  /* NOTA: RECIBE NOMBRE DEL CONCEPTO CELECCIONADO EN SIDENAV */
   reciveNameConcept(nameConcep: string) {
     this.receiveNameConcept = ' - [ ' + nameConcep + ' ]';
     this.controlView = true;
@@ -116,12 +93,10 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
     this.controlView = false;
     this.senNameDep = 'SECRETARÍA DE ADMINISTRACIÓN Y FINANZAS';
     this.receiveNameConcept = '';
-    //this.sendActEraseLocalStor = true;
     this.sendActEraseLocalStor.next(true);
   }
 
   public mediaQuery() {
-
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -138,7 +113,5 @@ export class LayoutPortalPagosComponent implements OnInit, OnDestroy  {
           }
         }
       });
-
-
   }
 }

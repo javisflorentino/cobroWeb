@@ -20,64 +20,132 @@
     (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)">
   </shared-toolbar>
 
-  <!-- CONTENIDO DINÁMICO (VISTAS) -->
-  <main class="p-2">
+  <!-- CONTENIDO PRINCIPAL CON SCROLL SEPARADO -->
+  <main>
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-    <router-outlet></router-outlet>
+
+    <!-- VISTA HOME: SE MUESTRA SOLO SI NO HAY UN TRÁMITE ACTIVO -->
+    <div *ngIf="!controlView" class="fadein animation-duration-400">
+      
+      <!-- ==================== SECCIÓN 1: HERO SELECTION ==================== -->
+      <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content text-center">
+          <h1 class="hero-title animate-fadein">Trámites y Servicios Digitales</h1>
+          <p class="hero-subtitle">Realiza tus contribuciones de manera rápida, segura y 100% digital desde cualquier lugar.</p>
+          <button (click)="scrollToTarget(targetSecretarias)" class="hero-btn-primary">
+            <i class="pi pi-credit-card mr-2"></i> IR A PAGAR
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== SECCIÓN 2: PASO A PASO ==================== -->
+      <section class="steps-section">
+        <h2 class="section-title">¿Cómo funciona el pago digital?</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-icon-circle">1</div>
+            <h3>Selecciona la Dependencia</h3>
+            <p>Elige la secretaría o el organismo institucional correspondiente al trámite que deseas liquidar.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon-circle">2</div>
+            <h3>Ingresa tus datos</h3>
+            <p>Rellena los campos requeridos y valida el costo calculado de forma exacta por el sistema fiscal.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon-circle">3</div>
+            <h3>Paga en Línea o Referenciado</h3>
+            <p>Liquida al instante con tarjeta de débito/crédito de forma segura, o genera tu línea de captura para ventanilla bancaria.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SECCIÓN 3: COMPONENTE DEPENDENCIAS (ANCLAJE) ==================== -->
+      <section #targetSecretarias class="secretarias-section">
+        <div class="section-header-box">
+          <h2 class="section-title-dark">Módulos de Recaudación Disponibles</h2>
+          <p class="section-subtitle-dark">Selecciona la dependencia institucional para desplegar sus trámites autorizados.</p>
+        </div>
+        
+        <!-- Aquí se inyecta el componente nativo que ya procesa tus tarjetas actuales -->
+        <div class="router-wrapper-home">
+          <router-outlet></router-outlet>
+        </div>
+      </section>
+
+      <!-- ==================== SECCIÓN 4: PREGUNTAS FRECUENTES ==================== -->
+      <section class="faq-section">
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <div class="faq-container">
+          
+          <div class="faq-item">
+            <details>
+              <summary>¿Cuánto tiempo tarda en reflejarse mi pago en línea?</summary>
+              <div class="faq-answer">
+                <p>Los pagos realizados con tarjeta de crédito o débito se procesan de manera inmediata. Recibirás tu comprobante digital en pantalla y a tu correo electrónico al instante.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-item">
+            <details>
+              <summary>¿Dónde puedo acudir si decidí imprimir mi orden de pago bancaria?</summary>
+              <div class="faq-answer">
+                <p>Puedes acudir a cualquiera de las ventanillas de las instituciones bancarias autorizadas impresas al reverso o en el cuerpo de tu formato de pago referenciado.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-item">
+            <details>
+              <summary>¿El sitio web cuenta con protección de mis datos bancarios?</summary>
+              <div class="faq-answer">
+                <p>Totalmente. Toda la transacción de pago se realiza mediante conexiones encriptadas bajo protocolos SSL/TLS seguros directamente con la pasarela bancaria. El portal no almacena datos de tus tarjetas.</p>
+              </div>
+            </details>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- VISTA TRÁMITE ACTIVO: SE MUESTRA LIMPIO EN CASO DE IR A FORMULARIOS INTERNOS -->
+    <div *ngIf="controlView" class="fadein animation-duration-300">
+      <router-outlet></router-outlet>
+    </div>
+
   </main>
 
-  <!-- FOOTER INSTITUCIONAL CON INFORMACIÓN CORRECTA -->
+  <!-- FOOTER INSTITUCIONAL -->
   <footer class="custom-gov-footer">
     <!-- Cenefa Superior -->
     <div class="footer-cenefa"></div>
 
     <!-- Contenedor Principal del Footer -->
     <div class="footer-container px-4 py-3">
-      
-      <!-- Fila Superior: Logo de Finanzas -->
       <div class="footer-logo-row mb-4">
         <img src="./assets/Hacienda-Header-Izquierdo.png" alt="Secretaría de Administración y Finanzas" class="gov-logo">
       </div>
-
-      <!-- Fila Inferior: Columnas de Información Oficial -->
       <div class="footer-info-grid">
-        
-        <!-- Columna 1: Contacto y Soporte -->
         <div class="info-column">
           <h3>Contacto</h3>
-          <p>
-            Teléfono: <a href="tel:7773100921">(777) 310 0921</a> 
-            <span style="display: inline-block; margin-left: 4px;">ext. 133</span>
-          </p>
-          <p>
-            Correo: <a href="mailto:soporte.csi@morelos.gob.mx">soporte.csi@morelos.gob.mx</a>
-          </p>
+          <p>Teléfono: <a href="tel:7773100921">(777) 310 0921</a> <span style="display: inline-block; margin-left: 4px;">ext. 133</span></p>
+          <p>Correo: <a href="mailto:soporte.csi@morelos.gob.mx">soporte.csi@morelos.gob.mx</a></p>
         </div>
-
-        <!-- Columna 2: Ubicación Oficial -->
         <div class="info-column">
           <h3>Ubicación</h3>
           <p>Plaza General Emiliano Zapata, Cuernavaca Centro, Col. Centro, C.P. 62000</p>
           <p>Cuernavaca, Morelos.</p>
         </div>
-
-        <!-- Columna 3: Documentación Legal -->
         <div class="info-column">
           <h3>Enlaces de interés</h3>
           <ul>
-            <li>
-              <a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf" target="_blank" rel="noopener noreferrer">
-                Aviso de Privacidad
-              </a>
-            </li>
-            <li>
-              <a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf" target="_blank" rel="noopener noreferrer">
-                Términos y Condiciones
-              </a>
-            </li>
+            <li><a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf" target="_blank" rel="noopener noreferrer">Aviso de Privacidad</a></li>
+            <li><a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a></li>
           </ul>
         </div>
-
       </div>
     </div>
   </footer>
