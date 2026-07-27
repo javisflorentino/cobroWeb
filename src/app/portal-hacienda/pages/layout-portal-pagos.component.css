@@ -155,9 +155,15 @@ main {
 .hero-section {
   position: relative;
   height: 380px;
-  width: 100%;
+  width: auto; /* Permite que los márgenes negativos expandan el ancho */
   display: flex;
   align-items: center;
+  
+  /* TRUCO MAESTRO: Rompe el padding de 16px de <main> hacia arriba, izquierda y derecha */
+  margin-top: -16px; 
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: 40px; /* Mantiene la separación con el contenido de abajo */
   
   /* Color verde sólido de fondo institucional */
   background-color: #2E3B2B; 
@@ -165,13 +171,14 @@ main {
   /* Colocamos el Isotipo directamente como fondo alineado a la derecha */
   background-image: url('/assets/Isotipo.svg');
   background-repeat: no-repeat;
-  background-position: calc(100% + 80px) center; /* Corta el isotipo elegantemente a la derecha */
+  background-position: calc(100% + 80px) center; 
   background-size: contain;
   
-  border-radius: 8px;
-  margin-bottom: 40px;
+  /* Esquinas superiores rectas (pegadas al header) y esquinas inferiores redondeadas */
+  border-radius: 0 0 24px 24px; 
+  
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* Apagamos el overlay anterior ya que el diseño es de color plano */
@@ -423,26 +430,29 @@ main {
 
   /* Ajustes adaptativos para el Hero */
 .hero-section {
-  position: relative;
-  height: 380px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  
-  /* CAMBIA ESTA LÍNEA CON TU NUEVO COLOR SÓLIDO */
-  background-color: #2E3B2B; 
-  
-  /* El resto de tus propiedades del Isotipo se mantienen igual */
-  background-image: url('/assets/Isotipo.svg');
-  background-repeat: no-repeat;
-  background-position: calc(100% + 80px) center; 
-  background-size: contain;
-  
-  border-radius: 8px;
-  margin-bottom: 40px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
+    position: relative;
+    height: 380px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    
+    /* Mantiene el comportamiento full-width en tablets/móviles */
+    margin-top: -16px;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-bottom: 40px;
+    
+    background-color: #2E3B2B; 
+    background-image: url('/assets/Isotipo.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% + 80px) center; 
+    background-size: contain;
+    
+    /* Mantiene las esquinas de abajo redondeadas en móvil */
+    border-radius: 0 0 24px 24px; 
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
 
   .hero-content {
     text-align: center;

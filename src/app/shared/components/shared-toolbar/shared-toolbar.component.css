@@ -1,7 +1,7 @@
 .my-toolbar {
   background-color: #FFFFFF !important; /* Blanco institucional impecable */
   color: #2E3B2B !important; /* El texto principal pasa a tu verde oscuro para mantener contraste */
-  height: 64px;
+  height: 90px;
   padding: 0 16px !important;
   box-sizing: border-box;
   border-bottom: 1px solid rgba(46, 59, 43, 0.12); /* Línea sutil inferior en verde tenue */
@@ -24,6 +24,14 @@
   align-items: center;
   justify-content: flex-start;
   flex: 1;
+  gap: 16px; /* Espaciado uniforme entre logos y línea divisoria */
+}
+/* Línea divisoria café institucional */
+.logo-divider {
+  width: 1px;
+  height: 28px; /* Altura controlada para que luzca balanceada con los logos */
+  background-color: #7C4A36; /* Tu tono café/terracota institucional */
+  opacity: 0.7;
 }
 
 /* Centrado exacto y armonía para los textos internos de identidad */
