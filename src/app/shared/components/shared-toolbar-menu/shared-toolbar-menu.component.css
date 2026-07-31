@@ -17,7 +17,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  ga
   position: relative;
   border-top: 4px solid #773357; /* Línea de acento Chedron */
 }
