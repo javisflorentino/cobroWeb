@@ -1,5 +1,3 @@
-<!--<mat-sidenav-container style="background-image: url('./assets/banner-cuernavaca_1.jpg'); background-position: center; background-size: cover;" fullscreen>-->
-<!--<mat-sidenav-container style="background-image: url('./assets/morelos_2024_desenfoque.png'); background-repeat: no-repeat; background-position: center; background-size: 40% 60%" class="layout-container" fullscreen>-->
 <mat-sidenav-container class="layout-container" fullscreen>
   
   <!-- PANEL LATERAL (MENÚ) -->
@@ -20,66 +18,70 @@
     (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)">
   </shared-toolbar>
 
-  <!-- CONTENIDO DINÁMICO (VISTAS) -->
-  <main class="p-2">
+  <!-- CONTENIDO DINÁMICO + FOOTER (Comparten el mismo Scroll) -->
+  <main class="p-0">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
-    <router-outlet></router-outlet>
-  </main>
-
-  <!-- FOOTER INSTITUCIONAL CON INFORMACIÓN CORRECTA -->
-  <footer class="custom-gov-footer">
-    <!-- Cenefa Superior -->
-    <div class="footer-cenefa"></div>
-
-    <!-- Contenedor Principal del Footer -->
-    <div class="footer-container px-4 py-3">
-      
-      <!-- Fila Superior: Logo de Finanzas -->
-      <div class="footer-logo-row mb-4">
-        <img src="./assets/Hacienda-Header-Izquierdo.png" alt="Secretaría de Administración y Finanzas" class="gov-logo">
-      </div>
-
-      <!-- Fila Inferior: Columnas de Información Oficial -->
-      <div class="footer-info-grid">
-        
-        <!-- Columna 1: Contacto y Soporte -->
-        <div class="info-column">
-          <h3>Contacto</h3>
-          <p>
-            Teléfono: <a href="tel:7773100921">(777) 310 0921</a> 
-            <span style="display: inline-block; margin-left: 4px;">ext. 133</span>
-          </p>
-          <p>
-            Correo: <a href="mailto:soporte.csi@morelos.gob.mx">soporte.csi@morelos.gob.mx</a>
-          </p>
-        </div>
-
-        <!-- Columna 2: Ubicación Oficial -->
-        <div class="info-column">
-          <h3>Ubicación</h3>
-          <p>Plaza General Emiliano Zapata, Cuernavaca Centro, Col. Centro, C.P. 62000</p>
-          <p>Cuernavaca, Morelos.</p>
-        </div>
-
-        <!-- Columna 3: Documentación Legal -->
-        <div class="info-column">
-          <h3>Enlaces de interés</h3>
-          <ul>
-            <li>
-              <a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf" target="_blank" rel="noopener noreferrer">
-                Aviso de Privacidad
-              </a>
-            </li>
-            <li>
-              <a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf" target="_blank" rel="noopener noreferrer">
-                Términos y Condiciones
-              </a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
+    
+    <!-- Contenedor para el padding interno de las vistas -->
+    <div class="views-content p-3">
+      <router-outlet></router-outlet>
     </div>
-  </footer>
+
+    <!-- FOOTER INSTITUCIONAL (Ahora vive al final del flujo) -->
+    <footer class="custom-gov-footer">
+      <!-- Cenefa Superior -->
+      <div class="footer-cenefa"></div>
+
+      <!-- Contenedor Principal del Footer -->
+      <div class="footer-container px-4 py-3">
+        
+        <!-- Fila Superior: Logo de Finanzas -->
+        <div class="footer-logo-row mb-4">
+          <img src="./assets/Hacienda-Header-Izquierdo.png" alt="Secretaría de Administración y Finanzas" class="gov-logo">
+        </div>
+
+        <!-- Fila Inferior: Columnas de Información Oficial -->
+        <div class="footer-info-grid">
+          
+          <!-- Columna 1: Contacto y Soporte -->
+          <div class="info-column">
+            <h3>Contacto</h3>
+            <p>
+              Teléfono: <a href="tel:7773100921">(777) 310 0921</a> 
+              <span style="display: inline-block; margin-left: 4px;">ext. 133</span>
+            </p>
+            <p>
+              Correo: <a href="mailto:soporte.csi@morelos.gob.mx">soporte.csi@morelos.gob.mx</a>
+            </p>
+          </div>
+
+          <!-- Columna 2: Ubicación Oficial -->
+          <div class="info-column">
+            <h3>Ubicación</h3>
+            <p>Plaza General Emiliano Zapata, Cuernavaca Centro, Col. Centro, C.P. 62000</p>
+            <p>Cuernavaca, Morelos.</p>
+          </div>
+
+          <!-- Columna 3: Documentación Legal -->
+          <div class="info-column">
+            <h3>Enlaces de interés</h3>
+            <ul>
+              <li>
+                <a href="https://www.hacienda.morelos.gob.mx/images/legales/AvisoPrivacidad.pdf" target="_blank" rel="noopener noreferrer">
+                  Aviso de Privacidad
+                </a>
+              </li>
+              <li>
+                <a href="https://www.hacienda.morelos.gob.mx/images/legales/TerminosCondiciones.pdf" target="_blank" rel="noopener noreferrer">
+                  Términos y Condiciones
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+  </main>
 
 </mat-sidenav-container>
