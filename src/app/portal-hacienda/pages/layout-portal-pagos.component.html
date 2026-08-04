@@ -18,6 +18,19 @@
     (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)">
   </shared-toolbar>
 
+        <!-- ==================== SECCIÓN 3: COMPONENTE DEPENDENCIAS (ANCLAJE) ==================== -->
+      <section #targetSecretarias class="secretarias-section">
+        <div class="section-header-box">
+          <h2 class="section-title-dark">Módulos de Recaudación Disponibles</h2>
+          <p class="section-subtitle-dark">Selecciona la dependencia institucional para desplegar sus trámites autorizados.</p>
+        </div>
+        
+        <!-- Aquí se inyecta el componente nativo que ya procesa tus tarjetas actuales -->
+        <div class="router-wrapper-home">
+          <router-outlet></router-outlet>
+        </div>
+      </section>
+
   <!-- CONTENIDO DINÁMICO + FOOTER (Comparten el mismo Scroll) -->
   <main class="p-0">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
