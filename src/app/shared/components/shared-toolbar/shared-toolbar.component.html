@@ -2,164 +2,88 @@
 
   <div class="containerToolbar">
 
-  
-
-    <!-- Sección Izquierda: Logotipo Institucional con separación controlada -->
-
-    <div class="leftToolbar">
-
-      <!-- Logotipo Principal (Morelos) -->
-
-      <div class="bg-center bg-no-repeat w-12rem h-3rem"
-
-        style="background-image: url('./assets/Hacienda-Header-Izquierdo.png'); background-size: contain;">
-
-      </div>
-
-    
-
-      <!-- Línea Divisoria Café -->
-
-      <div class="logo-divider"></div>
-
-    
-
-      <!-- Nuevo Logotipo (Finanzas) -->
-
-      <div class="bg-center bg-no-repeat w-12rem h-3rem"
-
-        style="background-image: url('./assets/LOGO FINANZAS.png'); background-size: contain;">
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Sección Central: Identidad Institucional -->
-
-    <div class="centerToolbar">
-
-      <div class="brand-text-wrapper">
-
-        <strong class="brand-title">FINANZAS DIGITAL MORELOS</strong>
-
-        <span class="brand-subtitle">{{receiveNameDep}}</span>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Sección Derecha: Elementos de Navegación y Búsqueda -->
-
-    <div class="rightToolbar">
-
-      <!-- Contenedor del buscador optimizado -->
-
-      <div class="search-wrapper mr-3"
-
-          [style.display]="flagSearchTramite() ? 'flex' : 'none'"
-
-          [ngClass]="flagSearchTramite() ? 'fadeinleft animation-duration-500' : 'fadeinright animation-duration-500'">
-
-        <input
-
-          type="text"
-
-          placeholder="Buscar trámite..."
-
-          class="clean-search-input"
-
-          #tagInput
-
-          (keyup.enter)="searchTramite()" />
-
-      
-
-        <button mat-icon-button (click)="searchTramite()" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" style="color: #CBCABE; width: 32px; height: 32px; line-height: 32px;">
-
-          <mat-icon style="font-size: 20px;">ads_click</mat-icon>
-
-        </button>
-
-      </div>
-
-
+    <!-- Sección Izquierda (AHORA): Elementos de Navegación y Búsqueda -->
+    <div class="rightToolbar left-aligned">
 
       <!-- Botones de acción -->
-
       <button mat-mini-fab style="background-color: rgba(203, 202, 190, 0.1); color: #CBCABE;" (click)="showAunHideInputSearch()" class="mr-2">
-
         <mat-icon>search</mat-icon>
-
       </button>
-
       <button mat-mini-fab style="background-color: rgba(203, 202, 190, 0.1); color: #CBCABE;" (click)="sidenavAction()" class="mr-2">
-
         <mat-icon>menu</mat-icon>
-
       </button>
-
       <button mat-mini-fab style="background-color: rgba(203, 202, 190, 0.1); color: #CBCABE;" (click)="redirectPagos()">
-
         <mat-icon>home</mat-icon>
-
       </button>
+
+      <!-- Contenedor del buscador optimizado -->
+      <div class="search-wrapper ml-3"
+          [style.display]="flagSearchTramite() ? 'flex' : 'none'"
+          [ngClass]="flagSearchTramite() ? 'fadeinleft animation-duration-500' : 'fadeinright animation-duration-500'">
+        <input
+          type="text"
+          placeholder="Buscar trámite..."
+          class="clean-search-input"
+          #tagInput
+          (keyup.enter)="searchTramite()" />
+      
+        <button mat-icon-button (click)="searchTramite()" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" style="color: #CBCABE; width: 32px; height: 32px; line-height: 32px;">
+          <mat-icon style="font-size: 20px;">ads_click</mat-icon>
+        </button>
+      </div>
 
     </div>
 
+    <!-- Sección Central: COMENTADA (Texto de Finanzas e Identidad Institucional) -->
+    <!-- 
+    <div class="centerToolbar">
+      <div class="brand-text-wrapper">
+        <strong class="brand-title">FINANZAS DIGITAL MORELOS</strong>
+        <span class="brand-subtitle">{{receiveNameDep}}</span>
+      </div>
+    </div> 
+    -->
 
+    <!-- Sección Derecha (AHORA): Logotipos Institucionales -->
+    <div class="leftToolbar right-aligned">
+      <!-- Logotipo Principal (Morelos) -->
+      <div class="bg-center bg-no-repeat w-12rem h-3rem"
+        style="background-image: url('./assets/Hacienda-Header-Izquierdo.png'); background-size: contain;">
+      </div>
+    
+      <!-- Línea Divisoria Café -->
+      <div class="logo-divider"></div>
+    
+      <!-- Nuevo Logotipo (Finanzas) -->
+      <div class="bg-center bg-no-repeat w-12rem h-3rem"
+        style="background-image: url('./assets/LOGO FINANZAS.png'); background-size: contain;">
+      </div>
+    </div>
 
   </div>
 
 </mat-toolbar>
 
-
-
 <!-- Menú Desplegable Minimalista Limpio -->
-
 <mat-menu #menu="matMenu" xPosition="before" class="my-menu">
-
   <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
 
-
-
   <div class="menu-pills-container" (click)="$event.stopPropagation()">
-
     <div *ngIf="cardsArr.length > 0; else notElement" class="pills-flexbox">
-
     
-
       <button *ngFor="let item of cardsArr"
-
         class="concept-pill"
-
         (click)="redirectToTramite(item.url, item.idConcepto, item.formulario, item.gestora, item.tipoMovimiento)">
-
         <span class="pill-text">{{ item.titulo }}</span>
-
         <mat-icon class="pill-arrow">navigate_next</mat-icon>
-
       </button>
-
-
 
     </div>
 
-
-
     <ng-template #notElement>
-
       <div class="no-results-msg">
-
         No se encontraron coincidencias para la consulta.
-
       </div>
-
     </ng-template>
-
   </div>
-
 </mat-menu>

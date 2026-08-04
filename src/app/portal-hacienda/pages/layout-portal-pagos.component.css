@@ -1,6 +1,6 @@
 
 /* ==========================================
-   1. CONTROL ESTRUCTURAL DEL CONTENEDOR RAÍZ
+  1. CONTROL ESTRUCTURAL DEL CONTENEDOR RAÍZ
    ========================================== */
 .layout-container {
   position: relative;
@@ -22,7 +22,7 @@ shared-toolbar {
 }
 
 /* ==========================================
-   2. ZONA DE SCROLL UNIFICADA
+  2. ZONA DE SCROLL UNIFICADA
    ========================================== */
 main {
   display: flex;
@@ -38,13 +38,38 @@ main {
   box-sizing: border-box;
 }
 
+/* 3. Sección Separadora de las Secretarías */
+.secretarias-section {
+  padding: 20px 0 10px 0;
+  margin-bottom: 0;
+  scroll-margin-top: 20px;
+}
+
+.section-header-box {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-title-dark {
+  font-family: 'QuetzalSansRegular', sans-serif;
+  font-size: 28px;
+  color: #2E3B2B;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.section-subtitle-dark {
+  font-size: 15px;
+  color: #4A5545;
+}
+
 /* Contenedor que empuja al footer hacia abajo si el contenido es muy corto */
 .views-content {
   flex: 1 0 auto;
 }
 
 /* ==========================================
-   3. FOOTER EN EL FLUJO NORMAL (NATURAL)
+  3. FOOTER EN EL FLUJO NORMAL (NATURAL)
    ========================================== */
 .custom-gov-footer {
   position: relative !important; /* Cambio clave: ya no es fixed */

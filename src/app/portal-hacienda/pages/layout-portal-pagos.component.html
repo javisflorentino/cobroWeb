@@ -18,45 +18,33 @@
     (actionOnToolbarMenu)="activeOrInactiveToolbarMenu($event)">
   </shared-toolbar>
 
-        <!-- ==================== SECCIÓN 3: COMPONENTE DEPENDENCIAS (ANCLAJE) ==================== -->
-      <section #targetSecretarias class="secretarias-section">
-        <div class="section-header-box">
-          <h2 class="section-title-dark">Módulos de Recaudación Disponibles</h2>
-          <p class="section-subtitle-dark">Selecciona la dependencia institucional para desplegar sus trámites autorizados.</p>
-        </div>
-        
-        <!-- Aquí se inyecta el componente nativo que ya procesa tus tarjetas actuales -->
-        <div class="router-wrapper-home">
-          <router-outlet></router-outlet>
-        </div>
-      </section>
-
-  <!-- CONTENIDO DINÁMICO + FOOTER (Comparten el mismo Scroll) -->
+  <!-- CONTENIDO DINÁMICO + FOOTER (Scroll Unificado) -->
   <main class="p-0">
     <shared-load-spinner *ngIf="isLoading"></shared-load-spinner>
     
-    <!-- Contenedor para el padding interno de las vistas -->
-    <div class="views-content p-3">
-      <router-outlet></router-outlet>
-    </div>
+    <!-- SECCIÓN DE SECRETARÍAS / VISTAS DINÁMICAS -->
+    <section #targetSecretarias class="secretarias-section">
+      <div class="section-header-box">
+        <h2 class="section-title-dark">Portal de Pago en Línea</h2>
+        <p class="section-subtitle-dark">Selecciona la dependencia que corresponda a tu trámite y ¡paga aquí mismo!</p>
+      </div>
+      
+      <!-- ÚNICA INSTANCIA DEL ROUTER OUTLET -->
+      <div class="views-content p-3">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
 
-    <!-- FOOTER INSTITUCIONAL (Ahora vive al final del flujo) -->
+    <!-- FOOTER INSTITUCIONAL -->
     <footer class="custom-gov-footer">
-      <!-- Cenefa Superior -->
       <div class="footer-cenefa"></div>
 
-      <!-- Contenedor Principal del Footer -->
       <div class="footer-container px-4 py-3">
-        
-        <!-- Fila Superior: Logo de Finanzas -->
         <div class="footer-logo-row mb-4">
           <img src="./assets/Hacienda-Header-Izquierdo.png" alt="Secretaría de Administración y Finanzas" class="gov-logo">
         </div>
 
-        <!-- Fila Inferior: Columnas de Información Oficial -->
         <div class="footer-info-grid">
-          
-          <!-- Columna 1: Contacto y Soporte -->
           <div class="info-column">
             <h3>Contacto</h3>
             <p>
@@ -68,14 +56,12 @@
             </p>
           </div>
 
-          <!-- Columna 2: Ubicación Oficial -->
           <div class="info-column">
             <h3>Ubicación</h3>
             <p>Plaza General Emiliano Zapata, Cuernavaca Centro, Col. Centro, C.P. 62000</p>
             <p>Cuernavaca, Morelos.</p>
           </div>
 
-          <!-- Columna 3: Documentación Legal -->
           <div class="info-column">
             <h3>Enlaces de interés</h3>
             <ul>
@@ -91,7 +77,6 @@
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </footer>

@@ -1,409 +1,197 @@
 .my-toolbar {
-
-  background-color: #FFFFFF !important; /* Blanco institucional impecable */
-
-  color: #2E3B2B !important; /* El texto principal pasa a tu verde oscuro para mantener contraste */
-
+  background-color: #FFFFFF !important;
+  color: #2E3B2B !important;
   height: 90px;
-
   padding: 0 16px !important;
-
   box-sizing: border-box;
-
-  border-bottom: 1px solid rgba(46, 59, 43, 0.12); /* Línea sutil inferior en verde tenue */
-
+  border-bottom: 1px solid rgba(46, 59, 43, 0.12);
 }
-
-
-
-/* Contenedor principal con márgenes internos para separar de los bordes laterales */
 
 .containerToolbar {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   width: 100%;
-
   height: 100%;
-
-  padding: 0 24px; /* Añade 24px de espacio libre a la izquierda y derecha */
-
+  padding: 0 24px;
   box-sizing: border-box;
-
 }
 
-
-
-/* Alineaciones internas limpias */
-
-.leftToolbar {
-
+/* Ajustes de flex para invertir la alineación visual */
+.leftToolbar.right-aligned {
   display: flex;
-
   align-items: center;
-
-  justify-content: flex-start;
-
+  justify-content: flex-end; /* Alinea logos a la derecha */
   flex: 1;
-
-  gap: 16px; /* Espaciado uniforme entre logos y línea divisoria */
-
+  gap: 16px;
 }
 
-/* Línea divisoria café institucional */
+.rightToolbar.left-aligned {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alinea botones a la izquierda */
+  flex: 1;
+  gap: 8px;
+}
 
 .logo-divider {
-
   width: 1px;
-
-  height: 28px; /* Altura controlada para que luzca balanceada con los logos */
-
-  background-color: #7C4A36; /* Tu tono café/terracota institucional */
-
+  height: 28px;
+  background-color: #7C4A36;
   opacity: 0.7;
-
 }
 
-
-
-/* Centrado exacto y armonía para los textos internos de identidad */
-
+/* ==========================================
+   SECCIÓN CENTRAL COMENTADA
+   ==========================================
 .centerToolbar {
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
-
   flex: 2;
-
   color: #2E3B2B !important;
-
   line-height: 1.3;
-
 }
-
-
 
 .centerToolbar strong {
-
   font-family: 'QuetzalSansRegular', sans-serif;
-
   color: #2E3B2B !important;
-
   letter-spacing: 0.5px;
-
 }
-
-
 
 .centerToolbar span {
-
   display: block;
-
   font-family: 'QuetzalSansThin', sans-serif;
-
-  color: #4A5545 !important; /* Gris oscuro elegante sobre el fondo blanco */
-
+  color: #4A5545 !important;
   margin-top: 2px;
-
 }
-
-
-
-.rightToolbar {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-end;
-
-  flex: 1;
-
-  gap: 8px; /* Espaciado uniforme entre botones */
-
-}
-
-
-
-/* Botones de acción resaltados con el tono institucional uva */
+========================================== */
 
 .rightToolbar button[mat-mini-fab] {
-
   background-color: #773357 !important;
-
   color: #FFFFFF !important;
-
   box-shadow: 0 2px 4px rgba(119, 51, 87, 0.2) !important;
-
   transition: all 0.2s ease;
-
 }
-
-
 
 .rightToolbar button[mat-mini-fab]:hover {
-
   background-color: #5F2846 !important;
-
   transform: scale(1.05);
-
 }
-
-
-
-/* Estilo optimizado del campo de búsqueda (Limpio y centrado) */
 
 .search-wrapper {
-
   display: flex;
-
   align-items: center;
-
   background-color: rgba(203, 202, 190, 0.08);
-
   border: 1px solid rgba(203, 202, 190, 0.2);
-
-  border-radius: 24px; /* Bordes redondeados modernos estilo píldora */
-
+  border-radius: 24px;
   padding: 4px 8px 4px 16px;
-
   width: 350px;
-
   transition: all 0.3s ease;
-
 }
-
-
 
 .search-wrapper:focus-within {
-
-  border-color: #7C4A36; /* Foco terracota */
-
+  border-color: #7C4A36;
   background-color: rgba(203, 202, 190, 0.12);
-
   box-shadow: 0 0 0 2px rgba(124, 74, 54, 0.2);
-
 }
-
-
-
-/* Icono del buscador interno adaptado al color de resaltado */
 
 .search-wrapper button[mat-icon-button] {
-
   color: #773357 !important;
-
 }
-
-
 
 .clean-search-input {
-
   background: transparent;
-
   border: none;
-
-  color: #2E3B2B !important; /* Texto oscuro para lectura sobre blanco */
-
+  color: #2E3B2B !important;
   font-size: 14px;
-
   width: 100%;
-
   outline: none;
-
 }
-
-
 
 .clean-search-input::placeholder {
-
-  color: rgba(46, 59, 43, 0.5) !important; /* Placeholder en sintonía con el texto oscuro */
-
+  color: rgba(46, 59, 43, 0.5) !important;
 }
-
-
-
-/* Ajuste específico para albergar los bullets del buscador */
 
 ::ng-deep .my-menu {
-
   max-width: 450px !important;
-
   background-color: #2E3B2B !important;
-
   border: 1px solid rgba(203, 202, 190, 0.15);
-
   border-radius: 12px !important;
-
   padding: 8px !important;
-
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
-
 }
-
-
 
 .menu-pills-container {
-
   padding: 2px;
-
 }
-
-
 
 .pills-flexbox {
-
   display: flex;
-
   flex-direction: column;
-
   gap: 6px;
-
 }
-
-
-
-/* Cápsula de Trámite */
 
 .concept-pill {
-
   background-color: rgba(203, 202, 190, 0.05) !important;
-
   color: #CBCABE !important;
-
   border: none !important;
-
   border-radius: 8px !important;
-
   padding: 12px 14px !important;
-
   text-align: left !important;
-
   width: 100%;
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   transition: all 0.2s ease !important;
-
   cursor: pointer;
-
 }
-
-
 
 .concept-pill:hover {
-
-  background-color: #7C4A36 !important; /* Fondo Terracota */
-
+  background-color: #7C4A36 !important;
   color: #ffffff !important;
-
   transform: translateX(3px);
-
 }
-
-
-
-/* Iconos de flecha (Gris por defecto, Blanco al hacer Hover) */
 
 .pill-arrow {
-
   color: rgba(203, 202, 190, 0.6);
-
   font-size: 20px;
-
   width: 20px;
-
   height: 20px;
-
   transition: color 0.2s ease;
-
 }
-
-
 
 .concept-pill:hover .pill-arrow {
-
   color: #ffffff;
-
 }
-
-
 
 .no-results-msg {
-
   background-color: rgba(119, 51, 87, 0.12);
-
   color: #CBCABE;
-
   border-left: 4px solid #773357;
-
   padding: 12px;
-
   border-radius: 6px;
-
   font-size: 13px;
-
   text-align: center;
-
 }
-
-
-
-/* Adaptación responsiva para móviles */
 
 @media (max-width: 992px) {
-
   .search-wrapper {
-
     width: 100%;
-
     max-width: 220px;
-
   }
-
 }
 
-
-
 @media (max-width: 768px) {
-
-  .rightToolbar {
-
-    display: none;
-
-  }
-
-  .leftToolbar {
-
-    flex: 0 0 auto;
-
-  }
-
-  .centerToolbar {
-
+  .rightToolbar.left-aligned {
     flex: 1;
-
   }
-
+  .leftToolbar.right-aligned {
+    flex: 0 0 auto;
+  }
   .search-wrapper {
-
     max-width: 160px;
-
   }
-
 }
