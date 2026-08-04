@@ -1,10 +1,18 @@
 .my-toolbar {
-  background-color: #FFFFFF !important; /* Blanco institucional impecable */
-  color: #2E3B2B !important; /* El texto principal pasa a tu verde oscuro para mantener contraste */
+  /* Propiedades para fijar el header */
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000 !important; /* Garantiza que quede por encima de las tarjetas y contenido */
+
+  /* Tus estilos previos intactos */
+  background-color: #FFFFFF !important;
+  color: #2E3B2B !important;
   height: 90px;
   padding: 0 16px !important;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(46, 59, 43, 0.12); /* Línea sutil inferior en verde tenue */
+  border-bottom: 1px solid rgba(46, 59, 43, 0.12);
 }
 
 /* Contenedor principal con márgenes internos para separar de los bordes laterales */

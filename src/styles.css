@@ -8,6 +8,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   top: 0;
   z-index: 100;
 }
+/* Agrega este espacio superior al contenedor principal de tus vistas */
+main, .main-content, body {
+  padding-top: 90px !important; 
+}
 
 .spacer {
   flex: 1 1 auto;
