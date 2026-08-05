@@ -27,21 +27,21 @@
   border: none;             /* Adiós a las líneas blancas */
 }
 
-/* Efecto Hover: Cambia suavemente al Terracota al pasar el cursor */
+/* Efecto Hover: Cambia suavemente al Color Vino al pasar el cursor */
 .sidenav-matnav-ul-li:hover {
-  background-color: #7C4A36;
+  background-color: #773357;
   color: #ffffff;
   transform: translateX(4px); /* Ligero desplazamiento dinámico */
 }
 
-/* Icono de navegación con el tono vino/plum */
+/* Icono de navegación con el tono blanco */
 .nav-icon-accent {
-  color: #773357;
+  color: #ffffff;
   transition: color 0.25s ease;
 }
 
 .sidenav-matnav-ul-li:hover .nav-icon-accent {
-  color: #ffffff; /* Se vuelve blanco en hover para no perder contraste */
+  color: #CBCABE; /* Se vuelve gris en hover para no perder contraste */
 }
 
 /* Mensajes de Alerta estilizados con la nueva paleta */

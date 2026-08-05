@@ -30,56 +30,75 @@ main {
   flex-grow: 1;
   background-color: #FFFFFF !important;
   
-  /* El scroll vertical manejará tanto las vistas como al footer */
   overflow-y: auto !important; 
   overflow-x: hidden;
   width: 100%;
-  padding: 0 !important; /* Eliminamos paddings que empujaban el layout */
+  padding: 0 !important;
   box-sizing: border-box;
+
+  /* Agregamos min-height para asegurar que el contenedor padre
+     tenga un alto computable sobre el cuál calcular el flex */
+  min-height: calc(100vh - 90px); /* 90px es la altura de tu toolbar */
 }
 
 /* 3. Sección Separadora de las Secretarías */
 .secretarias-section {
-  padding: 20px 0 10px 0;
+  padding: 5px 0 10px 0;
   margin-bottom: 0;
   scroll-margin-top: 20px;
+
+  /* CLAVE 1: Hacer que esta sección se expanda y ocupe todo el espacio sobrante */
+  flex: 1 0 auto; 
+  display: flex;
+  flex-direction: column;
+}
+
+/* CLAVE 2: Asegurar que el contenedor de las vistas también crezca dentro de la sección */
+.router-wrapper-home,
+.views-content {
+  flex: 1 0 auto;
 }
 
 .section-header-box {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .section-title-dark {
   font-family: 'QuetzalSansRegular', sans-serif;
-  font-size: 28px;
+  font-size: 40px;
   color: #2E3B2B;
-  margin-bottom: 8px;
-  font-weight: 600;
+  margin-bottom: 0px;
+  font-weight: 800;
 }
 
 .section-subtitle-dark {
-  font-size: 15px;
+  font-size: 18px;
   color: #4A5545;
+  margin-bottom: 20px;
 }
 
-/* Contenedor que empuja al footer hacia abajo si el contenido es muy corto */
 .views-content {
   flex: 1 0 auto;
+  padding-top: 0px !important; /* Pega el componente dinámico inmediatamente arriba */
 }
 
 /* ==========================================
   3. FOOTER EN EL FLUJO NORMAL (NATURAL)
    ========================================== */
 .custom-gov-footer {
-  position: relative !important; /* Cambio clave: ya no es fixed */
+  position: relative !important; 
   width: 100% !important;
   background-color: #2E3B2B;
   color: #FFFFFF;
   font-family: 'QuetzalSansRegular', sans-serif;
   z-index: 10;
   padding-top: 35px;
-  margin-top: 40px; /* Margen superior para separarlo visualmente del contenido */
+  
+  /* CLAVE 3: Cambiamos margin-top por auto para que Flexbox empuje automáticamente 
+     el footer hacia la parte inferior si hay espacio sobrante */
+  margin-top: auto !important; 
+  
   box-sizing: border-box;
   flex-shrink: 0;
 }

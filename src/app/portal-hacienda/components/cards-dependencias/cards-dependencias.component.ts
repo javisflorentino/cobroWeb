@@ -24,7 +24,7 @@ import { ModalReporteCedularComponent } from 'src/app/shared/components/modal-re
   animations: [
     trigger('buttonAnimation', [
       transition('* => *', [
-        query('.menu-button', style({ opacity: 0, transform: 'scale(0.5) translateY(50px)' }), { optional: true }),
+        query('.menu-button', style({ opacity: 0, transform: 'scale(0.2) translateY(50px)' }), { optional: true }),
         query('.menu-button', stagger('100ms', [
           animate('500ms ease-out', style({ opacity: 1, transform: 'scale(1) translateY(0)' }))
         ]), { optional: true })
